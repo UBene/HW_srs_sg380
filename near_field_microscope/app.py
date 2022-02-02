@@ -14,7 +14,7 @@ logging.getLogger('pyvisa').setLevel(logging.WARNING)
 
 class NearFieldMicroscope(BaseMicroscopeApp):
 
-    name = 'near field microscope'
+    name = 'near_field_microscope'
 
     def setup(self):
 
