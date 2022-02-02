@@ -1,0 +1,339 @@
+2021-12-19T18:40:42|INFO|HydraHarpOptimizerMeasure|hydraharp_channel_optimizer start_stop False
+2021-12-19T18:40:42|INFO|HydraHarpOptimizerMeasure|measurement hydraharp_channel_optimizer stopping stop_first
+2021-12-19T18:40:42|INFO|HydraHarpHistogramMeasure|hydraharp_histogram start_stop False
+2021-12-19T18:40:42|INFO|HydraHarpHistogramMeasure|measurement hydraharp_histogram stopping stop_first
+2021-12-19T18:40:42|INFO|PowerScanMeasure|power_scan start_stop False
+2021-12-19T18:40:42|INFO|PowerScanMeasure|measurement power_scan stopping stop_first
+2021-12-19T18:40:42|INFO|PowerMeterOptimizerMeasure|powermeter_optimizer start_stop False
+2021-12-19T18:40:42|INFO|PowerMeterOptimizerMeasure|measurement powermeter_optimizer stopping stop_first
+2021-12-19T18:40:42|INFO|Sequencer|sequencer start_stop False
+2021-12-19T18:40:42|INFO|Sequencer|measurement sequencer stopping stop_first
+2021-12-19T18:40:42|INFO|APDOptimizerCBMeasurement|apd_optimizer start_stop False
+2021-12-19T18:40:42|INFO|APDOptimizerCBMeasurement|measurement apd_optimizer stopping stop_first
+2021-12-19T18:40:42|INFO|NearFieldMicroscope|setting up figures for hydraharp_channel_optimizer measurement hydraharp_channel_optimizer
+2021-12-19T18:40:42|INFO|HydraHarpOptimizerMeasure|hydraharp_channel_optimizer start_stop False
+2021-12-19T18:40:42|INFO|HydraHarpOptimizerMeasure|measurement hydraharp_channel_optimizer stopping stop_first
+2021-12-19T18:40:42|INFO|NearFieldMicroscope|setting up figures for hydraharp_histogram measurement hydraharp_histogram
+2021-12-19T18:40:42|INFO|NearFieldMicroscope|setting up figures for power_scan measurement power_scan
+2021-12-19T18:40:42|INFO|PowerScanMeasure|power_scan start_stop False
+2021-12-19T18:40:42|INFO|PowerScanMeasure|measurement power_scan stopping stop_first
+2021-12-19T18:40:42|INFO|NearFieldMicroscope|setting up figures for powermeter_optimizer measurement powermeter_optimizer
+2021-12-19T18:40:42|INFO|PowerMeterOptimizerMeasure|powermeter_optimizer start_stop False
+2021-12-19T18:40:42|INFO|PowerMeterOptimizerMeasure|measurement powermeter_optimizer stopping stop_first
+2021-12-19T18:40:43|INFO|NearFieldMicroscope|setting up figures for sequencer measurement sequencer
+2021-12-19T18:40:43|INFO|Sequencer|sequencer start_stop False
+2021-12-19T18:40:43|INFO|Sequencer|measurement sequencer stopping stop_first
+2021-12-19T18:40:43|WARNING|HydraHarpOptimizerMeasure|Measurement.gui is deprecated, use Measurement.app <class 'DeprecationWarning'>
+2021-12-19T18:40:43|WARNING|HydraHarpHistogramMeasure|Measurement.gui is deprecated, use Measurement.app <class 'DeprecationWarning'>
+2021-12-19T18:40:43|WARNING|PowerScanMeasure|Measurement.gui is deprecated, use Measurement.app <class 'DeprecationWarning'>
+2021-12-19T18:40:43|WARNING|PowerMeterOptimizerMeasure|Measurement.gui is deprecated, use Measurement.app <class 'DeprecationWarning'>
+2021-12-19T18:40:43|WARNING|Sequencer|Measurement.gui is deprecated, use Measurement.app <class 'DeprecationWarning'>
+2021-12-19T18:40:43|WARNING|APDOptimizerCBMeasurement|Measurement.gui is deprecated, use Measurement.app <class 'DeprecationWarning'>
+2021-12-19T18:40:43|INFO|NearFieldMicroscope|setting up figures for apd_optimizer measurement apd_optimizer
+2021-12-19T18:40:43|INFO|APDOptimizerCBMeasurement|apd_optimizer start_stop False
+2021-12-19T18:40:43|INFO|APDOptimizerCBMeasurement|measurement apd_optimizer stopping stop_first
+2021-12-19T18:40:43|INFO|NearFieldMicroscope|ini settings loading from near_field_microscope_defaults.ini
+2021-12-19T18:40:43|DEBUG|FileLQ|save_dir: update_value 'C:\\Users\\RAMAN\\workspace\\NearField\\NearFieldMicroscope\\data' --> 'E:\\Natalie'    sender=None
+2021-12-19T18:40:43|DEBUG|FileLQ|save_dir: different values C:\Users\RAMAN\workspace\NearField\NearFieldMicroscope\data E:\Natalie
+2021-12-19T18:40:43|INFO|NearFieldMicroscope|hardware/hydraharp
+2021-12-19T18:40:43|INFO|NearFieldMicroscope|hardware/pololu_maestro
+2021-12-19T18:40:47|INFO|NearFieldMicroscope|hardware/power_wheel
+2021-12-19T18:40:47|INFO|NearFieldMicroscope|hardware/thorlabs_powermeter
+2021-12-19T18:40:47|INFO|NearFieldMicroscope|hardware/motorized_polarizer
+2021-12-19T18:40:47|INFO|NearFieldMicroscope|hardware/apd_counter
+2021-12-19T18:40:47|INFO|NearFieldMicroscope|ini settings loaded from: near_field_microscope_defaults.ini
+2021-12-19T18:44:22|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 166, in <lambda>
+    op_button.clicked.connect(lambda checked, f=op_func: f())
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 278, in reload_code
+    import xreload
+ModuleNotFoundError: No module named 'xreload'
+
+2021-12-19T18:44:23|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 166, in <lambda>
+    op_button.clicked.connect(lambda checked, f=op_func: f())
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 278, in reload_code
+    import xreload
+ModuleNotFoundError: No module named 'xreload'
+
+2021-12-19T18:44:23|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 166, in <lambda>
+    op_button.clicked.connect(lambda checked, f=op_func: f())
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 278, in reload_code
+    import xreload
+ModuleNotFoundError: No module named 'xreload'
+
+2021-12-19T18:44:23|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 166, in <lambda>
+    op_button.clicked.connect(lambda checked, f=op_func: f())
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 278, in reload_code
+    import xreload
+ModuleNotFoundError: No module named 'xreload'
+
+2021-12-19T18:44:24|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 166, in <lambda>
+    op_button.clicked.connect(lambda checked, f=op_func: f())
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 278, in reload_code
+    import xreload
+ModuleNotFoundError: No module named 'xreload'
+
+2021-12-20T13:09:32|DEBUG|root|close
+2021-12-20T15:37:41|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 53, in <lambda>
+    write_func=lambda pos, n=servo_num: self.dev.write_position(n,pos)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\pololu_interface.py", line 71, in write_position
+    self.ask_cmd(cmd)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\pololu_interface.py", line 44, in ask_cmd
+    self.ser.write(bytes(message, 'latin-1'))
+  File "C:\ProgramData\Anaconda3\lib\site-packages\serial\serialwin32.py", line 317, in write
+    raise SerialException("WriteFile failed ({!r})".format(ctypes.WinError()))
+serial.serialutil.SerialException: WriteFile failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+
+2021-12-20T15:37:46|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 53, in <lambda>
+    write_func=lambda pos, n=servo_num: self.dev.write_position(n,pos)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\pololu_interface.py", line 71, in write_position
+    self.ask_cmd(cmd)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\pololu_interface.py", line 44, in ask_cmd
+    self.ser.write(bytes(message, 'latin-1'))
+  File "C:\ProgramData\Anaconda3\lib\site-packages\serial\serialwin32.py", line 317, in write
+    raise SerialException("WriteFile failed ({!r})".format(ctypes.WinError()))
+serial.serialutil.SerialException: WriteFile failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+
+2021-12-20T15:39:33|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 842, in update_math
+    new_val = self.math_func(*lq_vals)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 36, in <lambda>
+    func=lambda raw, rmin, rmax, scale: scale*( (raw - rmin)/(rmax-rmin) ),
+ZeroDivisionError: float division by zero
+
+2021-12-20T15:39:40|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 53, in <lambda>
+    write_func=lambda pos, n=servo_num: self.dev.write_position(n,pos)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\pololu_interface.py", line 71, in write_position
+    self.ask_cmd(cmd)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\pololu_interface.py", line 44, in ask_cmd
+    self.ser.write(bytes(message, 'latin-1'))
+  File "C:\ProgramData\Anaconda3\lib\site-packages\serial\serialwin32.py", line 317, in write
+    raise SerialException("WriteFile failed ({!r})".format(ctypes.WinError()))
+serial.serialutil.SerialException: WriteFile failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+
+2021-12-20T15:39:57|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 53, in <lambda>
+    write_func=lambda pos, n=servo_num: self.dev.write_position(n,pos)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\pololu_interface.py", line 71, in write_position
+    self.ask_cmd(cmd)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\pololu_interface.py", line 44, in ask_cmd
+    self.ser.write(bytes(message, 'latin-1'))
+  File "C:\ProgramData\Anaconda3\lib\site-packages\serial\serialwin32.py", line 317, in write
+    raise SerialException("WriteFile failed ({!r})".format(ctypes.WinError()))
+serial.serialutil.SerialException: WriteFile failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+
+2021-12-20T16:48:09|INFO|PowerMeterOptimizerMeasure|powermeter_optimizer start_stop True
+2021-12-20T16:48:09|INFO|PowerMeterOptimizerMeasure|measurement powermeter_optimizer start called from thread: 12332
+2021-12-20T16:48:09|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2021-12-20T16:48:09|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2021-12-20T16:48:09|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2021-12-20T16:48:09|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2021-12-20T16:48:09|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2021-12-20T16:48:09|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2021-12-20T16:48:09|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2021-12-20T16:48:10|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2021-12-20T16:48:10|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2021-12-20T16:48:10|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2021-12-20T16:48:10|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2021-12-20T16:48:10|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2021-12-20T16:48:10|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2021-12-20T16:48:10|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2021-12-20T16:48:10|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2021-12-20T16:48:10|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2021-12-20T16:48:11|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2021-12-20T16:48:11|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2021-12-20T16:48:11|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2021-12-20T16:48:11|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2021-12-20T16:48:11|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2021-12-20T16:48:11|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2021-12-20T16:48:11|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2021-12-20T16:48:11|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2021-12-20T16:48:12|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2021-12-20T16:48:12|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2021-12-20T16:48:12|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2021-12-20T16:48:12|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2021-12-20T16:48:12|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2021-12-20T16:48:12|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2021-12-20T16:48:12|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2021-12-20T16:48:12|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2021-12-20T16:48:12|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2021-12-20T16:48:13|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2021-12-20T16:48:13|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2021-12-20T16:48:13|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2021-12-20T16:48:13|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2021-12-20T16:48:13|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2021-12-20T16:48:13|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2021-12-20T16:48:13|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2021-12-20T16:48:13|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2021-12-20T16:48:13|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2021-12-20T16:48:14|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2021-12-20T16:48:14|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2021-12-20T16:48:14|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2021-12-20T16:48:14|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2021-12-20T16:48:14|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2021-12-20T16:48:14|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2021-12-20T16:48:14|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2021-12-20T16:48:14|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2021-12-20T16:48:14|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2021-12-20T16:48:15|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2021-12-20T16:48:15|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2021-12-20T16:48:15|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2021-12-20T16:48:15|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2021-12-20T16:48:15|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2021-12-20T16:48:15|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2021-12-20T16:48:15|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2021-12-20T16:48:15|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2021-12-20T16:48:15|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2021-12-20T16:48:16|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2021-12-20T16:48:16|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2021-12-20T16:48:16|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2021-12-20T16:48:16|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2021-12-20T16:48:16|INFO|PowerMeterOptimizerMeasure|powermeter_optimizer start_stop False
+2021-12-20T16:48:16|INFO|PowerMeterOptimizerMeasure|measurement powermeter_optimizer stopping run_thread_run
+2021-12-20T16:48:16|INFO|PowerMeterOptimizerMeasure|measurement powermeter_optimizer interrupt called
+2021-12-20T16:48:16|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2021-12-20T16:48:21|DEBUG|ScopeFoundryHW.thorlabs_powermeter.thorlabs_pm100d|get_auto_range '1\n'
+2021-12-20T16:48:21|DEBUG|ScopeFoundryHW.thorlabs_powermeter.thorlabs_pm100d|get_auto_range '1\n'
+2021-12-20T16:48:42|INFO|PowerMeterOptimizerMeasure|powermeter_optimizer start_stop True
+2021-12-20T16:48:42|INFO|PowerMeterOptimizerMeasure|measurement powermeter_optimizer start called from thread: 12332
+2021-12-20T16:57:29|INFO|PowerScanMeasure|power_scan start_stop True
+2021-12-20T16:57:29|INFO|PowerScanMeasure|measurement power_scan start called from thread: 12332
+2021-12-20T16:57:32|INFO|PowerScanMeasure|power_scan start_stop False
+2021-12-20T16:57:32|INFO|PowerScanMeasure|measurement power_scan stopping run_post_run
+2021-12-20T16:57:32|INFO|PowerScanMeasure|measurement power_scan interrupt called
+2021-12-20T16:58:07|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\picoquant\hydraharp_hw.py", line 60, in connect
+    debug=S['debug_mode'])
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\picoquant\hydraharp_dev.py", line 100, in __init__
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\picoquant\hydraharp_dev.py", line 39, in __init__
+    self._err(self.hhlib.HH_OpenDevice(self.devnum, hw_serial))
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\picoquant\hydraharp_dev.py", line 111, in _err
+    raise IOError("HydraHarp Error {}: {}".format(retcode, self.err_message))
+OSError: HydraHarp Error -1: HH_ERROR_DEVICE_OPEN_FAIL
+
+2021-12-20T16:58:25|DEBUG|ScopeFoundryHW.ni_daq.devices.ni_counter_task|NI_CounterTask.set_channel-- Dev1/ctr0 /Dev1/PFI0
+2021-12-20T16:58:30|INFO|PowerScanMeasure|power_scan start_stop True
+2021-12-20T16:58:30|INFO|PowerScanMeasure|measurement power_scan start called from thread: 12332
+2021-12-20T16:58:30|WARNING|LoggedQuantity|Resolution read_from_hardware called when not connected to hardware
+2021-12-20T16:58:30|INFO|PowerScanMeasure|power_scan start_stop False
+2021-12-20T16:58:30|INFO|PowerScanMeasure|measurement power_scan stopping stop_failure
+2021-12-20T16:58:30|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\measurement.py", line 313, in start_stop
+    self._start()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\measurement.py", line 165, in _start
+    self.pre_run()
+  File "C:\Users\RAMAN\workspace\NearField\confocal_measure\power_scan.py", line 182, in pre_run
+    self.hh_hw.update_HistogramBins()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\picoquant\hydraharp_hw.py", line 199, in update_HistogramBins
+    sync_period = 1.0/S['SyncRate']
+ZeroDivisionError: float division by zero
+
+2021-12-20T16:58:42|INFO|PowerScanMeasure|power_scan start_stop True
+2021-12-20T16:58:42|INFO|PowerScanMeasure|measurement power_scan start called from thread: 12332
+2021-12-20T16:58:42|INFO|PowerScanMeasure|power_scan start_stop False
+2021-12-20T16:58:42|INFO|PowerScanMeasure|measurement power_scan stopping run_post_run
+2021-12-20T16:58:42|INFO|PowerScanMeasure|measurement power_scan interrupt called
+2021-12-20T16:58:53|INFO|PowerScanMeasure|power_scan start_stop True
+2021-12-20T16:58:53|INFO|PowerScanMeasure|measurement power_scan start called from thread: 12332
+2021-12-20T17:00:13|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\measurement.py", line 25, in run
+    self.measurement._thread_run()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\measurement.py", line 230, in _thread_run
+    self.run()
+  File "C:\Users\RAMAN\workspace\NearField\confocal_measure\power_scan.py", line 325, in run
+    self.pw_target_position.update_value(self.power_wheel_position[ii])
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\thorlabs_integrated_stepper\thorlabs_integrated_stepper_motor_hw.py", line 53, in move_and_wait_deg
+    self.stop_profiled()
+AttributeError: 'ThorlabsIntegratedStepperMottorHW' object has no attribute 'stop_profiled'
+
+2021-12-20T17:00:13|INFO|PowerScanMeasure|power_scan start_stop False
+2021-12-20T17:00:13|INFO|PowerScanMeasure|measurement power_scan stopping run_post_run
+2021-12-20T17:00:13|INFO|PowerScanMeasure|measurement power_scan interrupt called
+2021-12-20T17:00:17|INFO|PowerScanMeasure|power_scan start_stop True
+2021-12-20T17:00:17|INFO|PowerScanMeasure|measurement power_scan start called from thread: 12332
+2021-12-20T17:02:51|INFO|PowerScanMeasure|power_scan start_stop False
+2021-12-20T17:02:51|INFO|PowerScanMeasure|measurement power_scan stopping run_thread_run
+2021-12-20T17:02:51|INFO|PowerScanMeasure|measurement power_scan interrupt called
+2021-12-20T17:02:52|INFO|PowerScanMeasure|data saved E:\Natalie\211220_170252_power_scan.h5
+2021-12-20T17:03:16|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 237, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 230, in enable_connection
+    self.disconnect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\thorlabs_integrated_stepper\thorlabs_integrated_stepper_motor_hw.py", line 37, in disconnect
+    self.dev.close_device()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\thorlabs_integrated_stepper\thorlabs_integrated_stepper_motor_dev.py", line 151, in close_device
+    err_msg = _err(self.isc_dll.ISC_Close(self._id))
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\thorlabs_integrated_stepper\thorlabs_integrated_stepper_motor_dev.py", line 65, in _err
+    raise IOError("Thorlabs Kinesis Error [{}] {}: {} ".format(retval, err_name, description))
+OSError: Thorlabs Kinesis Error [1422764688] UNKNOWN: Unknown error code. 
+
+2021-12-20T17:03:21|INFO|PowerScanMeasure|power_scan start_stop True
+2021-12-20T17:03:21|INFO|PowerScanMeasure|measurement power_scan start called from thread: 12332
+2021-12-20T17:03:31|INFO|PowerScanMeasure|power_scan start_stop False
+2021-12-20T17:03:31|INFO|PowerScanMeasure|measurement power_scan stopping run_thread_run
+2021-12-20T17:03:31|INFO|PowerScanMeasure|measurement power_scan interrupt called
+2021-12-20T17:03:33|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\measurement.py", line 25, in run
+    self.measurement._thread_run()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\measurement.py", line 230, in _thread_run
+    self.run()
+  File "C:\Users\RAMAN\workspace\NearField\confocal_measure\power_scan.py", line 297, in run
+    self.move_to_min_pos()
+  File "C:\Users\RAMAN\workspace\NearField\confocal_measure\power_scan.py", line 500, in move_to_min_pos
+    self.pw_target_position.update_value(self.settings['power_wheel_min'])
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\thorlabs_integrated_stepper\thorlabs_integrated_stepper_motor_hw.py", line 53, in move_and_wait_deg
+    self.stop_profiled()
+AttributeError: 'ThorlabsIntegratedStepperMottorHW' object has no attribute 'stop_profiled'
+
+2021-12-20T17:03:50|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 237, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 230, in enable_connection
+    self.disconnect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\thorlabs_integrated_stepper\thorlabs_integrated_stepper_motor_hw.py", line 37, in disconnect
+    self.dev.close_device()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\thorlabs_integrated_stepper\thorlabs_integrated_stepper_motor_dev.py", line 151, in close_device
+    err_msg = _err(self.isc_dll.ISC_Close(self._id))
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\thorlabs_integrated_stepper\thorlabs_integrated_stepper_motor_dev.py", line 65, in _err
+    raise IOError("Thorlabs Kinesis Error [{}] {}: {} ".format(retval, err_name, description))
+OSError: Thorlabs Kinesis Error [1561645584] UNKNOWN: Unknown error code. 
+
+2021-12-20T17:04:06|INFO|PowerScanMeasure|power_scan start_stop True
+2021-12-20T17:04:06|INFO|PowerScanMeasure|measurement power_scan start called from thread: 12332
+2021-12-20T17:04:36|INFO|PowerScanMeasure|power_scan start_stop False
+2021-12-20T17:04:36|INFO|PowerScanMeasure|measurement power_scan stopping run_thread_run
+2021-12-20T17:04:36|INFO|PowerScanMeasure|measurement power_scan interrupt called
+2021-12-20T17:04:36|INFO|PowerScanMeasure|data saved E:\Natalie\211220_170436_power_scan.h5

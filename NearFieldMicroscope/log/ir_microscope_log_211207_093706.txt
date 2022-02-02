@@ -1,0 +1,268 @@
+2021-12-07T09:37:07|INFO|HydraHarpOptimizerMeasure|hydraharp_channel_optimizer start_stop False
+2021-12-07T09:37:07|INFO|HydraHarpOptimizerMeasure|measurement hydraharp_channel_optimizer stopping stop_first
+2021-12-07T09:37:07|INFO|HydraHarpHistogramMeasure|hydraharp_histogram start_stop False
+2021-12-07T09:37:07|INFO|HydraHarpHistogramMeasure|measurement hydraharp_histogram stopping stop_first
+2021-12-07T09:37:07|INFO|PowerScanMeasure|power_scan start_stop False
+2021-12-07T09:37:07|INFO|PowerScanMeasure|measurement power_scan stopping stop_first
+2021-12-07T09:37:07|INFO|PowerMeterOptimizerMeasure|powermeter_optimizer start_stop False
+2021-12-07T09:37:07|INFO|PowerMeterOptimizerMeasure|measurement powermeter_optimizer stopping stop_first
+2021-12-07T09:37:07|INFO|APDOptimizerCBMeasurement|apd_optimizer start_stop False
+2021-12-07T09:37:07|INFO|APDOptimizerCBMeasurement|measurement apd_optimizer stopping stop_first
+2021-12-07T09:37:07|INFO|NearFieldMicroscope|setting up figures for hydraharp_channel_optimizer measurement hydraharp_channel_optimizer
+2021-12-07T09:37:07|INFO|HydraHarpOptimizerMeasure|hydraharp_channel_optimizer start_stop False
+2021-12-07T09:37:07|INFO|HydraHarpOptimizerMeasure|measurement hydraharp_channel_optimizer stopping stop_first
+2021-12-07T09:37:07|INFO|NearFieldMicroscope|setting up figures for hydraharp_histogram measurement hydraharp_histogram
+2021-12-07T09:37:07|INFO|NearFieldMicroscope|setting up figures for power_scan measurement power_scan
+2021-12-07T09:37:07|INFO|PowerScanMeasure|power_scan start_stop False
+2021-12-07T09:37:07|INFO|PowerScanMeasure|measurement power_scan stopping stop_first
+2021-12-07T09:37:07|INFO|NearFieldMicroscope|setting up figures for powermeter_optimizer measurement powermeter_optimizer
+2021-12-07T09:37:07|INFO|PowerMeterOptimizerMeasure|powermeter_optimizer start_stop False
+2021-12-07T09:37:07|INFO|PowerMeterOptimizerMeasure|measurement powermeter_optimizer stopping stop_first
+2021-12-07T09:37:08|INFO|NearFieldMicroscope|setting up figures for apd_optimizer measurement apd_optimizer
+2021-12-07T09:37:08|INFO|APDOptimizerCBMeasurement|apd_optimizer start_stop False
+2021-12-07T09:37:08|INFO|APDOptimizerCBMeasurement|measurement apd_optimizer stopping stop_first
+2021-12-07T09:37:08|INFO|NearFieldMicroscope|ini settings loading from near_field_microscope_defaults.ini
+2021-12-07T09:37:08|INFO|NearFieldMicroscope|hardware/hydraharp
+2021-12-07T09:37:08|INFO|NearFieldMicroscope|hardware/pololu_maestro
+2021-12-07T09:37:08|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 842, in update_math
+    new_val = self.math_func(*lq_vals)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 36, in <lambda>
+    func=lambda raw, rmin, rmax, scale: scale*( (raw - rmin)/(rmax-rmin) ),
+ZeroDivisionError: float division by zero
+
+2021-12-07T09:37:11|INFO|NearFieldMicroscope|hardware/power_wheel
+2021-12-07T09:37:11|INFO|NearFieldMicroscope|hardware/thorlabs_powermeter
+2021-12-07T09:37:11|INFO|NearFieldMicroscope|hardware/apd_counter
+2021-12-07T09:37:11|INFO|NearFieldMicroscope|ini settings loaded from: near_field_microscope_defaults.ini
+2021-12-07T09:37:14|DEBUG|ScopeFoundryHW.ni_daq.devices.ni_counter_task|NI_CounterTask.set_channel-- Dev1/ctr0 /Dev1/PFI0
+2021-12-07T09:37:21|INFO|APDOptimizerCBMeasurement|apd_optimizer start_stop True
+2021-12-07T09:37:21|INFO|APDOptimizerCBMeasurement|measurement apd_optimizer start called from thread: 3344
+2021-12-07T09:37:24|INFO|APDOptimizerCBMeasurement|apd_optimizer start_stop False
+2021-12-07T09:37:24|INFO|APDOptimizerCBMeasurement|measurement apd_optimizer stopping run_thread_run
+2021-12-07T09:37:24|INFO|APDOptimizerCBMeasurement|measurement apd_optimizer interrupt called
+2021-12-07T09:40:19|INFO|APDOptimizerCBMeasurement|apd_optimizer start_stop True
+2021-12-07T09:40:19|INFO|APDOptimizerCBMeasurement|measurement apd_optimizer start called from thread: 3344
+2021-12-07T09:40:22|INFO|APDOptimizerCBMeasurement|apd_optimizer start_stop False
+2021-12-07T09:40:22|INFO|APDOptimizerCBMeasurement|measurement apd_optimizer stopping run_thread_run
+2021-12-07T09:40:22|INFO|APDOptimizerCBMeasurement|measurement apd_optimizer interrupt called
+2021-12-07T09:55:33|DEBUG|ScopeFoundryHW.thorlabs_powermeter.thorlabs_pm100d|get_auto_range '1\n'
+2021-12-07T09:55:33|DEBUG|ScopeFoundryHW.thorlabs_powermeter.thorlabs_pm100d|get_auto_range '1\n'
+2021-12-07T09:57:05|INFO|PowerScanMeasure|power_scan start_stop True
+2021-12-07T09:57:05|INFO|PowerScanMeasure|measurement power_scan start called from thread: 3344
+2021-12-07T09:57:15|INFO|PowerScanMeasure|data saved C:\Users\RAMAN\workspace\NearField\NearFieldMicroscope\data\211207_095715_power_scan.h5
+2021-12-07T09:57:18|INFO|PowerScanMeasure|power_scan start_stop False
+2021-12-07T09:57:18|INFO|PowerScanMeasure|measurement power_scan stopping run_post_run
+2021-12-07T09:57:18|INFO|PowerScanMeasure|measurement power_scan interrupt called
+2021-12-07T10:00:00|INFO|PowerScanMeasure|power_scan start_stop True
+2021-12-07T10:00:00|INFO|PowerScanMeasure|measurement power_scan start called from thread: 3344
+2021-12-07T10:00:11|INFO|PowerScanMeasure|data saved C:\Users\RAMAN\workspace\NearField\NearFieldMicroscope\data\211207_100011_power_scan.h5
+2021-12-07T10:00:13|INFO|PowerScanMeasure|power_scan start_stop False
+2021-12-07T10:00:13|INFO|PowerScanMeasure|measurement power_scan stopping run_post_run
+2021-12-07T10:00:13|INFO|PowerScanMeasure|measurement power_scan interrupt called
+2021-12-07T14:56:34|INFO|PowerMeterOptimizerMeasure|powermeter_optimizer start_stop True
+2021-12-07T14:56:35|INFO|PowerMeterOptimizerMeasure|measurement powermeter_optimizer start called from thread: 3344
+2021-12-07T14:59:27|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\thorlabs_powermeter\thorlabs_pm100d.py", line 68, in ask
+    resp = self.pm.query(cmd)
+  File "C:\ProgramData\Anaconda3\lib\site-packages\pyvisa\resources\messagebased.py", line 644, in query
+    return self.read()
+  File "C:\ProgramData\Anaconda3\lib\site-packages\pyvisa\resources\messagebased.py", line 486, in read
+    message = self._read_raw().decode(enco)
+  File "C:\ProgramData\Anaconda3\lib\site-packages\pyvisa\resources\messagebased.py", line 442, in _read_raw
+    chunk, status = self.visalib.read(self.session, size)
+  File "C:\ProgramData\Anaconda3\lib\site-packages\pyvisa\ctwrapper\functions.py", line 2337, in read
+    ret = library.viRead(session, buffer, count, byref(return_count))
+  File "C:\ProgramData\Anaconda3\lib\site-packages\pyvisa\ctwrapper\highlevel.py", line 222, in _return_handler
+    return self.handle_return_value(session, ret_value)  # type: ignore
+  File "C:\ProgramData\Anaconda3\lib\site-packages\pyvisa\highlevel.py", line 251, in handle_return_value
+    raise errors.VisaIOError(rv)
+pyvisa.errors.VisaIOError: VI_ERROR_TMO (-1073807339): Timeout expired before operation completed.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\measurement.py", line 25, in run
+    self.measurement._thread_run()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\measurement.py", line 230, in _thread_run
+    self.run()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\thorlabs_powermeter\powermeter_optimizer.py", line 89, in run
+    pow_reading = self.powermeter.settings.power.read_from_hardware()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 195, in read_from_hardware
+    val = self.hardware_read_func()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\thorlabs_powermeter\thorlabs_pm100d.py", line 141, in measure_power
+    self.power = float(self.ask("MEAS:POW?"))
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\thorlabs_powermeter\thorlabs_pm100d.py", line 70, in ask
+    resp = self.pm.ask(cmd) # Deprecated pyvisa method --> replaced by query()
+AttributeError: 'USBInstrument' object has no attribute 'ask'
+
+2021-12-07T14:59:27|INFO|PowerMeterOptimizerMeasure|powermeter_optimizer start_stop False
+2021-12-07T14:59:27|INFO|PowerMeterOptimizerMeasure|measurement powermeter_optimizer stopping run_post_run
+2021-12-07T14:59:27|INFO|PowerMeterOptimizerMeasure|measurement powermeter_optimizer interrupt called
+2021-12-07T14:59:48|INFO|PowerMeterOptimizerMeasure|powermeter_optimizer start_stop True
+2021-12-07T14:59:48|INFO|PowerMeterOptimizerMeasure|measurement powermeter_optimizer start called from thread: 3344
+2021-12-07T14:59:48|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\thorlabs_powermeter\thorlabs_pm100d.py", line 68, in ask
+    resp = self.pm.query(cmd)
+  File "C:\ProgramData\Anaconda3\lib\site-packages\pyvisa\resources\messagebased.py", line 644, in query
+    return self.read()
+  File "C:\ProgramData\Anaconda3\lib\site-packages\pyvisa\resources\messagebased.py", line 486, in read
+    message = self._read_raw().decode(enco)
+  File "C:\ProgramData\Anaconda3\lib\site-packages\pyvisa\resources\messagebased.py", line 442, in _read_raw
+    chunk, status = self.visalib.read(self.session, size)
+  File "C:\ProgramData\Anaconda3\lib\site-packages\pyvisa\ctwrapper\functions.py", line 2337, in read
+    ret = library.viRead(session, buffer, count, byref(return_count))
+  File "C:\ProgramData\Anaconda3\lib\site-packages\pyvisa\ctwrapper\highlevel.py", line 222, in _return_handler
+    return self.handle_return_value(session, ret_value)  # type: ignore
+  File "C:\ProgramData\Anaconda3\lib\site-packages\pyvisa\highlevel.py", line 251, in handle_return_value
+    raise errors.VisaIOError(rv)
+pyvisa.errors.VisaIOError: VI_ERROR_INP_PROT_VIOL (-1073807305): Device reported an input protocol error during transfer.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\measurement.py", line 25, in run
+    self.measurement._thread_run()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\measurement.py", line 230, in _thread_run
+    self.run()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\thorlabs_powermeter\powermeter_optimizer.py", line 89, in run
+    pow_reading = self.powermeter.settings.power.read_from_hardware()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 195, in read_from_hardware
+    val = self.hardware_read_func()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\thorlabs_powermeter\thorlabs_pm100d.py", line 141, in measure_power
+    self.power = float(self.ask("MEAS:POW?"))
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\thorlabs_powermeter\thorlabs_pm100d.py", line 70, in ask
+    resp = self.pm.ask(cmd) # Deprecated pyvisa method --> replaced by query()
+AttributeError: 'USBInstrument' object has no attribute 'ask'
+
+2021-12-07T14:59:48|INFO|PowerMeterOptimizerMeasure|powermeter_optimizer start_stop False
+2021-12-07T14:59:48|INFO|PowerMeterOptimizerMeasure|measurement powermeter_optimizer stopping run_post_run
+2021-12-07T14:59:48|INFO|PowerMeterOptimizerMeasure|measurement powermeter_optimizer interrupt called
+2021-12-07T14:59:52|INFO|PowerMeterOptimizerMeasure|powermeter_optimizer start_stop True
+2021-12-07T14:59:52|INFO|PowerMeterOptimizerMeasure|measurement powermeter_optimizer start called from thread: 3344
+2021-12-07T15:00:01|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\thorlabs_powermeter\thorlabs_pm100d.py", line 68, in ask
+    resp = self.pm.query(cmd)
+  File "C:\ProgramData\Anaconda3\lib\site-packages\pyvisa\resources\messagebased.py", line 644, in query
+    return self.read()
+  File "C:\ProgramData\Anaconda3\lib\site-packages\pyvisa\resources\messagebased.py", line 486, in read
+    message = self._read_raw().decode(enco)
+  File "C:\ProgramData\Anaconda3\lib\site-packages\pyvisa\resources\messagebased.py", line 442, in _read_raw
+    chunk, status = self.visalib.read(self.session, size)
+  File "C:\ProgramData\Anaconda3\lib\site-packages\pyvisa\ctwrapper\functions.py", line 2337, in read
+    ret = library.viRead(session, buffer, count, byref(return_count))
+  File "C:\ProgramData\Anaconda3\lib\site-packages\pyvisa\ctwrapper\highlevel.py", line 222, in _return_handler
+    return self.handle_return_value(session, ret_value)  # type: ignore
+  File "C:\ProgramData\Anaconda3\lib\site-packages\pyvisa\highlevel.py", line 251, in handle_return_value
+    raise errors.VisaIOError(rv)
+pyvisa.errors.VisaIOError: VI_ERROR_TMO (-1073807339): Timeout expired before operation completed.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\measurement.py", line 25, in run
+    self.measurement._thread_run()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\measurement.py", line 230, in _thread_run
+    self.run()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\thorlabs_powermeter\powermeter_optimizer.py", line 89, in run
+    pow_reading = self.powermeter.settings.power.read_from_hardware()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 195, in read_from_hardware
+    val = self.hardware_read_func()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\thorlabs_powermeter\thorlabs_pm100d.py", line 141, in measure_power
+    self.power = float(self.ask("MEAS:POW?"))
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\thorlabs_powermeter\thorlabs_pm100d.py", line 70, in ask
+    resp = self.pm.ask(cmd) # Deprecated pyvisa method --> replaced by query()
+AttributeError: 'USBInstrument' object has no attribute 'ask'
+
+2021-12-07T15:00:01|INFO|PowerMeterOptimizerMeasure|powermeter_optimizer start_stop False
+2021-12-07T15:00:01|INFO|PowerMeterOptimizerMeasure|measurement powermeter_optimizer stopping run_post_run
+2021-12-07T15:00:01|INFO|PowerMeterOptimizerMeasure|measurement powermeter_optimizer interrupt called
+2021-12-07T15:05:08|INFO|PowerMeterOptimizerMeasure|powermeter_optimizer start_stop True
+2021-12-07T15:05:08|INFO|PowerMeterOptimizerMeasure|measurement powermeter_optimizer start called from thread: 3344
+2021-12-07T15:05:08|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\thorlabs_powermeter\thorlabs_pm100d.py", line 68, in ask
+    resp = self.pm.query(cmd)
+  File "C:\ProgramData\Anaconda3\lib\site-packages\pyvisa\resources\messagebased.py", line 644, in query
+    return self.read()
+  File "C:\ProgramData\Anaconda3\lib\site-packages\pyvisa\resources\messagebased.py", line 486, in read
+    message = self._read_raw().decode(enco)
+  File "C:\ProgramData\Anaconda3\lib\site-packages\pyvisa\resources\messagebased.py", line 442, in _read_raw
+    chunk, status = self.visalib.read(self.session, size)
+  File "C:\ProgramData\Anaconda3\lib\site-packages\pyvisa\ctwrapper\functions.py", line 2337, in read
+    ret = library.viRead(session, buffer, count, byref(return_count))
+  File "C:\ProgramData\Anaconda3\lib\site-packages\pyvisa\ctwrapper\highlevel.py", line 222, in _return_handler
+    return self.handle_return_value(session, ret_value)  # type: ignore
+  File "C:\ProgramData\Anaconda3\lib\site-packages\pyvisa\highlevel.py", line 251, in handle_return_value
+    raise errors.VisaIOError(rv)
+pyvisa.errors.VisaIOError: VI_ERROR_INP_PROT_VIOL (-1073807305): Device reported an input protocol error during transfer.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\measurement.py", line 25, in run
+    self.measurement._thread_run()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\measurement.py", line 230, in _thread_run
+    self.run()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\thorlabs_powermeter\powermeter_optimizer.py", line 89, in run
+    pow_reading = self.powermeter.settings.power.read_from_hardware()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 195, in read_from_hardware
+    val = self.hardware_read_func()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\thorlabs_powermeter\thorlabs_pm100d.py", line 141, in measure_power
+    self.power = float(self.ask("MEAS:POW?"))
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\thorlabs_powermeter\thorlabs_pm100d.py", line 70, in ask
+    resp = self.pm.ask(cmd) # Deprecated pyvisa method --> replaced by query()
+AttributeError: 'USBInstrument' object has no attribute 'ask'
+
+2021-12-07T15:05:08|INFO|PowerMeterOptimizerMeasure|powermeter_optimizer start_stop False
+2021-12-07T15:05:08|INFO|PowerMeterOptimizerMeasure|measurement powermeter_optimizer stopping run_post_run
+2021-12-07T15:05:08|INFO|PowerMeterOptimizerMeasure|measurement powermeter_optimizer interrupt called
+2021-12-07T15:05:09|INFO|PowerMeterOptimizerMeasure|powermeter_optimizer start_stop True
+2021-12-07T15:05:09|INFO|PowerMeterOptimizerMeasure|measurement powermeter_optimizer start called from thread: 3344
+2021-12-07T15:05:09|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\thorlabs_powermeter\thorlabs_pm100d.py", line 68, in ask
+    resp = self.pm.query(cmd)
+  File "C:\ProgramData\Anaconda3\lib\site-packages\pyvisa\resources\messagebased.py", line 644, in query
+    return self.read()
+  File "C:\ProgramData\Anaconda3\lib\site-packages\pyvisa\resources\messagebased.py", line 486, in read
+    message = self._read_raw().decode(enco)
+  File "C:\ProgramData\Anaconda3\lib\site-packages\pyvisa\resources\messagebased.py", line 442, in _read_raw
+    chunk, status = self.visalib.read(self.session, size)
+  File "C:\ProgramData\Anaconda3\lib\site-packages\pyvisa\ctwrapper\functions.py", line 2337, in read
+    ret = library.viRead(session, buffer, count, byref(return_count))
+  File "C:\ProgramData\Anaconda3\lib\site-packages\pyvisa\ctwrapper\highlevel.py", line 222, in _return_handler
+    return self.handle_return_value(session, ret_value)  # type: ignore
+  File "C:\ProgramData\Anaconda3\lib\site-packages\pyvisa\highlevel.py", line 251, in handle_return_value
+    raise errors.VisaIOError(rv)
+pyvisa.errors.VisaIOError: VI_ERROR_INP_PROT_VIOL (-1073807305): Device reported an input protocol error during transfer.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\measurement.py", line 25, in run
+    self.measurement._thread_run()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\measurement.py", line 230, in _thread_run
+    self.run()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\thorlabs_powermeter\powermeter_optimizer.py", line 89, in run
+    pow_reading = self.powermeter.settings.power.read_from_hardware()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 195, in read_from_hardware
+    val = self.hardware_read_func()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\thorlabs_powermeter\thorlabs_pm100d.py", line 141, in measure_power
+    self.power = float(self.ask("MEAS:POW?"))
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\thorlabs_powermeter\thorlabs_pm100d.py", line 70, in ask
+    resp = self.pm.ask(cmd) # Deprecated pyvisa method --> replaced by query()
+AttributeError: 'USBInstrument' object has no attribute 'ask'
+
+2021-12-07T15:05:09|INFO|PowerMeterOptimizerMeasure|powermeter_optimizer start_stop False
+2021-12-07T15:05:09|INFO|PowerMeterOptimizerMeasure|measurement powermeter_optimizer stopping run_post_run
+2021-12-07T15:05:10|INFO|PowerMeterOptimizerMeasure|measurement powermeter_optimizer interrupt called
+2021-12-07T15:06:13|INFO|PowerMeterOptimizerMeasure|powermeter_optimizer start_stop True
+2021-12-07T15:06:13|INFO|PowerMeterOptimizerMeasure|measurement powermeter_optimizer start called from thread: 3344
+2021-12-07T19:16:21|DEBUG|root|close
+2021-12-07T19:16:25|DEBUG|root|closing
+2021-12-07T19:16:25|INFO|NearFieldMicroscope|on_close
+2021-12-07T19:16:25|INFO|NearFieldMicroscope|disconnecting hydraharp
+2021-12-07T19:16:25|INFO|NearFieldMicroscope|disconnecting pololu_maestro
+2021-12-07T19:16:25|INFO|NearFieldMicroscope|disconnecting power_wheel
+2021-12-07T19:16:25|INFO|NearFieldMicroscope|disconnecting thorlabs_powermeter
+2021-12-07T19:16:25|INFO|NearFieldMicroscope|disconnecting apd_counter
+2021-12-07T19:16:25|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware

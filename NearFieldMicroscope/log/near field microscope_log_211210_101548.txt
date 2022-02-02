@@ -1,0 +1,64 @@
+2021-12-10T10:15:49|INFO|HydraHarpOptimizerMeasure|hydraharp_channel_optimizer start_stop False
+2021-12-10T10:15:49|INFO|HydraHarpOptimizerMeasure|measurement hydraharp_channel_optimizer stopping stop_first
+2021-12-10T10:15:49|INFO|HydraHarpHistogramMeasure|hydraharp_histogram start_stop False
+2021-12-10T10:15:49|INFO|HydraHarpHistogramMeasure|measurement hydraharp_histogram stopping stop_first
+2021-12-10T10:15:49|INFO|PowerScanMeasure|power_scan start_stop False
+2021-12-10T10:15:49|INFO|PowerScanMeasure|measurement power_scan stopping stop_first
+2021-12-10T10:15:49|INFO|PowerMeterOptimizerMeasure|powermeter_optimizer start_stop False
+2021-12-10T10:15:49|INFO|PowerMeterOptimizerMeasure|measurement powermeter_optimizer stopping stop_first
+2021-12-10T10:15:49|INFO|Sequencer|sequencer start_stop False
+2021-12-10T10:15:49|INFO|Sequencer|measurement sequencer stopping stop_first
+2021-12-10T10:15:49|INFO|APDOptimizerCBMeasurement|apd_optimizer start_stop False
+2021-12-10T10:15:49|INFO|APDOptimizerCBMeasurement|measurement apd_optimizer stopping stop_first
+2021-12-10T10:15:49|INFO|NearFieldMicroscope|setting up figures for hydraharp_channel_optimizer measurement hydraharp_channel_optimizer
+2021-12-10T10:15:49|INFO|HydraHarpOptimizerMeasure|hydraharp_channel_optimizer start_stop False
+2021-12-10T10:15:49|INFO|HydraHarpOptimizerMeasure|measurement hydraharp_channel_optimizer stopping stop_first
+2021-12-10T10:15:49|INFO|NearFieldMicroscope|setting up figures for hydraharp_histogram measurement hydraharp_histogram
+2021-12-10T10:15:49|INFO|NearFieldMicroscope|setting up figures for power_scan measurement power_scan
+2021-12-10T10:15:49|INFO|PowerScanMeasure|power_scan start_stop False
+2021-12-10T10:15:49|INFO|PowerScanMeasure|measurement power_scan stopping stop_first
+2021-12-10T10:15:49|INFO|NearFieldMicroscope|setting up figures for powermeter_optimizer measurement powermeter_optimizer
+2021-12-10T10:15:49|INFO|PowerMeterOptimizerMeasure|powermeter_optimizer start_stop False
+2021-12-10T10:15:49|INFO|PowerMeterOptimizerMeasure|measurement powermeter_optimizer stopping stop_first
+2021-12-10T10:15:50|INFO|NearFieldMicroscope|setting up figures for sequencer measurement sequencer
+2021-12-10T10:15:50|INFO|Sequencer|sequencer start_stop False
+2021-12-10T10:15:50|INFO|Sequencer|measurement sequencer stopping stop_first
+2021-12-10T10:15:50|WARNING|HydraHarpOptimizerMeasure|Measurement.gui is deprecated, use Measurement.app <class 'DeprecationWarning'>
+2021-12-10T10:15:50|WARNING|HydraHarpHistogramMeasure|Measurement.gui is deprecated, use Measurement.app <class 'DeprecationWarning'>
+2021-12-10T10:15:50|WARNING|PowerScanMeasure|Measurement.gui is deprecated, use Measurement.app <class 'DeprecationWarning'>
+2021-12-10T10:15:50|WARNING|PowerMeterOptimizerMeasure|Measurement.gui is deprecated, use Measurement.app <class 'DeprecationWarning'>
+2021-12-10T10:15:50|WARNING|Sequencer|Measurement.gui is deprecated, use Measurement.app <class 'DeprecationWarning'>
+2021-12-10T10:15:50|WARNING|APDOptimizerCBMeasurement|Measurement.gui is deprecated, use Measurement.app <class 'DeprecationWarning'>
+2021-12-10T10:15:50|INFO|NearFieldMicroscope|setting up figures for apd_optimizer measurement apd_optimizer
+2021-12-10T10:15:50|INFO|APDOptimizerCBMeasurement|apd_optimizer start_stop False
+2021-12-10T10:15:50|INFO|APDOptimizerCBMeasurement|measurement apd_optimizer stopping stop_first
+2021-12-10T10:15:50|INFO|NearFieldMicroscope|ini settings loading from near_field_microscope_defaults.ini
+2021-12-10T10:15:50|DEBUG|FileLQ|save_dir: update_value 'C:\\Users\\RAMAN\\workspace\\NearField\\NearFieldMicroscope\\data' --> 'E:\\Natalie'    sender=None
+2021-12-10T10:15:50|DEBUG|FileLQ|save_dir: different values C:\Users\RAMAN\workspace\NearField\NearFieldMicroscope\data E:\Natalie
+2021-12-10T10:15:50|INFO|NearFieldMicroscope|hardware/hydraharp
+2021-12-10T10:15:50|INFO|NearFieldMicroscope|hardware/pololu_maestro
+2021-12-10T10:15:53|INFO|NearFieldMicroscope|hardware/power_wheel
+2021-12-10T10:15:53|INFO|NearFieldMicroscope|hardware/thorlabs_powermeter
+2021-12-10T10:15:53|INFO|NearFieldMicroscope|hardware/motorized_polarizer
+2021-12-10T10:15:53|INFO|NearFieldMicroscope|hardware/apd_counter
+2021-12-10T10:15:53|INFO|NearFieldMicroscope|ini settings loaded from: near_field_microscope_defaults.ini
+2021-12-10T10:16:41|DEBUG|parso.python.diff|diff parser start
+2021-12-10T10:16:41|DEBUG|parso.python.diff|line_lengths old: 1; new: 1
+2021-12-10T10:16:41|DEBUG|parso.python.diff|-> code[replace] old[1:1] new[1:1]
+2021-12-10T10:16:41|DEBUG|parso.python.diff|parse_part from 1 to 1 (to 0 in part parser)
+2021-12-10T10:16:41|DEBUG|parso.python.diff|diff parser end
+2021-12-10T10:16:51|DEBUG|parso.python.diff|diff parser start
+2021-12-10T10:16:51|DEBUG|parso.python.diff|line_lengths old: 1; new: 1
+2021-12-10T10:16:51|DEBUG|parso.python.diff|-> code[replace] old[1:1] new[1:1]
+2021-12-10T10:16:51|DEBUG|parso.python.diff|parse_part from 1 to 1 (to 0 in part parser)
+2021-12-10T10:16:51|DEBUG|parso.python.diff|diff parser end
+2021-12-10T10:16:52|DEBUG|parso.python.diff|diff parser start
+2021-12-10T10:16:52|DEBUG|parso.python.diff|line_lengths old: 1; new: 1
+2021-12-10T10:16:52|DEBUG|parso.python.diff|-> code[replace] old[1:1] new[1:1]
+2021-12-10T10:16:53|DEBUG|parso.python.diff|parse_part from 1 to 1 (to 0 in part parser)
+2021-12-10T10:16:53|DEBUG|parso.python.diff|diff parser end
+2021-12-10T10:16:54|DEBUG|parso.python.diff|diff parser start
+2021-12-10T10:16:54|DEBUG|parso.python.diff|line_lengths old: 1; new: 1
+2021-12-10T10:16:54|DEBUG|parso.python.diff|-> code[replace] old[1:1] new[1:1]
+2021-12-10T10:16:54|DEBUG|parso.python.diff|parse_part from 1 to 1 (to 0 in part parser)
+2021-12-10T10:16:54|DEBUG|parso.python.diff|diff parser end

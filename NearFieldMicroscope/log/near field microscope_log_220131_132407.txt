@@ -1,0 +1,178 @@
+2022-01-31T13:24:09|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_single_hw.py", line 67, in set_mode
+    self.servos.settings[S['servo_name']+'_torque'] = False
+AttributeError: 'DynamixelServoHW' object has no attribute 'servos'
+
+2022-01-31T13:24:09|INFO|HydraHarpOptimizerMeasure|hydraharp_channel_optimizer start_stop False
+2022-01-31T13:24:09|INFO|HydraHarpOptimizerMeasure|measurement hydraharp_channel_optimizer stopping stop_first
+2022-01-31T13:24:09|INFO|HydraHarpHistogramMeasure|hydraharp_histogram start_stop False
+2022-01-31T13:24:09|INFO|HydraHarpHistogramMeasure|measurement hydraharp_histogram stopping stop_first
+2022-01-31T13:24:09|INFO|PowerScanMeasure|power_scan start_stop False
+2022-01-31T13:24:09|INFO|PowerScanMeasure|measurement power_scan stopping stop_first
+2022-01-31T13:24:09|INFO|PowerMeterOptimizerMeasure|powermeter_optimizer start_stop False
+2022-01-31T13:24:09|INFO|PowerMeterOptimizerMeasure|measurement powermeter_optimizer stopping stop_first
+2022-01-31T13:24:09|INFO|Sequencer|sequencer start_stop False
+2022-01-31T13:24:09|INFO|Sequencer|measurement sequencer stopping stop_first
+2022-01-31T13:24:09|INFO|APDOptimizerCBMeasurement|apd_optimizer start_stop False
+2022-01-31T13:24:09|INFO|APDOptimizerCBMeasurement|measurement apd_optimizer stopping stop_first
+2022-01-31T13:24:09|INFO|NearFieldMicroscope|setting up figures for hydraharp_channel_optimizer measurement hydraharp_channel_optimizer
+2022-01-31T13:24:09|INFO|HydraHarpOptimizerMeasure|hydraharp_channel_optimizer start_stop False
+2022-01-31T13:24:09|INFO|HydraHarpOptimizerMeasure|measurement hydraharp_channel_optimizer stopping stop_first
+2022-01-31T13:24:09|INFO|NearFieldMicroscope|setting up figures for hydraharp_histogram measurement hydraharp_histogram
+2022-01-31T13:24:09|INFO|NearFieldMicroscope|setting up figures for power_scan measurement power_scan
+2022-01-31T13:24:09|INFO|PowerScanMeasure|power_scan start_stop False
+2022-01-31T13:24:09|INFO|PowerScanMeasure|measurement power_scan stopping stop_first
+2022-01-31T13:24:09|INFO|NearFieldMicroscope|setting up figures for powermeter_optimizer measurement powermeter_optimizer
+2022-01-31T13:24:09|INFO|PowerMeterOptimizerMeasure|powermeter_optimizer start_stop False
+2022-01-31T13:24:09|INFO|PowerMeterOptimizerMeasure|measurement powermeter_optimizer stopping stop_first
+2022-01-31T13:24:09|INFO|NearFieldMicroscope|setting up figures for sequencer measurement sequencer
+2022-01-31T13:24:09|INFO|Sequencer|sequencer start_stop False
+2022-01-31T13:24:09|INFO|Sequencer|measurement sequencer stopping stop_first
+2022-01-31T13:24:09|WARNING|HydraHarpOptimizerMeasure|Measurement.gui is deprecated, use Measurement.app <class 'DeprecationWarning'>
+2022-01-31T13:24:09|WARNING|HydraHarpHistogramMeasure|Measurement.gui is deprecated, use Measurement.app <class 'DeprecationWarning'>
+2022-01-31T13:24:09|WARNING|PowerScanMeasure|Measurement.gui is deprecated, use Measurement.app <class 'DeprecationWarning'>
+2022-01-31T13:24:09|WARNING|PowerMeterOptimizerMeasure|Measurement.gui is deprecated, use Measurement.app <class 'DeprecationWarning'>
+2022-01-31T13:24:09|WARNING|Sequencer|Measurement.gui is deprecated, use Measurement.app <class 'DeprecationWarning'>
+2022-01-31T13:24:09|WARNING|APDOptimizerCBMeasurement|Measurement.gui is deprecated, use Measurement.app <class 'DeprecationWarning'>
+2022-01-31T13:24:09|INFO|NearFieldMicroscope|setting up figures for apd_optimizer measurement apd_optimizer
+2022-01-31T13:24:09|INFO|APDOptimizerCBMeasurement|apd_optimizer start_stop False
+2022-01-31T13:24:09|INFO|APDOptimizerCBMeasurement|measurement apd_optimizer stopping stop_first
+2022-01-31T13:24:09|INFO|NearFieldMicroscope|ini settings loading from near_field_microscope_defaults.ini
+2022-01-31T13:24:09|DEBUG|FileLQ|save_dir: update_value 'C:\\Users\\RAMAN\\workspace\\NearField\\NearFieldMicroscope\\data' --> 'E:\\Natalie'    sender=None
+2022-01-31T13:24:09|DEBUG|FileLQ|save_dir: different values C:\Users\RAMAN\workspace\NearField\NearFieldMicroscope\data E:\Natalie
+2022-01-31T13:24:09|INFO|NearFieldMicroscope|hardware/hydraharp
+2022-01-31T13:24:09|INFO|NearFieldMicroscope|hardware/thorlabs_powermeter
+2022-01-31T13:24:09|INFO|NearFieldMicroscope|hardware/motorized_polarizer
+2022-01-31T13:24:09|INFO|NearFieldMicroscope|hardware/apd_counter
+2022-01-31T13:24:09|INFO|NearFieldMicroscope|hardware/dynamixel_servos
+2022-01-31T13:24:10|INFO|NearFieldMicroscope|hardware/power_wheel
+2022-01-31T13:24:10|INFO|NearFieldMicroscope|-->Failed to load config for hardware/power_wheel/pos_scale, new val 280: KeyError('pos_scale')
+2022-01-31T13:24:10|INFO|NearFieldMicroscope|ini settings loaded from: near_field_microscope_defaults.ini
+2022-01-31T13:24:23|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_single_hw.py", line 48, in connect
+    for servo_pos,steps in zip([servos.settings.get_lq(S['servo_name']+'_position'),
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 1431, in get_lq
+    return self._logged_quantities[key]
+KeyError: 'test2_position'
+
+2022-01-31T13:24:44|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_single_hw.py", line 48, in connect
+    for servo_pos,steps in zip([servos.settings.get_lq(S['servo_name']+'_position'),
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 1431, in get_lq
+    return self._logged_quantities[key]
+KeyError: 'power_scan_position'
+
+2022-01-31T13:27:47|INFO|NearFieldMicroscope|ini settings loading from C:/Users/RAMAN/workspace/NearField/NearFieldMicroscope/near_field_microscope_defaults.ini
+2022-01-31T13:27:47|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\base_app.py", line 847, in settings_load_dialog
+    self.settings_load_ini(fname)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\base_app.py", line 767, in settings_load_ini
+    config.read(fname)
+  File "C:\ProgramData\Anaconda3\lib\configparser.py", line 696, in read
+    self._read(fp, filename)
+  File "C:\ProgramData\Anaconda3\lib\configparser.py", line 1065, in _read
+    lineno)
+configparser.DuplicateSectionError: While reading from 'C:/Users/RAMAN/workspace/NearField/NearFieldMicroscope/near_field_microscope_defaults.ini' [line 16]: section 'hardware/power_wheel' already exists
+
+2022-01-31T13:27:57|INFO|NearFieldMicroscope|ini settings loading from C:/Users/RAMAN/workspace/NearField/NearFieldMicroscope/near_field_microscope_defaults.ini
+2022-01-31T13:27:57|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\base_app.py", line 847, in settings_load_dialog
+    self.settings_load_ini(fname)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\base_app.py", line 767, in settings_load_ini
+    config.read(fname)
+  File "C:\ProgramData\Anaconda3\lib\configparser.py", line 696, in read
+    self._read(fp, filename)
+  File "C:\ProgramData\Anaconda3\lib\configparser.py", line 1065, in _read
+    lineno)
+configparser.DuplicateSectionError: While reading from 'C:/Users/RAMAN/workspace/NearField/NearFieldMicroscope/near_field_microscope_defaults.ini' [line 16]: section 'hardware/power_wheel' already exists
+
+2022-01-31T13:28:38|INFO|NearFieldMicroscope|ini settings loading from C:/Users/RAMAN/workspace/NearField/NearFieldMicroscope/near_field_microscope_defaults.ini
+2022-01-31T13:28:38|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\base_app.py", line 847, in settings_load_dialog
+    self.settings_load_ini(fname)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\base_app.py", line 767, in settings_load_ini
+    config.read(fname)
+  File "C:\ProgramData\Anaconda3\lib\configparser.py", line 696, in read
+    self._read(fp, filename)
+  File "C:\ProgramData\Anaconda3\lib\configparser.py", line 1065, in _read
+    lineno)
+configparser.DuplicateSectionError: While reading from 'C:/Users/RAMAN/workspace/NearField/NearFieldMicroscope/near_field_microscope_defaults.ini' [line 17]: section 'hardware/power_wheel' already exists
+
+2022-01-31T13:28:57|INFO|NearFieldMicroscope|ini settings loading from C:/Users/RAMAN/workspace/NearField/NearFieldMicroscope/near_field_microscope_defaults.ini
+2022-01-31T13:28:57|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\base_app.py", line 847, in settings_load_dialog
+    self.settings_load_ini(fname)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\base_app.py", line 767, in settings_load_ini
+    config.read(fname)
+  File "C:\ProgramData\Anaconda3\lib\configparser.py", line 696, in read
+    self._read(fp, filename)
+  File "C:\ProgramData\Anaconda3\lib\configparser.py", line 1065, in _read
+    lineno)
+configparser.DuplicateSectionError: While reading from 'C:/Users/RAMAN/workspace/NearField/NearFieldMicroscope/near_field_microscope_defaults.ini' [line 17]: section 'hardware/power_wheel' already exists
+
+2022-01-31T13:29:22|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_single_hw.py", line 48, in connect
+    for servo_pos,steps in zip([servos.settings.get_lq(S['servo_name']+'_position'),
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 1431, in get_lq
+    return self._logged_quantities[key]
+KeyError: '_position'
+
+2022-01-31T13:29:22|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_single_hw.py", line 48, in connect
+    for servo_pos,steps in zip([servos.settings.get_lq(S['servo_name']+'_position'),
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 1431, in get_lq
+    return self._logged_quantities[key]
+KeyError: '_position'
+
+2022-01-31T13:29:41|INFO|NearFieldMicroscope|ini settings loading from C:/Users/RAMAN/workspace/NearField/NearFieldMicroscope/near_field_microscope_defaults.ini
+2022-01-31T13:29:41|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\base_app.py", line 847, in settings_load_dialog
+    self.settings_load_ini(fname)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\base_app.py", line 767, in settings_load_ini
+    config.read(fname)
+  File "C:\ProgramData\Anaconda3\lib\configparser.py", line 696, in read
+    self._read(fp, filename)
+  File "C:\ProgramData\Anaconda3\lib\configparser.py", line 1065, in _read
+    lineno)
+configparser.DuplicateSectionError: While reading from 'C:/Users/RAMAN/workspace/NearField/NearFieldMicroscope/near_field_microscope_defaults.ini' [line 17]: section 'hardware/power_wheel' already exists
+
+2022-01-31T13:29:48|INFO|NearFieldMicroscope|ini settings saved to E:\Natalie\1643653788_settings.ini <class 'str'>
+2022-01-31T13:30:01|INFO|NearFieldMicroscope|ini settings loading from C:/Users/RAMAN/workspace/NearField/NearFieldMicroscope/near_field_microscope_defaults.ini
+2022-01-31T13:30:01|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\base_app.py", line 847, in settings_load_dialog
+    self.settings_load_ini(fname)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\base_app.py", line 767, in settings_load_ini
+    config.read(fname)
+  File "C:\ProgramData\Anaconda3\lib\configparser.py", line 696, in read
+    self._read(fp, filename)
+  File "C:\ProgramData\Anaconda3\lib\configparser.py", line 1065, in _read
+    lineno)
+configparser.DuplicateSectionError: While reading from 'C:/Users/RAMAN/workspace/NearField/NearFieldMicroscope/near_field_microscope_defaults.ini' [line 17]: section 'hardware/power_wheel' already exists
+
+2022-01-31T13:30:34|INFO|NearFieldMicroscope|ini settings loading from C:/Users/RAMAN/workspace/NearField/NearFieldMicroscope/near_field_microscope_defaults.ini
+2022-01-31T13:30:34|DEBUG|FileLQ|save_dir: update_value 'E:\\Natalie' --> 'E:\\Natalie'    sender=<PyQt5.QtWidgets.QAction object at 0x0000023530C14828>
+2022-01-31T13:30:34|DEBUG|FileLQ|save_dir: same_value so returning E:\Natalie E:\Natalie
+2022-01-31T13:30:34|INFO|NearFieldMicroscope|hardware/hydraharp
+2022-01-31T13:30:34|INFO|NearFieldMicroscope|hardware/thorlabs_powermeter
+2022-01-31T13:30:34|INFO|NearFieldMicroscope|hardware/motorized_polarizer
+2022-01-31T13:30:34|INFO|NearFieldMicroscope|hardware/apd_counter
+2022-01-31T13:30:34|INFO|NearFieldMicroscope|hardware/dynamixel_servos
+2022-01-31T13:30:34|INFO|NearFieldMicroscope|hardware/power_wheel
+2022-01-31T13:30:34|INFO|NearFieldMicroscope|-->Failed to load config for hardware/power_wheel/pos_scale, new val 280: KeyError('pos_scale')
+2022-01-31T13:30:35|INFO|NearFieldMicroscope|ini settings loaded from: C:/Users/RAMAN/workspace/NearField/NearFieldMicroscope/near_field_microscope_defaults.ini

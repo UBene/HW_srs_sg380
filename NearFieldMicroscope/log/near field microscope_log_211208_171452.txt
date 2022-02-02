@@ -1,0 +1,30 @@
+2021-12-08T17:14:53|INFO|HydraHarpOptimizerMeasure|hydraharp_channel_optimizer start_stop False
+2021-12-08T17:14:53|INFO|HydraHarpOptimizerMeasure|measurement hydraharp_channel_optimizer stopping stop_first
+2021-12-08T17:14:53|INFO|HydraHarpHistogramMeasure|hydraharp_histogram start_stop False
+2021-12-08T17:14:53|INFO|HydraHarpHistogramMeasure|measurement hydraharp_histogram stopping stop_first
+2021-12-08T17:14:53|INFO|PowerScanMeasure|power_scan start_stop False
+2021-12-08T17:14:53|INFO|PowerScanMeasure|measurement power_scan stopping stop_first
+2021-12-08T17:14:53|INFO|PowerMeterOptimizerMeasure|powermeter_optimizer start_stop False
+2021-12-08T17:14:53|INFO|PowerMeterOptimizerMeasure|measurement powermeter_optimizer stopping stop_first
+2021-12-08T17:14:53|INFO|APDOptimizerCBMeasurement|apd_optimizer start_stop False
+2021-12-08T17:14:53|INFO|APDOptimizerCBMeasurement|measurement apd_optimizer stopping stop_first
+2021-12-08T17:14:53|INFO|NearFieldMicroscope|setting up figures for hydraharp_channel_optimizer measurement hydraharp_channel_optimizer
+2021-12-08T17:14:53|INFO|HydraHarpOptimizerMeasure|hydraharp_channel_optimizer start_stop False
+2021-12-08T17:14:53|INFO|HydraHarpOptimizerMeasure|measurement hydraharp_channel_optimizer stopping stop_first
+2021-12-08T17:14:54|INFO|NearFieldMicroscope|setting up figures for hydraharp_histogram measurement hydraharp_histogram
+2021-12-08T17:14:54|INFO|NearFieldMicroscope|setting up figures for power_scan measurement power_scan
+2021-12-08T17:14:54|INFO|PowerScanMeasure|power_scan start_stop False
+2021-12-08T17:14:54|INFO|PowerScanMeasure|measurement power_scan stopping stop_first
+2021-12-08T17:14:54|INFO|NearFieldMicroscope|setting up figures for powermeter_optimizer measurement powermeter_optimizer
+2021-12-08T17:14:54|INFO|PowerMeterOptimizerMeasure|powermeter_optimizer start_stop False
+2021-12-08T17:14:54|INFO|PowerMeterOptimizerMeasure|measurement powermeter_optimizer stopping stop_first
+2021-12-08T17:14:54|INFO|NearFieldMicroscope|setting up figures for apd_optimizer measurement apd_optimizer
+2021-12-08T17:14:54|INFO|APDOptimizerCBMeasurement|apd_optimizer start_stop False
+2021-12-08T17:14:54|INFO|APDOptimizerCBMeasurement|measurement apd_optimizer stopping stop_first
+2021-12-08T17:14:54|INFO|NearFieldMicroscope|ini settings loading from near_field_microscope_defaults.ini
+2021-12-08T17:14:54|INFO|NearFieldMicroscope|hardware/hydraharp
+2021-12-08T17:14:54|INFO|NearFieldMicroscope|hardware/pololu_maestro
+2021-12-08T17:14:57|INFO|NearFieldMicroscope|hardware/power_wheel
+2021-12-08T17:14:57|INFO|NearFieldMicroscope|hardware/thorlabs_powermeter
+2021-12-08T17:14:57|INFO|NearFieldMicroscope|hardware/apd_counter
+2021-12-08T17:14:57|INFO|NearFieldMicroscope|ini settings loaded from: near_field_microscope_defaults.ini

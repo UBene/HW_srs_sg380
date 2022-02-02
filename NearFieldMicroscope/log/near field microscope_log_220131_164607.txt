@@ -1,0 +1,1165 @@
+2022-01-31T16:46:08|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_single_hw.py", line 67, in set_mode
+    self.servos.settings[S['servo_name']+'_torque'] = False
+AttributeError: 'DynamixelServoHW' object has no attribute 'servos'
+
+2022-01-31T16:46:08|INFO|HydraHarpOptimizerMeasure|hydraharp_channel_optimizer start_stop False
+2022-01-31T16:46:08|INFO|HydraHarpOptimizerMeasure|measurement hydraharp_channel_optimizer stopping stop_first
+2022-01-31T16:46:08|INFO|HydraHarpHistogramMeasure|hydraharp_histogram start_stop False
+2022-01-31T16:46:08|INFO|HydraHarpHistogramMeasure|measurement hydraharp_histogram stopping stop_first
+2022-01-31T16:46:08|INFO|PowerScanMeasure|power_scan start_stop False
+2022-01-31T16:46:08|INFO|PowerScanMeasure|measurement power_scan stopping stop_first
+2022-01-31T16:46:08|INFO|PowerMeterOptimizerMeasure|powermeter_optimizer start_stop False
+2022-01-31T16:46:08|INFO|PowerMeterOptimizerMeasure|measurement powermeter_optimizer stopping stop_first
+2022-01-31T16:46:08|INFO|Sequencer|sequencer start_stop False
+2022-01-31T16:46:08|INFO|Sequencer|measurement sequencer stopping stop_first
+2022-01-31T16:46:08|INFO|APDOptimizerCBMeasurement|apd_optimizer start_stop False
+2022-01-31T16:46:08|INFO|APDOptimizerCBMeasurement|measurement apd_optimizer stopping stop_first
+2022-01-31T16:46:08|INFO|NearFieldMicroscope|setting up figures for hydraharp_channel_optimizer measurement hydraharp_channel_optimizer
+2022-01-31T16:46:08|INFO|HydraHarpOptimizerMeasure|hydraharp_channel_optimizer start_stop False
+2022-01-31T16:46:08|INFO|HydraHarpOptimizerMeasure|measurement hydraharp_channel_optimizer stopping stop_first
+2022-01-31T16:46:09|INFO|NearFieldMicroscope|setting up figures for hydraharp_histogram measurement hydraharp_histogram
+2022-01-31T16:46:09|INFO|NearFieldMicroscope|setting up figures for power_scan measurement power_scan
+2022-01-31T16:46:09|INFO|PowerScanMeasure|power_scan start_stop False
+2022-01-31T16:46:09|INFO|PowerScanMeasure|measurement power_scan stopping stop_first
+2022-01-31T16:46:09|INFO|NearFieldMicroscope|setting up figures for powermeter_optimizer measurement powermeter_optimizer
+2022-01-31T16:46:09|INFO|PowerMeterOptimizerMeasure|powermeter_optimizer start_stop False
+2022-01-31T16:46:09|INFO|PowerMeterOptimizerMeasure|measurement powermeter_optimizer stopping stop_first
+2022-01-31T16:46:09|INFO|NearFieldMicroscope|setting up figures for sequencer measurement sequencer
+2022-01-31T16:46:09|INFO|Sequencer|sequencer start_stop False
+2022-01-31T16:46:09|INFO|Sequencer|measurement sequencer stopping stop_first
+2022-01-31T16:46:09|WARNING|HydraHarpOptimizerMeasure|Measurement.gui is deprecated, use Measurement.app <class 'DeprecationWarning'>
+2022-01-31T16:46:09|WARNING|HydraHarpHistogramMeasure|Measurement.gui is deprecated, use Measurement.app <class 'DeprecationWarning'>
+2022-01-31T16:46:09|WARNING|PowerScanMeasure|Measurement.gui is deprecated, use Measurement.app <class 'DeprecationWarning'>
+2022-01-31T16:46:09|WARNING|PowerMeterOptimizerMeasure|Measurement.gui is deprecated, use Measurement.app <class 'DeprecationWarning'>
+2022-01-31T16:46:09|WARNING|Sequencer|Measurement.gui is deprecated, use Measurement.app <class 'DeprecationWarning'>
+2022-01-31T16:46:09|WARNING|APDOptimizerCBMeasurement|Measurement.gui is deprecated, use Measurement.app <class 'DeprecationWarning'>
+2022-01-31T16:46:09|INFO|NearFieldMicroscope|setting up figures for apd_optimizer measurement apd_optimizer
+2022-01-31T16:46:09|INFO|APDOptimizerCBMeasurement|apd_optimizer start_stop False
+2022-01-31T16:46:09|INFO|APDOptimizerCBMeasurement|measurement apd_optimizer stopping stop_first
+2022-01-31T16:46:09|INFO|NearFieldMicroscope|ini settings loading from near_field_microscope_defaults.ini
+2022-01-31T16:46:09|DEBUG|FileLQ|save_dir: update_value 'C:\\Users\\RAMAN\\workspace\\NearField\\NearFieldMicroscope\\data' --> 'E:\\Natalie'    sender=None
+2022-01-31T16:46:09|DEBUG|FileLQ|save_dir: different values C:\Users\RAMAN\workspace\NearField\NearFieldMicroscope\data E:\Natalie
+2022-01-31T16:46:09|INFO|NearFieldMicroscope|hardware/hydraharp
+2022-01-31T16:46:09|INFO|NearFieldMicroscope|hardware/thorlabs_powermeter
+2022-01-31T16:46:09|INFO|NearFieldMicroscope|hardware/motorized_polarizer
+2022-01-31T16:46:09|INFO|NearFieldMicroscope|hardware/apd_counter
+2022-01-31T16:46:09|INFO|NearFieldMicroscope|hardware/dynamixel_servos
+2022-01-31T16:46:10|INFO|NearFieldMicroscope|hardware/power_wheel
+2022-01-31T16:46:10|INFO|NearFieldMicroscope|-->Failed to load config for hardware/power_wheel/pos_scale, new val 280: KeyError('pos_scale')
+2022-01-31T16:46:10|INFO|NearFieldMicroscope|ini settings loaded from: near_field_microscope_defaults.ini
+2022-01-31T16:46:23|DEBUG|ScopeFoundryHW.ni_daq.devices.ni_counter_task|NI_CounterTask.set_channel-- Dev1/ctr0 /Dev1/PFI0
+2022-01-31T16:46:27|DEBUG|ScopeFoundryHW.thorlabs_powermeter.thorlabs_pm100d|get_auto_range '1\n'
+2022-01-31T16:46:27|DEBUG|ScopeFoundryHW.thorlabs_powermeter.thorlabs_pm100d|get_auto_range '1\n'
+2022-01-31T16:54:45|DEBUG|FileLQ|''
+2022-01-31T16:55:47|INFO|PowerScanMeasure|power_scan start_stop True
+2022-01-31T16:55:47|INFO|PowerScanMeasure|measurement power_scan start called from thread: 20252
+2022-01-31T16:55:47|INFO|PowerScanMeasure|power_scan start_stop False
+2022-01-31T16:55:47|INFO|PowerScanMeasure|measurement power_scan stopping run_post_run
+2022-01-31T16:55:47|INFO|PowerScanMeasure|measurement power_scan interrupt called
+2022-01-31T16:55:58|INFO|PowerScanMeasure|power_scan start_stop True
+2022-01-31T16:55:58|INFO|PowerScanMeasure|measurement power_scan start called from thread: 20252
+2022-01-31T16:56:35|INFO|PowerScanMeasure|data saved E:\Natalie\220131_165635_power_scan.h5
+2022-01-31T16:56:35|INFO|PowerScanMeasure|power_scan start_stop False
+2022-01-31T16:56:35|INFO|PowerScanMeasure|measurement power_scan stopping run_post_run
+2022-01-31T16:56:35|INFO|PowerScanMeasure|measurement power_scan interrupt called
+2022-01-31T17:03:32|INFO|PowerScanMeasure|power_scan start_stop True
+2022-01-31T17:03:32|INFO|PowerScanMeasure|measurement power_scan start called from thread: 20252
+2022-01-31T17:03:56|INFO|PowerScanMeasure|power_scan start_stop False
+2022-01-31T17:03:56|INFO|PowerScanMeasure|measurement power_scan stopping run_thread_run
+2022-01-31T17:03:56|INFO|PowerScanMeasure|measurement power_scan interrupt called
+2022-01-31T17:03:57|INFO|PowerScanMeasure|data saved E:\Natalie\220131_170356_power_scan.h5
+2022-01-31T17:03:59|INFO|PowerMeterOptimizerMeasure|powermeter_optimizer start_stop True
+2022-01-31T17:03:59|INFO|PowerMeterOptimizerMeasure|measurement powermeter_optimizer start called from thread: 20252
+2022-01-31T17:04:10|INFO|PowerMeterOptimizerMeasure|powermeter_optimizer start_stop False
+2022-01-31T17:04:10|INFO|PowerMeterOptimizerMeasure|measurement powermeter_optimizer stopping run_thread_run
+2022-01-31T17:04:10|INFO|PowerMeterOptimizerMeasure|measurement powermeter_optimizer interrupt called
+2022-01-31T17:04:22|INFO|PowerScanMeasure|power_scan start_stop True
+2022-01-31T17:04:22|INFO|PowerScanMeasure|measurement power_scan start called from thread: 20252
+2022-01-31T17:04:43|INFO|PowerScanMeasure|data saved E:\Natalie\220131_170443_power_scan.h5
+2022-01-31T17:04:43|INFO|PowerScanMeasure|power_scan start_stop False
+2022-01-31T17:04:43|INFO|PowerScanMeasure|measurement power_scan stopping run_post_run
+2022-01-31T17:04:43|INFO|PowerScanMeasure|measurement power_scan interrupt called
+2022-01-31T17:06:06|INFO|PowerScanMeasure|power_scan start_stop True
+2022-01-31T17:06:06|INFO|PowerScanMeasure|measurement power_scan start called from thread: 20252
+2022-01-31T17:06:51|INFO|PowerScanMeasure|power_scan start_stop False
+2022-01-31T17:06:51|INFO|PowerScanMeasure|measurement power_scan stopping run_thread_run
+2022-01-31T17:06:51|INFO|PowerScanMeasure|measurement power_scan interrupt called
+2022-01-31T17:06:51|INFO|PowerScanMeasure|data saved E:\Natalie\220131_170651_power_scan.h5
+2022-01-31T17:10:41|DEBUG|ScopeFoundryHW.thorlabs_powermeter.thorlabs_pm100d|set_auto_range False
+2022-01-31T17:15:38|DEBUG|ScopeFoundryHW.thorlabs_powermeter.thorlabs_pm100d|set_auto_range True
+2022-01-31T17:19:36|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 147, in write_value
+    dxl_comm_result, dxl_error = f(self.portHandler, dxid, ctrl.addr, value)
+  File "C:\ProgramData\Anaconda3\lib\site-packages\dynamixel_sdk\protocol2_packet_handler.py", line 653, in write1ByteTxRx
+    return self.writeTxRx(port, dxl_id, address, 1, data_write)
+  File "C:\ProgramData\Anaconda3\lib\site-packages\dynamixel_sdk\protocol2_packet_handler.py", line 643, in writeTxRx
+    rxpacket, result, error = self.txRxPacket(port, txpacket)
+  File "C:\ProgramData\Anaconda3\lib\site-packages\dynamixel_sdk\protocol2_packet_handler.py", line 323, in txRxPacket
+    result = self.txPacket(port, txpacket)
+  File "C:\ProgramData\Anaconda3\lib\site-packages\dynamixel_sdk\protocol2_packet_handler.py", line 242, in txPacket
+    written_packet_length = port.writePort(txpacket)
+  File "C:\ProgramData\Anaconda3\lib\site-packages\dynamixel_sdk\port_handler.py", line 83, in writePort
+    return self.ser.write(packet)
+  File "C:\ProgramData\Anaconda3\lib\site-packages\serial\serialwin32.py", line 310, in write
+    data = to_bytes(data)
+  File "C:\ProgramData\Anaconda3\lib\site-packages\serial\serialutil.py", line 68, in to_bytes
+    return bytes(bytearray(seq))
+ValueError: byte must be in range(0, 256)
+
+2022-01-31T17:19:37|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 149, in write_value
+    raise IOError("DLX comm fail: %s" % self.packetHandler.getTxRxResult(dxl_comm_result))
+OSError: DLX comm fail: [TxRxResult] Port is in use!
+
+2022-01-31T18:28:37|INFO|PowerMeterOptimizerMeasure|powermeter_optimizer start_stop True
+2022-01-31T18:28:37|INFO|PowerMeterOptimizerMeasure|measurement powermeter_optimizer start called from thread: 20252
+2022-01-31T18:30:15|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 149, in write_value
+    raise IOError("DLX comm fail: %s" % self.packetHandler.getTxRxResult(dxl_comm_result))
+OSError: DLX comm fail: [TxRxResult] Port is in use!
+
+2022-01-31T18:30:22|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 149, in write_value
+    raise IOError("DLX comm fail: %s" % self.packetHandler.getTxRxResult(dxl_comm_result))
+OSError: DLX comm fail: [TxRxResult] Port is in use!
+
+2022-01-31T18:30:26|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 149, in write_value
+    raise IOError("DLX comm fail: %s" % self.packetHandler.getTxRxResult(dxl_comm_result))
+OSError: DLX comm fail: [TxRxResult] Port is in use!
+
+2022-01-31T18:30:33|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 149, in write_value
+    raise IOError("DLX comm fail: %s" % self.packetHandler.getTxRxResult(dxl_comm_result))
+OSError: DLX comm fail: [TxRxResult] Port is in use!
+
+2022-01-31T18:30:38|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 149, in write_value
+    raise IOError("DLX comm fail: %s" % self.packetHandler.getTxRxResult(dxl_comm_result))
+OSError: DLX comm fail: [TxRxResult] Port is in use!
+
+2022-01-31T18:30:57|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 149, in write_value
+    raise IOError("DLX comm fail: %s" % self.packetHandler.getTxRxResult(dxl_comm_result))
+OSError: DLX comm fail: [TxRxResult] Port is in use!
+
+2022-01-31T18:31:00|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 149, in write_value
+    raise IOError("DLX comm fail: %s" % self.packetHandler.getTxRxResult(dxl_comm_result))
+OSError: DLX comm fail: [TxRxResult] Port is in use!
+
+2022-01-31T18:31:11|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 149, in write_value
+    raise IOError("DLX comm fail: %s" % self.packetHandler.getTxRxResult(dxl_comm_result))
+OSError: DLX comm fail: [TxRxResult] Port is in use!
+
+2022-01-31T18:32:01|INFO|PowerScanMeasure|power_scan start_stop True
+2022-01-31T18:32:01|INFO|PowerScanMeasure|measurement power_scan start called from thread: 20252
+2022-01-31T18:32:01|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 149, in write_value
+    raise IOError("DLX comm fail: %s" % self.packetHandler.getTxRxResult(dxl_comm_result))
+OSError: DLX comm fail: [TxRxResult] Port is in use!
+
+2022-01-31T18:32:03|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 149, in write_value
+    raise IOError("DLX comm fail: %s" % self.packetHandler.getTxRxResult(dxl_comm_result))
+OSError: DLX comm fail: [TxRxResult] Port is in use!
+
+2022-01-31T18:32:04|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 149, in write_value
+    raise IOError("DLX comm fail: %s" % self.packetHandler.getTxRxResult(dxl_comm_result))
+OSError: DLX comm fail: [TxRxResult] Port is in use!
+
+2022-01-31T18:32:04|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 149, in write_value
+    raise IOError("DLX comm fail: %s" % self.packetHandler.getTxRxResult(dxl_comm_result))
+OSError: DLX comm fail: [TxRxResult] Port is in use!
+
+2022-01-31T18:32:05|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 149, in write_value
+    raise IOError("DLX comm fail: %s" % self.packetHandler.getTxRxResult(dxl_comm_result))
+OSError: DLX comm fail: [TxRxResult] Port is in use!
+
+2022-01-31T18:32:05|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 149, in write_value
+    raise IOError("DLX comm fail: %s" % self.packetHandler.getTxRxResult(dxl_comm_result))
+OSError: DLX comm fail: [TxRxResult] Port is in use!
+
+2022-01-31T18:32:05|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 149, in write_value
+    raise IOError("DLX comm fail: %s" % self.packetHandler.getTxRxResult(dxl_comm_result))
+OSError: DLX comm fail: [TxRxResult] Port is in use!
+
+2022-01-31T18:32:06|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 149, in write_value
+    raise IOError("DLX comm fail: %s" % self.packetHandler.getTxRxResult(dxl_comm_result))
+OSError: DLX comm fail: [TxRxResult] Port is in use!
+
+2022-01-31T18:32:06|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 149, in write_value
+    raise IOError("DLX comm fail: %s" % self.packetHandler.getTxRxResult(dxl_comm_result))
+OSError: DLX comm fail: [TxRxResult] Port is in use!
+
+2022-01-31T18:32:06|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 149, in write_value
+    raise IOError("DLX comm fail: %s" % self.packetHandler.getTxRxResult(dxl_comm_result))
+OSError: DLX comm fail: [TxRxResult] Port is in use!
+
+2022-01-31T18:32:07|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 149, in write_value
+    raise IOError("DLX comm fail: %s" % self.packetHandler.getTxRxResult(dxl_comm_result))
+OSError: DLX comm fail: [TxRxResult] Port is in use!
+
+2022-01-31T18:32:08|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 149, in write_value
+    raise IOError("DLX comm fail: %s" % self.packetHandler.getTxRxResult(dxl_comm_result))
+OSError: DLX comm fail: [TxRxResult] Port is in use!
+
+2022-01-31T18:32:08|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 149, in write_value
+    raise IOError("DLX comm fail: %s" % self.packetHandler.getTxRxResult(dxl_comm_result))
+OSError: DLX comm fail: [TxRxResult] Port is in use!
+
+2022-01-31T18:32:08|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 149, in write_value
+    raise IOError("DLX comm fail: %s" % self.packetHandler.getTxRxResult(dxl_comm_result))
+OSError: DLX comm fail: [TxRxResult] Port is in use!
+
+2022-01-31T18:32:09|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 149, in write_value
+    raise IOError("DLX comm fail: %s" % self.packetHandler.getTxRxResult(dxl_comm_result))
+OSError: DLX comm fail: [TxRxResult] Port is in use!
+
+2022-01-31T18:32:09|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 149, in write_value
+    raise IOError("DLX comm fail: %s" % self.packetHandler.getTxRxResult(dxl_comm_result))
+OSError: DLX comm fail: [TxRxResult] Port is in use!
+
+2022-01-31T18:32:09|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 149, in write_value
+    raise IOError("DLX comm fail: %s" % self.packetHandler.getTxRxResult(dxl_comm_result))
+OSError: DLX comm fail: [TxRxResult] Port is in use!
+
+2022-01-31T18:32:10|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 149, in write_value
+    raise IOError("DLX comm fail: %s" % self.packetHandler.getTxRxResult(dxl_comm_result))
+OSError: DLX comm fail: [TxRxResult] Port is in use!
+
+2022-01-31T18:32:10|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 149, in write_value
+    raise IOError("DLX comm fail: %s" % self.packetHandler.getTxRxResult(dxl_comm_result))
+OSError: DLX comm fail: [TxRxResult] Port is in use!
+
+2022-01-31T18:32:11|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 149, in write_value
+    raise IOError("DLX comm fail: %s" % self.packetHandler.getTxRxResult(dxl_comm_result))
+OSError: DLX comm fail: [TxRxResult] Port is in use!
+
+2022-01-31T18:32:11|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 149, in write_value
+    raise IOError("DLX comm fail: %s" % self.packetHandler.getTxRxResult(dxl_comm_result))
+OSError: DLX comm fail: [TxRxResult] Port is in use!
+
+2022-01-31T18:32:12|INFO|PowerScanMeasure|data saved E:\Natalie\220131_183211_power_scan.h5
+2022-01-31T18:32:12|INFO|PowerScanMeasure|power_scan start_stop False
+2022-01-31T18:32:12|INFO|PowerScanMeasure|measurement power_scan stopping run_post_run
+2022-01-31T18:32:12|INFO|PowerScanMeasure|measurement power_scan interrupt called
+2022-01-31T18:32:27|INFO|PowerScanMeasure|power_scan start_stop True
+2022-01-31T18:32:27|INFO|PowerScanMeasure|measurement power_scan start called from thread: 20252
+2022-01-31T18:32:30|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 149, in write_value
+    raise IOError("DLX comm fail: %s" % self.packetHandler.getTxRxResult(dxl_comm_result))
+OSError: DLX comm fail: [TxRxResult] Port is in use!
+
+2022-01-31T18:32:30|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 149, in write_value
+    raise IOError("DLX comm fail: %s" % self.packetHandler.getTxRxResult(dxl_comm_result))
+OSError: DLX comm fail: [TxRxResult] Port is in use!
+
+2022-01-31T18:32:31|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 149, in write_value
+    raise IOError("DLX comm fail: %s" % self.packetHandler.getTxRxResult(dxl_comm_result))
+OSError: DLX comm fail: [TxRxResult] Port is in use!
+
+2022-01-31T18:32:31|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 149, in write_value
+    raise IOError("DLX comm fail: %s" % self.packetHandler.getTxRxResult(dxl_comm_result))
+OSError: DLX comm fail: [TxRxResult] Port is in use!
+
+2022-01-31T18:32:31|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 149, in write_value
+    raise IOError("DLX comm fail: %s" % self.packetHandler.getTxRxResult(dxl_comm_result))
+OSError: DLX comm fail: [TxRxResult] Port is in use!
+
+2022-01-31T18:32:32|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 149, in write_value
+    raise IOError("DLX comm fail: %s" % self.packetHandler.getTxRxResult(dxl_comm_result))
+OSError: DLX comm fail: [TxRxResult] Port is in use!
+
+2022-01-31T18:32:32|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 149, in write_value
+    raise IOError("DLX comm fail: %s" % self.packetHandler.getTxRxResult(dxl_comm_result))
+OSError: DLX comm fail: [TxRxResult] Port is in use!
+
+2022-01-31T18:32:33|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 149, in write_value
+    raise IOError("DLX comm fail: %s" % self.packetHandler.getTxRxResult(dxl_comm_result))
+OSError: DLX comm fail: [TxRxResult] Port is in use!
+
+2022-01-31T18:32:33|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 149, in write_value
+    raise IOError("DLX comm fail: %s" % self.packetHandler.getTxRxResult(dxl_comm_result))
+OSError: DLX comm fail: [TxRxResult] Port is in use!
+
+2022-01-31T18:32:33|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 149, in write_value
+    raise IOError("DLX comm fail: %s" % self.packetHandler.getTxRxResult(dxl_comm_result))
+OSError: DLX comm fail: [TxRxResult] Port is in use!
+
+2022-01-31T18:32:34|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 149, in write_value
+    raise IOError("DLX comm fail: %s" % self.packetHandler.getTxRxResult(dxl_comm_result))
+OSError: DLX comm fail: [TxRxResult] Port is in use!
+
+2022-01-31T18:32:34|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 149, in write_value
+    raise IOError("DLX comm fail: %s" % self.packetHandler.getTxRxResult(dxl_comm_result))
+OSError: DLX comm fail: [TxRxResult] Port is in use!
+
+2022-01-31T18:32:35|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 149, in write_value
+    raise IOError("DLX comm fail: %s" % self.packetHandler.getTxRxResult(dxl_comm_result))
+OSError: DLX comm fail: [TxRxResult] Port is in use!
+
+2022-01-31T18:32:35|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 149, in write_value
+    raise IOError("DLX comm fail: %s" % self.packetHandler.getTxRxResult(dxl_comm_result))
+OSError: DLX comm fail: [TxRxResult] Port is in use!
+
+2022-01-31T18:32:36|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 149, in write_value
+    raise IOError("DLX comm fail: %s" % self.packetHandler.getTxRxResult(dxl_comm_result))
+OSError: DLX comm fail: [TxRxResult] Port is in use!
+
+2022-01-31T18:32:36|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 149, in write_value
+    raise IOError("DLX comm fail: %s" % self.packetHandler.getTxRxResult(dxl_comm_result))
+OSError: DLX comm fail: [TxRxResult] Port is in use!
+
+2022-01-31T18:32:37|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 149, in write_value
+    raise IOError("DLX comm fail: %s" % self.packetHandler.getTxRxResult(dxl_comm_result))
+OSError: DLX comm fail: [TxRxResult] Port is in use!
+
+2022-01-31T18:32:37|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 149, in write_value
+    raise IOError("DLX comm fail: %s" % self.packetHandler.getTxRxResult(dxl_comm_result))
+OSError: DLX comm fail: [TxRxResult] Port is in use!
+
+2022-01-31T18:32:37|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 149, in write_value
+    raise IOError("DLX comm fail: %s" % self.packetHandler.getTxRxResult(dxl_comm_result))
+OSError: DLX comm fail: [TxRxResult] Port is in use!
+
+2022-01-31T18:32:38|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 149, in write_value
+    raise IOError("DLX comm fail: %s" % self.packetHandler.getTxRxResult(dxl_comm_result))
+OSError: DLX comm fail: [TxRxResult] Port is in use!
+
+2022-01-31T18:32:38|INFO|PowerScanMeasure|data saved E:\Natalie\220131_183238_power_scan.h5
+2022-01-31T18:32:38|INFO|PowerScanMeasure|power_scan start_stop False
+2022-01-31T18:32:38|INFO|PowerScanMeasure|measurement power_scan stopping run_post_run
+2022-01-31T18:32:38|INFO|PowerScanMeasure|measurement power_scan interrupt called
+2022-01-31T18:32:43|INFO|PowerScanMeasure|power_scan start_stop True
+2022-01-31T18:32:43|INFO|PowerScanMeasure|measurement power_scan start called from thread: 20252
+2022-01-31T18:32:45|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 149, in write_value
+    raise IOError("DLX comm fail: %s" % self.packetHandler.getTxRxResult(dxl_comm_result))
+OSError: DLX comm fail: [TxRxResult] Port is in use!
+
+2022-01-31T18:32:46|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 149, in write_value
+    raise IOError("DLX comm fail: %s" % self.packetHandler.getTxRxResult(dxl_comm_result))
+OSError: DLX comm fail: [TxRxResult] Port is in use!
+
+2022-01-31T18:32:46|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 149, in write_value
+    raise IOError("DLX comm fail: %s" % self.packetHandler.getTxRxResult(dxl_comm_result))
+OSError: DLX comm fail: [TxRxResult] Port is in use!
+
+2022-01-31T18:32:47|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 149, in write_value
+    raise IOError("DLX comm fail: %s" % self.packetHandler.getTxRxResult(dxl_comm_result))
+OSError: DLX comm fail: [TxRxResult] Port is in use!
+
+2022-01-31T18:32:47|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 149, in write_value
+    raise IOError("DLX comm fail: %s" % self.packetHandler.getTxRxResult(dxl_comm_result))
+OSError: DLX comm fail: [TxRxResult] Port is in use!
+
+2022-01-31T18:32:47|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 149, in write_value
+    raise IOError("DLX comm fail: %s" % self.packetHandler.getTxRxResult(dxl_comm_result))
+OSError: DLX comm fail: [TxRxResult] Port is in use!
+
+2022-01-31T18:32:48|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 149, in write_value
+    raise IOError("DLX comm fail: %s" % self.packetHandler.getTxRxResult(dxl_comm_result))
+OSError: DLX comm fail: [TxRxResult] Port is in use!
+
+2022-01-31T18:32:48|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 149, in write_value
+    raise IOError("DLX comm fail: %s" % self.packetHandler.getTxRxResult(dxl_comm_result))
+OSError: DLX comm fail: [TxRxResult] Port is in use!
+
+2022-01-31T18:32:49|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 149, in write_value
+    raise IOError("DLX comm fail: %s" % self.packetHandler.getTxRxResult(dxl_comm_result))
+OSError: DLX comm fail: [TxRxResult] Port is in use!
+
+2022-01-31T18:32:49|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 149, in write_value
+    raise IOError("DLX comm fail: %s" % self.packetHandler.getTxRxResult(dxl_comm_result))
+OSError: DLX comm fail: [TxRxResult] Port is in use!
+
+2022-01-31T18:32:50|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 149, in write_value
+    raise IOError("DLX comm fail: %s" % self.packetHandler.getTxRxResult(dxl_comm_result))
+OSError: DLX comm fail: [TxRxResult] Port is in use!
+
+2022-01-31T18:32:50|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 149, in write_value
+    raise IOError("DLX comm fail: %s" % self.packetHandler.getTxRxResult(dxl_comm_result))
+OSError: DLX comm fail: [TxRxResult] Port is in use!
+
+2022-01-31T18:32:51|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 149, in write_value
+    raise IOError("DLX comm fail: %s" % self.packetHandler.getTxRxResult(dxl_comm_result))
+OSError: DLX comm fail: [TxRxResult] Port is in use!
+
+2022-01-31T18:32:51|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 149, in write_value
+    raise IOError("DLX comm fail: %s" % self.packetHandler.getTxRxResult(dxl_comm_result))
+OSError: DLX comm fail: [TxRxResult] Port is in use!
+
+2022-01-31T18:32:51|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 149, in write_value
+    raise IOError("DLX comm fail: %s" % self.packetHandler.getTxRxResult(dxl_comm_result))
+OSError: DLX comm fail: [TxRxResult] Port is in use!
+
+2022-01-31T18:32:52|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 149, in write_value
+    raise IOError("DLX comm fail: %s" % self.packetHandler.getTxRxResult(dxl_comm_result))
+OSError: DLX comm fail: [TxRxResult] Port is in use!
+
+2022-01-31T18:32:52|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 149, in write_value
+    raise IOError("DLX comm fail: %s" % self.packetHandler.getTxRxResult(dxl_comm_result))
+OSError: DLX comm fail: [TxRxResult] Port is in use!
+
+2022-01-31T18:32:53|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 149, in write_value
+    raise IOError("DLX comm fail: %s" % self.packetHandler.getTxRxResult(dxl_comm_result))
+OSError: DLX comm fail: [TxRxResult] Port is in use!
+
+2022-01-31T18:32:53|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 149, in write_value
+    raise IOError("DLX comm fail: %s" % self.packetHandler.getTxRxResult(dxl_comm_result))
+OSError: DLX comm fail: [TxRxResult] Port is in use!
+
+2022-01-31T18:32:54|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 149, in write_value
+    raise IOError("DLX comm fail: %s" % self.packetHandler.getTxRxResult(dxl_comm_result))
+OSError: DLX comm fail: [TxRxResult] Port is in use!
+
+2022-01-31T18:32:54|INFO|PowerScanMeasure|data saved E:\Natalie\220131_183254_power_scan.h5
+2022-01-31T18:32:54|INFO|PowerScanMeasure|power_scan start_stop False
+2022-01-31T18:32:54|INFO|PowerScanMeasure|measurement power_scan stopping run_post_run
+2022-01-31T18:32:54|INFO|PowerScanMeasure|measurement power_scan interrupt called
+2022-01-31T18:33:49|INFO|PowerScanMeasure|power_scan start_stop True
+2022-01-31T18:33:49|INFO|PowerScanMeasure|measurement power_scan start called from thread: 20252
+2022-01-31T18:33:51|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 149, in write_value
+    raise IOError("DLX comm fail: %s" % self.packetHandler.getTxRxResult(dxl_comm_result))
+OSError: DLX comm fail: [TxRxResult] Port is in use!
+
+2022-01-31T18:33:52|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 149, in write_value
+    raise IOError("DLX comm fail: %s" % self.packetHandler.getTxRxResult(dxl_comm_result))
+OSError: DLX comm fail: [TxRxResult] Port is in use!
+
+2022-01-31T18:33:52|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 149, in write_value
+    raise IOError("DLX comm fail: %s" % self.packetHandler.getTxRxResult(dxl_comm_result))
+OSError: DLX comm fail: [TxRxResult] Port is in use!
+
+2022-01-31T18:33:52|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 149, in write_value
+    raise IOError("DLX comm fail: %s" % self.packetHandler.getTxRxResult(dxl_comm_result))
+OSError: DLX comm fail: [TxRxResult] Port is in use!
+
+2022-01-31T18:33:53|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 149, in write_value
+    raise IOError("DLX comm fail: %s" % self.packetHandler.getTxRxResult(dxl_comm_result))
+OSError: DLX comm fail: [TxRxResult] Port is in use!
+
+2022-01-31T18:33:53|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 149, in write_value
+    raise IOError("DLX comm fail: %s" % self.packetHandler.getTxRxResult(dxl_comm_result))
+OSError: DLX comm fail: [TxRxResult] Port is in use!
+
+2022-01-31T18:33:54|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 149, in write_value
+    raise IOError("DLX comm fail: %s" % self.packetHandler.getTxRxResult(dxl_comm_result))
+OSError: DLX comm fail: [TxRxResult] Port is in use!
+
+2022-01-31T18:33:54|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 149, in write_value
+    raise IOError("DLX comm fail: %s" % self.packetHandler.getTxRxResult(dxl_comm_result))
+OSError: DLX comm fail: [TxRxResult] Port is in use!
+
+2022-01-31T18:33:55|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 149, in write_value
+    raise IOError("DLX comm fail: %s" % self.packetHandler.getTxRxResult(dxl_comm_result))
+OSError: DLX comm fail: [TxRxResult] Port is in use!
+
+2022-01-31T18:33:55|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 149, in write_value
+    raise IOError("DLX comm fail: %s" % self.packetHandler.getTxRxResult(dxl_comm_result))
+OSError: DLX comm fail: [TxRxResult] Port is in use!
+
+2022-01-31T18:33:56|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 149, in write_value
+    raise IOError("DLX comm fail: %s" % self.packetHandler.getTxRxResult(dxl_comm_result))
+OSError: DLX comm fail: [TxRxResult] Port is in use!
+
+2022-01-31T18:33:56|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 149, in write_value
+    raise IOError("DLX comm fail: %s" % self.packetHandler.getTxRxResult(dxl_comm_result))
+OSError: DLX comm fail: [TxRxResult] Port is in use!
+
+2022-01-31T18:33:57|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 149, in write_value
+    raise IOError("DLX comm fail: %s" % self.packetHandler.getTxRxResult(dxl_comm_result))
+OSError: DLX comm fail: [TxRxResult] Port is in use!
+
+2022-01-31T18:33:57|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 149, in write_value
+    raise IOError("DLX comm fail: %s" % self.packetHandler.getTxRxResult(dxl_comm_result))
+OSError: DLX comm fail: [TxRxResult] Port is in use!
+
+2022-01-31T18:33:58|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 149, in write_value
+    raise IOError("DLX comm fail: %s" % self.packetHandler.getTxRxResult(dxl_comm_result))
+OSError: DLX comm fail: [TxRxResult] Port is in use!
+
+2022-01-31T18:33:58|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 149, in write_value
+    raise IOError("DLX comm fail: %s" % self.packetHandler.getTxRxResult(dxl_comm_result))
+OSError: DLX comm fail: [TxRxResult] Port is in use!
+
+2022-01-31T18:33:59|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 149, in write_value
+    raise IOError("DLX comm fail: %s" % self.packetHandler.getTxRxResult(dxl_comm_result))
+OSError: DLX comm fail: [TxRxResult] Port is in use!
+
+2022-01-31T18:33:59|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 149, in write_value
+    raise IOError("DLX comm fail: %s" % self.packetHandler.getTxRxResult(dxl_comm_result))
+OSError: DLX comm fail: [TxRxResult] Port is in use!
+
+2022-01-31T18:33:59|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 149, in write_value
+    raise IOError("DLX comm fail: %s" % self.packetHandler.getTxRxResult(dxl_comm_result))
+OSError: DLX comm fail: [TxRxResult] Port is in use!
+
+2022-01-31T18:34:00|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 149, in write_value
+    raise IOError("DLX comm fail: %s" % self.packetHandler.getTxRxResult(dxl_comm_result))
+OSError: DLX comm fail: [TxRxResult] Port is in use!
+
+2022-01-31T18:34:00|INFO|PowerScanMeasure|data saved E:\Natalie\220131_183400_power_scan.h5
+2022-01-31T18:34:01|INFO|PowerScanMeasure|power_scan start_stop False
+2022-01-31T18:34:01|INFO|PowerScanMeasure|measurement power_scan stopping run_post_run
+2022-01-31T18:34:01|INFO|PowerScanMeasure|measurement power_scan interrupt called
+2022-01-31T18:34:07|DEBUG|root|close
+2022-01-31T18:34:09|DEBUG|root|closing
+2022-01-31T18:34:09|INFO|NearFieldMicroscope|on_close
+2022-01-31T18:34:09|INFO|NearFieldMicroscope|disconnecting hydraharp
+2022-01-31T18:34:09|INFO|NearFieldMicroscope|disconnecting thorlabs_powermeter
+2022-01-31T18:34:09|INFO|NearFieldMicroscope|disconnecting motorized_polarizer
+2022-01-31T18:34:09|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2022-01-31T18:34:09|INFO|NearFieldMicroscope|disconnecting apd_counter
+2022-01-31T18:34:09|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2022-01-31T18:34:09|INFO|NearFieldMicroscope|disconnecting dynamixel_servos
+2022-01-31T18:34:10|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2022-01-31T18:34:10|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2022-01-31T18:34:10|INFO|NearFieldMicroscope|disconnecting power_wheel
+2022-01-31T18:34:10|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2022-01-31T18:34:10|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2022-01-31T18:34:10|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2022-01-31T18:34:10|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2022-01-31T18:34:10|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2022-01-31T18:34:10|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2022-01-31T18:34:10|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2022-01-31T18:34:11|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2022-01-31T18:34:11|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2022-01-31T18:34:11|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2022-01-31T18:34:11|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2022-01-31T18:34:11|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2022-01-31T18:34:11|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2022-01-31T18:34:11|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2022-01-31T18:34:11|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2022-01-31T18:34:11|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2022-01-31T18:34:11|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2022-01-31T18:34:12|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2022-01-31T18:34:12|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2022-01-31T18:34:12|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2022-01-31T18:34:12|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2022-01-31T18:34:12|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2022-01-31T18:34:12|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2022-01-31T18:34:12|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2022-01-31T18:34:12|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware

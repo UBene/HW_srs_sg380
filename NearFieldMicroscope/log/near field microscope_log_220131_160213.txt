@@ -1,0 +1,395 @@
+2022-01-31T16:02:14|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_single_hw.py", line 67, in set_mode
+    self.servos.settings[S['servo_name']+'_torque'] = False
+AttributeError: 'DynamixelServoHW' object has no attribute 'servos'
+
+2022-01-31T16:02:14|INFO|HydraHarpOptimizerMeasure|hydraharp_channel_optimizer start_stop False
+2022-01-31T16:02:14|INFO|HydraHarpOptimizerMeasure|measurement hydraharp_channel_optimizer stopping stop_first
+2022-01-31T16:02:14|INFO|HydraHarpHistogramMeasure|hydraharp_histogram start_stop False
+2022-01-31T16:02:14|INFO|HydraHarpHistogramMeasure|measurement hydraharp_histogram stopping stop_first
+2022-01-31T16:02:14|INFO|PowerScanMeasure|power_scan start_stop False
+2022-01-31T16:02:14|INFO|PowerScanMeasure|measurement power_scan stopping stop_first
+2022-01-31T16:02:14|INFO|PowerMeterOptimizerMeasure|powermeter_optimizer start_stop False
+2022-01-31T16:02:14|INFO|PowerMeterOptimizerMeasure|measurement powermeter_optimizer stopping stop_first
+2022-01-31T16:02:14|INFO|Sequencer|sequencer start_stop False
+2022-01-31T16:02:14|INFO|Sequencer|measurement sequencer stopping stop_first
+2022-01-31T16:02:14|INFO|APDOptimizerCBMeasurement|apd_optimizer start_stop False
+2022-01-31T16:02:14|INFO|APDOptimizerCBMeasurement|measurement apd_optimizer stopping stop_first
+2022-01-31T16:02:14|INFO|NearFieldMicroscope|setting up figures for hydraharp_channel_optimizer measurement hydraharp_channel_optimizer
+2022-01-31T16:02:14|INFO|HydraHarpOptimizerMeasure|hydraharp_channel_optimizer start_stop False
+2022-01-31T16:02:14|INFO|HydraHarpOptimizerMeasure|measurement hydraharp_channel_optimizer stopping stop_first
+2022-01-31T16:02:14|INFO|NearFieldMicroscope|setting up figures for hydraharp_histogram measurement hydraharp_histogram
+2022-01-31T16:02:14|INFO|NearFieldMicroscope|setting up figures for power_scan measurement power_scan
+2022-01-31T16:02:14|INFO|PowerScanMeasure|power_scan start_stop False
+2022-01-31T16:02:14|INFO|PowerScanMeasure|measurement power_scan stopping stop_first
+2022-01-31T16:02:14|INFO|NearFieldMicroscope|setting up figures for powermeter_optimizer measurement powermeter_optimizer
+2022-01-31T16:02:14|INFO|PowerMeterOptimizerMeasure|powermeter_optimizer start_stop False
+2022-01-31T16:02:14|INFO|PowerMeterOptimizerMeasure|measurement powermeter_optimizer stopping stop_first
+2022-01-31T16:02:14|INFO|NearFieldMicroscope|setting up figures for sequencer measurement sequencer
+2022-01-31T16:02:14|INFO|Sequencer|sequencer start_stop False
+2022-01-31T16:02:14|INFO|Sequencer|measurement sequencer stopping stop_first
+2022-01-31T16:02:14|WARNING|HydraHarpOptimizerMeasure|Measurement.gui is deprecated, use Measurement.app <class 'DeprecationWarning'>
+2022-01-31T16:02:14|WARNING|HydraHarpHistogramMeasure|Measurement.gui is deprecated, use Measurement.app <class 'DeprecationWarning'>
+2022-01-31T16:02:14|WARNING|PowerScanMeasure|Measurement.gui is deprecated, use Measurement.app <class 'DeprecationWarning'>
+2022-01-31T16:02:14|WARNING|PowerMeterOptimizerMeasure|Measurement.gui is deprecated, use Measurement.app <class 'DeprecationWarning'>
+2022-01-31T16:02:14|WARNING|Sequencer|Measurement.gui is deprecated, use Measurement.app <class 'DeprecationWarning'>
+2022-01-31T16:02:14|WARNING|APDOptimizerCBMeasurement|Measurement.gui is deprecated, use Measurement.app <class 'DeprecationWarning'>
+2022-01-31T16:02:14|INFO|NearFieldMicroscope|setting up figures for apd_optimizer measurement apd_optimizer
+2022-01-31T16:02:15|INFO|APDOptimizerCBMeasurement|apd_optimizer start_stop False
+2022-01-31T16:02:15|INFO|APDOptimizerCBMeasurement|measurement apd_optimizer stopping stop_first
+2022-01-31T16:02:15|INFO|NearFieldMicroscope|ini settings loading from near_field_microscope_defaults.ini
+2022-01-31T16:02:15|DEBUG|FileLQ|save_dir: update_value 'C:\\Users\\RAMAN\\workspace\\NearField\\NearFieldMicroscope\\data' --> 'E:\\Natalie'    sender=None
+2022-01-31T16:02:15|DEBUG|FileLQ|save_dir: different values C:\Users\RAMAN\workspace\NearField\NearFieldMicroscope\data E:\Natalie
+2022-01-31T16:02:15|INFO|NearFieldMicroscope|hardware/hydraharp
+2022-01-31T16:02:15|INFO|NearFieldMicroscope|hardware/thorlabs_powermeter
+2022-01-31T16:02:15|INFO|NearFieldMicroscope|hardware/motorized_polarizer
+2022-01-31T16:02:15|INFO|NearFieldMicroscope|hardware/apd_counter
+2022-01-31T16:02:15|INFO|NearFieldMicroscope|hardware/dynamixel_servos
+2022-01-31T16:02:15|INFO|NearFieldMicroscope|hardware/power_wheel
+2022-01-31T16:02:15|INFO|NearFieldMicroscope|-->Failed to load config for hardware/power_wheel/pos_scale, new val 280: KeyError('pos_scale')
+2022-01-31T16:02:15|INFO|NearFieldMicroscope|ini settings loaded from: near_field_microscope_defaults.ini
+2022-01-31T16:02:24|INFO|NearFieldMicroscope|ini settings saved to E:\Natalie\1643662944_settings.ini <class 'str'>
+2022-01-31T16:03:10|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 151, in write_value
+    raise IOError("DLX err: %s" % self.packetHandler.getRxPacketError(dxl_error))
+OSError: DLX err: [RxPacketError] The data value exceeds the limit value!
+
+2022-01-31T16:03:43|DEBUG|ScopeFoundryHW.thorlabs_powermeter.thorlabs_pm100d|get_auto_range '1\n'
+2022-01-31T16:03:43|DEBUG|ScopeFoundryHW.thorlabs_powermeter.thorlabs_pm100d|get_auto_range '1\n'
+2022-01-31T16:03:48|INFO|PowerMeterOptimizerMeasure|powermeter_optimizer start_stop True
+2022-01-31T16:03:48|INFO|PowerMeterOptimizerMeasure|measurement powermeter_optimizer start called from thread: 2408
+2022-01-31T16:03:56|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 151, in write_value
+    raise IOError("DLX err: %s" % self.packetHandler.getRxPacketError(dxl_error))
+OSError: DLX err: [RxPacketError] The data value exceeds the limit value!
+
+2022-01-31T16:04:22|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 151, in write_value
+    raise IOError("DLX err: %s" % self.packetHandler.getRxPacketError(dxl_error))
+OSError: DLX err: [RxPacketError] The data value exceeds the limit value!
+
+2022-01-31T16:04:48|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 151, in write_value
+    raise IOError("DLX err: %s" % self.packetHandler.getRxPacketError(dxl_error))
+OSError: DLX err: [RxPacketError] The data value exceeds the limit value!
+
+2022-01-31T16:05:26|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 151, in write_value
+    raise IOError("DLX err: %s" % self.packetHandler.getRxPacketError(dxl_error))
+OSError: DLX err: [RxPacketError] The data value exceeds the limit value!
+
+2022-01-31T16:05:41|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 151, in write_value
+    raise IOError("DLX err: %s" % self.packetHandler.getRxPacketError(dxl_error))
+OSError: DLX err: [RxPacketError] The data value exceeds the limit value!
+
+2022-01-31T16:05:44|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 151, in write_value
+    raise IOError("DLX err: %s" % self.packetHandler.getRxPacketError(dxl_error))
+OSError: DLX err: [RxPacketError] The data value exceeds the limit value!
+
+2022-01-31T16:06:11|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 151, in write_value
+    raise IOError("DLX err: %s" % self.packetHandler.getRxPacketError(dxl_error))
+OSError: DLX err: [RxPacketError] The data value exceeds the limit value!
+
+2022-01-31T16:07:31|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 151, in write_value
+    raise IOError("DLX err: %s" % self.packetHandler.getRxPacketError(dxl_error))
+OSError: DLX err: [RxPacketError] The data value exceeds the limit value!
+
+2022-01-31T16:09:02|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 151, in write_value
+    raise IOError("DLX err: %s" % self.packetHandler.getRxPacketError(dxl_error))
+OSError: DLX err: [RxPacketError] The data value exceeds the limit value!
+
+2022-01-31T16:13:47|DEBUG|ScopeFoundryHW.thorlabs_powermeter.thorlabs_pm100d|get_auto_range '1\n'
+2022-01-31T16:13:53|DEBUG|ScopeFoundryHW.thorlabs_powermeter.thorlabs_pm100d|set_auto_range False
+2022-01-31T16:13:54|DEBUG|ScopeFoundryHW.thorlabs_powermeter.thorlabs_pm100d|set_auto_range True
+2022-01-31T16:20:51|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 151, in write_value
+    raise IOError("DLX err: %s" % self.packetHandler.getRxPacketError(dxl_error))
+OSError: DLX err: [RxPacketError] The data value exceeds the limit value!
+
+2022-01-31T16:21:00|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 151, in write_value
+    raise IOError("DLX err: %s" % self.packetHandler.getRxPacketError(dxl_error))
+OSError: DLX err: [RxPacketError] The data value exceeds the limit value!
+
+2022-01-31T16:21:12|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 151, in write_value
+    raise IOError("DLX err: %s" % self.packetHandler.getRxPacketError(dxl_error))
+OSError: DLX err: [RxPacketError] The data value exceeds the limit value!
+
+2022-01-31T16:21:30|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 151, in write_value
+    raise IOError("DLX err: %s" % self.packetHandler.getRxPacketError(dxl_error))
+OSError: DLX err: [RxPacketError] The data value exceeds the limit value!
+
+2022-01-31T16:21:37|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 151, in write_value
+    raise IOError("DLX err: %s" % self.packetHandler.getRxPacketError(dxl_error))
+OSError: DLX err: [RxPacketError] The data value exceeds the limit value!
+
+2022-01-31T16:21:48|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 151, in write_value
+    raise IOError("DLX err: %s" % self.packetHandler.getRxPacketError(dxl_error))
+OSError: DLX err: [RxPacketError] The data value exceeds the limit value!
+
+2022-01-31T16:23:10|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo_hw.py", line 63, in write_f
+    self.dev.write_value(sid, ctrl.name, new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\dynamixel_servo\dynamixel_x_servo.py", line 151, in write_value
+    raise IOError("DLX err: %s" % self.packetHandler.getRxPacketError(dxl_error))
+OSError: DLX err: [RxPacketError] The data value exceeds the limit value!
+
+2022-01-31T16:31:00|INFO|PowerScanMeasure|power_scan start_stop True
+2022-01-31T16:31:00|INFO|PowerScanMeasure|measurement power_scan start called from thread: 2408
+2022-01-31T16:31:07|WARNING|LoggedQuantity|count_rate read_from_hardware called when not connected to hardware
+2022-01-31T16:31:17|WARNING|LoggedQuantity|count_rate read_from_hardware called when not connected to hardware
+2022-01-31T16:31:27|WARNING|LoggedQuantity|count_rate read_from_hardware called when not connected to hardware
+2022-01-31T16:31:38|WARNING|LoggedQuantity|count_rate read_from_hardware called when not connected to hardware
+2022-01-31T16:31:48|WARNING|LoggedQuantity|count_rate read_from_hardware called when not connected to hardware
+2022-01-31T16:31:58|WARNING|LoggedQuantity|count_rate read_from_hardware called when not connected to hardware
+2022-01-31T16:32:09|WARNING|LoggedQuantity|count_rate read_from_hardware called when not connected to hardware
+2022-01-31T16:32:19|WARNING|LoggedQuantity|count_rate read_from_hardware called when not connected to hardware
+2022-01-31T16:32:30|WARNING|LoggedQuantity|count_rate read_from_hardware called when not connected to hardware
+2022-01-31T16:32:40|WARNING|LoggedQuantity|count_rate read_from_hardware called when not connected to hardware
+2022-01-31T16:32:50|WARNING|LoggedQuantity|count_rate read_from_hardware called when not connected to hardware
+2022-01-31T16:33:01|WARNING|LoggedQuantity|count_rate read_from_hardware called when not connected to hardware
+2022-01-31T16:33:11|WARNING|LoggedQuantity|count_rate read_from_hardware called when not connected to hardware
+2022-01-31T16:33:21|WARNING|LoggedQuantity|count_rate read_from_hardware called when not connected to hardware
+2022-01-31T16:33:32|WARNING|LoggedQuantity|count_rate read_from_hardware called when not connected to hardware
+2022-01-31T16:33:42|WARNING|LoggedQuantity|count_rate read_from_hardware called when not connected to hardware
+2022-01-31T16:33:52|WARNING|LoggedQuantity|count_rate read_from_hardware called when not connected to hardware
+2022-01-31T16:34:03|WARNING|LoggedQuantity|count_rate read_from_hardware called when not connected to hardware
+2022-01-31T16:34:13|WARNING|LoggedQuantity|count_rate read_from_hardware called when not connected to hardware
+2022-01-31T16:34:24|WARNING|LoggedQuantity|count_rate read_from_hardware called when not connected to hardware
+2022-01-31T16:34:34|WARNING|LoggedQuantity|count_rate read_from_hardware called when not connected to hardware
+2022-01-31T16:34:44|WARNING|LoggedQuantity|count_rate read_from_hardware called when not connected to hardware
+2022-01-31T16:34:50|INFO|PowerScanMeasure|data saved E:\Natalie\220131_163449_power_scan.h5
+2022-01-31T16:34:50|INFO|PowerScanMeasure|power_scan start_stop False
+2022-01-31T16:34:50|INFO|PowerScanMeasure|measurement power_scan stopping run_post_run
+2022-01-31T16:34:50|INFO|PowerScanMeasure|measurement power_scan interrupt called
+2022-01-31T16:35:45|INFO|PowerMeterOptimizerMeasure|powermeter_optimizer start_stop False
+2022-01-31T16:35:46|INFO|PowerMeterOptimizerMeasure|measurement powermeter_optimizer stopping run_thread_run
+2022-01-31T16:35:46|INFO|PowerMeterOptimizerMeasure|measurement powermeter_optimizer interrupt called
+2022-01-31T16:35:50|INFO|PowerScanMeasure|power_scan start_stop True
+2022-01-31T16:35:50|INFO|PowerScanMeasure|measurement power_scan start called from thread: 2408
+2022-01-31T16:35:53|WARNING|LoggedQuantity|count_rate read_from_hardware called when not connected to hardware
+2022-01-31T16:35:54|WARNING|LoggedQuantity|count_rate read_from_hardware called when not connected to hardware
+2022-01-31T16:35:55|WARNING|LoggedQuantity|count_rate read_from_hardware called when not connected to hardware
+2022-01-31T16:35:56|WARNING|LoggedQuantity|count_rate read_from_hardware called when not connected to hardware
+2022-01-31T16:35:57|WARNING|LoggedQuantity|count_rate read_from_hardware called when not connected to hardware
+2022-01-31T16:35:58|WARNING|LoggedQuantity|count_rate read_from_hardware called when not connected to hardware
+2022-01-31T16:35:59|WARNING|LoggedQuantity|count_rate read_from_hardware called when not connected to hardware
+2022-01-31T16:35:59|WARNING|LoggedQuantity|count_rate read_from_hardware called when not connected to hardware
+2022-01-31T16:36:00|WARNING|LoggedQuantity|count_rate read_from_hardware called when not connected to hardware
+2022-01-31T16:36:01|WARNING|LoggedQuantity|count_rate read_from_hardware called when not connected to hardware
+2022-01-31T16:36:02|WARNING|LoggedQuantity|count_rate read_from_hardware called when not connected to hardware
+2022-01-31T16:36:03|WARNING|LoggedQuantity|count_rate read_from_hardware called when not connected to hardware
+2022-01-31T16:36:04|WARNING|LoggedQuantity|count_rate read_from_hardware called when not connected to hardware
+2022-01-31T16:36:05|WARNING|LoggedQuantity|count_rate read_from_hardware called when not connected to hardware
+2022-01-31T16:36:06|WARNING|LoggedQuantity|count_rate read_from_hardware called when not connected to hardware
+2022-01-31T16:36:07|WARNING|LoggedQuantity|count_rate read_from_hardware called when not connected to hardware
+2022-01-31T16:36:08|WARNING|LoggedQuantity|count_rate read_from_hardware called when not connected to hardware
+2022-01-31T16:36:08|WARNING|LoggedQuantity|count_rate read_from_hardware called when not connected to hardware
+2022-01-31T16:36:09|WARNING|LoggedQuantity|count_rate read_from_hardware called when not connected to hardware
+2022-01-31T16:36:10|WARNING|LoggedQuantity|count_rate read_from_hardware called when not connected to hardware
+2022-01-31T16:36:11|WARNING|LoggedQuantity|count_rate read_from_hardware called when not connected to hardware
+2022-01-31T16:36:12|WARNING|LoggedQuantity|count_rate read_from_hardware called when not connected to hardware
+2022-01-31T16:36:12|INFO|PowerScanMeasure|data saved E:\Natalie\220131_163612_power_scan.h5
+2022-01-31T16:36:12|INFO|PowerScanMeasure|power_scan start_stop False
+2022-01-31T16:36:12|INFO|PowerScanMeasure|measurement power_scan stopping run_post_run
+2022-01-31T16:36:12|INFO|PowerScanMeasure|measurement power_scan interrupt called
+2022-01-31T16:36:14|DEBUG|ScopeFoundryHW.ni_daq.devices.ni_counter_task|NI_CounterTask.set_channel-- Dev1/ctr0 /Dev1/PFI0
+2022-01-31T16:36:20|INFO|PowerScanMeasure|power_scan start_stop True
+2022-01-31T16:36:20|INFO|PowerScanMeasure|measurement power_scan start called from thread: 2408
+2022-01-31T16:36:41|INFO|PowerScanMeasure|data saved E:\Natalie\220131_163641_power_scan.h5
+2022-01-31T16:36:41|INFO|PowerScanMeasure|power_scan start_stop False
+2022-01-31T16:36:41|INFO|PowerScanMeasure|measurement power_scan stopping run_post_run
+2022-01-31T16:36:41|INFO|PowerScanMeasure|measurement power_scan interrupt called
+2022-01-31T16:36:53|INFO|PowerScanMeasure|power_scan start_stop True
+2022-01-31T16:36:53|INFO|PowerScanMeasure|measurement power_scan start called from thread: 2408
+2022-01-31T16:37:14|INFO|PowerScanMeasure|data saved E:\Natalie\220131_163714_power_scan.h5
+2022-01-31T16:37:14|INFO|PowerScanMeasure|power_scan start_stop False
+2022-01-31T16:37:14|INFO|PowerScanMeasure|measurement power_scan stopping run_post_run
+2022-01-31T16:37:14|INFO|PowerScanMeasure|measurement power_scan interrupt called
+2022-01-31T16:37:15|INFO|PowerMeterOptimizerMeasure|powermeter_optimizer start_stop True
+2022-01-31T16:37:15|INFO|PowerMeterOptimizerMeasure|measurement powermeter_optimizer start called from thread: 2408
+2022-01-31T16:37:17|INFO|PowerScanMeasure|power_scan start_stop True
+2022-01-31T16:37:17|INFO|PowerScanMeasure|measurement power_scan start called from thread: 2408
+2022-01-31T16:37:24|INFO|PowerScanMeasure|power_scan start_stop False
+2022-01-31T16:37:24|INFO|PowerScanMeasure|measurement power_scan stopping run_thread_run
+2022-01-31T16:37:24|INFO|PowerScanMeasure|measurement power_scan interrupt called
+2022-01-31T16:37:24|INFO|PowerScanMeasure|data saved E:\Natalie\220131_163724_power_scan.h5
+2022-01-31T16:37:37|INFO|PowerScanMeasure|power_scan start_stop True
+2022-01-31T16:37:37|INFO|PowerScanMeasure|measurement power_scan start called from thread: 2408
+2022-01-31T16:37:40|WARNING|LoggedQuantity|count_rate read_from_hardware called when not connected to hardware
+2022-01-31T16:37:41|WARNING|LoggedQuantity|count_rate read_from_hardware called when not connected to hardware
+2022-01-31T16:37:42|WARNING|LoggedQuantity|count_rate read_from_hardware called when not connected to hardware
+2022-01-31T16:37:43|WARNING|LoggedQuantity|count_rate read_from_hardware called when not connected to hardware
+2022-01-31T16:37:44|WARNING|LoggedQuantity|count_rate read_from_hardware called when not connected to hardware
+2022-01-31T16:37:45|WARNING|LoggedQuantity|count_rate read_from_hardware called when not connected to hardware
+2022-01-31T16:37:45|INFO|PowerScanMeasure|power_scan start_stop False
+2022-01-31T16:37:45|INFO|PowerScanMeasure|measurement power_scan stopping run_thread_run
+2022-01-31T16:37:45|INFO|PowerScanMeasure|measurement power_scan interrupt called
+2022-01-31T16:37:46|WARNING|LoggedQuantity|count_rate read_from_hardware called when not connected to hardware
+2022-01-31T16:37:46|INFO|PowerScanMeasure|data saved E:\Natalie\220131_163746_power_scan.h5
+2022-01-31T16:37:49|INFO|PowerScanMeasure|power_scan start_stop True
+2022-01-31T16:37:49|INFO|PowerScanMeasure|measurement power_scan start called from thread: 2408
+2022-01-31T16:37:52|WARNING|LoggedQuantity|count_rate read_from_hardware called when not connected to hardware
+2022-01-31T16:37:53|WARNING|LoggedQuantity|count_rate read_from_hardware called when not connected to hardware
+2022-01-31T16:37:54|WARNING|LoggedQuantity|count_rate read_from_hardware called when not connected to hardware
+2022-01-31T16:37:55|WARNING|LoggedQuantity|count_rate read_from_hardware called when not connected to hardware
+2022-01-31T16:37:56|WARNING|LoggedQuantity|count_rate read_from_hardware called when not connected to hardware
+2022-01-31T16:37:56|WARNING|LoggedQuantity|count_rate read_from_hardware called when not connected to hardware
+2022-01-31T16:37:57|WARNING|LoggedQuantity|count_rate read_from_hardware called when not connected to hardware
+2022-01-31T16:37:58|WARNING|LoggedQuantity|count_rate read_from_hardware called when not connected to hardware
+2022-01-31T16:37:59|WARNING|LoggedQuantity|count_rate read_from_hardware called when not connected to hardware
+2022-01-31T16:38:00|WARNING|LoggedQuantity|count_rate read_from_hardware called when not connected to hardware
+2022-01-31T16:38:01|WARNING|LoggedQuantity|count_rate read_from_hardware called when not connected to hardware
+2022-01-31T16:38:02|WARNING|LoggedQuantity|count_rate read_from_hardware called when not connected to hardware
+2022-01-31T16:38:03|WARNING|LoggedQuantity|count_rate read_from_hardware called when not connected to hardware
+2022-01-31T16:38:04|WARNING|LoggedQuantity|count_rate read_from_hardware called when not connected to hardware
+2022-01-31T16:38:05|WARNING|LoggedQuantity|count_rate read_from_hardware called when not connected to hardware
+2022-01-31T16:38:05|WARNING|LoggedQuantity|count_rate read_from_hardware called when not connected to hardware
+2022-01-31T16:38:06|WARNING|LoggedQuantity|count_rate read_from_hardware called when not connected to hardware
+2022-01-31T16:38:07|WARNING|LoggedQuantity|count_rate read_from_hardware called when not connected to hardware
+2022-01-31T16:38:08|WARNING|LoggedQuantity|count_rate read_from_hardware called when not connected to hardware
+2022-01-31T16:38:09|WARNING|LoggedQuantity|count_rate read_from_hardware called when not connected to hardware
+2022-01-31T16:38:10|WARNING|LoggedQuantity|count_rate read_from_hardware called when not connected to hardware
+2022-01-31T16:38:11|WARNING|LoggedQuantity|count_rate read_from_hardware called when not connected to hardware
+2022-01-31T16:38:11|INFO|PowerScanMeasure|data saved E:\Natalie\220131_163811_power_scan.h5
+2022-01-31T16:38:11|INFO|PowerScanMeasure|power_scan start_stop False
+2022-01-31T16:38:11|INFO|PowerScanMeasure|measurement power_scan stopping run_post_run
+2022-01-31T16:38:12|INFO|PowerScanMeasure|measurement power_scan interrupt called
+2022-01-31T16:38:16|DEBUG|root|close
+2022-01-31T16:38:17|DEBUG|root|closing
+2022-01-31T16:38:17|INFO|NearFieldMicroscope|on_close
+2022-01-31T16:38:17|INFO|NearFieldMicroscope|disconnecting hydraharp
+2022-01-31T16:38:17|INFO|NearFieldMicroscope|disconnecting thorlabs_powermeter
+2022-01-31T16:38:18|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2022-01-31T16:38:18|INFO|NearFieldMicroscope|disconnecting motorized_polarizer
+2022-01-31T16:38:18|INFO|NearFieldMicroscope|disconnecting apd_counter
+2022-01-31T16:38:18|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2022-01-31T16:38:18|INFO|NearFieldMicroscope|disconnecting dynamixel_servos
+2022-01-31T16:38:18|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2022-01-31T16:38:18|INFO|NearFieldMicroscope|disconnecting power_wheel
+2022-01-31T16:38:18|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2022-01-31T16:38:18|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2022-01-31T16:38:18|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2022-01-31T16:38:18|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2022-01-31T16:38:18|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2022-01-31T16:38:18|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2022-01-31T16:38:19|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2022-01-31T16:38:19|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2022-01-31T16:38:19|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2022-01-31T16:38:19|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2022-01-31T16:38:19|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2022-01-31T16:38:19|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2022-01-31T16:38:19|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2022-01-31T16:38:19|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2022-01-31T16:38:19|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2022-01-31T16:38:19|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2022-01-31T16:38:20|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware

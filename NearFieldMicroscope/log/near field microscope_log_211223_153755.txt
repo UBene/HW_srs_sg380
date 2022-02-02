@@ -1,0 +1,203 @@
+2021-12-23T15:37:57|INFO|HydraHarpOptimizerMeasure|hydraharp_channel_optimizer start_stop False
+2021-12-23T15:37:57|INFO|HydraHarpOptimizerMeasure|measurement hydraharp_channel_optimizer stopping stop_first
+2021-12-23T15:37:57|INFO|HydraHarpHistogramMeasure|hydraharp_histogram start_stop False
+2021-12-23T15:37:57|INFO|HydraHarpHistogramMeasure|measurement hydraharp_histogram stopping stop_first
+2021-12-23T15:37:57|INFO|PowerScanMeasure|power_scan start_stop False
+2021-12-23T15:37:57|INFO|PowerScanMeasure|measurement power_scan stopping stop_first
+2021-12-23T15:37:57|INFO|PowerMeterOptimizerMeasure|powermeter_optimizer start_stop False
+2021-12-23T15:37:57|INFO|PowerMeterOptimizerMeasure|measurement powermeter_optimizer stopping stop_first
+2021-12-23T15:37:57|INFO|Sequencer|sequencer start_stop False
+2021-12-23T15:37:57|INFO|Sequencer|measurement sequencer stopping stop_first
+2021-12-23T15:37:57|INFO|APDOptimizerCBMeasurement|apd_optimizer start_stop False
+2021-12-23T15:37:57|INFO|APDOptimizerCBMeasurement|measurement apd_optimizer stopping stop_first
+2021-12-23T15:37:57|INFO|NearFieldMicroscope|setting up figures for hydraharp_channel_optimizer measurement hydraharp_channel_optimizer
+2021-12-23T15:37:57|INFO|HydraHarpOptimizerMeasure|hydraharp_channel_optimizer start_stop False
+2021-12-23T15:37:57|INFO|HydraHarpOptimizerMeasure|measurement hydraharp_channel_optimizer stopping stop_first
+2021-12-23T15:37:57|INFO|NearFieldMicroscope|setting up figures for hydraharp_histogram measurement hydraharp_histogram
+2021-12-23T15:37:57|INFO|NearFieldMicroscope|setting up figures for power_scan measurement power_scan
+2021-12-23T15:37:57|INFO|PowerScanMeasure|power_scan start_stop False
+2021-12-23T15:37:57|INFO|PowerScanMeasure|measurement power_scan stopping stop_first
+2021-12-23T15:37:57|INFO|NearFieldMicroscope|setting up figures for powermeter_optimizer measurement powermeter_optimizer
+2021-12-23T15:37:57|INFO|PowerMeterOptimizerMeasure|powermeter_optimizer start_stop False
+2021-12-23T15:37:57|INFO|PowerMeterOptimizerMeasure|measurement powermeter_optimizer stopping stop_first
+2021-12-23T15:37:57|INFO|NearFieldMicroscope|setting up figures for sequencer measurement sequencer
+2021-12-23T15:37:57|INFO|Sequencer|sequencer start_stop False
+2021-12-23T15:37:57|INFO|Sequencer|measurement sequencer stopping stop_first
+2021-12-23T15:37:57|WARNING|HydraHarpOptimizerMeasure|Measurement.gui is deprecated, use Measurement.app <class 'DeprecationWarning'>
+2021-12-23T15:37:57|WARNING|HydraHarpHistogramMeasure|Measurement.gui is deprecated, use Measurement.app <class 'DeprecationWarning'>
+2021-12-23T15:37:57|WARNING|PowerScanMeasure|Measurement.gui is deprecated, use Measurement.app <class 'DeprecationWarning'>
+2021-12-23T15:37:57|WARNING|PowerMeterOptimizerMeasure|Measurement.gui is deprecated, use Measurement.app <class 'DeprecationWarning'>
+2021-12-23T15:37:57|WARNING|Sequencer|Measurement.gui is deprecated, use Measurement.app <class 'DeprecationWarning'>
+2021-12-23T15:37:57|WARNING|APDOptimizerCBMeasurement|Measurement.gui is deprecated, use Measurement.app <class 'DeprecationWarning'>
+2021-12-23T15:37:57|INFO|NearFieldMicroscope|setting up figures for apd_optimizer measurement apd_optimizer
+2021-12-23T15:37:57|INFO|APDOptimizerCBMeasurement|apd_optimizer start_stop False
+2021-12-23T15:37:57|INFO|APDOptimizerCBMeasurement|measurement apd_optimizer stopping stop_first
+2021-12-23T15:37:57|INFO|NearFieldMicroscope|ini settings loading from near_field_microscope_defaults.ini
+2021-12-23T15:37:57|DEBUG|FileLQ|save_dir: update_value 'C:\\Users\\RAMAN\\workspace\\NearField\\NearFieldMicroscope\\data' --> 'E:\\Natalie'    sender=None
+2021-12-23T15:37:57|DEBUG|FileLQ|save_dir: different values C:\Users\RAMAN\workspace\NearField\NearFieldMicroscope\data E:\Natalie
+2021-12-23T15:37:57|INFO|NearFieldMicroscope|hardware/hydraharp
+2021-12-23T15:37:57|INFO|NearFieldMicroscope|hardware/pololu_maestro
+2021-12-23T15:38:01|INFO|NearFieldMicroscope|hardware/power_wheel
+2021-12-23T15:38:01|INFO|NearFieldMicroscope|hardware/thorlabs_powermeter
+2021-12-23T15:38:01|INFO|NearFieldMicroscope|hardware/motorized_polarizer
+2021-12-23T15:38:01|INFO|NearFieldMicroscope|hardware/apd_counter
+2021-12-23T15:38:01|INFO|NearFieldMicroscope|ini settings loaded from: near_field_microscope_defaults.ini
+2021-12-23T15:38:26|DEBUG|ScopeFoundryHW.thorlabs_powermeter.thorlabs_pm100d|get_auto_range '1\n'
+2021-12-23T15:38:26|DEBUG|ScopeFoundryHW.thorlabs_powermeter.thorlabs_pm100d|get_auto_range '1\n'
+2021-12-23T15:38:31|DEBUG|ScopeFoundryHW.ni_daq.devices.ni_counter_task|NI_CounterTask.set_channel-- Dev1/ctr0 /Dev1/PFI0
+2021-12-23T15:39:06|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 842, in update_math
+    new_val = self.math_func(*lq_vals)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 36, in <lambda>
+    func=lambda raw, rmin, rmax, scale: scale*( (raw - rmin)/(rmax-rmin) ),
+ZeroDivisionError: float division by zero
+
+2021-12-23T15:39:14|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 850, in update_math_reverse
+    new_vals = self.reverse_math_func(self.val, lq_vals)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 32, in pos_rev_func
+    new_raw = rmin + new_pos/scale*(rmax-rmin)
+ZeroDivisionError: float division by zero
+
+2021-12-23T15:39:14|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 850, in update_math_reverse
+    new_vals = self.reverse_math_func(self.val, lq_vals)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 32, in pos_rev_func
+    new_raw = rmin + new_pos/scale*(rmax-rmin)
+ZeroDivisionError: float division by zero
+
+2021-12-23T15:39:15|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 850, in update_math_reverse
+    new_vals = self.reverse_math_func(self.val, lq_vals)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 32, in pos_rev_func
+    new_raw = rmin + new_pos/scale*(rmax-rmin)
+ZeroDivisionError: float division by zero
+
+2021-12-23T15:39:15|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 850, in update_math_reverse
+    new_vals = self.reverse_math_func(self.val, lq_vals)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 32, in pos_rev_func
+    new_raw = rmin + new_pos/scale*(rmax-rmin)
+ZeroDivisionError: float division by zero
+
+2021-12-23T15:39:16|INFO|PowerMeterOptimizerMeasure|powermeter_optimizer start_stop True
+2021-12-23T15:39:16|INFO|PowerMeterOptimizerMeasure|measurement powermeter_optimizer start called from thread: 16948
+2021-12-23T15:41:22|INFO|PowerScanMeasure|power_scan start_stop True
+2021-12-23T15:41:22|INFO|PowerScanMeasure|measurement power_scan start called from thread: 16948
+2021-12-23T16:00:38|INFO|PowerScanMeasure|data saved E:\Natalie\211223_160038_power_scan.h5
+2021-12-23T16:00:38|INFO|PowerScanMeasure|power_scan start_stop False
+2021-12-23T16:00:38|INFO|PowerScanMeasure|measurement power_scan stopping run_post_run
+2021-12-23T16:00:38|INFO|PowerScanMeasure|measurement power_scan interrupt called
+2021-12-23T16:01:27|INFO|PowerScanMeasure|power_scan start_stop True
+2021-12-23T16:01:27|INFO|PowerScanMeasure|measurement power_scan start called from thread: 16948
+2021-12-23T16:20:51|INFO|PowerScanMeasure|data saved E:\Natalie\211223_162051_power_scan.h5
+2021-12-23T16:20:51|INFO|PowerScanMeasure|power_scan start_stop False
+2021-12-23T16:20:51|INFO|PowerScanMeasure|measurement power_scan stopping run_post_run
+2021-12-23T16:20:51|INFO|PowerScanMeasure|measurement power_scan interrupt called
+2021-12-23T16:31:15|INFO|PowerScanMeasure|power_scan start_stop True
+2021-12-23T16:31:15|INFO|PowerScanMeasure|measurement power_scan start called from thread: 16948
+2021-12-23T16:50:37|INFO|PowerScanMeasure|data saved E:\Natalie\211223_165037_power_scan.h5
+2021-12-23T16:50:37|INFO|PowerScanMeasure|power_scan start_stop False
+2021-12-23T16:50:37|INFO|PowerScanMeasure|measurement power_scan stopping run_post_run
+2021-12-23T16:50:37|INFO|PowerScanMeasure|measurement power_scan interrupt called
+2021-12-23T16:52:56|INFO|PowerScanMeasure|power_scan start_stop True
+2021-12-23T16:52:56|INFO|PowerScanMeasure|measurement power_scan start called from thread: 16948
+2021-12-23T17:12:18|INFO|PowerScanMeasure|data saved E:\Natalie\211223_171218_power_scan.h5
+2021-12-23T17:12:18|INFO|PowerScanMeasure|power_scan start_stop False
+2021-12-23T17:12:18|INFO|PowerScanMeasure|measurement power_scan stopping run_post_run
+2021-12-23T17:12:18|INFO|PowerScanMeasure|measurement power_scan interrupt called
+2021-12-23T17:24:26|INFO|PowerScanMeasure|power_scan start_stop True
+2021-12-23T17:24:26|INFO|PowerScanMeasure|measurement power_scan start called from thread: 16948
+2021-12-23T17:38:38|INFO|PowerScanMeasure|data saved E:\Natalie\211223_173838_power_scan.h5
+2021-12-23T17:38:38|INFO|PowerScanMeasure|power_scan start_stop False
+2021-12-23T17:38:38|INFO|PowerScanMeasure|measurement power_scan stopping run_post_run
+2021-12-23T17:38:38|INFO|PowerScanMeasure|measurement power_scan interrupt called
+2021-12-23T17:39:11|INFO|PowerScanMeasure|power_scan start_stop True
+2021-12-23T17:39:11|INFO|PowerScanMeasure|measurement power_scan start called from thread: 16948
+2021-12-23T17:53:30|INFO|PowerScanMeasure|data saved E:\Natalie\211223_175330_power_scan.h5
+2021-12-23T17:53:30|INFO|PowerScanMeasure|power_scan start_stop False
+2021-12-23T17:53:30|INFO|PowerScanMeasure|measurement power_scan stopping run_post_run
+2021-12-23T17:53:30|INFO|PowerScanMeasure|measurement power_scan interrupt called
+2021-12-23T18:01:49|INFO|PowerScanMeasure|power_scan start_stop True
+2021-12-23T18:01:49|INFO|PowerScanMeasure|measurement power_scan start called from thread: 16948
+2021-12-23T18:16:07|INFO|PowerScanMeasure|data saved E:\Natalie\211223_181607_power_scan.h5
+2021-12-23T18:16:07|INFO|PowerScanMeasure|power_scan start_stop False
+2021-12-23T18:16:07|INFO|PowerScanMeasure|measurement power_scan stopping run_post_run
+2021-12-23T18:16:07|INFO|PowerScanMeasure|measurement power_scan interrupt called
+2021-12-23T18:17:29|INFO|PowerScanMeasure|power_scan start_stop True
+2021-12-23T18:17:29|INFO|PowerScanMeasure|measurement power_scan start called from thread: 16948
+2021-12-23T18:31:47|INFO|PowerScanMeasure|data saved E:\Natalie\211223_183147_power_scan.h5
+2021-12-23T18:31:47|INFO|PowerScanMeasure|power_scan start_stop False
+2021-12-23T18:31:48|INFO|PowerScanMeasure|measurement power_scan stopping run_post_run
+2021-12-23T18:31:48|INFO|PowerScanMeasure|measurement power_scan interrupt called
+2021-12-23T18:52:58|INFO|PowerScanMeasure|power_scan start_stop True
+2021-12-23T18:52:58|INFO|PowerScanMeasure|measurement power_scan start called from thread: 16948
+2021-12-23T19:12:07|INFO|PowerScanMeasure|data saved E:\Natalie\211223_191207_power_scan.h5
+2021-12-23T19:12:07|INFO|PowerScanMeasure|power_scan start_stop False
+2021-12-23T19:12:07|INFO|PowerScanMeasure|measurement power_scan stopping run_post_run
+2021-12-23T19:12:07|INFO|PowerScanMeasure|measurement power_scan interrupt called
+2021-12-23T19:12:36|INFO|PowerScanMeasure|power_scan start_stop True
+2021-12-23T19:12:36|INFO|PowerScanMeasure|measurement power_scan start called from thread: 16948
+2021-12-23T19:31:45|INFO|PowerScanMeasure|data saved E:\Natalie\211223_193145_power_scan.h5
+2021-12-23T19:31:45|INFO|PowerScanMeasure|power_scan start_stop False
+2021-12-23T19:31:45|INFO|PowerScanMeasure|measurement power_scan stopping run_post_run
+2021-12-23T19:31:45|INFO|PowerScanMeasure|measurement power_scan interrupt called
+2021-12-23T20:04:47|INFO|PowerScanMeasure|power_scan start_stop True
+2021-12-23T20:04:47|INFO|PowerScanMeasure|measurement power_scan start called from thread: 16948
+2021-12-23T20:23:45|INFO|PowerScanMeasure|data saved E:\Natalie\211223_202345_power_scan.h5
+2021-12-23T20:23:46|INFO|PowerScanMeasure|power_scan start_stop False
+2021-12-23T20:23:46|INFO|PowerScanMeasure|measurement power_scan stopping run_post_run
+2021-12-23T20:23:46|INFO|PowerScanMeasure|measurement power_scan interrupt called
+2021-12-23T20:24:07|INFO|PowerScanMeasure|power_scan start_stop True
+2021-12-23T20:24:07|INFO|PowerScanMeasure|measurement power_scan start called from thread: 16948
+2021-12-23T20:43:08|INFO|PowerScanMeasure|data saved E:\Natalie\211223_204308_power_scan.h5
+2021-12-23T20:43:08|INFO|PowerScanMeasure|power_scan start_stop False
+2021-12-23T20:43:08|INFO|PowerScanMeasure|measurement power_scan stopping run_post_run
+2021-12-23T20:43:08|INFO|PowerScanMeasure|measurement power_scan interrupt called
+2021-12-23T20:50:34|INFO|PowerScanMeasure|power_scan start_stop True
+2021-12-23T20:50:34|INFO|PowerScanMeasure|measurement power_scan start called from thread: 16948
+2021-12-23T21:07:07|INFO|PowerScanMeasure|data saved E:\Natalie\211223_210707_power_scan.h5
+2021-12-23T21:07:07|INFO|PowerScanMeasure|power_scan start_stop False
+2021-12-23T21:07:07|INFO|PowerScanMeasure|measurement power_scan stopping run_post_run
+2021-12-23T21:07:07|INFO|PowerScanMeasure|measurement power_scan interrupt called
+2021-12-23T21:07:42|INFO|PowerScanMeasure|power_scan start_stop True
+2021-12-23T21:07:42|INFO|PowerScanMeasure|measurement power_scan start called from thread: 16948
+2021-12-23T21:24:17|INFO|PowerScanMeasure|data saved E:\Natalie\211223_212417_power_scan.h5
+2021-12-23T21:24:17|INFO|PowerScanMeasure|power_scan start_stop False
+2021-12-23T21:24:17|INFO|PowerScanMeasure|measurement power_scan stopping run_post_run
+2021-12-23T21:24:17|INFO|PowerScanMeasure|measurement power_scan interrupt called
+2021-12-23T21:35:46|INFO|PowerScanMeasure|power_scan start_stop True
+2021-12-23T21:35:46|INFO|PowerScanMeasure|measurement power_scan start called from thread: 16948
+2021-12-23T21:54:39|INFO|PowerScanMeasure|data saved E:\Natalie\211223_215439_power_scan.h5
+2021-12-23T21:54:39|INFO|PowerScanMeasure|power_scan start_stop False
+2021-12-23T21:54:40|INFO|PowerScanMeasure|measurement power_scan stopping run_post_run
+2021-12-23T21:54:40|INFO|PowerScanMeasure|measurement power_scan interrupt called
+2021-12-23T21:56:09|INFO|PowerScanMeasure|power_scan start_stop True
+2021-12-23T21:56:09|INFO|PowerScanMeasure|measurement power_scan start called from thread: 16948
+2021-12-23T22:15:07|INFO|PowerScanMeasure|data saved E:\Natalie\211223_221507_power_scan.h5
+2021-12-23T22:15:07|INFO|PowerScanMeasure|power_scan start_stop False
+2021-12-23T22:15:07|INFO|PowerScanMeasure|measurement power_scan stopping run_post_run
+2021-12-23T22:15:07|INFO|PowerScanMeasure|measurement power_scan interrupt called
+2021-12-23T22:28:07|INFO|PowerScanMeasure|power_scan start_stop True
+2021-12-23T22:28:07|INFO|PowerScanMeasure|measurement power_scan start called from thread: 16948
+2021-12-23T22:44:42|INFO|PowerScanMeasure|data saved E:\Natalie\211223_224442_power_scan.h5
+2021-12-23T22:44:42|INFO|PowerScanMeasure|power_scan start_stop False
+2021-12-23T22:44:42|INFO|PowerScanMeasure|measurement power_scan stopping run_post_run
+2021-12-23T22:44:42|INFO|PowerScanMeasure|measurement power_scan interrupt called
+2021-12-23T22:46:52|INFO|PowerScanMeasure|power_scan start_stop True
+2021-12-23T22:46:52|INFO|PowerScanMeasure|measurement power_scan start called from thread: 16948
+2021-12-23T23:03:27|INFO|PowerScanMeasure|data saved E:\Natalie\211223_230327_power_scan.h5
+2021-12-23T23:03:27|INFO|PowerScanMeasure|power_scan start_stop False
+2021-12-23T23:03:27|INFO|PowerScanMeasure|measurement power_scan stopping run_post_run
+2021-12-23T23:03:27|INFO|PowerScanMeasure|measurement power_scan interrupt called
+2021-12-24T00:32:38|DEBUG|root|close
+2021-12-24T00:32:40|DEBUG|root|closing
+2021-12-24T00:32:40|INFO|NearFieldMicroscope|on_close
+2021-12-24T00:32:40|INFO|NearFieldMicroscope|disconnecting hydraharp
+2021-12-24T00:32:40|INFO|NearFieldMicroscope|disconnecting pololu_maestro
+2021-12-24T00:32:40|INFO|NearFieldMicroscope|disconnecting power_wheel
+2021-12-24T00:32:40|INFO|NearFieldMicroscope|disconnecting thorlabs_powermeter
+2021-12-24T00:32:40|INFO|NearFieldMicroscope|disconnecting motorized_polarizer
+2021-12-24T00:32:40|INFO|NearFieldMicroscope|disconnecting apd_counter
+2021-12-24T00:32:40|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2021-12-24T00:32:40|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware

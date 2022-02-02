@@ -1,0 +1,363 @@
+2021-11-15T16:41:37|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\widgets\SpinBox.py", line 349, in stepBy
+    step = self.opts['minStep']
+KeyError: 'minStep'
+
+2021-11-15T16:42:01|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 53, in <lambda>
+    write_func=lambda pos, n=servo_num: self.dev.write_position(n,pos)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\pololu_interface.py", line 71, in write_position
+    self.ask_cmd(cmd)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\pololu_interface.py", line 44, in ask_cmd
+    self.ser.write(bytes(message, 'latin-1'))
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\serial\serialwin32.py", line 315, in write
+    raise SerialException("WriteFile failed ({!r})".format(ctypes.WinError()))
+serial.serialutil.SerialException: WriteFile failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+
+2021-11-15T16:42:42|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 860, in update_math_reverse
+    lq.update_value(new_val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 274, in update_value
+    self.hardware_set_func(self.val)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 53, in <lambda>
+    write_func=lambda pos, n=servo_num: self.dev.write_position(n,pos)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\pololu_interface.py", line 71, in write_position
+    self.ask_cmd(cmd)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\pololu_interface.py", line 44, in ask_cmd
+    self.ser.write(bytes(message, 'latin-1'))
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\serial\serialwin32.py", line 315, in write
+    raise SerialException("WriteFile failed ({!r})".format(ctypes.WinError()))
+serial.serialutil.SerialException: WriteFile failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+
+2021-11-15T16:42:59|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\thorlabs_powermeter\thorlabs_powermeter.py", line 52, in connect
+    from .thorlabs_pm100d import ThorlabsPM100D
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\thorlabs_powermeter\thorlabs_pm100d.py", line 2, in <module>
+    import visa
+ModuleNotFoundError: No module named 'visa'
+
+2021-11-15T16:45:35|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\thorlabs_powermeter\thorlabs_powermeter.py", line 52, in connect
+    from .thorlabs_pm100d import ThorlabsPM100D
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\thorlabs_powermeter\thorlabs_pm100d.py", line 2, in <module>
+    import visa
+ModuleNotFoundError: No module named 'visa'
+
+2021-11-15T16:45:36|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\thorlabs_powermeter\thorlabs_powermeter.py", line 52, in connect
+    from .thorlabs_pm100d import ThorlabsPM100D
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\thorlabs_powermeter\thorlabs_pm100d.py", line 2, in <module>
+    import visa
+ModuleNotFoundError: No module named 'visa'
+
+2021-11-15T16:45:47|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\thorlabs_powermeter\thorlabs_powermeter.py", line 52, in connect
+    from .thorlabs_pm100d import ThorlabsPM100D
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\thorlabs_powermeter\thorlabs_pm100d.py", line 2, in <module>
+    import visa
+ModuleNotFoundError: No module named 'visa'
+
+2021-11-15T16:45:47|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\thorlabs_powermeter\thorlabs_powermeter.py", line 52, in connect
+    from .thorlabs_pm100d import ThorlabsPM100D
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\thorlabs_powermeter\thorlabs_pm100d.py", line 2, in <module>
+    import visa
+ModuleNotFoundError: No module named 'visa'
+
+2021-11-15T16:47:26|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\thorlabs_powermeter\thorlabs_powermeter.py", line 53, in connect
+    self.power_meter = ThorlabsPM100D(debug=self.settings['debug_mode'], port=self.settings['port'])
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\thorlabs_powermeter\thorlabs_pm100d.py", line 35, in __init__
+    self.pm = self.visa_resource_manager.get_instrument(port)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyvisa\highlevel.py", line 3358, in get_instrument
+    resource_name, access_mode, open_timeout, resource_pyclass, **kwargs
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyvisa\highlevel.py", line 3304, in open_resource
+    res.open(access_mode, open_timeout)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyvisa\resources\resource.py", line 298, in open
+    self._resource_name, access_mode, open_timeout
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyvisa\highlevel.py", line 3232, in open_bare_resource
+    return self.visalib.open(self.session, resource_name, access_mode, open_timeout)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyvisa\ctwrapper\functions.py", line 1852, in open
+    session, resource_name, access_mode, open_timeout, byref(out_session)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyvisa\ctwrapper\highlevel.py", line 222, in _return_handler
+    return self.handle_return_value(session, ret_value)  # type: ignore
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyvisa\highlevel.py", line 251, in handle_return_value
+    raise errors.VisaIOError(rv)
+pyvisa.errors.VisaIOError: VI_ERROR_RSRC_NFOUND (-1073807343): Insufficient location information or the requested device or resource is not present in the system.
+
+2021-11-15T16:52:03|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\thorlabs_powermeter\thorlabs_powermeter.py", line 53, in connect
+    self.power_meter = ThorlabsPM100D(debug=self.settings['debug_mode'], port=self.settings['port'])
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\thorlabs_powermeter\thorlabs_pm100d.py", line 35, in __init__
+    self.pm = self.visa_resource_manager.get_instrument(port)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyvisa\highlevel.py", line 3358, in get_instrument
+    resource_name, access_mode, open_timeout, resource_pyclass, **kwargs
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyvisa\highlevel.py", line 3304, in open_resource
+    res.open(access_mode, open_timeout)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyvisa\resources\resource.py", line 298, in open
+    self._resource_name, access_mode, open_timeout
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyvisa\highlevel.py", line 3232, in open_bare_resource
+    return self.visalib.open(self.session, resource_name, access_mode, open_timeout)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyvisa\ctwrapper\functions.py", line 1852, in open
+    session, resource_name, access_mode, open_timeout, byref(out_session)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyvisa\ctwrapper\highlevel.py", line 222, in _return_handler
+    return self.handle_return_value(session, ret_value)  # type: ignore
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyvisa\highlevel.py", line 251, in handle_return_value
+    raise errors.VisaIOError(rv)
+pyvisa.errors.VisaIOError: VI_ERROR_RSRC_NFOUND (-1073807343): Insufficient location information or the requested device or resource is not present in the system.
+
+2021-11-15T16:52:05|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\thorlabs_powermeter\thorlabs_powermeter.py", line 53, in connect
+    self.power_meter = ThorlabsPM100D(debug=self.settings['debug_mode'], port=self.settings['port'])
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\thorlabs_powermeter\thorlabs_pm100d.py", line 35, in __init__
+    self.pm = self.visa_resource_manager.get_instrument(port)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyvisa\highlevel.py", line 3358, in get_instrument
+    resource_name, access_mode, open_timeout, resource_pyclass, **kwargs
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyvisa\highlevel.py", line 3304, in open_resource
+    res.open(access_mode, open_timeout)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyvisa\resources\resource.py", line 298, in open
+    self._resource_name, access_mode, open_timeout
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyvisa\highlevel.py", line 3232, in open_bare_resource
+    return self.visalib.open(self.session, resource_name, access_mode, open_timeout)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyvisa\ctwrapper\functions.py", line 1852, in open
+    session, resource_name, access_mode, open_timeout, byref(out_session)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyvisa\ctwrapper\highlevel.py", line 222, in _return_handler
+    return self.handle_return_value(session, ret_value)  # type: ignore
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyvisa\highlevel.py", line 251, in handle_return_value
+    raise errors.VisaIOError(rv)
+pyvisa.errors.VisaIOError: VI_ERROR_RSRC_NFOUND (-1073807343): Insufficient location information or the requested device or resource is not present in the system.
+
+2021-11-15T16:52:49|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\thorlabs_powermeter\thorlabs_powermeter.py", line 53, in connect
+    self.power_meter = ThorlabsPM100D(debug=self.settings['debug_mode'], port=self.settings['port'])
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\thorlabs_powermeter\thorlabs_pm100d.py", line 35, in __init__
+    self.pm = self.visa_resource_manager.get_instrument(port)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyvisa\highlevel.py", line 3358, in get_instrument
+    resource_name, access_mode, open_timeout, resource_pyclass, **kwargs
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyvisa\highlevel.py", line 3304, in open_resource
+    res.open(access_mode, open_timeout)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyvisa\resources\resource.py", line 298, in open
+    self._resource_name, access_mode, open_timeout
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyvisa\highlevel.py", line 3232, in open_bare_resource
+    return self.visalib.open(self.session, resource_name, access_mode, open_timeout)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyvisa\ctwrapper\functions.py", line 1852, in open
+    session, resource_name, access_mode, open_timeout, byref(out_session)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyvisa\ctwrapper\highlevel.py", line 222, in _return_handler
+    return self.handle_return_value(session, ret_value)  # type: ignore
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyvisa\highlevel.py", line 251, in handle_return_value
+    raise errors.VisaIOError(rv)
+pyvisa.errors.VisaIOError: VI_ERROR_RSRC_NFOUND (-1073807343): Insufficient location information or the requested device or resource is not present in the system.
+
+2021-11-15T16:53:05|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\thorlabs_powermeter\thorlabs_powermeter.py", line 53, in connect
+    self.power_meter = ThorlabsPM100D(debug=self.settings['debug_mode'], port=self.settings['port'])
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\thorlabs_powermeter\thorlabs_pm100d.py", line 35, in __init__
+    self.pm = self.visa_resource_manager.get_instrument(port)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyvisa\highlevel.py", line 3358, in get_instrument
+    resource_name, access_mode, open_timeout, resource_pyclass, **kwargs
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyvisa\highlevel.py", line 3304, in open_resource
+    res.open(access_mode, open_timeout)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyvisa\resources\resource.py", line 298, in open
+    self._resource_name, access_mode, open_timeout
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyvisa\highlevel.py", line 3232, in open_bare_resource
+    return self.visalib.open(self.session, resource_name, access_mode, open_timeout)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyvisa\ctwrapper\functions.py", line 1852, in open
+    session, resource_name, access_mode, open_timeout, byref(out_session)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyvisa\ctwrapper\highlevel.py", line 222, in _return_handler
+    return self.handle_return_value(session, ret_value)  # type: ignore
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyvisa\highlevel.py", line 251, in handle_return_value
+    raise errors.VisaIOError(rv)
+pyvisa.errors.VisaIOError: VI_ERROR_RSRC_NFOUND (-1073807343): Insufficient location information or the requested device or resource is not present in the system.
+
+2021-11-15T16:54:23|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\thorlabs_powermeter\thorlabs_powermeter.py", line 53, in connect
+    self.power_meter = ThorlabsPM100D(debug=self.settings['debug_mode'], port=self.settings['port'])
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\thorlabs_powermeter\thorlabs_pm100d.py", line 35, in __init__
+    self.pm = self.visa_resource_manager.get_instrument(port)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyvisa\highlevel.py", line 3358, in get_instrument
+    resource_name, access_mode, open_timeout, resource_pyclass, **kwargs
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyvisa\highlevel.py", line 3304, in open_resource
+    res.open(access_mode, open_timeout)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyvisa\resources\resource.py", line 298, in open
+    self._resource_name, access_mode, open_timeout
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyvisa\highlevel.py", line 3232, in open_bare_resource
+    return self.visalib.open(self.session, resource_name, access_mode, open_timeout)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyvisa\ctwrapper\functions.py", line 1852, in open
+    session, resource_name, access_mode, open_timeout, byref(out_session)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyvisa\ctwrapper\highlevel.py", line 222, in _return_handler
+    return self.handle_return_value(session, ret_value)  # type: ignore
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyvisa\highlevel.py", line 251, in handle_return_value
+    raise errors.VisaIOError(rv)
+pyvisa.errors.VisaIOError: VI_ERROR_RSRC_NFOUND (-1073807343): Insufficient location information or the requested device or resource is not present in the system.
+
+2021-11-15T16:54:24|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\thorlabs_powermeter\thorlabs_powermeter.py", line 53, in connect
+    self.power_meter = ThorlabsPM100D(debug=self.settings['debug_mode'], port=self.settings['port'])
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\thorlabs_powermeter\thorlabs_pm100d.py", line 35, in __init__
+    self.pm = self.visa_resource_manager.get_instrument(port)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyvisa\highlevel.py", line 3358, in get_instrument
+    resource_name, access_mode, open_timeout, resource_pyclass, **kwargs
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyvisa\highlevel.py", line 3304, in open_resource
+    res.open(access_mode, open_timeout)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyvisa\resources\resource.py", line 298, in open
+    self._resource_name, access_mode, open_timeout
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyvisa\highlevel.py", line 3232, in open_bare_resource
+    return self.visalib.open(self.session, resource_name, access_mode, open_timeout)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyvisa\ctwrapper\functions.py", line 1852, in open
+    session, resource_name, access_mode, open_timeout, byref(out_session)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyvisa\ctwrapper\highlevel.py", line 222, in _return_handler
+    return self.handle_return_value(session, ret_value)  # type: ignore
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyvisa\highlevel.py", line 251, in handle_return_value
+    raise errors.VisaIOError(rv)
+pyvisa.errors.VisaIOError: VI_ERROR_RSRC_NFOUND (-1073807343): Insufficient location information or the requested device or resource is not present in the system.
+
+2021-11-15T16:54:24|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\thorlabs_powermeter\thorlabs_powermeter.py", line 53, in connect
+    self.power_meter = ThorlabsPM100D(debug=self.settings['debug_mode'], port=self.settings['port'])
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\thorlabs_powermeter\thorlabs_pm100d.py", line 35, in __init__
+    self.pm = self.visa_resource_manager.get_instrument(port)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyvisa\highlevel.py", line 3358, in get_instrument
+    resource_name, access_mode, open_timeout, resource_pyclass, **kwargs
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyvisa\highlevel.py", line 3304, in open_resource
+    res.open(access_mode, open_timeout)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyvisa\resources\resource.py", line 298, in open
+    self._resource_name, access_mode, open_timeout
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyvisa\highlevel.py", line 3232, in open_bare_resource
+    return self.visalib.open(self.session, resource_name, access_mode, open_timeout)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyvisa\ctwrapper\functions.py", line 1852, in open
+    session, resource_name, access_mode, open_timeout, byref(out_session)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyvisa\ctwrapper\highlevel.py", line 222, in _return_handler
+    return self.handle_return_value(session, ret_value)  # type: ignore
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyvisa\highlevel.py", line 251, in handle_return_value
+    raise errors.VisaIOError(rv)
+pyvisa.errors.VisaIOError: VI_ERROR_RSRC_NFOUND (-1073807343): Insufficient location information or the requested device or resource is not present in the system.
+
+2021-11-15T16:54:28|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\thorlabs_powermeter\thorlabs_powermeter.py", line 53, in connect
+    self.power_meter = ThorlabsPM100D(debug=self.settings['debug_mode'], port=self.settings['port'])
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\thorlabs_powermeter\thorlabs_pm100d.py", line 35, in __init__
+    self.pm = self.visa_resource_manager.get_instrument(port)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyvisa\highlevel.py", line 3358, in get_instrument
+    resource_name, access_mode, open_timeout, resource_pyclass, **kwargs
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyvisa\highlevel.py", line 3304, in open_resource
+    res.open(access_mode, open_timeout)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyvisa\resources\resource.py", line 298, in open
+    self._resource_name, access_mode, open_timeout
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyvisa\highlevel.py", line 3232, in open_bare_resource
+    return self.visalib.open(self.session, resource_name, access_mode, open_timeout)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyvisa\ctwrapper\functions.py", line 1852, in open
+    session, resource_name, access_mode, open_timeout, byref(out_session)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyvisa\ctwrapper\highlevel.py", line 222, in _return_handler
+    return self.handle_return_value(session, ret_value)  # type: ignore
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyvisa\highlevel.py", line 251, in handle_return_value
+    raise errors.VisaIOError(rv)
+pyvisa.errors.VisaIOError: VI_ERROR_RSRC_NFOUND (-1073807343): Insufficient location information or the requested device or resource is not present in the system.
+
+2021-11-15T16:55:48|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\thorlabs_powermeter\thorlabs_powermeter.py", line 53, in connect
+    self.power_meter = ThorlabsPM100D(debug=self.settings['debug_mode'], port=self.settings['port'])
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\thorlabs_powermeter\thorlabs_pm100d.py", line 35, in __init__
+    self.pm = self.visa_resource_manager.get_instrument(port)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyvisa\highlevel.py", line 3358, in get_instrument
+    resource_name, access_mode, open_timeout, resource_pyclass, **kwargs
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyvisa\highlevel.py", line 3304, in open_resource
+    res.open(access_mode, open_timeout)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyvisa\resources\resource.py", line 298, in open
+    self._resource_name, access_mode, open_timeout
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyvisa\highlevel.py", line 3232, in open_bare_resource
+    return self.visalib.open(self.session, resource_name, access_mode, open_timeout)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyvisa\ctwrapper\functions.py", line 1852, in open
+    session, resource_name, access_mode, open_timeout, byref(out_session)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyvisa\ctwrapper\highlevel.py", line 222, in _return_handler
+    return self.handle_return_value(session, ret_value)  # type: ignore
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyvisa\highlevel.py", line 251, in handle_return_value
+    raise errors.VisaIOError(rv)
+pyvisa.errors.VisaIOError: VI_ERROR_RSRC_NFOUND (-1073807343): Insufficient location information or the requested device or resource is not present in the system.
+
+2021-11-15T16:55:50|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\thorlabs_powermeter\thorlabs_powermeter.py", line 53, in connect
+    self.power_meter = ThorlabsPM100D(debug=self.settings['debug_mode'], port=self.settings['port'])
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\thorlabs_powermeter\thorlabs_pm100d.py", line 35, in __init__
+    self.pm = self.visa_resource_manager.get_instrument(port)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyvisa\highlevel.py", line 3358, in get_instrument
+    resource_name, access_mode, open_timeout, resource_pyclass, **kwargs
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyvisa\highlevel.py", line 3304, in open_resource
+    res.open(access_mode, open_timeout)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyvisa\resources\resource.py", line 298, in open
+    self._resource_name, access_mode, open_timeout
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyvisa\highlevel.py", line 3232, in open_bare_resource
+    return self.visalib.open(self.session, resource_name, access_mode, open_timeout)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyvisa\ctwrapper\functions.py", line 1852, in open
+    session, resource_name, access_mode, open_timeout, byref(out_session)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyvisa\ctwrapper\highlevel.py", line 222, in _return_handler
+    return self.handle_return_value(session, ret_value)  # type: ignore
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyvisa\highlevel.py", line 251, in handle_return_value
+    raise errors.VisaIOError(rv)
+pyvisa.errors.VisaIOError: VI_ERROR_RSRC_NFOUND (-1073807343): Insufficient location information or the requested device or resource is not present in the system.
+

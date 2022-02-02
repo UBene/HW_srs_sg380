@@ -1,0 +1,155 @@
+2022-01-31T10:47:13|INFO|HydraHarpOptimizerMeasure|hydraharp_channel_optimizer start_stop False
+2022-01-31T10:47:13|INFO|HydraHarpOptimizerMeasure|measurement hydraharp_channel_optimizer stopping stop_first
+2022-01-31T10:47:13|INFO|HydraHarpHistogramMeasure|hydraharp_histogram start_stop False
+2022-01-31T10:47:13|INFO|HydraHarpHistogramMeasure|measurement hydraharp_histogram stopping stop_first
+2022-01-31T10:47:13|INFO|PowerScanMeasure|power_scan start_stop False
+2022-01-31T10:47:13|INFO|PowerScanMeasure|measurement power_scan stopping stop_first
+2022-01-31T10:47:13|INFO|PowerMeterOptimizerMeasure|powermeter_optimizer start_stop False
+2022-01-31T10:47:13|INFO|PowerMeterOptimizerMeasure|measurement powermeter_optimizer stopping stop_first
+2022-01-31T10:47:13|INFO|Sequencer|sequencer start_stop False
+2022-01-31T10:47:13|INFO|Sequencer|measurement sequencer stopping stop_first
+2022-01-31T10:47:13|INFO|APDOptimizerCBMeasurement|apd_optimizer start_stop False
+2022-01-31T10:47:13|INFO|APDOptimizerCBMeasurement|measurement apd_optimizer stopping stop_first
+2022-01-31T10:47:13|INFO|NearFieldMicroscope|setting up figures for hydraharp_channel_optimizer measurement hydraharp_channel_optimizer
+2022-01-31T10:47:13|INFO|HydraHarpOptimizerMeasure|hydraharp_channel_optimizer start_stop False
+2022-01-31T10:47:13|INFO|HydraHarpOptimizerMeasure|measurement hydraharp_channel_optimizer stopping stop_first
+2022-01-31T10:47:13|INFO|NearFieldMicroscope|setting up figures for hydraharp_histogram measurement hydraharp_histogram
+2022-01-31T10:47:13|INFO|NearFieldMicroscope|setting up figures for power_scan measurement power_scan
+2022-01-31T10:47:13|INFO|PowerScanMeasure|power_scan start_stop False
+2022-01-31T10:47:13|INFO|PowerScanMeasure|measurement power_scan stopping stop_first
+2022-01-31T10:47:13|INFO|NearFieldMicroscope|setting up figures for powermeter_optimizer measurement powermeter_optimizer
+2022-01-31T10:47:13|INFO|PowerMeterOptimizerMeasure|powermeter_optimizer start_stop False
+2022-01-31T10:47:13|INFO|PowerMeterOptimizerMeasure|measurement powermeter_optimizer stopping stop_first
+2022-01-31T10:47:13|INFO|NearFieldMicroscope|setting up figures for sequencer measurement sequencer
+2022-01-31T10:47:13|INFO|Sequencer|sequencer start_stop False
+2022-01-31T10:47:13|INFO|Sequencer|measurement sequencer stopping stop_first
+2022-01-31T10:47:14|WARNING|HydraHarpOptimizerMeasure|Measurement.gui is deprecated, use Measurement.app <class 'DeprecationWarning'>
+2022-01-31T10:47:14|WARNING|HydraHarpHistogramMeasure|Measurement.gui is deprecated, use Measurement.app <class 'DeprecationWarning'>
+2022-01-31T10:47:14|WARNING|PowerScanMeasure|Measurement.gui is deprecated, use Measurement.app <class 'DeprecationWarning'>
+2022-01-31T10:47:14|WARNING|PowerMeterOptimizerMeasure|Measurement.gui is deprecated, use Measurement.app <class 'DeprecationWarning'>
+2022-01-31T10:47:14|WARNING|Sequencer|Measurement.gui is deprecated, use Measurement.app <class 'DeprecationWarning'>
+2022-01-31T10:47:14|WARNING|APDOptimizerCBMeasurement|Measurement.gui is deprecated, use Measurement.app <class 'DeprecationWarning'>
+2022-01-31T10:47:14|INFO|NearFieldMicroscope|setting up figures for apd_optimizer measurement apd_optimizer
+2022-01-31T10:47:14|INFO|APDOptimizerCBMeasurement|apd_optimizer start_stop False
+2022-01-31T10:47:14|INFO|APDOptimizerCBMeasurement|measurement apd_optimizer stopping stop_first
+2022-01-31T10:47:14|INFO|NearFieldMicroscope|ini settings loading from near_field_microscope_defaults.ini
+2022-01-31T10:47:14|DEBUG|FileLQ|save_dir: update_value 'C:\\Users\\RAMAN\\workspace\\NearField\\NearFieldMicroscope\\data' --> 'E:\\Natalie'    sender=None
+2022-01-31T10:47:14|DEBUG|FileLQ|save_dir: different values C:\Users\RAMAN\workspace\NearField\NearFieldMicroscope\data E:\Natalie
+2022-01-31T10:47:14|INFO|NearFieldMicroscope|hardware/hydraharp
+2022-01-31T10:47:14|INFO|NearFieldMicroscope|hardware/pololu_maestro
+2022-01-31T10:47:14|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 46, in connect
+    self.dev = PololuMaestroDevice(port=self.settings['port'])
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\pololu_interface.py", line 26, in __init__
+    self.ser = serial.Serial(port=self.port, timeout=0.5, baudrate=9600,
+  File "C:\ProgramData\Anaconda3\lib\site-packages\serial\serialwin32.py", line 33, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\ProgramData\Anaconda3\lib\site-packages\serial\serialutil.py", line 244, in __init__
+    self.open()
+  File "C:\ProgramData\Anaconda3\lib\site-packages\serial\serialwin32.py", line 64, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port 'COM7': FileNotFoundError(2, 'The system cannot find the file specified.', None, 2)
+
+2022-01-31T10:47:14|INFO|NearFieldMicroscope|hardware/power_wheel
+2022-01-31T10:47:14|INFO|NearFieldMicroscope|hardware/thorlabs_powermeter
+2022-01-31T10:47:14|INFO|NearFieldMicroscope|hardware/motorized_polarizer
+2022-01-31T10:47:14|INFO|NearFieldMicroscope|hardware/apd_counter
+2022-01-31T10:47:14|INFO|NearFieldMicroscope|ini settings loaded from: near_field_microscope_defaults.ini
+2022-01-31T10:47:21|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 46, in connect
+    self.dev = PololuMaestroDevice(port=self.settings['port'])
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\pololu_interface.py", line 26, in __init__
+    self.ser = serial.Serial(port=self.port, timeout=0.5, baudrate=9600,
+  File "C:\ProgramData\Anaconda3\lib\site-packages\serial\serialwin32.py", line 33, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\ProgramData\Anaconda3\lib\site-packages\serial\serialutil.py", line 244, in __init__
+    self.open()
+  File "C:\ProgramData\Anaconda3\lib\site-packages\serial\serialwin32.py", line 64, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port 'COM7': FileNotFoundError(2, 'The system cannot find the file specified.', None, 2)
+
+2022-01-31T10:47:23|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 46, in connect
+    self.dev = PololuMaestroDevice(port=self.settings['port'])
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\pololu_interface.py", line 26, in __init__
+    self.ser = serial.Serial(port=self.port, timeout=0.5, baudrate=9600,
+  File "C:\ProgramData\Anaconda3\lib\site-packages\serial\serialwin32.py", line 33, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\ProgramData\Anaconda3\lib\site-packages\serial\serialutil.py", line 244, in __init__
+    self.open()
+  File "C:\ProgramData\Anaconda3\lib\site-packages\serial\serialwin32.py", line 64, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port 'COM7': FileNotFoundError(2, 'The system cannot find the file specified.', None, 2)
+
+2022-01-31T10:47:23|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 46, in connect
+    self.dev = PololuMaestroDevice(port=self.settings['port'])
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\pololu_interface.py", line 26, in __init__
+    self.ser = serial.Serial(port=self.port, timeout=0.5, baudrate=9600,
+  File "C:\ProgramData\Anaconda3\lib\site-packages\serial\serialwin32.py", line 33, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\ProgramData\Anaconda3\lib\site-packages\serial\serialutil.py", line 244, in __init__
+    self.open()
+  File "C:\ProgramData\Anaconda3\lib\site-packages\serial\serialwin32.py", line 64, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port 'COM7': FileNotFoundError(2, 'The system cannot find the file specified.', None, 2)
+
+2022-01-31T10:47:25|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 46, in connect
+    self.dev = PololuMaestroDevice(port=self.settings['port'])
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\pololu_interface.py", line 26, in __init__
+    self.ser = serial.Serial(port=self.port, timeout=0.5, baudrate=9600,
+  File "C:\ProgramData\Anaconda3\lib\site-packages\serial\serialwin32.py", line 33, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\ProgramData\Anaconda3\lib\site-packages\serial\serialutil.py", line 244, in __init__
+    self.open()
+  File "C:\ProgramData\Anaconda3\lib\site-packages\serial\serialwin32.py", line 64, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port 'COM7': FileNotFoundError(2, 'The system cannot find the file specified.', None, 2)
+
+2022-01-31T10:47:29|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 46, in connect
+    self.dev = PololuMaestroDevice(port=self.settings['port'])
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\pololu_interface.py", line 26, in __init__
+    self.ser = serial.Serial(port=self.port, timeout=0.5, baudrate=9600,
+  File "C:\ProgramData\Anaconda3\lib\site-packages\serial\serialwin32.py", line 33, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\ProgramData\Anaconda3\lib\site-packages\serial\serialutil.py", line 244, in __init__
+    self.open()
+  File "C:\ProgramData\Anaconda3\lib\site-packages\serial\serialwin32.py", line 64, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port 'COM7': FileNotFoundError(2, 'The system cannot find the file specified.', None, 2)
+
+2022-01-31T13:20:16|DEBUG|root|close
+2022-01-31T13:20:17|DEBUG|root|closing
+2022-01-31T13:20:17|INFO|NearFieldMicroscope|on_close
+2022-01-31T13:20:17|INFO|NearFieldMicroscope|disconnecting hydraharp
+2022-01-31T13:20:17|INFO|NearFieldMicroscope|disconnecting pololu_maestro
+2022-01-31T13:20:17|INFO|NearFieldMicroscope|disconnecting power_wheel
+2022-01-31T13:20:17|INFO|NearFieldMicroscope|disconnecting thorlabs_powermeter
+2022-01-31T13:20:17|INFO|NearFieldMicroscope|disconnecting motorized_polarizer
+2022-01-31T13:20:17|INFO|NearFieldMicroscope|disconnecting apd_counter

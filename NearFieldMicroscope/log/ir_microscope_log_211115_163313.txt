@@ -1,0 +1,2361 @@
+2021-11-15T16:33:13|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\ViewBox\ViewBox.py", line 428, in resizeEvent
+    self.updateAutoRange()
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\ViewBox\ViewBox.py", line 886, in updateAutoRange
+    childRange = self.childrenBounds(frac=fractionVisible)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\ViewBox\ViewBox.py", line 1388, in childrenBounds
+    yr = item.dataBounds(1, frac=frac[1], orthoRange=orthoRange[1])
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotDataItem.py", line 620, in dataBounds
+    range = self.curve.dataBounds(ax, frac, orthoRange)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:13|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\ViewBox\ViewBox.py", line 428, in resizeEvent
+    self.updateAutoRange()
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\ViewBox\ViewBox.py", line 886, in updateAutoRange
+    childRange = self.childrenBounds(frac=fractionVisible)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\ViewBox\ViewBox.py", line 1388, in childrenBounds
+    yr = item.dataBounds(1, frac=frac[1], orthoRange=orthoRange[1])
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotDataItem.py", line 620, in dataBounds
+    range = self.curve.dataBounds(ax, frac, orthoRange)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:13|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\ViewBox\ViewBox.py", line 428, in resizeEvent
+    self.updateAutoRange()
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\ViewBox\ViewBox.py", line 886, in updateAutoRange
+    childRange = self.childrenBounds(frac=fractionVisible)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\ViewBox\ViewBox.py", line 1388, in childrenBounds
+    yr = item.dataBounds(1, frac=frac[1], orthoRange=orthoRange[1])
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotDataItem.py", line 620, in dataBounds
+    range = self.curve.dataBounds(ax, frac, orthoRange)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:13|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:13|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\ViewBox\ViewBox.py", line 428, in resizeEvent
+    self.updateAutoRange()
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\ViewBox\ViewBox.py", line 886, in updateAutoRange
+    childRange = self.childrenBounds(frac=fractionVisible)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\ViewBox\ViewBox.py", line 1388, in childrenBounds
+    yr = item.dataBounds(1, frac=frac[1], orthoRange=orthoRange[1])
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotDataItem.py", line 620, in dataBounds
+    range = self.curve.dataBounds(ax, frac, orthoRange)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:14|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:14|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:14|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:14|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:14|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\ViewBox\ViewBox.py", line 298, in prepareForPaint
+    self.updateAutoRange()
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\ViewBox\ViewBox.py", line 886, in updateAutoRange
+    childRange = self.childrenBounds(frac=fractionVisible)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\ViewBox\ViewBox.py", line 1388, in childrenBounds
+    yr = item.dataBounds(1, frac=frac[1], orthoRange=orthoRange[1])
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotDataItem.py", line 620, in dataBounds
+    range = self.curve.dataBounds(ax, frac, orthoRange)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:14|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:14|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:14|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:14|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:14|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:14|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:14|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:14|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:14|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:14|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:14|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:14|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:14|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:14|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:14|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:14|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:14|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:14|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:14|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:14|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:14|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:14|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:14|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:14|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:14|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:14|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:14|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:14|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:14|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:14|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:15|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:15|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:15|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:15|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:15|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:15|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:15|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:15|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:15|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:15|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:15|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:15|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:15|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:15|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:15|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:15|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:15|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:15|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:16|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:16|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:16|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:16|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:16|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:16|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:16|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:16|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:16|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:16|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:16|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:16|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:16|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:16|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:17|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:17|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:17|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:17|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:17|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:17|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:17|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:17|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:17|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:17|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:17|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:17|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:18|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:18|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:18|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:18|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:18|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:18|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:18|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:18|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:18|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:18|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:18|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:19|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:19|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:19|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:19|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:19|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:19|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:19|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:19|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:19|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:19|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:20|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:20|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:20|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:20|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:20|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:20|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:20|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:20|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:21|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:21|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:21|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:21|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:21|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:21|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:21|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:21|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:22|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:22|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:22|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:22|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:22|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:22|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:22|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:22|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:23|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:23|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:23|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:23|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:23|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:23|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:23|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:23|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:24|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:24|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:24|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:24|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:24|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:24|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:24|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:25|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:25|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:25|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:25|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:25|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:25|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:25|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:26|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:26|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:26|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:26|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:26|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:26|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:27|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:27|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:27|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:27|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:27|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:27|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:27|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:28|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:28|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:28|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:28|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:28|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:28|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:29|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:29|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:29|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:29|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:29|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:29|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:30|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:31|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 56, in connect
+    raw.read_from_hardware()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 195, in read_from_hardware
+    val = self.hardware_read_func()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 52, in <lambda>
+    read_func=lambda n=servo_num: self.dev.read_position(n),
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\pololu_interface.py", line 84, in read_position
+    lsb = resp[0]
+IndexError: index out of range
+
+2021-11-15T16:33:31|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:31|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:31|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:31|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:31|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:32|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:32|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:32|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:32|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:32|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:33|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:33|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:33|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:33|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:33|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:33|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:34|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:34|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:34|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:34|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:34|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:35|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:35|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:35|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:35|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:35|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:36|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:36|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:36|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:36|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:36|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:37|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:37|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:37|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:37|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:37|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:38|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:38|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:38|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:38|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:39|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:39|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:39|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:39|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:39|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:40|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:40|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:41|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 56, in connect
+    raw.read_from_hardware()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 195, in read_from_hardware
+    val = self.hardware_read_func()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 52, in <lambda>
+    read_func=lambda n=servo_num: self.dev.read_position(n),
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\pololu_interface.py", line 84, in read_position
+    lsb = resp[0]
+IndexError: index out of range
+
+2021-11-15T16:33:41|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:41|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:41|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:42|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:42|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:42|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:42|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:43|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:43|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:43|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:43|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:43|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:44|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 56, in connect
+    raw.read_from_hardware()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 195, in read_from_hardware
+    val = self.hardware_read_func()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 52, in <lambda>
+    read_func=lambda n=servo_num: self.dev.read_position(n),
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\pololu_interface.py", line 84, in read_position
+    lsb = resp[0]
+IndexError: index out of range
+
+2021-11-15T16:33:45|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:45|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:45|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:45|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:46|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:46|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:46|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:46|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:47|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:47|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:47|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:48|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:48|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:48|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:48|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:49|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:49|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+
+2021-11-15T16:33:49|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 175, in boundingRect
+    (ymn, ymx) = self.dataBounds(ax=1)
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotCurveItem.py", line 135, in dataBounds
+    b = (d.min(), d.max())
+  File "C:\Users\RAMAN\.conda\envs\scopefoundry\lib\site-packages\numpy\core\_methods.py", line 34, in _amin
+    return umr_minimum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation minimum which has no identity
+

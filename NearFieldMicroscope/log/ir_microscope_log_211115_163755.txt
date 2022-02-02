@@ -1,0 +1,870 @@
+2021-11-15T16:38:04|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 56, in connect
+    raw.read_from_hardware()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 195, in read_from_hardware
+    val = self.hardware_read_func()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 52, in <lambda>
+    read_func=lambda n=servo_num: self.dev.read_position(n),
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\pololu_interface.py", line 85, in read_position
+    lsb = resp[0]
+IndexError: index out of range
+
+2021-11-15T16:38:04|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 56, in connect
+    raw.read_from_hardware()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 195, in read_from_hardware
+    val = self.hardware_read_func()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 52, in <lambda>
+    read_func=lambda n=servo_num: self.dev.read_position(n),
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\pololu_interface.py", line 85, in read_position
+    lsb = resp[0]
+IndexError: index out of range
+
+2021-11-15T16:38:05|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 56, in connect
+    raw.read_from_hardware()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 195, in read_from_hardware
+    val = self.hardware_read_func()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 52, in <lambda>
+    read_func=lambda n=servo_num: self.dev.read_position(n),
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\pololu_interface.py", line 85, in read_position
+    lsb = resp[0]
+IndexError: index out of range
+
+2021-11-15T16:38:06|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 56, in connect
+    raw.read_from_hardware()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 195, in read_from_hardware
+    val = self.hardware_read_func()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 52, in <lambda>
+    read_func=lambda n=servo_num: self.dev.read_position(n),
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\pololu_interface.py", line 85, in read_position
+    lsb = resp[0]
+IndexError: index out of range
+
+2021-11-15T16:38:06|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 56, in connect
+    raw.read_from_hardware()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 195, in read_from_hardware
+    val = self.hardware_read_func()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 52, in <lambda>
+    read_func=lambda n=servo_num: self.dev.read_position(n),
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\pololu_interface.py", line 85, in read_position
+    lsb = resp[0]
+IndexError: index out of range
+
+2021-11-15T16:38:07|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 56, in connect
+    raw.read_from_hardware()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 195, in read_from_hardware
+    val = self.hardware_read_func()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 52, in <lambda>
+    read_func=lambda n=servo_num: self.dev.read_position(n),
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\pololu_interface.py", line 85, in read_position
+    lsb = resp[0]
+IndexError: index out of range
+
+2021-11-15T16:38:08|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 56, in connect
+    raw.read_from_hardware()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 195, in read_from_hardware
+    val = self.hardware_read_func()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 52, in <lambda>
+    read_func=lambda n=servo_num: self.dev.read_position(n),
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\pololu_interface.py", line 85, in read_position
+    lsb = resp[0]
+IndexError: index out of range
+
+2021-11-15T16:38:09|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 56, in connect
+    raw.read_from_hardware()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 195, in read_from_hardware
+    val = self.hardware_read_func()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 52, in <lambda>
+    read_func=lambda n=servo_num: self.dev.read_position(n),
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\pololu_interface.py", line 85, in read_position
+    lsb = resp[0]
+IndexError: index out of range
+
+2021-11-15T16:38:09|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 56, in connect
+    raw.read_from_hardware()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 195, in read_from_hardware
+    val = self.hardware_read_func()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 52, in <lambda>
+    read_func=lambda n=servo_num: self.dev.read_position(n),
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\pololu_interface.py", line 85, in read_position
+    lsb = resp[0]
+IndexError: index out of range
+
+2021-11-15T16:38:10|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 56, in connect
+    raw.read_from_hardware()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 195, in read_from_hardware
+    val = self.hardware_read_func()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 52, in <lambda>
+    read_func=lambda n=servo_num: self.dev.read_position(n),
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\pololu_interface.py", line 85, in read_position
+    lsb = resp[0]
+IndexError: index out of range
+
+2021-11-15T16:38:11|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 56, in connect
+    raw.read_from_hardware()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 195, in read_from_hardware
+    val = self.hardware_read_func()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 52, in <lambda>
+    read_func=lambda n=servo_num: self.dev.read_position(n),
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\pololu_interface.py", line 85, in read_position
+    lsb = resp[0]
+IndexError: index out of range
+
+2021-11-15T16:38:12|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 56, in connect
+    raw.read_from_hardware()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 195, in read_from_hardware
+    val = self.hardware_read_func()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 52, in <lambda>
+    read_func=lambda n=servo_num: self.dev.read_position(n),
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\pololu_interface.py", line 85, in read_position
+    lsb = resp[0]
+IndexError: index out of range
+
+2021-11-15T16:38:12|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 56, in connect
+    raw.read_from_hardware()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 195, in read_from_hardware
+    val = self.hardware_read_func()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 52, in <lambda>
+    read_func=lambda n=servo_num: self.dev.read_position(n),
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\pololu_interface.py", line 85, in read_position
+    lsb = resp[0]
+IndexError: index out of range
+
+2021-11-15T16:38:13|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 56, in connect
+    raw.read_from_hardware()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 195, in read_from_hardware
+    val = self.hardware_read_func()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 52, in <lambda>
+    read_func=lambda n=servo_num: self.dev.read_position(n),
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\pololu_interface.py", line 85, in read_position
+    lsb = resp[0]
+IndexError: index out of range
+
+2021-11-15T16:38:14|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 56, in connect
+    raw.read_from_hardware()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 195, in read_from_hardware
+    val = self.hardware_read_func()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 52, in <lambda>
+    read_func=lambda n=servo_num: self.dev.read_position(n),
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\pololu_interface.py", line 85, in read_position
+    lsb = resp[0]
+IndexError: index out of range
+
+2021-11-15T16:38:15|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 56, in connect
+    raw.read_from_hardware()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 195, in read_from_hardware
+    val = self.hardware_read_func()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 52, in <lambda>
+    read_func=lambda n=servo_num: self.dev.read_position(n),
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\pololu_interface.py", line 85, in read_position
+    lsb = resp[0]
+IndexError: index out of range
+
+2021-11-15T16:38:15|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 56, in connect
+    raw.read_from_hardware()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 195, in read_from_hardware
+    val = self.hardware_read_func()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 52, in <lambda>
+    read_func=lambda n=servo_num: self.dev.read_position(n),
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\pololu_interface.py", line 85, in read_position
+    lsb = resp[0]
+IndexError: index out of range
+
+2021-11-15T16:38:16|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 56, in connect
+    raw.read_from_hardware()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 195, in read_from_hardware
+    val = self.hardware_read_func()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 52, in <lambda>
+    read_func=lambda n=servo_num: self.dev.read_position(n),
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\pololu_interface.py", line 85, in read_position
+    lsb = resp[0]
+IndexError: index out of range
+
+2021-11-15T16:38:17|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 56, in connect
+    raw.read_from_hardware()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 195, in read_from_hardware
+    val = self.hardware_read_func()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 52, in <lambda>
+    read_func=lambda n=servo_num: self.dev.read_position(n),
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\pololu_interface.py", line 85, in read_position
+    lsb = resp[0]
+IndexError: index out of range
+
+2021-11-15T16:38:18|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 56, in connect
+    raw.read_from_hardware()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 195, in read_from_hardware
+    val = self.hardware_read_func()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 52, in <lambda>
+    read_func=lambda n=servo_num: self.dev.read_position(n),
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\pololu_interface.py", line 85, in read_position
+    lsb = resp[0]
+IndexError: index out of range
+
+2021-11-15T16:38:18|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 56, in connect
+    raw.read_from_hardware()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 195, in read_from_hardware
+    val = self.hardware_read_func()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 52, in <lambda>
+    read_func=lambda n=servo_num: self.dev.read_position(n),
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\pololu_interface.py", line 85, in read_position
+    lsb = resp[0]
+IndexError: index out of range
+
+2021-11-15T16:38:19|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 56, in connect
+    raw.read_from_hardware()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 195, in read_from_hardware
+    val = self.hardware_read_func()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 52, in <lambda>
+    read_func=lambda n=servo_num: self.dev.read_position(n),
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\pololu_interface.py", line 85, in read_position
+    lsb = resp[0]
+IndexError: index out of range
+
+2021-11-15T16:38:20|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 56, in connect
+    raw.read_from_hardware()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 195, in read_from_hardware
+    val = self.hardware_read_func()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 52, in <lambda>
+    read_func=lambda n=servo_num: self.dev.read_position(n),
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\pololu_interface.py", line 85, in read_position
+    lsb = resp[0]
+IndexError: index out of range
+
+2021-11-15T16:38:21|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 56, in connect
+    raw.read_from_hardware()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 195, in read_from_hardware
+    val = self.hardware_read_func()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 52, in <lambda>
+    read_func=lambda n=servo_num: self.dev.read_position(n),
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\pololu_interface.py", line 85, in read_position
+    lsb = resp[0]
+IndexError: index out of range
+
+2021-11-15T16:38:21|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 56, in connect
+    raw.read_from_hardware()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 195, in read_from_hardware
+    val = self.hardware_read_func()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 52, in <lambda>
+    read_func=lambda n=servo_num: self.dev.read_position(n),
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\pololu_interface.py", line 85, in read_position
+    lsb = resp[0]
+IndexError: index out of range
+
+2021-11-15T16:38:22|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 56, in connect
+    raw.read_from_hardware()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 195, in read_from_hardware
+    val = self.hardware_read_func()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 52, in <lambda>
+    read_func=lambda n=servo_num: self.dev.read_position(n),
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\pololu_interface.py", line 85, in read_position
+    lsb = resp[0]
+IndexError: index out of range
+
+2021-11-15T16:38:23|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 56, in connect
+    raw.read_from_hardware()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 195, in read_from_hardware
+    val = self.hardware_read_func()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 52, in <lambda>
+    read_func=lambda n=servo_num: self.dev.read_position(n),
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\pololu_interface.py", line 85, in read_position
+    lsb = resp[0]
+IndexError: index out of range
+
+2021-11-15T16:38:24|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 56, in connect
+    raw.read_from_hardware()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 195, in read_from_hardware
+    val = self.hardware_read_func()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 52, in <lambda>
+    read_func=lambda n=servo_num: self.dev.read_position(n),
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\pololu_interface.py", line 85, in read_position
+    lsb = resp[0]
+IndexError: index out of range
+
+2021-11-15T16:38:24|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 56, in connect
+    raw.read_from_hardware()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 195, in read_from_hardware
+    val = self.hardware_read_func()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 52, in <lambda>
+    read_func=lambda n=servo_num: self.dev.read_position(n),
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\pololu_interface.py", line 85, in read_position
+    lsb = resp[0]
+IndexError: index out of range
+
+2021-11-15T16:38:25|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 56, in connect
+    raw.read_from_hardware()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 195, in read_from_hardware
+    val = self.hardware_read_func()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 52, in <lambda>
+    read_func=lambda n=servo_num: self.dev.read_position(n),
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\pololu_interface.py", line 85, in read_position
+    lsb = resp[0]
+IndexError: index out of range
+
+2021-11-15T16:38:26|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 56, in connect
+    raw.read_from_hardware()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 195, in read_from_hardware
+    val = self.hardware_read_func()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 52, in <lambda>
+    read_func=lambda n=servo_num: self.dev.read_position(n),
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\pololu_interface.py", line 85, in read_position
+    lsb = resp[0]
+IndexError: index out of range
+
+2021-11-15T16:38:27|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 56, in connect
+    raw.read_from_hardware()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 195, in read_from_hardware
+    val = self.hardware_read_func()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 52, in <lambda>
+    read_func=lambda n=servo_num: self.dev.read_position(n),
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\pololu_interface.py", line 85, in read_position
+    lsb = resp[0]
+IndexError: index out of range
+
+2021-11-15T16:38:28|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 56, in connect
+    raw.read_from_hardware()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 195, in read_from_hardware
+    val = self.hardware_read_func()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 52, in <lambda>
+    read_func=lambda n=servo_num: self.dev.read_position(n),
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\pololu_interface.py", line 85, in read_position
+    lsb = resp[0]
+IndexError: index out of range
+
+2021-11-15T16:38:28|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 56, in connect
+    raw.read_from_hardware()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 195, in read_from_hardware
+    val = self.hardware_read_func()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 52, in <lambda>
+    read_func=lambda n=servo_num: self.dev.read_position(n),
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\pololu_interface.py", line 85, in read_position
+    lsb = resp[0]
+IndexError: index out of range
+
+2021-11-15T16:38:29|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 56, in connect
+    raw.read_from_hardware()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 195, in read_from_hardware
+    val = self.hardware_read_func()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 52, in <lambda>
+    read_func=lambda n=servo_num: self.dev.read_position(n),
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\pololu_interface.py", line 85, in read_position
+    lsb = resp[0]
+IndexError: index out of range
+
+2021-11-15T16:38:30|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 56, in connect
+    raw.read_from_hardware()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 195, in read_from_hardware
+    val = self.hardware_read_func()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 52, in <lambda>
+    read_func=lambda n=servo_num: self.dev.read_position(n),
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\pololu_interface.py", line 85, in read_position
+    lsb = resp[0]
+IndexError: index out of range
+
+2021-11-15T16:38:31|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 56, in connect
+    raw.read_from_hardware()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 195, in read_from_hardware
+    val = self.hardware_read_func()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 52, in <lambda>
+    read_func=lambda n=servo_num: self.dev.read_position(n),
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\pololu_interface.py", line 85, in read_position
+    lsb = resp[0]
+IndexError: index out of range
+
+2021-11-15T16:38:31|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 56, in connect
+    raw.read_from_hardware()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 195, in read_from_hardware
+    val = self.hardware_read_func()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 52, in <lambda>
+    read_func=lambda n=servo_num: self.dev.read_position(n),
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\pololu_interface.py", line 85, in read_position
+    lsb = resp[0]
+IndexError: index out of range
+
+2021-11-15T16:38:32|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 56, in connect
+    raw.read_from_hardware()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 195, in read_from_hardware
+    val = self.hardware_read_func()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 52, in <lambda>
+    read_func=lambda n=servo_num: self.dev.read_position(n),
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\pololu_interface.py", line 85, in read_position
+    lsb = resp[0]
+IndexError: index out of range
+
+2021-11-15T16:38:33|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 56, in connect
+    raw.read_from_hardware()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 195, in read_from_hardware
+    val = self.hardware_read_func()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 52, in <lambda>
+    read_func=lambda n=servo_num: self.dev.read_position(n),
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\pololu_interface.py", line 85, in read_position
+    lsb = resp[0]
+IndexError: index out of range
+
+2021-11-15T16:38:34|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 56, in connect
+    raw.read_from_hardware()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 195, in read_from_hardware
+    val = self.hardware_read_func()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 52, in <lambda>
+    read_func=lambda n=servo_num: self.dev.read_position(n),
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\pololu_interface.py", line 85, in read_position
+    lsb = resp[0]
+IndexError: index out of range
+
+2021-11-15T16:38:34|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 56, in connect
+    raw.read_from_hardware()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 195, in read_from_hardware
+    val = self.hardware_read_func()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 52, in <lambda>
+    read_func=lambda n=servo_num: self.dev.read_position(n),
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\pololu_interface.py", line 85, in read_position
+    lsb = resp[0]
+IndexError: index out of range
+
+2021-11-15T16:38:35|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 56, in connect
+    raw.read_from_hardware()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 195, in read_from_hardware
+    val = self.hardware_read_func()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 52, in <lambda>
+    read_func=lambda n=servo_num: self.dev.read_position(n),
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\pololu_interface.py", line 85, in read_position
+    lsb = resp[0]
+IndexError: index out of range
+
+2021-11-15T16:38:36|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 56, in connect
+    raw.read_from_hardware()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 195, in read_from_hardware
+    val = self.hardware_read_func()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 52, in <lambda>
+    read_func=lambda n=servo_num: self.dev.read_position(n),
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\pololu_interface.py", line 85, in read_position
+    lsb = resp[0]
+IndexError: index out of range
+
+2021-11-15T16:38:37|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 56, in connect
+    raw.read_from_hardware()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 195, in read_from_hardware
+    val = self.hardware_read_func()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 52, in <lambda>
+    read_func=lambda n=servo_num: self.dev.read_position(n),
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\pololu_interface.py", line 85, in read_position
+    lsb = resp[0]
+IndexError: index out of range
+
+2021-11-15T16:38:38|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 56, in connect
+    raw.read_from_hardware()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 195, in read_from_hardware
+    val = self.hardware_read_func()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 52, in <lambda>
+    read_func=lambda n=servo_num: self.dev.read_position(n),
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\pololu_interface.py", line 85, in read_position
+    lsb = resp[0]
+IndexError: index out of range
+
+2021-11-15T16:38:38|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 56, in connect
+    raw.read_from_hardware()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 195, in read_from_hardware
+    val = self.hardware_read_func()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 52, in <lambda>
+    read_func=lambda n=servo_num: self.dev.read_position(n),
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\pololu_interface.py", line 85, in read_position
+    lsb = resp[0]
+IndexError: index out of range
+
+2021-11-15T16:38:39|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 56, in connect
+    raw.read_from_hardware()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 195, in read_from_hardware
+    val = self.hardware_read_func()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 52, in <lambda>
+    read_func=lambda n=servo_num: self.dev.read_position(n),
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\pololu_interface.py", line 85, in read_position
+    lsb = resp[0]
+IndexError: index out of range
+
+2021-11-15T16:38:40|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 56, in connect
+    raw.read_from_hardware()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 195, in read_from_hardware
+    val = self.hardware_read_func()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 52, in <lambda>
+    read_func=lambda n=servo_num: self.dev.read_position(n),
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\pololu_interface.py", line 85, in read_position
+    lsb = resp[0]
+IndexError: index out of range
+
+2021-11-15T16:38:41|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 56, in connect
+    raw.read_from_hardware()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 195, in read_from_hardware
+    val = self.hardware_read_func()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 52, in <lambda>
+    read_func=lambda n=servo_num: self.dev.read_position(n),
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\pololu_interface.py", line 85, in read_position
+    lsb = resp[0]
+IndexError: index out of range
+
+2021-11-15T16:38:41|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 56, in connect
+    raw.read_from_hardware()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 195, in read_from_hardware
+    val = self.hardware_read_func()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 52, in <lambda>
+    read_func=lambda n=servo_num: self.dev.read_position(n),
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\pololu_interface.py", line 85, in read_position
+    lsb = resp[0]
+IndexError: index out of range
+
+2021-11-15T16:38:42|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 56, in connect
+    raw.read_from_hardware()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 195, in read_from_hardware
+    val = self.hardware_read_func()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 52, in <lambda>
+    read_func=lambda n=servo_num: self.dev.read_position(n),
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\pololu_interface.py", line 85, in read_position
+    lsb = resp[0]
+IndexError: index out of range
+
+2021-11-15T16:38:43|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 56, in connect
+    raw.read_from_hardware()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 195, in read_from_hardware
+    val = self.hardware_read_func()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 52, in <lambda>
+    read_func=lambda n=servo_num: self.dev.read_position(n),
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\pololu_interface.py", line 85, in read_position
+    lsb = resp[0]
+IndexError: index out of range
+
+2021-11-15T16:38:44|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 56, in connect
+    raw.read_from_hardware()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 195, in read_from_hardware
+    val = self.hardware_read_func()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 52, in <lambda>
+    read_func=lambda n=servo_num: self.dev.read_position(n),
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\pololu_interface.py", line 85, in read_position
+    lsb = resp[0]
+IndexError: index out of range
+
+2021-11-15T16:38:45|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 56, in connect
+    raw.read_from_hardware()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 195, in read_from_hardware
+    val = self.hardware_read_func()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 52, in <lambda>
+    read_func=lambda n=servo_num: self.dev.read_position(n),
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\pololu_interface.py", line 85, in read_position
+    lsb = resp[0]
+IndexError: index out of range
+
+2021-11-15T16:38:45|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 56, in connect
+    raw.read_from_hardware()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 195, in read_from_hardware
+    val = self.hardware_read_func()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 52, in <lambda>
+    read_func=lambda n=servo_num: self.dev.read_position(n),
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\pololu_interface.py", line 85, in read_position
+    lsb = resp[0]
+IndexError: index out of range
+
+2021-11-15T16:38:46|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 56, in connect
+    raw.read_from_hardware()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 195, in read_from_hardware
+    val = self.hardware_read_func()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 52, in <lambda>
+    read_func=lambda n=servo_num: self.dev.read_position(n),
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\pololu_interface.py", line 85, in read_position
+    lsb = resp[0]
+IndexError: index out of range
+
+2021-11-15T16:38:47|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 56, in connect
+    raw.read_from_hardware()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 195, in read_from_hardware
+    val = self.hardware_read_func()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 52, in <lambda>
+    read_func=lambda n=servo_num: self.dev.read_position(n),
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\pololu_interface.py", line 85, in read_position
+    lsb = resp[0]
+IndexError: index out of range
+

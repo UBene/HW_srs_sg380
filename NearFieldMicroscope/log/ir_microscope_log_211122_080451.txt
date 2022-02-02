@@ -1,0 +1,45 @@
+2021-11-22T08:04:52|INFO|HydraHarpOptimizerMeasure|hydraharp_channel_optimizer start_stop False
+2021-11-22T08:04:52|INFO|HydraHarpOptimizerMeasure|measurement hydraharp_channel_optimizer stopping stop_first
+2021-11-22T08:04:52|INFO|HydraHarpHistogramMeasure|hydraharp_histogram start_stop False
+2021-11-22T08:04:52|INFO|HydraHarpHistogramMeasure|measurement hydraharp_histogram stopping stop_first
+2021-11-22T08:04:52|INFO|PowerScanMeasure|power_scan start_stop False
+2021-11-22T08:04:52|INFO|PowerScanMeasure|measurement power_scan stopping stop_first
+2021-11-22T08:04:52|INFO|PowerMeterOptimizerMeasure|powermeter_optimizer start_stop False
+2021-11-22T08:04:52|INFO|PowerMeterOptimizerMeasure|measurement powermeter_optimizer stopping stop_first
+2021-11-22T08:04:52|INFO|APDOptimizerCBMeasurement|apd_optimizer start_stop False
+2021-11-22T08:04:52|INFO|APDOptimizerCBMeasurement|measurement apd_optimizer stopping stop_first
+2021-11-22T08:04:52|INFO|NearFieldMicroscope|setting up figures for hydraharp_channel_optimizer measurement hydraharp_channel_optimizer
+2021-11-22T08:04:53|INFO|HydraHarpOptimizerMeasure|hydraharp_channel_optimizer start_stop False
+2021-11-22T08:04:53|INFO|HydraHarpOptimizerMeasure|measurement hydraharp_channel_optimizer stopping stop_first
+2021-11-22T08:04:53|INFO|NearFieldMicroscope|setting up figures for hydraharp_histogram measurement hydraharp_histogram
+2021-11-22T08:04:53|INFO|NearFieldMicroscope|setting up figures for power_scan measurement power_scan
+2021-11-22T08:04:53|INFO|PowerScanMeasure|power_scan start_stop False
+2021-11-22T08:04:53|INFO|PowerScanMeasure|measurement power_scan stopping stop_first
+2021-11-22T08:04:53|INFO|NearFieldMicroscope|setting up figures for powermeter_optimizer measurement powermeter_optimizer
+2021-11-22T08:04:53|INFO|PowerMeterOptimizerMeasure|powermeter_optimizer start_stop False
+2021-11-22T08:04:53|INFO|PowerMeterOptimizerMeasure|measurement powermeter_optimizer stopping stop_first
+2021-11-22T08:04:53|INFO|NearFieldMicroscope|setting up figures for apd_optimizer measurement apd_optimizer
+2021-11-22T08:04:53|INFO|APDOptimizerCBMeasurement|apd_optimizer start_stop False
+2021-11-22T08:04:53|INFO|APDOptimizerCBMeasurement|measurement apd_optimizer stopping stop_first
+2021-11-22T08:04:53|INFO|NearFieldMicroscope|ini settings loading from near_field_microscope_defaults.ini
+2021-11-22T08:04:53|INFO|NearFieldMicroscope|hardware/hydraharp
+2021-11-22T08:04:53|INFO|NearFieldMicroscope|hardware/pololu_maestro
+2021-11-22T08:04:53|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 842, in update_math
+    new_val = self.math_func(*lq_vals)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 36, in <lambda>
+    func=lambda raw, rmin, rmax, scale: scale*( (raw - rmin)/(rmax-rmin) ),
+ZeroDivisionError: float division by zero
+
+2021-11-22T08:04:56|INFO|NearFieldMicroscope|hardware/power_wheel
+2021-11-22T08:04:56|INFO|NearFieldMicroscope|hardware/thorlabs_powermeter
+2021-11-22T08:04:56|INFO|NearFieldMicroscope|hardware/apd_counter
+2021-11-22T08:04:56|INFO|NearFieldMicroscope|ini settings loaded from: near_field_microscope_defaults.ini
+2021-11-22T08:05:00|DEBUG|root|close
+2021-11-22T08:05:01|DEBUG|root|closing
+2021-11-22T08:05:01|INFO|NearFieldMicroscope|on_close
+2021-11-22T08:05:01|INFO|NearFieldMicroscope|disconnecting hydraharp
+2021-11-22T08:05:01|INFO|NearFieldMicroscope|disconnecting pololu_maestro
+2021-11-22T08:05:01|INFO|NearFieldMicroscope|disconnecting power_wheel
+2021-11-22T08:05:01|INFO|NearFieldMicroscope|disconnecting thorlabs_powermeter
+2021-11-22T08:05:01|INFO|NearFieldMicroscope|disconnecting apd_counter

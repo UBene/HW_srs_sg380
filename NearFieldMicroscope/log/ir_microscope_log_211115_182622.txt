@@ -1,0 +1,171 @@
+2021-11-15T18:26:23|INFO|HydraHarpOptimizerMeasure|hydraharp_channel_optimizer start_stop False
+2021-11-15T18:26:23|INFO|HydraHarpOptimizerMeasure|measurement hydraharp_channel_optimizer stopping stop_first
+2021-11-15T18:26:23|INFO|HydraHarpHistogramMeasure|hydraharp_histogram start_stop False
+2021-11-15T18:26:23|INFO|HydraHarpHistogramMeasure|measurement hydraharp_histogram stopping stop_first
+2021-11-15T18:26:23|INFO|PowerScanMeasure|power_scan start_stop False
+2021-11-15T18:26:23|INFO|PowerScanMeasure|measurement power_scan stopping stop_first
+2021-11-15T18:26:23|INFO|PowerMeterOptimizerMeasure|powermeter_optimizer start_stop False
+2021-11-15T18:26:23|INFO|PowerMeterOptimizerMeasure|measurement powermeter_optimizer stopping stop_first
+2021-11-15T18:26:23|INFO|APDOptimizerCBMeasurement|apd_optimizer start_stop False
+2021-11-15T18:26:23|INFO|APDOptimizerCBMeasurement|measurement apd_optimizer stopping stop_first
+2021-11-15T18:26:23|INFO|NearFieldMicroscope|setting up figures for hydraharp_channel_optimizer measurement hydraharp_channel_optimizer
+2021-11-15T18:26:23|INFO|HydraHarpOptimizerMeasure|hydraharp_channel_optimizer start_stop False
+2021-11-15T18:26:23|INFO|HydraHarpOptimizerMeasure|measurement hydraharp_channel_optimizer stopping stop_first
+2021-11-15T18:26:23|INFO|NearFieldMicroscope|setting up figures for hydraharp_histogram measurement hydraharp_histogram
+2021-11-15T18:26:23|INFO|NearFieldMicroscope|setting up figures for power_scan measurement power_scan
+2021-11-15T18:26:23|INFO|PowerScanMeasure|power_scan start_stop False
+2021-11-15T18:26:23|INFO|PowerScanMeasure|measurement power_scan stopping stop_first
+2021-11-15T18:26:23|INFO|NearFieldMicroscope|setting up figures for powermeter_optimizer measurement powermeter_optimizer
+2021-11-15T18:26:23|INFO|PowerMeterOptimizerMeasure|powermeter_optimizer start_stop False
+2021-11-15T18:26:23|INFO|PowerMeterOptimizerMeasure|measurement powermeter_optimizer stopping stop_first
+2021-11-15T18:26:24|INFO|NearFieldMicroscope|setting up figures for apd_optimizer measurement apd_optimizer
+2021-11-15T18:26:24|INFO|APDOptimizerCBMeasurement|apd_optimizer start_stop False
+2021-11-15T18:26:24|INFO|APDOptimizerCBMeasurement|measurement apd_optimizer stopping stop_first
+2021-11-15T18:26:24|INFO|NearFieldMicroscope|ini settings loading from near_field_microscope_defaults.ini
+2021-11-15T18:26:24|INFO|NearFieldMicroscope|hardware/hydraharp
+2021-11-15T18:26:24|INFO|NearFieldMicroscope|hardware/pololu_maestro
+2021-11-15T18:26:24|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 842, in update_math
+    new_val = self.math_func(*lq_vals)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 36, in <lambda>
+    func=lambda raw, rmin, rmax, scale: scale*( (raw - rmin)/(rmax-rmin) ),
+ZeroDivisionError: float division by zero
+
+2021-11-15T18:26:27|INFO|NearFieldMicroscope|hardware/power_wheel
+2021-11-15T18:26:27|INFO|NearFieldMicroscope|hardware/thorlabs_powermeter
+2021-11-15T18:26:27|INFO|NearFieldMicroscope|hardware/apd_counter
+2021-11-15T18:26:27|INFO|NearFieldMicroscope|ini settings loaded from: near_field_microscope_defaults.ini
+2021-11-15T18:26:31|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\thorlabs_powermeter\thorlabs_powermeter.py", line 52, in connect
+    from .thorlabs_pm100d import ThorlabsPM100D
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\thorlabs_powermeter\thorlabs_pm100d.py", line 2, in <module>
+    import visa
+ModuleNotFoundError: No module named 'visa'
+
+2021-11-15T18:26:45|DEBUG|ThorlabsPowerMeterHW|connecting tothorlabs_powermeter
+2021-11-15T18:26:45|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\thorlabs_powermeter\thorlabs_powermeter.py", line 52, in connect
+    from .thorlabs_pm100d import ThorlabsPM100D
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\thorlabs_powermeter\thorlabs_pm100d.py", line 2, in <module>
+    import visa
+ModuleNotFoundError: No module named 'visa'
+
+2021-11-15T18:26:50|DEBUG|ScopeFoundryHW.ni_daq.devices.ni_counter_task|NI_CounterTask.set_channel-- Dev1/ctr0 /Dev1/PFI0
+2021-11-15T18:26:54|INFO|APDOptimizerCBMeasurement|apd_optimizer start_stop True
+2021-11-15T18:26:54|INFO|APDOptimizerCBMeasurement|measurement apd_optimizer start called from thread: 35816
+2021-11-15T18:27:08|DEBUG|ThorlabsPowerMeterHW|connecting tothorlabs_powermeter
+2021-11-15T18:27:08|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\thorlabs_powermeter\thorlabs_powermeter.py", line 52, in connect
+    from .thorlabs_pm100d import ThorlabsPM100D
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\thorlabs_powermeter\thorlabs_pm100d.py", line 2, in <module>
+    import visa
+ModuleNotFoundError: No module named 'visa'
+
+2021-11-15T18:27:09|DEBUG|ThorlabsPowerMeterHW|connecting tothorlabs_powermeter
+2021-11-15T18:27:09|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\thorlabs_powermeter\thorlabs_powermeter.py", line 52, in connect
+    from .thorlabs_pm100d import ThorlabsPM100D
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\thorlabs_powermeter\thorlabs_pm100d.py", line 2, in <module>
+    import visa
+ModuleNotFoundError: No module named 'visa'
+
+2021-11-15T18:27:09|DEBUG|ThorlabsPowerMeterHW|connecting tothorlabs_powermeter
+2021-11-15T18:27:09|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\thorlabs_powermeter\thorlabs_powermeter.py", line 52, in connect
+    from .thorlabs_pm100d import ThorlabsPM100D
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\thorlabs_powermeter\thorlabs_pm100d.py", line 2, in <module>
+    import visa
+ModuleNotFoundError: No module named 'visa'
+
+2021-11-15T18:27:09|DEBUG|ThorlabsPowerMeterHW|connecting tothorlabs_powermeter
+2021-11-15T18:27:09|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\thorlabs_powermeter\thorlabs_powermeter.py", line 52, in connect
+    from .thorlabs_pm100d import ThorlabsPM100D
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\thorlabs_powermeter\thorlabs_pm100d.py", line 2, in <module>
+    import visa
+ModuleNotFoundError: No module named 'visa'
+
+2021-11-15T18:27:30|DEBUG|ThorlabsPowerMeterHW|connecting tothorlabs_powermeter
+2021-11-15T18:27:30|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\thorlabs_powermeter\thorlabs_powermeter.py", line 52, in connect
+    from .thorlabs_pm100d import ThorlabsPM100D
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\thorlabs_powermeter\thorlabs_pm100d.py", line 2, in <module>
+    import visa
+ModuleNotFoundError: No module named 'visa'
+
+2021-11-15T18:27:31|DEBUG|ThorlabsPowerMeterHW|connecting tothorlabs_powermeter
+2021-11-15T18:27:31|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\thorlabs_powermeter\thorlabs_powermeter.py", line 52, in connect
+    from .thorlabs_pm100d import ThorlabsPM100D
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\thorlabs_powermeter\thorlabs_pm100d.py", line 2, in <module>
+    import visa
+ModuleNotFoundError: No module named 'visa'
+
+2021-11-15T18:27:31|DEBUG|ThorlabsPowerMeterHW|connecting tothorlabs_powermeter
+2021-11-15T18:27:31|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\thorlabs_powermeter\thorlabs_powermeter.py", line 52, in connect
+    from .thorlabs_pm100d import ThorlabsPM100D
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\thorlabs_powermeter\thorlabs_pm100d.py", line 2, in <module>
+    import visa
+ModuleNotFoundError: No module named 'visa'
+
+2021-11-15T18:27:31|DEBUG|ThorlabsPowerMeterHW|connecting tothorlabs_powermeter
+2021-11-15T18:27:31|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\thorlabs_powermeter\thorlabs_powermeter.py", line 52, in connect
+    from .thorlabs_pm100d import ThorlabsPM100D
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\thorlabs_powermeter\thorlabs_pm100d.py", line 2, in <module>
+    import visa
+ModuleNotFoundError: No module named 'visa'
+
+2021-11-15T18:27:31|DEBUG|ThorlabsPowerMeterHW|connecting tothorlabs_powermeter
+2021-11-15T18:27:31|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\thorlabs_powermeter\thorlabs_powermeter.py", line 52, in connect
+    from .thorlabs_pm100d import ThorlabsPM100D
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\thorlabs_powermeter\thorlabs_pm100d.py", line 2, in <module>
+    import visa
+ModuleNotFoundError: No module named 'visa'
+

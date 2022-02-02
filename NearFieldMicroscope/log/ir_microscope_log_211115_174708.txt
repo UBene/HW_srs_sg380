@@ -1,0 +1,25 @@
+2021-11-15T17:47:09|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 842, in update_math
+    new_val = self.math_func(*lq_vals)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 36, in <lambda>
+    func=lambda raw, rmin, rmax, scale: scale*( (raw - rmin)/(rmax-rmin) ),
+ZeroDivisionError: float division by zero
+
+2021-11-15T17:47:18|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\apd_counter\apd_counter_usb.py", line 48, in connect
+    self.ni_counter = NI_FreqCounterUSB(debug = self.debug_mode.val, mode='high_freq', input_terminal = "/Dev1/PFI0")
+NameError: name 'NI_FreqCounterUSB' is not defined
+
+2021-11-15T17:50:39|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\apd_counter\apd_counter_usb.py", line 48, in connect
+    self.ni_counter = NI_FreqCounterUSB(debug = self.debug_mode.val, mode='high_freq', input_terminal = "/Dev1/PFI0")
+NameError: name 'NI_FreqCounterUSB' is not defined
+

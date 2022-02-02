@@ -1,0 +1,19 @@
+2021-11-15T17:19:34|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.p2\pool\plugins\org.python.pydev.core_7.5.0.202001101138\pysrc\pydevd.py", line 3129, in <module>
+    main()
+  File "C:\Users\RAMAN\.p2\pool\plugins\org.python.pydev.core_7.5.0.202001101138\pysrc\pydevd.py", line 3122, in main
+    globals = debugger.run(setup['file'], None, None, is_module)
+  File "C:\Users\RAMAN\.p2\pool\plugins\org.python.pydev.core_7.5.0.202001101138\pysrc\pydevd.py", line 2195, in run
+    return self._exec(is_module, entry_point_fn, module_name, file, globals, locals)
+  File "C:\Users\RAMAN\.p2\pool\plugins\org.python.pydev.core_7.5.0.202001101138\pysrc\pydevd.py", line 2202, in _exec
+    pydev_imports.execfile(file, globals, locals)  # execute the script
+  File "C:\Users\RAMAN\.p2\pool\plugins\org.python.pydev.core_7.5.0.202001101138\pysrc\_pydev_imps\_pydev_execfile.py", line 25, in execfile
+    exec(compile(contents+"\n", file, 'exec'), glob, loc)
+  File "C:\Users\RAMAN\workspace\NearField\NearFieldMicroscope\near_field_microscope_app.py", line 208, in <module>
+    app = NearFieldMicroscope(sys.argv)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\base_app.py", line 338, in __init__
+    self.setup()
+  File "C:\Users\RAMAN\workspace\NearField\NearFieldMicroscope\near_field_microscope_app.py", line 103, in setup
+    from ir_microscope.measurements.trpl_scan import TRPL2DScan
+ModuleNotFoundError: No module named 'ir_microscope'
+

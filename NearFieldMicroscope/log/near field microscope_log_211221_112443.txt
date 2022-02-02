@@ -1,0 +1,66 @@
+2021-12-21T11:24:44|INFO|HydraHarpOptimizerMeasure|hydraharp_channel_optimizer start_stop False
+2021-12-21T11:24:44|INFO|HydraHarpOptimizerMeasure|measurement hydraharp_channel_optimizer stopping stop_first
+2021-12-21T11:24:44|INFO|HydraHarpHistogramMeasure|hydraharp_histogram start_stop False
+2021-12-21T11:24:44|INFO|HydraHarpHistogramMeasure|measurement hydraharp_histogram stopping stop_first
+2021-12-21T11:24:44|INFO|PowerScanMeasure|power_scan start_stop False
+2021-12-21T11:24:44|INFO|PowerScanMeasure|measurement power_scan stopping stop_first
+2021-12-21T11:24:44|INFO|PowerMeterOptimizerMeasure|powermeter_optimizer start_stop False
+2021-12-21T11:24:44|INFO|PowerMeterOptimizerMeasure|measurement powermeter_optimizer stopping stop_first
+2021-12-21T11:24:44|INFO|Sequencer|sequencer start_stop False
+2021-12-21T11:24:44|INFO|Sequencer|measurement sequencer stopping stop_first
+2021-12-21T11:24:44|INFO|APDOptimizerCBMeasurement|apd_optimizer start_stop False
+2021-12-21T11:24:44|INFO|APDOptimizerCBMeasurement|measurement apd_optimizer stopping stop_first
+2021-12-21T11:24:44|INFO|NearFieldMicroscope|setting up figures for hydraharp_channel_optimizer measurement hydraharp_channel_optimizer
+2021-12-21T11:24:44|INFO|HydraHarpOptimizerMeasure|hydraharp_channel_optimizer start_stop False
+2021-12-21T11:24:44|INFO|HydraHarpOptimizerMeasure|measurement hydraharp_channel_optimizer stopping stop_first
+2021-12-21T11:24:44|INFO|NearFieldMicroscope|setting up figures for hydraharp_histogram measurement hydraharp_histogram
+2021-12-21T11:24:44|INFO|NearFieldMicroscope|setting up figures for power_scan measurement power_scan
+2021-12-21T11:24:44|INFO|PowerScanMeasure|power_scan start_stop False
+2021-12-21T11:24:44|INFO|PowerScanMeasure|measurement power_scan stopping stop_first
+2021-12-21T11:24:44|INFO|NearFieldMicroscope|setting up figures for powermeter_optimizer measurement powermeter_optimizer
+2021-12-21T11:24:44|INFO|PowerMeterOptimizerMeasure|powermeter_optimizer start_stop False
+2021-12-21T11:24:44|INFO|PowerMeterOptimizerMeasure|measurement powermeter_optimizer stopping stop_first
+2021-12-21T11:24:44|INFO|NearFieldMicroscope|setting up figures for sequencer measurement sequencer
+2021-12-21T11:24:44|INFO|Sequencer|sequencer start_stop False
+2021-12-21T11:24:44|INFO|Sequencer|measurement sequencer stopping stop_first
+2021-12-21T11:24:44|WARNING|HydraHarpOptimizerMeasure|Measurement.gui is deprecated, use Measurement.app <class 'DeprecationWarning'>
+2021-12-21T11:24:45|WARNING|HydraHarpHistogramMeasure|Measurement.gui is deprecated, use Measurement.app <class 'DeprecationWarning'>
+2021-12-21T11:24:45|WARNING|PowerScanMeasure|Measurement.gui is deprecated, use Measurement.app <class 'DeprecationWarning'>
+2021-12-21T11:24:45|WARNING|PowerMeterOptimizerMeasure|Measurement.gui is deprecated, use Measurement.app <class 'DeprecationWarning'>
+2021-12-21T11:24:45|WARNING|Sequencer|Measurement.gui is deprecated, use Measurement.app <class 'DeprecationWarning'>
+2021-12-21T11:24:45|WARNING|APDOptimizerCBMeasurement|Measurement.gui is deprecated, use Measurement.app <class 'DeprecationWarning'>
+2021-12-21T11:24:45|INFO|NearFieldMicroscope|setting up figures for apd_optimizer measurement apd_optimizer
+2021-12-21T11:24:45|INFO|APDOptimizerCBMeasurement|apd_optimizer start_stop False
+2021-12-21T11:24:45|INFO|APDOptimizerCBMeasurement|measurement apd_optimizer stopping stop_first
+2021-12-21T11:24:45|INFO|NearFieldMicroscope|ini settings loading from near_field_microscope_defaults.ini
+2021-12-21T11:24:45|DEBUG|FileLQ|save_dir: update_value 'C:\\Users\\RAMAN\\workspace\\NearField\\NearFieldMicroscope\\data' --> 'E:\\Natalie'    sender=None
+2021-12-21T11:24:45|DEBUG|FileLQ|save_dir: different values C:\Users\RAMAN\workspace\NearField\NearFieldMicroscope\data E:\Natalie
+2021-12-21T11:24:45|INFO|NearFieldMicroscope|hardware/hydraharp
+2021-12-21T11:24:45|INFO|NearFieldMicroscope|hardware/pololu_maestro
+2021-12-21T11:24:48|INFO|NearFieldMicroscope|hardware/power_wheel
+2021-12-21T11:24:48|INFO|NearFieldMicroscope|hardware/thorlabs_powermeter
+2021-12-21T11:24:48|INFO|NearFieldMicroscope|hardware/motorized_polarizer
+2021-12-21T11:24:48|INFO|NearFieldMicroscope|hardware/apd_counter
+2021-12-21T11:24:48|INFO|NearFieldMicroscope|ini settings loaded from: near_field_microscope_defaults.ini
+2021-12-21T11:24:51|INFO|PowerScanMeasure|power_scan start_stop True
+2021-12-21T11:24:51|INFO|PowerScanMeasure|measurement power_scan start called from thread: 16348
+2021-12-21T11:24:53|DEBUG|ScopeFoundryHW.thorlabs_powermeter.thorlabs_pm100d|get_auto_range '1\n'
+2021-12-21T11:24:53|DEBUG|ScopeFoundryHW.thorlabs_powermeter.thorlabs_pm100d|get_auto_range '1\n'
+2021-12-21T11:24:59|WARNING|LoggedQuantity|count_rate read_from_hardware called when not connected to hardware
+2021-12-21T11:25:09|WARNING|LoggedQuantity|count_rate read_from_hardware called when not connected to hardware
+2021-12-21T11:25:19|WARNING|LoggedQuantity|count_rate read_from_hardware called when not connected to hardware
+2021-12-21T11:25:29|WARNING|LoggedQuantity|count_rate read_from_hardware called when not connected to hardware
+2021-12-21T11:25:30|INFO|PowerScanMeasure|power_scan start_stop False
+2021-12-21T11:25:30|INFO|PowerScanMeasure|measurement power_scan stopping run_thread_run
+2021-12-21T11:25:30|INFO|PowerScanMeasure|measurement power_scan interrupt called
+2021-12-21T11:25:30|INFO|PowerScanMeasure|data saved E:\Natalie\211221_112530_power_scan.h5
+2021-12-21T11:25:31|DEBUG|root|close
+2021-12-21T11:25:33|DEBUG|root|closing
+2021-12-21T11:25:33|INFO|NearFieldMicroscope|on_close
+2021-12-21T11:25:33|INFO|NearFieldMicroscope|disconnecting hydraharp
+2021-12-21T11:25:33|INFO|NearFieldMicroscope|disconnecting pololu_maestro
+2021-12-21T11:25:33|INFO|NearFieldMicroscope|disconnecting power_wheel
+2021-12-21T11:25:33|INFO|NearFieldMicroscope|disconnecting thorlabs_powermeter
+2021-12-21T11:25:33|INFO|NearFieldMicroscope|disconnecting motorized_polarizer
+2021-12-21T11:25:33|ERROR|NearFieldMicroscope|tried to disconnect motorized_polarizer: Thorlabs Kinesis Error [1443162896] UNKNOWN: Unknown error code. 
+2021-12-21T11:25:33|INFO|NearFieldMicroscope|disconnecting apd_counter

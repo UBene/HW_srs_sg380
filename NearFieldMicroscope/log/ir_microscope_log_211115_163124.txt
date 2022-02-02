@@ -1,0 +1,27 @@
+2021-11-15T16:31:24|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\.p2\pool\plugins\org.python.pydev.core_7.5.0.202001101138\pysrc\pydevd.py", line 3129, in <module>
+    main()
+  File "C:\Users\RAMAN\.p2\pool\plugins\org.python.pydev.core_7.5.0.202001101138\pysrc\pydevd.py", line 3122, in main
+    globals = debugger.run(setup['file'], None, None, is_module)
+  File "C:\Users\RAMAN\.p2\pool\plugins\org.python.pydev.core_7.5.0.202001101138\pysrc\pydevd.py", line 2195, in run
+    return self._exec(is_module, entry_point_fn, module_name, file, globals, locals)
+  File "C:\Users\RAMAN\.p2\pool\plugins\org.python.pydev.core_7.5.0.202001101138\pysrc\pydevd.py", line 2202, in _exec
+    pydev_imports.execfile(file, globals, locals)  # execute the script
+  File "C:\Users\RAMAN\.p2\pool\plugins\org.python.pydev.core_7.5.0.202001101138\pysrc\_pydev_imps\_pydev_execfile.py", line 25, in execfile
+    exec(compile(contents+"\n", file, 'exec'), glob, loc)
+  File "C:\Users\RAMAN\workspace\NearField\NearFieldMicroscope\near_field_microscope_app.py", line 200, in <module>
+    app = NearFieldMicroscope(sys.argv)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\base_app.py", line 338, in __init__
+    self.setup()
+  File "C:\Users\RAMAN\workspace\NearField\NearFieldMicroscope\near_field_microscope_app.py", line 115, in setup
+    self.add_measurement(PowerMeterOptimizerMeasure(self))
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\thorlabs_powermeter\powermeter_optimizer.py", line 21, in __init__
+    super(PowerMeterOptimizerMeasure, self).__init__(app)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\measurement.py", line 107, in __init__
+    self.setup()
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\thorlabs_powermeter\powermeter_optimizer.py", line 37, in setup
+    self.powermeter = self.app.hardware['thorlabs_powermeter']
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\helper_funcs.py", line 31, in __getitem__
+    return self._odict[key]
+KeyError: 'thorlabs_powermeter'
+

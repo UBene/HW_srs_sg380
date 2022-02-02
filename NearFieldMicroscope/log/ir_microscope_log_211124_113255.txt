@@ -1,0 +1,296 @@
+2021-11-24T11:32:57|INFO|HydraHarpOptimizerMeasure|hydraharp_channel_optimizer start_stop False
+2021-11-24T11:32:57|INFO|HydraHarpOptimizerMeasure|measurement hydraharp_channel_optimizer stopping stop_first
+2021-11-24T11:32:57|INFO|HydraHarpHistogramMeasure|hydraharp_histogram start_stop False
+2021-11-24T11:32:57|INFO|HydraHarpHistogramMeasure|measurement hydraharp_histogram stopping stop_first
+2021-11-24T11:32:57|INFO|PowerScanMeasure|power_scan start_stop False
+2021-11-24T11:32:57|INFO|PowerScanMeasure|measurement power_scan stopping stop_first
+2021-11-24T11:32:57|INFO|PowerMeterOptimizerMeasure|powermeter_optimizer start_stop False
+2021-11-24T11:32:57|INFO|PowerMeterOptimizerMeasure|measurement powermeter_optimizer stopping stop_first
+2021-11-24T11:32:57|INFO|APDOptimizerCBMeasurement|apd_optimizer start_stop False
+2021-11-24T11:32:57|INFO|APDOptimizerCBMeasurement|measurement apd_optimizer stopping stop_first
+2021-11-24T11:32:57|INFO|NearFieldMicroscope|setting up figures for hydraharp_channel_optimizer measurement hydraharp_channel_optimizer
+2021-11-24T11:32:57|INFO|HydraHarpOptimizerMeasure|hydraharp_channel_optimizer start_stop False
+2021-11-24T11:32:57|INFO|HydraHarpOptimizerMeasure|measurement hydraharp_channel_optimizer stopping stop_first
+2021-11-24T11:32:57|INFO|NearFieldMicroscope|setting up figures for hydraharp_histogram measurement hydraharp_histogram
+2021-11-24T11:32:57|INFO|NearFieldMicroscope|setting up figures for power_scan measurement power_scan
+2021-11-24T11:32:57|INFO|PowerScanMeasure|power_scan start_stop False
+2021-11-24T11:32:57|INFO|PowerScanMeasure|measurement power_scan stopping stop_first
+2021-11-24T11:32:57|INFO|NearFieldMicroscope|setting up figures for powermeter_optimizer measurement powermeter_optimizer
+2021-11-24T11:32:57|INFO|PowerMeterOptimizerMeasure|powermeter_optimizer start_stop False
+2021-11-24T11:32:57|INFO|PowerMeterOptimizerMeasure|measurement powermeter_optimizer stopping stop_first
+2021-11-24T11:32:57|INFO|NearFieldMicroscope|setting up figures for apd_optimizer measurement apd_optimizer
+2021-11-24T11:32:57|INFO|APDOptimizerCBMeasurement|apd_optimizer start_stop False
+2021-11-24T11:32:57|INFO|APDOptimizerCBMeasurement|measurement apd_optimizer stopping stop_first
+2021-11-24T11:32:57|INFO|NearFieldMicroscope|ini settings loading from near_field_microscope_defaults.ini
+2021-11-24T11:32:57|INFO|NearFieldMicroscope|hardware/hydraharp
+2021-11-24T11:32:57|INFO|NearFieldMicroscope|hardware/pololu_maestro
+2021-11-24T11:32:57|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundry\logged_quantity.py", line 842, in update_math
+    new_val = self.math_func(*lq_vals)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\pololu_servo\multi_servo_hw.py", line 36, in <lambda>
+    func=lambda raw, rmin, rmax, scale: scale*( (raw - rmin)/(rmax-rmin) ),
+ZeroDivisionError: float division by zero
+
+2021-11-24T11:33:00|INFO|NearFieldMicroscope|hardware/power_wheel
+2021-11-24T11:33:00|INFO|NearFieldMicroscope|hardware/thorlabs_powermeter
+2021-11-24T11:33:00|INFO|NearFieldMicroscope|hardware/apd_counter
+2021-11-24T11:33:00|INFO|NearFieldMicroscope|ini settings loaded from: near_field_microscope_defaults.ini
+2021-11-24T11:35:15|DEBUG|ScopeFoundryHW.thorlabs_powermeter.thorlabs_pm100d|get_auto_range '1\n'
+2021-11-24T11:35:15|DEBUG|ScopeFoundryHW.thorlabs_powermeter.thorlabs_pm100d|get_auto_range '1\n'
+2021-11-24T11:35:24|DEBUG|ScopeFoundryHW.ni_daq.devices.ni_counter_task|NI_CounterTask.set_channel-- Dev1/ctr0 /Dev1/PFI0
+2021-11-24T11:35:41|INFO|PowerMeterOptimizerMeasure|powermeter_optimizer start_stop True
+2021-11-24T11:35:41|INFO|PowerMeterOptimizerMeasure|measurement powermeter_optimizer start called from thread: 20416
+2021-11-24T14:58:24|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\ni_daq\devices\ni_counter_task.py", line 152, in read_buffer
+    self.task.ReadCounterF64(-1, timeout, data, count, mx.byref(read_count), None)
+  File "<string>", line 3, in ReadCounterF64
+  File "<string>", line 2, in function
+  File "C:\ProgramData\Anaconda3\lib\site-packages\PyDAQmx\DAQmxFunctions.py", line 62, in mafunction
+    raise exception_class(errBuff.value.decode("utf-8"), f.__name__)
+PyDAQmx.DAQmxFunctions.SamplesNoLongerAvailableError: The application is not able to keep up with the hardware acquisition.
+
+Increasing the buffer size, reading the data more frequently, or specifying a fixed number of samples to read instead of reading all available samples might correct the problem.
+Property: DAQmx_Read_RelativeTo
+Corresponding Value: DAQmx_Val_CurrReadPos
+Property: DAQmx_Read_Offset
+Corresponding Value: 0
+
+Task Name: _unnamedTask<0>
+
+Status Code: -200279
+ in function DAQmxReadCounterF64
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "_ctypes/callbacks.c", line 232, in 'calling callback function'
+  File "C:\ProgramData\Anaconda3\lib\site-packages\PyDAQmx\Task.py", line 44, in EveryNCallback_py
+    def EveryNCallback_py(taskHandle, everyNsamplesEventType, nSamples, self_id):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\ni_daq\hw\ni_freq_counter_callback.py", line 87, in counter_callback
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\ni_daq\hw\ni_freq_counter_callback.py", line 83, in counter_callback
+    self.current_count = self.counter_task.read_buffer(count=self.n_samples_cb)[-1]
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\ni_daq\devices\ni_counter_task.py", line 154, in read_buffer
+    self.error(err)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\ni_daq\devices\ni_task_wrap.py", line 42, in error
+    logger.error('Error calling "{}": {}'.format( err.fname, err.mess ))
+AttributeError: 'SamplesNoLongerAvailableError' object has no attribute 'mess'
+
+2021-11-24T15:48:47|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\ni_daq\devices\ni_counter_task.py", line 152, in read_buffer
+    self.task.ReadCounterF64(-1, timeout, data, count, mx.byref(read_count), None)
+  File "<string>", line 3, in ReadCounterF64
+  File "<string>", line 2, in function
+  File "C:\ProgramData\Anaconda3\lib\site-packages\PyDAQmx\DAQmxFunctions.py", line 62, in mafunction
+    raise exception_class(errBuff.value.decode("utf-8"), f.__name__)
+PyDAQmx.DAQmxFunctions.SamplesNoLongerAvailableError: The application is not able to keep up with the hardware acquisition.
+
+Increasing the buffer size, reading the data more frequently, or specifying a fixed number of samples to read instead of reading all available samples might correct the problem.
+Property: DAQmx_Read_RelativeTo
+Corresponding Value: DAQmx_Val_CurrReadPos
+Property: DAQmx_Read_Offset
+Corresponding Value: 0
+
+Task Name: _unnamedTask<0>
+
+Status Code: -200279
+ in function DAQmxReadCounterF64
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "_ctypes/callbacks.c", line 232, in 'calling callback function'
+  File "C:\ProgramData\Anaconda3\lib\site-packages\PyDAQmx\Task.py", line 44, in EveryNCallback_py
+    def EveryNCallback_py(taskHandle, everyNsamplesEventType, nSamples, self_id):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\ni_daq\hw\ni_freq_counter_callback.py", line 87, in counter_callback
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\ni_daq\hw\ni_freq_counter_callback.py", line 83, in counter_callback
+    self.current_count = self.counter_task.read_buffer(count=self.n_samples_cb)[-1]
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\ni_daq\devices\ni_counter_task.py", line 154, in read_buffer
+    self.error(err)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\ni_daq\devices\ni_task_wrap.py", line 42, in error
+    logger.error('Error calling "{}": {}'.format( err.fname, err.mess ))
+AttributeError: 'SamplesNoLongerAvailableError' object has no attribute 'mess'
+
+2021-11-24T16:51:23|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\ni_daq\devices\ni_counter_task.py", line 152, in read_buffer
+    self.task.ReadCounterF64(-1, timeout, data, count, mx.byref(read_count), None)
+  File "<string>", line 3, in ReadCounterF64
+  File "<string>", line 2, in function
+  File "C:\ProgramData\Anaconda3\lib\site-packages\PyDAQmx\DAQmxFunctions.py", line 62, in mafunction
+    raise exception_class(errBuff.value.decode("utf-8"), f.__name__)
+PyDAQmx.DAQmxFunctions.SamplesNoLongerAvailableError: The application is not able to keep up with the hardware acquisition.
+
+Increasing the buffer size, reading the data more frequently, or specifying a fixed number of samples to read instead of reading all available samples might correct the problem.
+Property: DAQmx_Read_RelativeTo
+Corresponding Value: DAQmx_Val_CurrReadPos
+Property: DAQmx_Read_Offset
+Corresponding Value: 0
+
+Task Name: _unnamedTask<0>
+
+Status Code: -200279
+ in function DAQmxReadCounterF64
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "_ctypes/callbacks.c", line 232, in 'calling callback function'
+  File "C:\ProgramData\Anaconda3\lib\site-packages\PyDAQmx\Task.py", line 44, in EveryNCallback_py
+    def EveryNCallback_py(taskHandle, everyNsamplesEventType, nSamples, self_id):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\ni_daq\hw\ni_freq_counter_callback.py", line 87, in counter_callback
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\ni_daq\hw\ni_freq_counter_callback.py", line 83, in counter_callback
+    self.current_count = self.counter_task.read_buffer(count=self.n_samples_cb)[-1]
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\ni_daq\devices\ni_counter_task.py", line 154, in read_buffer
+    self.error(err)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\ni_daq\devices\ni_task_wrap.py", line 42, in error
+    logger.error('Error calling "{}": {}'.format( err.fname, err.mess ))
+AttributeError: 'SamplesNoLongerAvailableError' object has no attribute 'mess'
+
+2021-11-24T18:09:15|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\ni_daq\devices\ni_counter_task.py", line 152, in read_buffer
+    self.task.ReadCounterF64(-1, timeout, data, count, mx.byref(read_count), None)
+  File "<string>", line 3, in ReadCounterF64
+  File "<string>", line 2, in function
+  File "C:\ProgramData\Anaconda3\lib\site-packages\PyDAQmx\DAQmxFunctions.py", line 62, in mafunction
+    raise exception_class(errBuff.value.decode("utf-8"), f.__name__)
+PyDAQmx.DAQmxFunctions.SamplesNoLongerAvailableError: The application is not able to keep up with the hardware acquisition.
+
+Increasing the buffer size, reading the data more frequently, or specifying a fixed number of samples to read instead of reading all available samples might correct the problem.
+Property: DAQmx_Read_RelativeTo
+Corresponding Value: DAQmx_Val_CurrReadPos
+Property: DAQmx_Read_Offset
+Corresponding Value: 0
+
+Task Name: _unnamedTask<0>
+
+Status Code: -200279
+ in function DAQmxReadCounterF64
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "_ctypes/callbacks.c", line 232, in 'calling callback function'
+  File "C:\ProgramData\Anaconda3\lib\site-packages\PyDAQmx\Task.py", line 44, in EveryNCallback_py
+    def EveryNCallback_py(taskHandle, everyNsamplesEventType, nSamples, self_id):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\ni_daq\hw\ni_freq_counter_callback.py", line 87, in counter_callback
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\ni_daq\hw\ni_freq_counter_callback.py", line 83, in counter_callback
+    self.current_count = self.counter_task.read_buffer(count=self.n_samples_cb)[-1]
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\ni_daq\devices\ni_counter_task.py", line 154, in read_buffer
+    self.error(err)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\ni_daq\devices\ni_task_wrap.py", line 42, in error
+    logger.error('Error calling "{}": {}'.format( err.fname, err.mess ))
+AttributeError: 'SamplesNoLongerAvailableError' object has no attribute 'mess'
+
+2021-11-24T19:46:04|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\ni_daq\devices\ni_counter_task.py", line 152, in read_buffer
+    self.task.ReadCounterF64(-1, timeout, data, count, mx.byref(read_count), None)
+  File "<string>", line 3, in ReadCounterF64
+  File "<string>", line 2, in function
+  File "C:\ProgramData\Anaconda3\lib\site-packages\PyDAQmx\DAQmxFunctions.py", line 62, in mafunction
+    raise exception_class(errBuff.value.decode("utf-8"), f.__name__)
+PyDAQmx.DAQmxFunctions.SamplesNoLongerAvailableError: The application is not able to keep up with the hardware acquisition.
+
+Increasing the buffer size, reading the data more frequently, or specifying a fixed number of samples to read instead of reading all available samples might correct the problem.
+Property: DAQmx_Read_RelativeTo
+Corresponding Value: DAQmx_Val_CurrReadPos
+Property: DAQmx_Read_Offset
+Corresponding Value: 0
+
+Task Name: _unnamedTask<0>
+
+Status Code: -200279
+ in function DAQmxReadCounterF64
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "_ctypes/callbacks.c", line 232, in 'calling callback function'
+  File "C:\ProgramData\Anaconda3\lib\site-packages\PyDAQmx\Task.py", line 44, in EveryNCallback_py
+    def EveryNCallback_py(taskHandle, everyNsamplesEventType, nSamples, self_id):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\ni_daq\hw\ni_freq_counter_callback.py", line 87, in counter_callback
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\ni_daq\hw\ni_freq_counter_callback.py", line 83, in counter_callback
+    self.current_count = self.counter_task.read_buffer(count=self.n_samples_cb)[-1]
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\ni_daq\devices\ni_counter_task.py", line 154, in read_buffer
+    self.error(err)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\ni_daq\devices\ni_task_wrap.py", line 42, in error
+    logger.error('Error calling "{}": {}'.format( err.fname, err.mess ))
+AttributeError: 'SamplesNoLongerAvailableError' object has no attribute 'mess'
+
+2021-11-24T21:46:11|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\ni_daq\devices\ni_counter_task.py", line 152, in read_buffer
+    self.task.ReadCounterF64(-1, timeout, data, count, mx.byref(read_count), None)
+  File "<string>", line 3, in ReadCounterF64
+  File "<string>", line 2, in function
+  File "C:\ProgramData\Anaconda3\lib\site-packages\PyDAQmx\DAQmxFunctions.py", line 62, in mafunction
+    raise exception_class(errBuff.value.decode("utf-8"), f.__name__)
+PyDAQmx.DAQmxFunctions.SamplesNoLongerAvailableError: The application is not able to keep up with the hardware acquisition.
+
+Increasing the buffer size, reading the data more frequently, or specifying a fixed number of samples to read instead of reading all available samples might correct the problem.
+Property: DAQmx_Read_RelativeTo
+Corresponding Value: DAQmx_Val_CurrReadPos
+Property: DAQmx_Read_Offset
+Corresponding Value: 0
+
+Task Name: _unnamedTask<0>
+
+Status Code: -200279
+ in function DAQmxReadCounterF64
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "_ctypes/callbacks.c", line 232, in 'calling callback function'
+  File "C:\ProgramData\Anaconda3\lib\site-packages\PyDAQmx\Task.py", line 44, in EveryNCallback_py
+    def EveryNCallback_py(taskHandle, everyNsamplesEventType, nSamples, self_id):
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\ni_daq\hw\ni_freq_counter_callback.py", line 87, in counter_callback
+    raise err
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\ni_daq\hw\ni_freq_counter_callback.py", line 83, in counter_callback
+    self.current_count = self.counter_task.read_buffer(count=self.n_samples_cb)[-1]
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\ni_daq\devices\ni_counter_task.py", line 154, in read_buffer
+    self.error(err)
+  File "C:\Users\RAMAN\workspace\NearField\ScopeFoundryHW\ni_daq\devices\ni_task_wrap.py", line 42, in error
+    logger.error('Error calling "{}": {}'.format( err.fname, err.mess ))
+AttributeError: 'SamplesNoLongerAvailableError' object has no attribute 'mess'
+
+2021-11-24T23:16:54|DEBUG|root|close
+2021-11-24T23:16:56|DEBUG|root|closing
+2021-11-24T23:16:56|INFO|NearFieldMicroscope|on_close
+2021-11-24T23:16:56|INFO|NearFieldMicroscope|disconnecting hydraharp
+2021-11-24T23:16:56|INFO|NearFieldMicroscope|disconnecting pololu_maestro
+2021-11-24T23:16:56|INFO|NearFieldMicroscope|disconnecting power_wheel
+2021-11-24T23:16:56|INFO|NearFieldMicroscope|disconnecting thorlabs_powermeter
+2021-11-24T23:16:56|INFO|NearFieldMicroscope|disconnecting apd_counter
+2021-11-24T23:16:56|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2021-11-24T23:17:00|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2021-11-24T23:17:01|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2021-11-24T23:17:02|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2021-11-24T23:17:02|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2021-11-24T23:17:02|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2021-11-24T23:17:02|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2021-11-24T23:17:02|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2021-11-24T23:17:02|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2021-11-24T23:17:02|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2021-11-24T23:17:02|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2021-11-24T23:17:02|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2021-11-24T23:17:03|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2021-11-24T23:17:03|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2021-11-24T23:17:03|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2021-11-24T23:17:03|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2021-11-24T23:17:03|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2021-11-24T23:17:03|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2021-11-24T23:17:03|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2021-11-24T23:17:03|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2021-11-24T23:17:04|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2021-11-24T23:17:04|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2021-11-24T23:17:04|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2021-11-24T23:17:04|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2021-11-24T23:17:04|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2021-11-24T23:17:04|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2021-11-24T23:17:04|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2021-11-24T23:17:04|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2021-11-24T23:17:04|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
+2021-11-24T23:17:05|WARNING|LoggedQuantity|power read_from_hardware called when not connected to hardware
