@@ -36,9 +36,9 @@ class DLIPowerSwitchHW(HardwareComponent):
             self.settings.New(name='Outlet_{}'.format(ii + 1), dtype=bool, initial=False, ro=False)
 
         # # Credentials
-        self.host = self.settings.New(name='host', initial='192.168.0.100', dtype=str, ro=False)
+        self.host = self.settings.New(name='host', initial='192.168.0.101', dtype=str, ro=False)
         self.userid = self.settings.New(name='userid', initial='admin', dtype=str, ro=False)
-        self.key = self.settings.New(name='key', initial='lbnl', dtype=str, ro=False)
+        self.key = self.settings.New(name='key', initial='1234', dtype=str, ro=False)
 
         self.dummy_mode = self.add_logged_quantity(name='dummy_mode', dtype=bool, initial=False, ro=False)
 
