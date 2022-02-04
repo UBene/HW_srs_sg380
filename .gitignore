@@ -45,6 +45,8 @@ ScopeFoundryHW/picoquant/log/
 ScopeFoundryHW/sync_stream_scan/log/
 ScopeFoundry/tests/load_hw_ini_file_test/log
 ScopeFoundryHW/attocube_ecc100/log
+ScopeFoundryHW/laser_quantum/log
+ScopeFoundryHW/rigol/log
 FoundryDataBrowser/FoundryDataBrowser.egg-info
 near_field_microscope/log/
 near_field_microscope/data/

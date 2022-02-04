@@ -39,7 +39,7 @@ Email to one of the administrators and follow the instructions send by Atlassian
 
 7. Think of a good *`name`* for your setup and make new branch called `name_microscope`
 
-8. Make a new folder `name_microscope` and within that folder create (even better to copy near_field_microscope and make the adjustments): 
+8. Make a new folder `name_microscope` and within that folder create (even better to copy `generic_microscope` and make the adjustments): 
    1. an empty `__init__.py` file
 
    2. `app.py` which will be the main file 
@@ -53,7 +53,11 @@ Email to one of the administrators and follow the instructions send by Atlassian
 
       as you never want to sync files located there
 
-9. Make an initial commit. When prompted you should map from `name_microscope`-remote branch to  `name_microscope`-local.
+9. Go to bitbucket online and make a new Branch called: `name_microscope`
+
+10. Go to source tree and make a new Branch called: `name_microscope`
+
+11. Make an initial commit. When prompted you should map from `name_microscope`-remote branch to  `name_microscope`-local.
 
 10. In Eclipse, 
 
