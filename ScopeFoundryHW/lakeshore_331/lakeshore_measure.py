@@ -103,8 +103,8 @@ class LakeshoreMeasure(Measurement):
         self.graph_layout = pg.GraphicsLayoutWidget(border=(100, 100, 100))
         self.ui.plot_widget.layout().addWidget(self.graph_layout)        
         self.plot = self.graph_layout.addPlot(title="Lakeshore 331 Readout")
-        xaxis = pg.DateAxisItem(orientation="bottom")
-        self.plot.setAxisItems({"bottom":xaxis})        
+        #xaxis = pg.DateAxisItem(orientation="bottom")
+        #self.plot.setAxisItems({"bottom":xaxis})        
         self.plot.setLabel('left', text='T', units='K')
         
         self.reset_plot()

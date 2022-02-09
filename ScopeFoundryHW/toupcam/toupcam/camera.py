@@ -19,7 +19,7 @@
 from __future__ import absolute_import
 import ctypes
 import os
-from PIL import Image
+#from PIL import Image
 from numpy import zeros, uint8, uint32
 try:
     from cStringIO import StringIO
