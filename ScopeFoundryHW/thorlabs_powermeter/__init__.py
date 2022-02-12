@@ -1,3 +1,4 @@
-from __future__ import absolute_import
-from .thorlabs_powermeter import ThorlabsPowerMeterHW 
-from ScopeFoundryHW.thorlabs_powermeter.powermeter_optimizer import PowerMeterOptimizerMeasure
+from .thorlabs_powermeter import ThorlabsPowerMeterHW
+from .thorlabs_powermeter_analog_readout import ThorlabsPowerMeterAnalogReadOut 
+from .thorlabs_pm100d import ThorlabsPM100D
+from .powermeter_optimizer import PowerMeterOptimizerMeasure
