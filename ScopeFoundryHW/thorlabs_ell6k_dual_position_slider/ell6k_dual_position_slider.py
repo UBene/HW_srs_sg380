@@ -5,8 +5,7 @@ reworked Feb 04, 2022
 @author: Benedikt 
 '''
 from ScopeFoundry import HardwareComponent
-from ScopeFoundryHW.thorlabs_ell6k_dual_position_slider.ell6k_dual_position_slider_dev import ELL6KDualPositionSliderDev
-
+from .ell6k_dual_position_slider_dev import ELL6KDualPositionSliderDev
 
 
 class ELL6KDualPositionSliderHW(HardwareComponent):

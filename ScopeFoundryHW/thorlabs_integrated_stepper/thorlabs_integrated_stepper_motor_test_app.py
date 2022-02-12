@@ -6,7 +6,7 @@ class TestApp(BaseMicroscopeApp):
     
     def setup(self):
         
-        from ScopeFoundryHW.thorlabs_integrated_stepper.thorlabs_integrated_stepper_motor_hw import ThorlabsIntegratedStepperMottorHW
+        from ScopeFoundryHW.thorlabs_integrated_stepper import ThorlabsIntegratedStepperMottorHW
         self.add_hardware(ThorlabsIntegratedStepperMottorHW(self))
         
 if __name__ == '__main__':

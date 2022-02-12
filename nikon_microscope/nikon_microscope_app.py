@@ -29,8 +29,8 @@ class NikonMicroscope(BaseMicroscopeApp):
         from ScopeFoundryHW.thorlabs_powermeter import ThorlabsPowerMeterHW
         self.add_hardware(ThorlabsPowerMeterHW(self))
         self.add_hardware(ThorlabsPowerMeterHW(self, name='thorlabs_powermeter_2'))
-        # from ScopeFoundryHW.thorlabs_powermeter.thorlabs_powermeter_analog_readout import ThorlabsPowerMeterAnalogReadOut
-        # self.add_hardware(ThorlabsPowerMeterAnalogReadOut(self))
+        from ScopeFoundryHW.thorlabs_powermeter import ThorlabsPowerMeterAnalogReadOut
+        self.add_hardware(ThorlabsPowerMeterAnalogReadOut(self))
         from ScopeFoundryHW.thorlabs_powermeter import PowerMeterOptimizerMeasure
         self.add_measurement(PowerMeterOptimizerMeasure(self))        
         
@@ -41,7 +41,7 @@ class NikonMicroscope(BaseMicroscopeApp):
         # from ScopeFoundryHW.thorlabs_stepper_motors import ThorlabsStepperControllerHW
         # self.add_hardware(ThorlabsStepperControllerHW(self))
                 
-        from ScopeFoundryHW.thorlabs_integrated_stepper.thorlabs_integrated_stepper_motor_hw import ThorlabsIntegratedStepperMottorHW
+        from ScopeFoundryHW.thorlabs_integrated_stepper import ThorlabsIntegratedStepperMottorHW
         self.add_hardware(ThorlabsIntegratedStepperMottorHW(self))
 
         from ScopeFoundryHW.picam.picam_hw import PicamHW
@@ -55,7 +55,8 @@ class NikonMicroscope(BaseMicroscopeApp):
         from ScopeFoundryHW.dli_powerswitch.dlipower_hardware import DLIPowerSwitchHW
         self.add_hardware(DLIPowerSwitchHW(self))
         
-        from ScopeFoundryHW.thorlabs_ell6k_dual_position_slider.ell6k_dual_position_slider import ELL6KDualPositionSliderHW
+        
+        from ScopeFoundryHW.thorlabs_ell6k_dual_position_slider import ELL6KDualPositionSliderHW
         self.add_hardware(ELL6KDualPositionSliderHW(self, name='dual_position_slider',
                                                     choices=(('open', 1),
                                                              ('closed', 0))))
