@@ -39,6 +39,7 @@ class ToupCamHW(HardwareComponent):
         S.New('width_micron', dtype=float,initial= 2048.)
         S.New('height_micron', dtype=float, initial= 1536.)
         
+        
     def connect(self):
         from .toupcam.camera import ToupCamCamera, get_number_cameras
         S = self.settings

@@ -10,8 +10,10 @@ class ToupCamLiveMeasure(Measurement):
     name = 'toupcam_live'
     
     def setup(self):
-        self.settings.New('auto_level', dtype=bool, initial=False)
-    
+        self.settings.New('auto_level', bool, initial=False)
+        self.settings.New('rotate_90', int, initial=0,
+                          description='number of times the pictures is rotated before shown')
+
     def setup_figure(self):
         
         self.ui = load_qt_ui_file(sibling_path(__file__,'toupcam_live_measure.ui'))
@@ -122,6 +124,8 @@ class ToupCamLiveMeasure(Measurement):
         data = cam.get_image_data()
         raw = data.view(np.uint8).reshape(data.shape + (-1,))
         bgr = raw[..., :3]
+        if self.settings['rotate_90']:
+            bgr = np.rot90(bgr, self.settings['rotate_90'], (0,1))
         return bgr[..., ::-1]
 
 
