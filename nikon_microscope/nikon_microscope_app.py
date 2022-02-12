@@ -26,30 +26,42 @@ class NikonMicroscope(BaseMicroscopeApp):
         # from ScopeFoundryHW.acton_spec import ActonSpectrometerHW
         # self.add_hardware(ActonSpectrometerHW(self))
 
-        from ScopeFoundryHW.pololu_servo.multi_servo_hw import PololuMaestroHW, PololuMaestroWheelServoHW, PololuMaestroShutterServoHW
-        self.add_hardware(PololuMaestroHW(self, name='pololu_maestro'))
-        self.add_hardware(PololuMaestroWheelServoHW(self, name='power_wheel', channel=0))
-
         from ScopeFoundryHW.thorlabs_powermeter import ThorlabsPowerMeterHW
-        self.add_hardware_component(ThorlabsPowerMeterHW(self))
-        
+        self.add_hardware(ThorlabsPowerMeterHW(self))
+        self.add_hardware(ThorlabsPowerMeterHW(self, name='thorlabs_powermeter_2'))
         # from ScopeFoundryHW.thorlabs_powermeter.thorlabs_powermeter_analog_readout import ThorlabsPowerMeterAnalogReadOut
         # self.add_hardware(ThorlabsPowerMeterAnalogReadOut(self))
-                
+        from ScopeFoundryHW.thorlabs_powermeter import PowerMeterOptimizerMeasure
+        self.add_measurement(PowerMeterOptimizerMeasure(self))        
+        
+        from ScopeFoundryHW.powerwheel_arduino import PowerWheelArduinoHW
+        self.add_hardware(PowerWheelArduinoHW(self, name='main_beam_power_wheel', conv=3200 / 360))
+        # self.add_hardware(PowerWheelArduinoHW(self, name='side_beam_power_wheel', conv=3200 / 360))
+
         # from ScopeFoundryHW.thorlabs_stepper_motors import ThorlabsStepperControllerHW
         # self.add_hardware(ThorlabsStepperControllerHW(self))
                 
         from ScopeFoundryHW.thorlabs_integrated_stepper.thorlabs_integrated_stepper_motor_hw import ThorlabsIntegratedStepperMottorHW
-        self.add_hardware_component(ThorlabsIntegratedStepperMottorHW(self))
+        self.add_hardware(ThorlabsIntegratedStepperMottorHW(self))
 
-        from ScopeFoundryHW.dli_powerswitch import DLIPowerSwitchHW
-        dli = self.add_hardware(DLIPowerSwitchHW(self))
+        from ScopeFoundryHW.picam.picam_hw import PicamHW
+        self.add_hardware(PicamHW(self))
+        from ScopeFoundryHW.picam import PicamReadoutMeasure
+        self.add_measurement(PicamReadoutMeasure(self))
+        
+        from ScopeFoundryHW.pi_xyz_stage.pi_xyz_stage_hw import PIXYZStageHW
+        self.add_hardware(PIXYZStageHW)
+
+        from ScopeFoundryHW.dli_powerswitch.dlipower_hardware import DLIPowerSwitchHW
+        self.add_hardware(DLIPowerSwitchHW(self))
         
         from ScopeFoundryHW.thorlabs_ell6k_dual_position_slider.ell6k_dual_position_slider import ELL6KDualPositionSliderHW
-        self.add_hardware(ELL6KDualPositionSliderHW(self, name='dual_position_slider'))
+        self.add_hardware(ELL6KDualPositionSliderHW(self, name='dual_position_slider',
+                                                    choices=(('open', 1),
+                                                             ('closed', 0))))
         
         # from ScopeFoundryHW.thorlabs_motorized_filter_flipper.thorlabsMFF_hardware import ThorlabsMFFHW
-        # self.add_hardware_component(ThorlabsMFFHW(self))
+        # self.add_hardware(ThorlabsMFFHW(self))
 
         # from ScopeFoundryHW.chameleon_compact_opo.chameleon_compact_opo_hw import ChameleonCompactOPOHW
         # self.add_hardware(ChameleonCompactOPOHW(self))
@@ -61,14 +73,14 @@ class NikonMicroscope(BaseMicroscopeApp):
         # self.add_hardware(AndorCCDHW(self))
         # self.add_measurement(AndorCCDReadoutMeasure)
 
-        #from ScopeFoundryHW.toupcam.toupcam_hw import ToupCamHW
-        #self.add_hardware(ToupCamHW(self))
+        from ScopeFoundryHW.toupcam.toupcam_hw import ToupCamHW
+        self.add_hardware(ToupCamHW(self))
 
         # from ScopeFoundryHW.thorlabs_elliptec.elliptec_hw import ThorlabsElliptecSingleHW
         # self.add_hardware(ThorlabsElliptecSingleHW(self, name='polarizer'))
 
-        # from ScopeFoundryHW.lakeshore_331.lakeshore_hw import Lakeshore331HW
-        # self.add_hardware(Lakeshore331HW(self))
+        from ScopeFoundryHW.lakeshore_331.lakeshore_hw import Lakeshore331HW
+        self.add_hardware(Lakeshore331HW(self))
 
         print("Adding Measurement Components")
 
@@ -79,10 +91,9 @@ class NikonMicroscope(BaseMicroscopeApp):
         # self.add_measurement(HydraHarpHistogramMeasure(self))
 
         from confocal_measure.power_scan import PowerScanMeasure
-        self.add_measurement(PowerScanMeasure(self))
-
-        from ScopeFoundryHW.thorlabs_powermeter import PowerMeterOptimizerMeasure
-        self.add_measurement(PowerMeterOptimizerMeasure(self))
+        p = 'hardware/dual_position_slider/position'
+        self.add_measurement(PowerScanMeasure(self,
+                                              shutter_open_lq_path=p))
 
         # from measurements.laser_line_writer import LaserLineWriter
         # self.add_measurement(LaserLineWriter(self))
@@ -98,65 +109,80 @@ class NikonMicroscope(BaseMicroscopeApp):
         # from confocal_measure.toupcam_spot_optimizer import AttocubeToupCamLive
         # self.add_measurement(AttocubeToupCamLive)
 
-        #from confocal_measure.toupcam_spot_optimizer import ToupCamSpotOptimizer
-        #self.add_measurement(ToupCamSpotOptimizer(self))
+        from confocal_measure.toupcam_spot_optimizer import ToupCamSpotOptimizer
+        self.add_measurement(ToupCamSpotOptimizer(self))
         
-        # from confocal_measure.sequencer import Sequencer
-        # self.add_measurement(Sequencer(self))
+        from confocal_measure.sequencer import SweepSequencer
+        self.add_measurement(SweepSequencer(self))
         
-        # from ScopeFoundryHW.ni_daq.hw.ni_freq_counter_callback import NI_FreqCounterCallBackHW
-        # self.add_hardware(NI_FreqCounterCallBackHW(self, name='apd_counter'))
-        # from confocal_measure.apd_optimizer_cb import APDOptimizerCBMeasurement
-        # self.add_measurement_component(APDOptimizerCBMeasurement(self))  
+        from ScopeFoundryHW.ni_daq.hw.ni_freq_counter_callback import NI_FreqCounterCallBackHW
+        self.add_hardware(NI_FreqCounterCallBackHW(self, name='apd_counter'))
+        from confocal_measure.apd_optimizer_cb import APDOptimizerCBMeasurement
+        self.add_measurement(APDOptimizerCBMeasurement(self))  
 
         # from ScopeFoundryHW.dynamixel_servo.dynamixel_x_servo_hw import DynamixelXServosHW
         # from ScopeFoundryHW.dynamixel_servo.dynamixel_single_hw import DynamixelServoHW
         # servos = self.add_hardware(DynamixelXServosHW(self, devices=dict(power_wheel=10,)))
-        # self.add_hardware(DynamixelServoHW(self, name='power_wheel'))        
-
+        # self.add_hardware(DynamixelServoHW(self, name='power_wheel'))       
+         
+        from ScopeFoundryHW.lakeshore_331.lakeshore_measure import LakeshoreMeasure
+        self.add_measurement(LakeshoreMeasure(self))
+        
+        from confocal_measure.ranged_optimization import RangedOptimization
+        self.add_measurement(RangedOptimization(self))
+        
     def setup_ui(self):
         '''sets up a quickbar'''
         Q = self.add_quickbar(load_qt_ui_file(sibling_path(__file__, 'quickbar.ui')))
         
+        # Dual position slider
+        DS = self.hardware.dual_position_slider.settings
+        DS.connected.connect_to_widget(Q.connected_checkBox)
+        DS.position.connect_to_widget(Q.shutter_open_comboBox)
+        
+        # DLI Power switch
+        widget = self.hardware.dli_powerswitch.new_mini_Widget()
+        Q.additional_widgets.addWidget(widget)
+        
         # Power wheel
-        n = power_wheel_hardware_name = 'power_wheel'
-        if n in self.hardware:
-            PW = self.hardware[n]
-            PWS = PW.settings
-
-            def go_to(pos, PWS=PWS):
-                PWS['target_position'] = pos
-
-            Q.power_wheel_0_pushButton.clicked.connect(lambda x:go_to(0))
-            Q.power_wheel_90_pushButton.clicked.connect(lambda x:go_to(90))
-            Q.power_wheel_180_pushButton.clicked.connect(lambda x:go_to(180))
-            Q.power_wheel_270_pushButton.clicked.connect(lambda x:go_to(270))
-            Q.power_wheel_jog_forward_pushButton.clicked.connect(lambda x:PW.jog_forward)
-            #PWS._jog_step.connect_to_widget(Q.power_wheel_jog_doubleSpinBox)
-            #Q.power_wheel_jog_backward_pushButton.clicked.connect(lambda x:PW.jog_backward)
-            PWS.position.connect_to_widget(Q.power_wheel_position_label)
-            #PWS.target_position.connect_to_widget(Q.power_wheel_target_position_doubleSpinBox)
-        else:
-            Q.power_wheel_groupBox.setVisible(False)
+        n = 'main_beam_power_wheel'
+        PW = self.hardware[n]
+        PWS = self.hardware[n].settings        
+        PWS.connected.connect_to_widget(Q.power_wheel_connected_checkBox)
+        Q.power_wheel_jog_forward_pushButton.clicked.connect(lambda x:PW.jog_forward())            
+        PWS.jog.connect_to_widget(Q.power_wheel_jog_doubleSpinBox)
+        Q.power_wheel_jog_backward_pushButton.clicked.connect(lambda x:PW.jog_backward())        
+        PWS.position.connect_to_widget(Q.power_wheel_position_label)
+        PWS.target_position.connect_to_widget(Q.power_wheel_target_position_doubleSpinBox)
+        update_value = PWS.target_position.update_value
+        Q.power_wheel_0_pushButton.clicked.connect(lambda x: update_value(0))
+        Q.power_wheel_90_pushButton.clicked.connect(lambda x: update_value(90))
+        Q.power_wheel_180_pushButton.clicked.connect(lambda x: update_value(180))
+        Q.power_wheel_270_pushButton.clicked.connect(lambda x: update_value(270))
+            
+        # APD
+        from ScopeFoundry.helper_funcs import replace_widget_in_layout
+        import pyqtgraph as pg
+        S = self.hardware.apd_counter.settings
+        S.connected.connect_to_widget(Q.apd_connected_checkBox)
+        W = replace_widget_in_layout(Q.apd_count_rate_doubleSpinBox,
+                                     pg.widgets.SpinBox.SpinBox())
+        S.count_rate.connect_to_widget(W)
+        M = self.measurements['apd_optimizer']
+        Q.apd_show_ui_pushButton.clicked.connect(M.show_ui)
         
         # Power meter
         n = 'thorlabs_powermeter'
-        if n in self.hardware:
-            PM = self.hardware[n]
-            PMS = self.hardware.thorlabs_powermeter.settings
-            PMS.connected.connect_to_widget(Q.power_meter_connected_checkBox)
-            PMS.wavelength.connect_to_widget(Q.power_meter_wavelength_doubleSpinBox)        
-            # PMS.power.connect_to_widget(Q.power_meter_power_label)
-            from ScopeFoundry.helper_funcs import replace_widget_in_layout
-            import pyqtgraph as pg
-            W = replace_widget_in_layout(Q.power_meter_power_label, pg.widgets.SpinBox.SpinBox())
-            PMS.power.connect_to_widget(W)
-            if 'powermeter_optimizer' in self.measurements:
-                M = self.measurements['powermeter_optimizer']
-                M.settings.activation.connect_to_pushButton(Q.power_meter_activation_pushButton)
-                Q.power_meter_show_ui_pushButton.clicked.connect(M.show_ui)
-        else:
-            Q.power_meter_groupBox.setVisible(False)
+        PMS = self.hardware[n].settings
+        PMS.connected.connect_to_widget(Q.power_meter_connected_checkBox)
+        PMS.wavelength.connect_to_widget(Q.power_meter_wavelength_doubleSpinBox)        
+        W = replace_widget_in_layout(Q.power_meter_power_label,
+                                     pg.widgets.SpinBox.SpinBox())
+        PMS.power.connect_to_widget(W)
+        if 'powermeter_optimizer' in self.measurements:
+            M = self.measurements['powermeter_optimizer']
+            M.settings.activation.connect_to_pushButton(Q.power_meter_activation_pushButton)
+            Q.power_meter_show_ui_pushButton.clicked.connect(M.show_ui)
 
     def link_2D_scan_params(self, parent_scan_name='apd_asi',
                             children_scan_names=['hyperspec_asi', 'asi_trpl_2d_scan']):
@@ -169,6 +195,7 @@ class NikonMicroscope(BaseMicroscopeApp):
             for lq_name in lq_names:
                 master_scan_lq = parent_scan.settings.get_lq(lq_name)
                 child_scan.settings.get_lq(lq_name).connect_to_lq(master_scan_lq)
+
                 
 if __name__ == '__main__':
     import sys

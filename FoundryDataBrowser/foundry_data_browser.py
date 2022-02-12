@@ -230,7 +230,7 @@ try:
     app.load_view(ToupcamH5(app))
 except Exception as err:    _on_load_err(err)
 
-app.settings.browse_dir.update_value(r'E:\Natalie') 
+app.settings.browse_dir.update_value(r"F:\User's Data") 
 
 
 sys.exit(app.exec_())    
