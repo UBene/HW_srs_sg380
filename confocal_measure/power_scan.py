@@ -23,8 +23,8 @@ class PowerScanMeasure(Measurement):
         self.power_wheel_range = self.settings.New_Range('power_wheel', include_sweep_type=True,
                                                          initials=[0, 280, 28])
         self.power_wheel_range.sweep_type.update_value('up_down')
-        self.acq_mode = self.settings.New('acq_mode', dtype=str, initial='const_time',
-                                          choices=('const_time', 'const_dose', 'manual_acq_times'))
+        self.settings.New('acq_mode', dtype=str, initial='const_time',
+                                choices=('const_time', 'const_dose', 'manual_acq_times'))
         
         self.settings.New('manual_acq_times', str, initial='0,5; 20,2; 100,1')
         self.settings.New('collection_delay', initial=0.01, unit='s',
@@ -36,14 +36,16 @@ class PowerScanMeasure(Measurement):
                      'ascom_img': 'exp_time',
                      'andor_ccd': 'exposure_time',
                      'winspec_remote_client': 'acq_time',
-                     'apd_counter': 'int_time', }
+                     'apd_counter': 'int_time',
+                     'picam': 'ExposureTime',
+                     'thorlabs_powermeter_2': 'average_count'}
                 
         for key in self.hws.keys():
             self.settings.New('collect_{}'.format(key), dtype=bool, initial=False)
         
         self.settings.New("x_axis", dtype=str, initial='pm_power',
                                         choices=('power_wheel_positions', 'power'))
-        self.settings.New('use_shutter', dtype=bool, initial=True)
+        self.settings.New('use_shutter', dtype=bool, initial=False)
         self.settings.New('swap_reflector', dtype=bool, initial=False)
         self.settings.New('reflector_swap_duration', initial=1.2, unit='sec',
                           description='time for reflector to swap')
@@ -58,21 +60,21 @@ class PowerScanMeasure(Measurement):
                           description='''Choose the measurement that executes the optimization. 
                                           NOTE that this feature might NOT work on your setup.
                                           Check self.optimize_at_opt_pw_pos.''')
-        self.settings.New('wheel_hw', dtype=str, initial='power_wheel', choices=['power_wheel', 'polarizer',
-                                                                                 'elliptec', 'motorized_polarizer'],
+        self.settings.New('wheel_hw', dtype=str, initial='power_wheel', 
+                          choices=['power_wheel', 'polarizer', 
+                                   'elliptec', 'motorized_polarizer',
+                                   'main_beam_power_wheel'],
                           description='Choose the hardware used to modulate the power.')
         
         self.settings.New('power_meter_sample_number', int, initial=10,
                           description='Choose how many times the powermeter is being asked for a reading.')
             
     def setup_figure(self):
-        
-        # self.ui.start_pushButton.clicked.connect(self.start)
-        # self.ui.interrupt_pushButton.clicked.connect(self.interrupt)
+
         self.settings.activation.connect_to_pushButton(self.ui.start_pushButton)
         self.settings.x_axis.connect_to_widget(self.ui.x_axis_comboBox)
         self.settings.x_axis.add_listener(self.update_display)
-        self.acq_mode.connect_to_widget(self.ui.acq_mode_comboBox)
+        self.settings.acq_mode.connect_to_widget(self.ui.acq_mode_comboBox)
 
         self.ui.power_scan_GroupBox.layout().addWidget(QtWidgets.QLabel('optimize period'))
         period_widget = QtWidgets.QDoubleSpinBox(decimals=0)
@@ -211,6 +213,20 @@ class PowerScanMeasure(Measurement):
             self.ascom_img_integrated = []
             self.used_hws.update({'ascom_img':self.installed_hw['ascom_img']})
 
+        if self.settings['collect_picam']:
+            self.picam_readout = self.app.measurements['andor_ccd_readout']
+            self.picam_readout.start_stop(False)
+            self.picam_readout.settings['save_h5'] = False
+            self.spectra = []  # don't know size of ccd until after measurement
+            self.integrated_spectra = []
+            self.used_hws.update({'picam':self.installed_hw['picam']})
+
+        if self.settings['collect_thorlabs_powermeter_2']:
+            self.pm2_hw = self.app.hardware.thorlabs_powermeter_2
+            self.pm2_power = self.pm2_hw.settings.power            
+            self.pm2_powers = []
+            self.used_hws.update({'thorlabs_powermeter_2':self.installed_hw['thorlabs_powermeter_2']})
+
         # Prepare for different acquisition modes        
         # if self.settings['acq_mode'] == 'const_SNR':
         #    self.spec_acq_times_array = self.spec_acq_time.val / np.exp(2*self.log_power_index)
@@ -325,12 +341,12 @@ class PowerScanMeasure(Measurement):
             self.pw_target_position.update_value(self.power_wheel_position[ii])
             print(self.name, 'moved target position', self.power_wheel_position[ii])
             
+            time.sleep(S['collection_delay'])
             # collect power meter value
             if S['swap_reflector']:
                 self.swap_reflector_and_collect_power(ii)
             else:
                 self.pm_powers[ii] = self.collect_pm_power_data()
-            time.sleep(S['collection_delay'])
             
             # read detectors
             if self.settings['collect_apd_counter']:
@@ -388,6 +404,18 @@ class PowerScanMeasure(Measurement):
                 self.ascom_img_stack.append(img)
                 self.ascom_img_integrated.append(img.astype(float).sum())
                 
+            if self.settings['collect_picam']:
+                self.picam_readout.settings['continuous'] = False
+                self.start_nested_measure_and_wait(self.picam_readout, nested_interrupt=False)
+                spec = self.picam_readout.get_spectrum()
+                if not (spec == None).any():
+                    self.spectra.append(spec)
+                    self.integrated_spectra.append(spec.sum())  
+                                                   
+            if self.settings['collect_thorlabs_powermeter_2']:
+                power = self.pm2_hw.power.read_from_hardware()
+                self.pm2_powers.append(power)
+                
             # collect power meter value after measurement W/O SWAPPING
             self.pm_powers_after[ii] = self.collect_pm_power_data()
 
@@ -398,30 +426,43 @@ class PowerScanMeasure(Measurement):
         self.h5_file = h5_io.h5_base_file(app=self.app, measurement=self)
         try:
             self.h5_file.attrs['time_id'] = self.t0
-            
-            H = self.h5_meas_group = h5_io.h5_create_measurement_group(self, self.h5_file)    
+            H = self.h5_meas_group = h5_io.h5_create_measurement_group(self, self.h5_file)
+                
             if self.settings['collect_apd_counter']:
                 H['apd_count_rates'] = self.apd_count_rates
+            
             if self.settings['collect_picoharp']:
                 H['picoharp_elapsed_time'] = self.picoharp_elapsed_time
                 H['picoharp_histograms'] = self.picoharp_histograms
                 H['picoharp_time_array'] = self.picoharp_time_array
+            
             if self.settings['collect_hydraharp']:
                 H['hydraharp_elapsed_time'] = self.hydraharp_elapsed_time
                 H['hydraharp_histograms'] = self.hydraharp_histograms
                 H['hydraharp_time_array'] = self.hydraharp_time_array                
+            
             if self.settings['collect_winspec_remote_client']:
                 H['wls'] = self.spec_readout.wls
                 H['spectra'] = np.squeeze(np.array(self.spectra))
                 H['integrated_spectra'] = np.array(self.integrated_spectra)
+            
             if self.settings['collect_andor_ccd']:
                 H['wls'] = self.andor_readout.wls
                 H['spectra'] = np.squeeze(np.array(self.spectra))
                 H['integrated_spectra'] = np.array(self.integrated_spectra)
+            
             if self.settings['collect_ascom_img']:
                 H['ascom_img_stack'] = np.array(self.ascom_img_stack)
                 H['ascom_img_integrated'] = np.array(self.ascom_img_integrated)
-                
+            
+            if self.settings['collect_picam']:
+                H['wls'] = self.picam_readout.wls
+                H['spectra'] = np.squeeze(np.array(self.spectra))
+                H['integrated_spectra'] = np.array(self.integrated_spectra)
+            
+            if self.settings['collect_thorlabs_powermeter_2']:
+                H['thorlabs_powermeter_2_powers'] = self.pm2_powers        
+            
             H['pm_powers'] = self.pm_powers
             H['pm_powers_after'] = self.pm_powers_after
             H['power_wheel_position'] = self.power_wheel_position
@@ -479,7 +520,15 @@ class PowerScanMeasure(Measurement):
             if self.settings['collect_apd_counter']:
                 self.plot_lines[jj].setData(X, self.apd_count_rates[:ii])
                 jj += 1 
-        
+            
+            if self.settings['collect_picam']:
+                self.plot_lines[jj].setData(X, self.integrated_spectra[:ii] / acq_times_array[:ii])
+                jj += 1 
+
+            if self.settings['collect_thorlabs_powermeter_2']:
+                self.plot_lines[jj].setData(X, self.pm2_powers[:ii])
+                jj += 1 
+                        
     def aquire_histogram(self, hw): 
         hw.start_histogram()
         while not hw.check_done_scanning():
@@ -645,5 +694,4 @@ class PowerScanMeasure(Measurement):
         
         reflector_pos.update_value('empty')
         time.sleep(self.settings['reflector_swap_duration'])  # wait to swap detector
-        
     

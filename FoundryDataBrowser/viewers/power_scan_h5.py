@@ -157,6 +157,16 @@ class PowerScanH5View(DataBrowserView):
                 self.hyperspec_data = apd_count_rates.reshape((-1, 1, 1))
                 self.aquisition_type = 'APD'
 
+            if 'thorlabs_powermeter_2_powers' in H:
+                self.spec_x_slicer.settings['activated'] = False
+                self.bg_slicer.settings['activated'] = False
+                import time
+                time.sleep(0.1)
+                powers_y = H['thorlabs_powermeter_2_powers'][:]
+                self.hyperspec_data = powers_y.reshape((-1, 1, 1))
+                self.aquisition_type = 'power_meter_2'
+
+
             Np = self.hyperspec_data.shape[0]
             if np.any(acq_times_array == None):
                 self.hyperspec_data = (1.0 * self.hyperspec_data.T / acq_times_array).T
@@ -213,7 +223,7 @@ class PowerScanH5View(DataBrowserView):
         self.databrowser.ui.statusbar.showMessage("power_wheel_position: {:1.1f}".format(power_wheel_position))
         power = self.power_arrays[self.settings["power_x_axis"]][ii]
         title = " ".join([ f'{self.sample}',
-                          #self.aquisition_type,
+                          self.aquisition_type,
                           f" power position: {power_wheel_position:1.1f}",
                           f' power: {power*1e3:1.2f} mW'])
         self.spec_plot.setTitle(title, color='r')
