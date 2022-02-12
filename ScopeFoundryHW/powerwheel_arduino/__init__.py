@@ -1,4 +1,4 @@
-from __future__ import absolute_import
+from ScopeFoundryHW.powerwheel_arduino.power_wheel_arduino_hw import PowerWheelArduinoHW
 from ScopeFoundryHW.powerwheel_arduino.power_wheel_main_arduino_dev import PowerWheelMainArduino
 from ScopeFoundryHW.powerwheel_arduino.power_wheel_side_arduino_dev import PowerWheelSideArduino
 from ScopeFoundryHW.powerwheel_arduino.power_wheel_main_arduino_hw import PowerWheelMainArduinoHW
