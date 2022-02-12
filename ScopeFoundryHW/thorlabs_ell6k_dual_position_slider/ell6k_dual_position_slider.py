@@ -14,13 +14,17 @@ class ELL6KDualPositionSliderHW(HardwareComponent):
     name = 'dual_position_slider'
     debug = False
     
-    def __init__(self, app, debug=False, name=None, choices=('open', 'closed')):
+    def __init__(self, app, debug=False, name=None, choices=(('open', 0), 
+                                                             ('closed', 1))):
         assert len(choices) == 2
-        self.choices = [(x, i) for i, x in enumerate(choices)]
+        if len(choices[0]) == 1:
+            self.choices = [(x, i) for i, x in enumerate(choices)]
+        else:
+            self.choices = choices
         HardwareComponent.__init__(self, app, debug, name)
     
     def setup(self):
-        self.settings.New('position', dtype=str, choices=self.choices)
+        self.settings.New('position', dtype=int, choices=self.choices)
         self.settings.New('port', dtype=str, initial='COM11')
 
     def connect(self):
@@ -29,7 +33,7 @@ class ELL6KDualPositionSliderHW(HardwareComponent):
                                  debug=S['debug_mode'])
 
         S.position.connect_to_hardware(self.dev.read_position,
-                                       self.dev.read_position)
+                                       self.dev.write_position)
         
         self.read_from_hardware()
 
