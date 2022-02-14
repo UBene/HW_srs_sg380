@@ -29,21 +29,20 @@ class NikonMicroscope(BaseMicroscopeApp):
         from ScopeFoundryHW.thorlabs_powermeter import ThorlabsPowerMeterHW
         self.add_hardware(ThorlabsPowerMeterHW(self))
         self.add_hardware(ThorlabsPowerMeterHW(self, name='thorlabs_powermeter_2'))
-        from ScopeFoundryHW.thorlabs_powermeter import ThorlabsPowerMeterAnalogReadOut
-        self.add_hardware(ThorlabsPowerMeterAnalogReadOut(self))
         from ScopeFoundryHW.thorlabs_powermeter import PowerMeterOptimizerMeasure
         self.add_measurement(PowerMeterOptimizerMeasure(self))        
+        # from ScopeFoundryHW.thorlabs_powermeter import ThorlabsPowerMeterAnalogReadOut
+        # self.add_hardware(ThorlabsPowerMeterAnalogReadOut(self))
         
         from ScopeFoundryHW.powerwheel_arduino import PowerWheelArduinoHW
-        self.add_hardware(PowerWheelArduinoHW(self, name='main_beam_power_wheel', conv=3200 / 360))
-        # self.add_hardware(PowerWheelArduinoHW(self, name='side_beam_power_wheel', conv=3200 / 360))
-
-        # from ScopeFoundryHW.thorlabs_stepper_motors import ThorlabsStepperControllerHW
-        # self.add_hardware(ThorlabsStepperControllerHW(self))
+        self.add_hardware(PowerWheelArduinoHW(self, name='main_beam_power_wheel', conv=3200.0 / 360))
+        self.add_hardware(PowerWheelArduinoHW(self, name='side_beam_power_wheel', conv=3200.0 / 360))
                 
         from ScopeFoundryHW.thorlabs_integrated_stepper import ThorlabsIntegratedStepperMottorHW
         self.add_hardware(ThorlabsIntegratedStepperMottorHW(self))
 
+        from ScopeFoundryHW.pi_spec import PISpectrometerHW
+        self.add_hardware(PISpectrometerHW(self))
         from ScopeFoundryHW.picam.picam_hw import PicamHW
         self.add_hardware(PicamHW(self))
         from ScopeFoundryHW.picam import PicamReadoutMeasure
@@ -55,15 +54,11 @@ class NikonMicroscope(BaseMicroscopeApp):
         from ScopeFoundryHW.dli_powerswitch.dlipower_hardware import DLIPowerSwitchHW
         self.add_hardware(DLIPowerSwitchHW(self))
         
-        
         from ScopeFoundryHW.thorlabs_ell6k_dual_position_slider import ELL6KDualPositionSliderHW
         self.add_hardware(ELL6KDualPositionSliderHW(self, name='dual_position_slider',
                                                     choices=(('open', 1),
                                                              ('closed', 0))))
         
-        # from ScopeFoundryHW.thorlabs_motorized_filter_flipper.thorlabsMFF_hardware import ThorlabsMFFHW
-        # self.add_hardware(ThorlabsMFFHW(self))
-
         # from ScopeFoundryHW.chameleon_compact_opo.chameleon_compact_opo_hw import ChameleonCompactOPOHW
         # self.add_hardware(ChameleonCompactOPOHW(self))
 
@@ -72,7 +67,7 @@ class NikonMicroscope(BaseMicroscopeApp):
 
         # from ScopeFoundryHW.andor_camera import AndorCCDHW, AndorCCDReadoutMeasure
         # self.add_hardware(AndorCCDHW(self))
-        # self.add_measurement(AndorCCDReadoutMeasure)
+        # self.add_measurement(AndorCCDReadoutMeasure(self))
 
         from ScopeFoundryHW.toupcam.toupcam_hw import ToupCamHW
         self.add_hardware(ToupCamHW(self))
@@ -82,8 +77,6 @@ class NikonMicroscope(BaseMicroscopeApp):
 
         from ScopeFoundryHW.lakeshore_331.lakeshore_hw import Lakeshore331HW
         self.add_hardware(Lakeshore331HW(self))
-
-        print("Adding Measurement Components")
 
         # from ScopeFoundryHW.picoquant.hydraharp_optimizer import HydraHarpOptimizerMeasure
         # self.add_measurement(HydraHarpOptimizerMeasure(self))
@@ -106,10 +99,6 @@ class NikonMicroscope(BaseMicroscopeApp):
         # from ScopeFoundryHW.crystaltech_aotf.crystaltech_aotf_hc import CrystalTechAOTF
         # self.add_hardware(CrystalTechAOTF(self))
 
-        # from ScopeFoundryHW.xbox_controller.xbox_controller_test_measure import
-        # from confocal_measure.toupcam_spot_optimizer import AttocubeToupCamLive
-        # self.add_measurement(AttocubeToupCamLive)
-
         from confocal_measure.toupcam_spot_optimizer import ToupCamSpotOptimizer
         self.add_measurement(ToupCamSpotOptimizer(self))
         
@@ -119,7 +108,10 @@ class NikonMicroscope(BaseMicroscopeApp):
         from ScopeFoundryHW.ni_daq.hw.ni_freq_counter_callback import NI_FreqCounterCallBackHW
         self.add_hardware(NI_FreqCounterCallBackHW(self, name='apd_counter'))
         from confocal_measure.apd_optimizer_cb import APDOptimizerCBMeasurement
-        self.add_measurement(APDOptimizerCBMeasurement(self))  
+        self.add_measurement(APDOptimizerCBMeasurement(self)) 
+        
+        from confocal_measure.calibration_sweep import CalibrationSweep
+        self.add_measurement(CalibrationSweep(self, 'picam_readout', 'pi_spectrometer',))
 
         # from ScopeFoundryHW.dynamixel_servo.dynamixel_x_servo_hw import DynamixelXServosHW
         # from ScopeFoundryHW.dynamixel_servo.dynamixel_single_hw import DynamixelServoHW
@@ -160,6 +152,19 @@ class NikonMicroscope(BaseMicroscopeApp):
         Q.power_wheel_90_pushButton.clicked.connect(lambda x: update_value(90))
         Q.power_wheel_180_pushButton.clicked.connect(lambda x: update_value(180))
         Q.power_wheel_270_pushButton.clicked.connect(lambda x: update_value(270))
+            
+        # Picam
+        S = self.hardware['picam'].settings
+        S.connected.connect_to_widget(Q.picam_connected_checkBox)
+        S.ExposureTime.connect_to_widget(Q.picam_exposuretime_doubleSpinBox)
+        M = self.measurements['picam_readout']
+        Q.picam_show_ui_pushButton.clicked.connect(M.show_ui)
+        M.settings.count_rate.connect_to_widget(Q.picam_count_rate_doubleSpinBox)
+
+        # Spectrometer        
+        S = self.hardware['pi_spectrometer'].settings
+        S.connected.connect_to_widget(Q.spectrometer_connected_checkBox)
+        S.center_wl.connect_to_widget(Q.spectrometer_center_wavelength_doubleSpinBox)
             
         # APD
         from ScopeFoundry.helper_funcs import replace_widget_in_layout

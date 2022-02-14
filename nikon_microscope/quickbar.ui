@@ -561,6 +561,71 @@
    </item>
    <item>
     <widget class="QGroupBox" name="gridGroupBox">
+     <property name="font">
+      <font>
+       <pointsize>9</pointsize>
+      </font>
+     </property>
+     <property name="title">
+      <string>Spectra</string>
+     </property>
+     <property name="flat">
+      <bool>true</bool>
+     </property>
+     <layout class="QGridLayout" name="Spectrometer">
+      <property name="bottomMargin">
+       <number>25</number>
+      </property>
+      <item row="0" column="5">
+       <widget class="QPushButton" name="picam_show_ui_pushButton">
+        <property name="maximumSize">
+         <size>
+          <width>25</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color:blue</string>
+        </property>
+        <property name="text">
+         <string>ui</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QCheckBox" name="picam_connected_checkBox">
+        <property name="text">
+         <string>picam</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="2" colspan="2">
+       <widget class="QDoubleSpinBox" name="picam_exposuretime_doubleSpinBox"/>
+      </item>
+      <item row="1" column="0">
+       <widget class="QCheckBox" name="spectrometer_connected_checkBox">
+        <property name="text">
+         <string>spectrometer</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="4">
+       <widget class="QDoubleSpinBox" name="picam_count_rate_doubleSpinBox"/>
+      </item>
+      <item row="1" column="2" colspan="3">
+       <widget class="QDoubleSpinBox" name="spectrometer_center_wavelength_doubleSpinBox"/>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="gridGroupBox">
      <property name="enabled">
       <bool>true</bool>
      </property>
