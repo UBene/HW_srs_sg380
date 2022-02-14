@@ -111,7 +111,8 @@ class NikonMicroscope(BaseMicroscopeApp):
         self.add_measurement(APDOptimizerCBMeasurement(self)) 
         
         from confocal_measure.calibration_sweep import CalibrationSweep
-        self.add_measurement(CalibrationSweep(self, 'picam_readout', 'pi_spectrometer',))
+        self.add_measurement(CalibrationSweep(self, 'calibration_sweep',
+                                              'picam_readout', 'pi_spectrometer',))
 
         # from ScopeFoundryHW.dynamixel_servo.dynamixel_x_servo_hw import DynamixelXServosHW
         # from ScopeFoundryHW.dynamixel_servo.dynamixel_single_hw import DynamixelServoHW
@@ -130,8 +131,16 @@ class NikonMicroscope(BaseMicroscopeApp):
         
         # Dual position slider
         DS = self.hardware.dual_position_slider.settings
-        DS.connected.connect_to_widget(Q.connected_checkBox)
+        DS.connected.connect_to_widget(Q.sutter_connected_checkBox)
         DS.position.connect_to_widget(Q.shutter_open_comboBox)
+
+        # Flip mirror
+        # DS = self.hardware.dual_position_slider.settings
+        # DS.connected.connect_to_widget(Q.flip_mirror_connected_checkBox)
+        # DS.position.connect_to_pushButton(Q.flip_mirror_pushButton,
+        #                        colors=(None, rainbow), 
+        #                          texts=('APD', 'SPECTROMER'),
+        #                      )
         
         # DLI Power switch
         widget = self.hardware.dli_powerswitch.new_mini_Widget()

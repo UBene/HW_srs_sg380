@@ -84,15 +84,31 @@
       <property name="verticalSpacing">
        <number>1</number>
       </property>
-      <item row="0" column="1">
-       <widget class="QComboBox" name="shutter_open_comboBox"/>
-      </item>
       <item row="0" column="0">
        <widget class="QCheckBox" name="connected_checkBox">
         <property name="text">
-         <string>Shutter</string>
+         <string>shutter</string>
         </property>
        </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QComboBox" name="shutter_open_comboBox"/>
+      </item>
+      <item row="1" column="0">
+       <widget class="QCheckBox" name="flip_mirror_connected_checkBox">
+        <property name="maximumSize">
+         <size>
+          <width>80</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>flip mirror</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QComboBox" name="flip_mirror_comboBox"/>
       </item>
      </layout>
     </widget>
@@ -618,7 +634,20 @@
       <item row="0" column="4">
        <widget class="QDoubleSpinBox" name="picam_count_rate_doubleSpinBox"/>
       </item>
-      <item row="1" column="2" colspan="3">
+      <item row="0" column="1">
+       <widget class="QCheckBox" name="checkBox">
+        <property name="maximumSize">
+         <size>
+          <width>13</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>c</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1" colspan="4">
        <widget class="QDoubleSpinBox" name="spectrometer_center_wavelength_doubleSpinBox"/>
       </item>
      </layout>
