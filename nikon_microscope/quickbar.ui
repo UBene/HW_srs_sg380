@@ -85,14 +85,11 @@
        <number>1</number>
       </property>
       <item row="0" column="0">
-       <widget class="QCheckBox" name="connected_checkBox">
+       <widget class="QCheckBox" name="shutter_connected_checkBox">
         <property name="text">
          <string>shutter</string>
         </property>
        </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QComboBox" name="shutter_open_comboBox"/>
       </item>
       <item row="1" column="0">
        <widget class="QCheckBox" name="flip_mirror_connected_checkBox">
@@ -108,7 +105,14 @@
        </widget>
       </item>
       <item row="1" column="1">
-       <widget class="QComboBox" name="flip_mirror_comboBox"/>
+       <widget class="QCheckBox" name="checkBox_2">
+        <property name="text">
+         <string>Spec / APD</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QComboBox" name="shutter_open_comboBox"/>
       </item>
      </layout>
     </widget>
@@ -583,7 +587,7 @@
       </font>
      </property>
      <property name="title">
-      <string>Spectra</string>
+      <string>Spectrum</string>
      </property>
      <property name="flat">
       <bool>true</bool>
@@ -635,7 +639,7 @@
        <widget class="QDoubleSpinBox" name="picam_count_rate_doubleSpinBox"/>
       </item>
       <item row="0" column="1">
-       <widget class="QCheckBox" name="checkBox">
+       <widget class="QCheckBox" name="picam_continuous_checkBox">
         <property name="maximumSize">
          <size>
           <width>13</width>

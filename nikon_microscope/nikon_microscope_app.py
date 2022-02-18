@@ -75,8 +75,6 @@ class NikonMicroscope(BaseMicroscopeApp):
         # from ScopeFoundryHW.thorlabs_elliptec.elliptec_hw import ThorlabsElliptecSingleHW
         # self.add_hardware(ThorlabsElliptecSingleHW(self, name='polarizer'))
 
-        from ScopeFoundryHW.lakeshore_331.lakeshore_hw import Lakeshore331HW
-        self.add_hardware(Lakeshore331HW(self))
 
         # from ScopeFoundryHW.picoquant.hydraharp_optimizer import HydraHarpOptimizerMeasure
         # self.add_measurement(HydraHarpOptimizerMeasure(self))
@@ -118,12 +116,16 @@ class NikonMicroscope(BaseMicroscopeApp):
         # from ScopeFoundryHW.dynamixel_servo.dynamixel_single_hw import DynamixelServoHW
         # servos = self.add_hardware(DynamixelXServosHW(self, devices=dict(power_wheel=10,)))
         # self.add_hardware(DynamixelServoHW(self, name='power_wheel'))       
-         
-        from ScopeFoundryHW.lakeshore_331.lakeshore_measure import LakeshoreMeasure
+
+        from ScopeFoundryHW.lakeshore_335.lakeshore_hw import Lakeshore335HW
+        self.add_hardware(Lakeshore335HW(self))
+        from ScopeFoundryHW.lakeshore_335.lakeshore_measure import LakeshoreMeasure
         self.add_measurement(LakeshoreMeasure(self))
         
         from confocal_measure.ranged_optimization import RangedOptimization
         self.add_measurement(RangedOptimization(self))
+
+
         
     def setup_ui(self):
         '''sets up a quickbar'''
@@ -131,15 +133,14 @@ class NikonMicroscope(BaseMicroscopeApp):
         
         # Dual position slider
         DS = self.hardware.dual_position_slider.settings
-        DS.connected.connect_to_widget(Q.sutter_connected_checkBox)
+        DS.connected.connect_to_widget(Q.shutter_connected_checkBox)
         DS.position.connect_to_widget(Q.shutter_open_comboBox)
 
         # Flip mirror
         # DS = self.hardware.dual_position_slider.settings
         # DS.connected.connect_to_widget(Q.flip_mirror_connected_checkBox)
         # DS.position.connect_to_pushButton(Q.flip_mirror_pushButton,
-        #                        colors=(None, rainbow), 
-        #                          texts=('APD', 'SPECTROMER'),
+        #                          texts=('APD -> SPEC', 'SPECTROMER -> APD'),
         #                      )
         
         # DLI Power switch
@@ -165,10 +166,12 @@ class NikonMicroscope(BaseMicroscopeApp):
         # Picam
         S = self.hardware['picam'].settings
         S.connected.connect_to_widget(Q.picam_connected_checkBox)
+        
         S.ExposureTime.connect_to_widget(Q.picam_exposuretime_doubleSpinBox)
         M = self.measurements['picam_readout']
         Q.picam_show_ui_pushButton.clicked.connect(M.show_ui)
         M.settings.count_rate.connect_to_widget(Q.picam_count_rate_doubleSpinBox)
+        M.settings.continuous.connect_to_widget(Q.picam_continuous_checkBox)
 
         # Spectrometer        
         S = self.hardware['pi_spectrometer'].settings
