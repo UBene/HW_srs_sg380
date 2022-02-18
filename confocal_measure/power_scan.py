@@ -60,10 +60,11 @@ class PowerScanMeasure(Measurement):
                           description='''Choose the measurement that executes the optimization. 
                                           NOTE that this feature might NOT work on your setup.
                                           Check self.optimize_at_opt_pw_pos.''')
-        self.settings.New('wheel_hw', dtype=str, initial='power_wheel', 
-                          choices=['power_wheel', 'polarizer', 
+        self.settings.New('wheel_hw', dtype=str, initial='power_wheel',
+                          choices=['power_wheel', 'polarizer',
                                    'elliptec', 'motorized_polarizer',
-                                   'main_beam_power_wheel'],
+                                   'main_beam_power_wheel',
+                                   'side_beam_power_wheel'],
                           description='Choose the hardware used to modulate the power.')
         
         self.settings.New('power_meter_sample_number', int, initial=10,
@@ -214,7 +215,7 @@ class PowerScanMeasure(Measurement):
             self.used_hws.update({'ascom_img':self.installed_hw['ascom_img']})
 
         if self.settings['collect_picam']:
-            self.picam_readout = self.app.measurements['andor_ccd_readout']
+            self.picam_readout = self.app.measurements['picam_readout']
             self.picam_readout.start_stop(False)
             self.picam_readout.settings['save_h5'] = False
             self.spectra = []  # don't know size of ccd until after measurement
@@ -522,6 +523,7 @@ class PowerScanMeasure(Measurement):
                 jj += 1 
             
             if self.settings['collect_picam']:
+                acq_times_array = self.Tacq_arrays[jj][2]
                 self.plot_lines[jj].setData(X, self.integrated_spectra[:ii] / acq_times_array[:ii])
                 jj += 1 
 
