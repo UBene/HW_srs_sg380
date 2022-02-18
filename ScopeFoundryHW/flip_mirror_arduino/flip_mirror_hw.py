@@ -3,21 +3,26 @@ Created on Jun 27, 2014
 
 @author: Edward Barnard
 
-updated Feb 09 2022 Benedikt Ursprung
+updated 2022-02-09 Benedikt Ursprung
 '''
 
 from ScopeFoundry import HardwareComponent
-from ScopeFoundryHW.flip_mirror_arduino.flip_mirror_arduino_interface import FlipMirrorArduino
+from .flip_mirror_dev import FlipMirrorArduino
+
+rainbow = '''qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(255, 0, 0, 100), 
+                stop:0.166 rgba(255, 255, 0, 100), stop:0.333 rgba(0, 255, 0, 100), stop:0.5 rgba(0, 255, 255, 100), 
+                stop:0.666 rgba(0, 0, 255, 100), stop:0.833 rgba(255, 0, 255, 100), stop:1 rgba(255, 0, 0, 100))'''
 
 
 class FlipMirrorHW(HardwareComponent):
     
     name = 'flip_mirror'
     
-    def __init__(self, app, debug=False, name=None, colors=None, choices=None):
-        if choices == None:
-            self.choices = [("Spectrometer", False),
-                            ("APD", True)]
+    def __init__(self, app, debug=False, name=None,
+                 colors=(rainbow, None),
+                 choices=(("Spectrometer", False), ("APD", True))):
+        if len(choices[0]) == 2:
+            self.choices = choices
         else:
             self.choices = [(choices[0], False), (choices[1], True)]
         self.colors = colors
