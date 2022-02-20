@@ -20,22 +20,20 @@ class PowerWheelArduinoHW(HardwareComponent):
         self.conv = conv  # steps per deg
         HardwareComponent.__init__(self, app, debug=debug, name=name)
     
-    def setup(self):
-        # logged quantity   
-        
+    def setup(self):       
         S = self.settings     
         self.settings.New('encoder_pos', dtype=int, unit='steps', ro=True)
         self.settings.New('port', dtype=str, initial='COM4')
-        self.settings.New('position', float, unit='deg')
+        self.settings.New('position', float, unit='deg', ro=True)
         self.settings.New('jog', initial=10.0, unit='deg')
-
+        self.settings.New('target_position', float, unit='deg')
+        self.settings.target_position.add_listener(self.move_to_position)
+        self.settings.New('reverse', bool, initial=False)
         #  operations
         self.add_operation("zero_encoder", self.zero_encoder)
         self.add_operation("jog_forward", self.jog_forward)
         self.add_operation("jog_backward", self.jog_backward)
 
-        self.settings.New('target_position', float, unit='deg')
-        self.settings.target_position.add_listener(self.move_to_position)
 
     def connect(self):
                 
