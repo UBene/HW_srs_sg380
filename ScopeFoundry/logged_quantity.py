@@ -1193,6 +1193,7 @@ class LQRange(LQCircularNetwork):
         self.center = center_lq
         self.span = span_lq
         
+        
         lq_dict = {'min':self.min, 'max':self.max, 'num':self.num, 'step':self.step}        
         
         if self.center == None: 
@@ -1203,6 +1204,9 @@ class LQRange(LQCircularNetwork):
             assert self.center == None, 'Invalid initialization of LQRange'
         else:
             lq_dict.update({'span':self.span})
+        if sweep_type_lq:
+            self.type = sweep_type_lq
+            lq_dict.update({'type':sweep_type_lq})
         
         LQCircularNetwork.__init__(self, lq_dict)
       
