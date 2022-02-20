@@ -244,8 +244,9 @@ class GenericSweeper(Measurement):
         self.h5_meas_group['sweep_array'] = self.range.sweep_array
         self.h5_meas_group.attrs['sweep_quantity'] = self.sweep_quantity
         self.h5_file.close()
-        self.plot.setTitle('finished', color='g')
-        
+
+    def post_run(self):
+        self.plot.setTitle('finished', color='g')            
         
         
 
