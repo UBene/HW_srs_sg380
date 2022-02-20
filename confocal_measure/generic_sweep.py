@@ -62,7 +62,7 @@ class GenericSweeper(Measurement):
         # x_settings
         x_layout = QHBoxLayout()
         x_layout.addWidget(QLabel('sweep_quantity'))
-        paths = self.app.lq_paths_list()
+        paths = self.get_list_of_settings()
         self.x_lineEdit = QLineEdit()
         completer = QCompleter(paths)
         completer.setCompletionMode(QCompleter.PopupCompletion)
@@ -78,16 +78,7 @@ class GenericSweeper(Measurement):
         # data settings
         y_layout = QHBoxLayout()
         y_layout.addWidget(QLabel('data'))
-        attrs = []        
-        for m in self.app.measurements.values():
-            for a in dir(m):
-                try:
-                    if not callable(getattr(m, a)) and\
-                        a.startswith('__') == False and\
-                        not a in ('settings', 'activation', 'name', 'log', 'gui'):
-                        attrs.append(f'measurements.{m.name}.' + a)
-                except:
-                    pass
+        attrs = self.get_list_of_attributes()
         self.y_lineEdit = QLineEdit()
         completer = QCompleter(attrs + paths)
         completer.setCompletionMode(QCompleter.PopupCompletion)
@@ -121,9 +112,7 @@ class GenericSweeper(Measurement):
         self.plot.setLogMode(True, True)
         self.plot.showGrid(True, True)
         self.display_ready = False
-        #self.line = self.plot.addLine(x=0, movable=True)
-        
-        
+        # self.line = self.plot.addLine(x=0, movable=True)
 
         # plot x
         plot_x_layout = QHBoxLayout()
@@ -133,10 +122,10 @@ class GenericSweeper(Measurement):
         self.layout.addLayout(plot_x_layout)
         self.plot_x_comboBox.currentTextChanged.connect(self.on_plot_x_changed)
         
-        #go_btn = QPushButton('go')
-        #go_btn.setToolTip('set sweep_quantity to equivalent value')
-        #y_settings_layout.addWidget(go_btn)
-        #add_btn.clicked.connect(self.on_go)
+        # go_btn = QPushButton('go')
+        # go_btn.setToolTip('set sweep_quantity to equivalent value')
+        # y_settings_layout.addWidget(go_btn)
+        # add_btn.clicked.connect(self.on_go)
         
     def on_plot_x_changed(self, text):
         self.plot_x_data_name = text
@@ -199,7 +188,6 @@ class GenericSweeper(Measurement):
         self.plot_x_data_name = f'{name}__{setting}'  # self.sweep_quantity was added last to task_list 
         self.plot.setTitle('running', color='g')
         
-        
     def run(self):
         S = self.settings
         N = len(self.range.sweep_array)
@@ -247,8 +235,6 @@ class GenericSweeper(Measurement):
 
     def post_run(self):
         self.plot.setTitle('finished', color='g')            
-        
-        
 
     def update_display(self):
         if self.display_ready:
@@ -260,8 +246,25 @@ class GenericSweeper(Measurement):
                     self.plot_lines[k].setData(x, y)
                 else:
                     self.plot_lines[k].clear()
-                    
-                    
-    #def on_go(self):
+    
+    def get_list_of_attributes(self):
+        attrs = []        
+        for m in self.app.measurements.values():
+            for a in dir(m):
+                if not callable(getattr(m, a)) and\
+                    a.startswith('__') == False and\
+                    not a in ('settings', 'activation', 'name',
+                              'log', 'gui', 'app', 'ui', 'display_update_period'
+                              'display_update_timer', 'acq_thread',
+                              'interrupt_measurement_called',
+                              'operations', 'run_state', 't_start', 'end_state'):
+                    attrs.append(f'measurements.{m.name}.' + a)
+        return attrs 
+    
+    def get_list_of_settings(self):
+        exclude = ('activation', 'connected', 'run_state', 'debug_mode')
+        return [p for p in self.app.lq_paths_list() if not p.split('/')[-1] in exclude]
+        
+    # def on_go(self):
     #    print(self.line.pos())
     
