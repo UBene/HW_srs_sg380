@@ -49,7 +49,7 @@ class AndorCCDReadoutMeasure(Measurement):
         #local logged quantities
         self.bg_subtract = self.settings.New('bg_subtract', dtype=bool, initial=False, ro=False)
         self.acquire_bg  = self.settings.New('acquire_bg',  dtype=bool, initial=False, ro=False)
-        self.count_rate = self.settings.New('count_rate', initial=0, ro=True)
+        self.settings.New('count_rate', initial=0, ro=True)
 
         self.settings.New('continuous', dtype=bool, initial=True, ro=False) 
         self.settings.New('save_h5', dtype=bool, initial=True)
@@ -68,6 +68,9 @@ class AndorCCDReadoutMeasure(Measurement):
         
         self.settings.New('show_line', bool, initial=False)
 
+        self.wls = np.arange(1024)
+        self.spectrum = np.sin(self.wls)
+        self.count_rate = 33
         
         
 #     def pixel2wavelength(self, grating_position, pixel_index):
@@ -265,7 +268,7 @@ class AndorCCDReadoutMeasure(Measurement):
                     #print(self.name, 'after bg', self.buffer_[0][0])
 
                     self.spectra_data = np.average(self.buffer_, axis=0)
-                    self.settings['count_rate'] = np.sum(self.spectra_data)/t_acq
+                    self.count_rate = self.settings['count_rate'] = np.sum(self.spectra_data)/t_acq
  
                     if self.acquire_bg.val or not self.settings.continuous.val:
                         break # end the while loop for non-continuous scans
