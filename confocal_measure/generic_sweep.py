@@ -28,6 +28,7 @@ class GenericSweeper(Measurement):
         self.range = self.settings.New_Range('sweep', include_sweep_type=True)
         self.settings.New('sweep_setting', str, choices=('a', 'b'))
         self.settings.New('collection_delay', float, initial=0.1)
+        self.settings.New('polar_plot', bool, initial=False)
         self.setup_prepare_sequences()
         self.setup_collect_measurement()
         
@@ -150,11 +151,14 @@ class GenericSweeper(Measurement):
         plot_x_layout.addWidget(self.plot_x_comboBox)
         self.layout.addLayout(plot_x_layout)
         self.plot_x_comboBox.currentTextChanged.connect(self.on_plot_x_changed)
+        plot_x_layout.addWidget(self.settings.polar_plot.new_default_widget())
+        
         
         set_btn = QPushButton('set sweep setting')
         set_btn.setToolTip('set <b>sweep_quantity</b> to equivalent value of yellow')
         plot_x_layout.addWidget(set_btn)
         set_btn.clicked.connect(self.on_go)
+        
         
     def _keyReleaseEvent(self, event):
         if event.key() == QtCore.Qt.Key_Delete:
@@ -314,6 +318,8 @@ class GenericSweeper(Measurement):
             for k in self.data:
                 if k != self.plot_x_data_name:
                     y = norm(self.data[k]['plot_values'][:ii])
+                    if self.settings['polar_plot']:
+                        x, y = y * np.cos(x), y * np.sin(x)
                     self.plot_lines[k].setData(x, y)
                 else:
                     self.plot_lines[k].clear()
