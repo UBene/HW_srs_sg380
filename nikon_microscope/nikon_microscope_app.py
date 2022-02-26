@@ -75,7 +75,6 @@ class NikonMicroscope(BaseMicroscopeApp):
         # from ScopeFoundryHW.thorlabs_elliptec.elliptec_hw import ThorlabsElliptecSingleHW
         # self.add_hardware(ThorlabsElliptecSingleHW(self, name='polarizer'))
 
-
         # from ScopeFoundryHW.picoquant.hydraharp_optimizer import HydraHarpOptimizerMeasure
         # self.add_measurement(HydraHarpOptimizerMeasure(self))
         
@@ -124,8 +123,9 @@ class NikonMicroscope(BaseMicroscopeApp):
         
         from confocal_measure.ranged_optimization import RangedOptimization
         self.add_measurement(RangedOptimization(self))
-
-
+        
+        from confocal_measure.generic_sweep import GenericSweeper
+        self.add_measurement(GenericSweeper(self))
         
     def setup_ui(self):
         '''sets up a quickbar'''

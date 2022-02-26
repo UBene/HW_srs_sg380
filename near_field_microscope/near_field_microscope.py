@@ -80,6 +80,9 @@ class NearFieldMicroscope(BaseMicroscopeApp):
 
         from ScopeFoundryHW.thorlabs_powermeter import PowerMeterOptimizerMeasure
         self.add_measurement(PowerMeterOptimizerMeasure(self))
+        
+        from confocal_measure.generic_sweep import GenericSweeper
+        self.add_measurement(GenericSweeper(self))
 
         # from measurements.laser_line_writer import LaserLineWriter
         # self.add_measurement(LaserLineWriter(self))

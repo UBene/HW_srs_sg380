@@ -41,6 +41,8 @@ class APDOptimizerCBMeasurement(Measurement):
         self.opt_plot.addItem(self.vLine, ignoreBounds=True)
         self.opt_plot.setLogMode(False, True)
         
+        self.data = {'count_rate':0.1}
+        
     def run(self):
         apd_counter = self.app.hardware['apd_counter']
         if not apd_counter.settings['connected']:
@@ -50,7 +52,8 @@ class APDOptimizerCBMeasurement(Measurement):
         self.display_update_period = self.app.hardware['apd_counter'].settings['int_time']
         while not self.interrupt_measurement_called:
             time.sleep(0.1)
-    
+        self.data['count_rate'] = self.app.hardware['apd_counter'].settings['count_rate'] 
+        
     def update_display(self):
         apd_counter = self.app.hardware['apd_counter']
         self.vLine.setPos(apd_counter.mean_buffer_i)

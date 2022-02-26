@@ -32,16 +32,19 @@ class GenericSweeper(Measurement):
         self.setup_collect_measurement()
         
     def setup_prepare_sequences(self, sequences_dir='prepare_sequences'):
-        _dir = os.path.abspath(os.path.join('.', sequences_dir))
-        _prepare_sequences = [fname for fname in os.listdir(_dir) if fname.endswith('.json')]
-        self.prepare_sequences = {}
-        for fname in _prepare_sequences:
-            measurement = fname.split('.')[0]
-            setting = self.settings.New(f'run_{measurement}_sequence',
-                                    bool, initial=False)
-            _fname = os.path.join(_dir, fname)
-            self.prepare_sequences.update({measurement:{'setting':setting,
-                                                        'fname':_fname}})
+        try:
+            _dir = os.path.abspath(os.path.join('.', sequences_dir))
+            _prepare_sequences = [fname for fname in os.listdir(_dir) if fname.endswith('.json')]
+            self.prepare_sequences = {}
+            for fname in _prepare_sequences:
+                measurement = fname.split('.')[0]
+                setting = self.settings.New(f'run_{measurement}_sequence',
+                                        bool, initial=False)
+                _fname = os.path.join(_dir, fname)
+                self.prepare_sequences.update({measurement:{'setting':setting,
+                                                            'fname':_fname}})
+        except FileNotFoundError:
+            pass
             
     def setup_collect_measurement(self):
         self.includes_measurements = []
