@@ -1228,7 +1228,8 @@ class LQRange(LQCircularNetwork):
         if sweep_type_lq is not None:
             self.sweep_type_map = {'up':self.up_sweep_array,           'down':self.down_sweep_array, 
                                    'up_down':self.up_down_sweep_array, 'down_up':self.down_up_sweep_array,
-                                   'zig_zag':self.zig_zag_sweep_array, 'zag_zig':self.zag_zig_sweep_array}
+                                   'zig_zag':self.zig_zag_sweep_array, 'zag_zig':self.zag_zig_sweep_array,
+                                   'logarithmic':self.logarithmic_sweep_array}
             self.sweep_type = sweep_type_lq
             self.sweep_type.change_choice_list(self.sweep_type_map.keys())
         
@@ -1318,6 +1319,8 @@ class LQRange(LQCircularNetwork):
         return self.array[::-1]
     def up_sweep_array(self):
         return self.array
+    def logarithmic_sweep_array(self):
+        return np.logspace(self.min.val, self.max.val, self.num.val)
         
     @property
     def sweep_array(self):
