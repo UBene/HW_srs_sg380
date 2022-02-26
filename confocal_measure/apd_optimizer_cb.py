@@ -17,13 +17,14 @@ class APDOptimizerCBMeasurement(Measurement):
         self.ui = load_qt_ui_file(sibling_path(__file__, "apd_optimizer.ui"))
 
         self.settings.activation.connect_to_pushButton(self.ui.start_pushButton)
-        self.app.hardware['apd_counter'].settings.int_time.connect_to_widget(
+        self.hw = self.app.hardware['apd_counter']
+
+        self.hw.settings.int_time.connect_to_widget(
             self.ui.int_time_doubleSpinBox)
         self.ui.count_rate_PGSpinBox = replace_widget_in_layout(self.ui.count_rate_doubleSpinBox,
                                                                        pg.widgets.SpinBox.SpinBox())
         
-        
-        self.app.hardware['apd_counter'].settings.count_rate.connect_to_widget(
+        self.hw.settings.count_rate.connect_to_widget(
             self.ui.count_rate_PGSpinBox
             )
         
@@ -44,18 +45,18 @@ class APDOptimizerCBMeasurement(Measurement):
         self.data = {'count_rate':0.1}
         
     def run(self):
-        apd_counter = self.app.hardware['apd_counter']
+        apd_counter = self.hw
         if not apd_counter.settings['connected']:
             apd_counter.settings['connected'] = True
             time.sleep(0.1)
         
-        self.display_update_period = self.app.hardware['apd_counter'].settings['int_time']
+        self.display_update_period = self.hw.settings['int_time']
         while not self.interrupt_measurement_called:
             time.sleep(0.1)
-        self.data['count_rate'] = self.app.hardware['apd_counter'].settings['count_rate'] 
+        self.data['count_rate'] = self.hw.settings['count_rate'] 
         
     def update_display(self):
-        apd_counter = self.app.hardware['apd_counter']
+        apd_counter = self.hw
         self.vLine.setPos(apd_counter.mean_buffer_i)
         X = apd_counter.mean_buffer
         self.optimize_plot_line.setData(X)
