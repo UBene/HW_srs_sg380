@@ -16,7 +16,7 @@ from qtpy import QtCore
     
 def norm(x):
     x = np.array(x)
-    x -= x.min()
+    x -= x.min() * 0.99
     return x / np.max(x)
 
 
@@ -47,7 +47,7 @@ class GenericSweeper(Measurement):
         self.includes_measurements = []
         for m in self.app.measurements.values():
             if hasattr(m, 'data'):
-                q = self.settings.New(m.name, bool, initial=False,
+                self.settings.New(m.name, bool, initial=False,
                         description='measurements with a <i>data</i> dictionary will show up here')
                 self.includes_measurements.append(m.name)
             

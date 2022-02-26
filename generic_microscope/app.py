@@ -3,14 +3,12 @@ from ScopeFoundry import BaseMicroscopeApp
 from ScopeFoundry.helper_funcs import sibling_path, load_qt_ui_file
 import logging
 
-logging.basicConfig(level='DEBUG')  # , filename='m3_log.txt')
-# logging.getLogger('').setLevel(logging.WARNING)
+logging.basicConfig(level='DEBUG')
 logging.getLogger("ipykernel").setLevel(logging.WARNING)
 logging.getLogger('PyQt4').setLevel(logging.WARNING)
 logging.getLogger('PyQt5').setLevel(logging.WARNING)
 logging.getLogger('LoggedQuantity').setLevel(logging.WARNING)
 logging.getLogger('pyvisa').setLevel(logging.WARNING)
-
 
 class Microscope(BaseMicroscopeApp):
 
@@ -18,16 +16,19 @@ class Microscope(BaseMicroscopeApp):
 
     def setup(self):
 
-        print("Adding Hardware Components")
 
         from ScopeFoundryHW.thorlabs_powermeter import ThorlabsPowerMeterHW
         self.add_hardware_component(ThorlabsPowerMeterHW(self))
-        
-        print("Adding Measurement Components")
-
         from ScopeFoundryHW.thorlabs_powermeter import PowerMeterOptimizerMeasure
         self.add_measurement(PowerMeterOptimizerMeasure(self))
+                
+        from confocal_measure.sequencer import Sequencer
+        self.add_measurement(Sequencer(self))
         
+        from confocal_measure.generic_sweep import GenericSweeper
+        self.add_measurement(GenericSweeper(self))
+                             
+                    
     def setup_ui(self):
         '''sets up a quickbar'''
         Q = self.add_quickbar(load_qt_ui_file(sibling_path(__file__, 'quickbar.ui')))
