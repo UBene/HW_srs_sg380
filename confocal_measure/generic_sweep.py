@@ -6,19 +6,17 @@ Created on Feb 19, 2022
 from ScopeFoundry import Measurement
 import pyqtgraph as pg
 from ScopeFoundry import h5_io
-
-from builtins import getattr
 import time
 import os
 import numpy as np
 from qtpy.QtWidgets import QListWidget, QListWidgetItem, QCompleter, QComboBox, \
-    QHBoxLayout, QPushButton, QVBoxLayout, QWidget, QLineEdit 
-from qtpy.QtCore import Qt
-from PyQt5.Qt import QLabel, QLayout
+    QHBoxLayout, QPushButton, QVBoxLayout, QWidget, QLineEdit, QGroupBox, QLabel
+from qtpy import QtCore
 
-
+    
 def norm(x):
     x = np.array(x)
+    x -= x.min()
     return x / np.max(x)
 
 
@@ -46,13 +44,11 @@ class GenericSweeper(Measurement):
                                                         'fname':_fname}})
             
     def setup_collect_measurement(self):
-        self.collect_includes = []
         self.includes_measurements = []
         for m in self.app.measurements.values():
             if hasattr(m, 'data'):
-                q = self.settings.New(f'collect_{m.name}', bool, initial=False,
-                                      description='measurements with a <i>data</i> dictionary will show up here')
-                self.collect_includes.append(f'collect_{m.name}')
+                q = self.settings.New(m.name, bool, initial=False,
+                        description='measurements with a <i>data</i> dictionary will show up here')
                 self.includes_measurements.append(m.name)
             
     def setup_figure(self):
@@ -62,56 +58,65 @@ class GenericSweeper(Measurement):
         # Start Stop
         self.layout.addWidget(self.settings.activation.new_pushButton())
 
-        # Layouts
-        # x_settings_layout | collect | y_settings_layout | list_layout
-        # --------------------
-        # plot_layout
+        # settings_layout
+        # sweep_settings | collect | additional_layout
+        #                             _additional_layout
+        #                              y_settings_layout | list_layout
         settings_layout = QHBoxLayout()
-        settings_layout.setSizeConstraint(QLayout.SetMinimumSize)
-        x_settings_layout = QVBoxLayout()
-        settings_layout.addLayout(x_settings_layout)
-        w = self.settings.New_UI(self.collect_includes)
-        w.setToolTip('measurements with a <i>data</i> dictionary will show up here')
-        settings_layout.addWidget(w)
-        additional_layout = QHBoxLayout()
-        y_settings_layout = QVBoxLayout()
-        list_layout = QVBoxLayout()
-        additional_layout.addLayout(y_settings_layout)
-        additional_layout.addLayout(list_layout)
-        settings_layout.addLayout(additional_layout)
         self.layout.addLayout(settings_layout)
+        
+        sweep_settings_groubBox = QGroupBox('sweep settings')
+        sweep_settings_layout = QVBoxLayout()
+        sweep_settings_groubBox.setLayout(sweep_settings_layout)
+        collect_groubBox = QGroupBox('measurements to do')
+        collect_layout = QVBoxLayout()        
+        collect_groubBox.setLayout(collect_layout)
+        collect_groubBox.setToolTip('''measurements with a <i>data</i> dictionary will show up here. 
+                                    If checked the measurement is run and its data is 
+                                    collected at every iteration and saved''')
+        additional_groupBox = QGroupBox('additional attributes && settings to save')
+        additional_layout = QVBoxLayout()
+        additional_groupBox.setLayout(additional_layout)
+        additional_groupBox.setMaximumHeight(280)
+            
+        for gb in [sweep_settings_groubBox, collect_groubBox, additional_groupBox]: 
+            settings_layout.addWidget(gb)
 
         # x_settings
-        x_layout = QHBoxLayout()
-        x_layout.addWidget(QLabel('sweep_setting'))
         paths = self.get_list_of_settings()
         self.settings.sweep_setting.change_choice_list(paths)
         w = self.settings.sweep_setting.new_default_widget()
         completer = QCompleter(paths)
         completer.setCompletionMode(QCompleter.PopupCompletion)
         completer.setModelSorting(QCompleter.UnsortedModel)
-        completer.setFilterMode(Qt.MatchContains)
-        completer.setCaseSensitivity(Qt.CaseInsensitive)
+        completer.setFilterMode(QtCore.Qt.MatchContains)
+        completer.setCaseSensitivity(QtCore.Qt.CaseInsensitive)
         w.setCompleter(completer)
-        x_layout.addWidget(w)
-        x_settings_layout.addLayout(x_layout)
-        x_settings_layout.addWidget(self.range.New_UI())
+        sweep_settings_layout.addWidget(w)
+        sweep_settings_layout.addWidget(self.range.New_UI())
+
+        # collect layout
+        w = self.settings.New_UI(self.includes_measurements)
+        collect_layout.addWidget(w)
         
-        # data settings
-        y_layout = QHBoxLayout()
-        y_layout.addWidget(QLabel('data'))
+        # additional_layout
         attrs = self.get_list_of_attributes()
         self.y_lineEdit = QLineEdit()
         completer = QCompleter(attrs + paths)
         completer.setCompletionMode(QCompleter.PopupCompletion)
         completer.setModelSorting(QCompleter.UnsortedModel)
-        completer.setFilterMode(Qt.MatchContains)
-        completer.setCaseSensitivity(Qt.CaseInsensitive)
+        completer.setFilterMode(QtCore.Qt.MatchContains)
+        completer.setCaseSensitivity(QtCore.Qt.CaseInsensitive)
         self.y_lineEdit.setCompleter(completer)
-        y_layout.addWidget(self.y_lineEdit)
-        y_settings_layout.addWidget(QLabel('additional attributes'))
-        y_settings_layout.addLayout(y_layout)
-
+        additional_layout.addWidget(self.y_lineEdit)
+        
+        y_settings_layout = QVBoxLayout()
+        list_layout = QVBoxLayout()
+        _additional_layout = QHBoxLayout()
+        for l in [y_settings_layout, list_layout]:
+            _additional_layout.addLayout(l)      
+        additional_layout.addLayout(_additional_layout)  
+        
         add_btn = QPushButton('add -->')
         y_settings_layout.addWidget(add_btn)
         add_btn.clicked.connect(self.on_add_item)
@@ -120,17 +125,11 @@ class GenericSweeper(Measurement):
         y_settings_layout.addWidget(remove_btn)
         remove_btn.clicked.connect(self.on_remove_item)   
 
-        set_btn = QPushButton('set to yellow line')
-        set_btn.setToolTip('set <b>sweep_quantity</b> to equivalent value of yellow')
-        y_settings_layout.addWidget(set_btn)
-        set_btn.clicked.connect(self.on_go)
-
         # list 
         self.listWidget = QListWidget()
-        self.listWidget.setDefaultDropAction(Qt.MoveAction)
+        self.listWidget.setDefaultDropAction(QtCore.Qt.MoveAction)
         self.listWidget.setDragDropMode(QListWidget.DragDrop)
         list_layout.addWidget(self.listWidget)
-        self.listWidget.setMaximumHeight(200)
         self.listWidget.keyReleaseEvent = self._keyReleaseEvent        
         
         # plot
@@ -149,8 +148,13 @@ class GenericSweeper(Measurement):
         self.layout.addLayout(plot_x_layout)
         self.plot_x_comboBox.currentTextChanged.connect(self.on_plot_x_changed)
         
+        set_btn = QPushButton('set sweep setting')
+        set_btn.setToolTip('set <b>sweep_quantity</b> to equivalent value of yellow')
+        plot_x_layout.addWidget(set_btn)
+        set_btn.clicked.connect(self.on_go)
+        
     def _keyReleaseEvent(self, event):
-        if event.key() == Qt.Key_Delete:
+        if event.key() == QtCore.Qt.Key_Delete:
             self.on_remove_item()
         
     def on_go(self):
