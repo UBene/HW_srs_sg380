@@ -30,7 +30,7 @@ class GenericSweeper(Measurement):
         self.settings.New('collection_delay', float, initial=0.1)
         self.settings.New('polar_plot', bool, initial=False)
         self.settings.New('compress', bool, initial=False,
-                          description='guesses data duplicates and only stores one.')
+                          description='guesses data duplicates and only stores one copy.')
         self.setup_prepare_sequences_settings()
         self.setup_collect_measurement()
         
@@ -95,6 +95,7 @@ class GenericSweeper(Measurement):
                                     If checked the measurement is run and its data is 
                                     collected at every iteration and saved''')
         additional_groupBox = QGroupBox('additional attributes && settings to save')
+        additional_groupBox.setToolTip('''runs corresponding measurement and save the attribute or reads current setting value''')
         additional_layout = QVBoxLayout()
         additional_groupBox.setLayout(additional_layout)
         additional_groupBox.setMaximumHeight(280)
