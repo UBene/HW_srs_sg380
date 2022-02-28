@@ -162,7 +162,8 @@ class NikonMicroscope(BaseMicroscopeApp):
         Q.power_wheel_90_pushButton.clicked.connect(lambda x: update_value(90))
         Q.power_wheel_180_pushButton.clicked.connect(lambda x: update_value(180))
         Q.power_wheel_270_pushButton.clicked.connect(lambda x: update_value(270))
-            
+        Q.power_wheel_zero_encoder_pushButton.clicked.connect(lambda x:PW.zero_encoder())            
+        
         # Picam
         S = self.hardware['picam'].settings
         S.connected.connect_to_widget(Q.picam_connected_checkBox)
@@ -201,6 +202,12 @@ class NikonMicroscope(BaseMicroscopeApp):
             M = self.measurements['powermeter_optimizer']
             M.settings.activation.connect_to_pushButton(Q.power_meter_activation_pushButton)
             Q.power_meter_show_ui_pushButton.clicked.connect(M.show_ui)
+
+        TS = self.hardware.toupcam.settings
+        TS.connected.connect_to_widget(Q.toupcam_connected_checkBox)
+        M = self.measurements['toupcam_spot_optimizer']
+        M.settings.activation.connect_to_widget(Q.toupcam_live_checkBox)
+        Q.toupcam_show_ui_pushButton.clicked.connect(M.show_ui)
 
     def link_2D_scan_params(self, parent_scan_name='apd_asi',
                             children_scan_names=['hyperspec_asi', 'asi_trpl_2d_scan']):
