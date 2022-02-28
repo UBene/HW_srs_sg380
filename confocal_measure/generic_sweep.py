@@ -29,6 +29,8 @@ class GenericSweeper(Measurement):
         self.settings.New('sweep_setting', str, choices=('a', 'b'))
         self.settings.New('collection_delay', float, initial=0.1)
         self.settings.New('polar_plot', bool, initial=False)
+        self.settings.New('compress', bool, initial=False,
+                          description='guesses data duplicates and only stores one.')
         self.setup_prepare_sequences_settings()
         self.setup_collect_measurement()
         
@@ -214,8 +216,8 @@ class GenericSweeper(Measurement):
                 self.data_input_list.append(data_input)
                 
     def make_to_read_lists(self):
-        self.measurements_to_read = [] 
-        self.settings_to_read = []       
+        self.measurements_to_read = []  # Measurements class
+        self.settings_to_read = []  # lq_paths strings
         for data_input in self.data_input_list:
             if data_input.startswith('measurements'):
                 _, name, _ = data_input.split('.')
@@ -223,24 +225,29 @@ class GenericSweeper(Measurement):
                     self.measurements_to_read.append(self.app.measurements[name])
             else:  # is a setting path
                 self.settings_to_read.append(data_input)    
-        
+
+    def new_plot_line(self, dset_name):
+        self.plot_x_comboBox.addItem(dset_name)
+        self.plot_lines.update({dset_name:self.plot.plot([1, 3, 2, 4])})
+        self.plot_x_data_name = dset_name
+        N = self.plot_x_comboBox.count()
+        self.plot_x_comboBox.setCurrentIndex(N - 1)
+                
     def dset_name(self, prefix, suffix):
         '''data_set name generator'''
         return '_'.join((prefix, suffix))
-
+        
     def add_to_data_sets(self, dset_name, values):
         if self.valid_type(values):
             if not dset_name in self.data_sets.keys():
                 self.data_sets.update({dset_name:{'plot_values':[np.array(values).sum()],  # needed such
                                        'values':[np.array(values)]}})
-                
-                self.plot_x_comboBox.addItem(dset_name)
-                self.plot_lines.update({dset_name:self.plot.plot([1, 3, 2, 4])})
-                self.plot_x_data_name = dset_name
-                N = self.plot_x_comboBox.count()
-                self.plot_x_comboBox.setCurrentIndex(N - 1)
+                self.new_plot_line(dset_name)
             else:
                 self.data_sets[dset_name]['plot_values'].append(np.array(values).sum())
+                if self.settings['compress']:
+                    if np.array(values) == self.data_sets[dset_name]['values'][-1]:
+                        return    
                 self.data_sets[dset_name]['values'].append(np.array(values))
                 
     def add_attr_value_to_data_sets(self, obj, attr):
@@ -263,7 +270,6 @@ class GenericSweeper(Measurement):
         attrs = []        
         for m in self.app.measurements.values():
             for a in dir(m):
-                
                 if not callable(getattr(m, a)) and\
                     a.startswith('__') == False and\
                     not a in ('settings', 'activation', 'name',
@@ -288,7 +294,7 @@ class GenericSweeper(Measurement):
             elif len(x) == 0:
                 return None
             else:
-                return get_type(x[0])
+                return get_type(x[0])  # if attribute is list of lists
             
         return get_type(x) in (int, float, np.array, bool, np.ndarray, dict, set)
         
@@ -312,7 +318,7 @@ class GenericSweeper(Measurement):
             return
         
         self.make_to_read_lists()
-        
+
         self.plot.setTitle('measurement started', color='g')
         
     def run(self):
@@ -328,14 +334,13 @@ class GenericSweeper(Measurement):
             # perform all measurements
             for measurement in self.measurements_to_read:
                 if self.interrupt_measurement_called:
-                    break
-                
+                    break                
                 self.run_prepare_sequence(measurement.name)
                 self.start_nested_measure_and_wait(measurement, nested_interrupt=False)
-                
+                # get measurement attributes
                 for data_input in self.data_input_list:
                     if data_input.startswith('measurements'):
-                        a, name, attr = data_input.split('.')
+                        _, name, attr = data_input.split('.')
                         if name == measurement.name:
                             self.add_attr_value_to_data_sets(measurement, attr)
 
@@ -343,18 +348,19 @@ class GenericSweeper(Measurement):
             for path in self.settings_to_read:
                 self.add_setting_value_to_data_sets(path)
             
-            if ii == 1:
-                self.display_ready = True
+            self.display_ready = True
             self.ii = ii
             
-        # save data
+        self.save_h5_data()
+        
+    def save_h5_data(self):
         self.h5_file = h5_io.h5_base_file(app=self.app, measurement=self)
         self.h5_meas_group = h5_io.h5_create_measurement_group(self, self.h5_file)
         for k, v in self.data_sets.items():
             self.h5_meas_group[str(k) + '_plot_values'] = v['plot_values']
-            self.h5_meas_group[str(k)] = v['values']
+            self.h5_meas_group[str(k)] = np.squeeze(v['values'])
         self.h5_meas_group['sweep_array'] = self.range.sweep_array
-        self.h5_meas_group.attrs['sweep_quantity'] = S['sweep_setting']
+        self.h5_meas_group.attrs['sweep_quantity'] = self.settings['sweep_setting']
         self.h5_file.close()
 
     def post_run(self):
