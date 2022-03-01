@@ -30,9 +30,9 @@ class GenericSweeper(Measurement):
         self.settings.New('collection_delay', float, initial=0.1)
         self.settings.New('polar_plot', bool, initial=False)
         self.settings.New('compress', bool, initial=False,
-                          description='guesses data duplicates and only stores one copy.')
+                          description='guesses data set duplicates across iteration and only stores one copy.')
         self.setup_prepare_sequences_settings()
-        self.setup_collect_measurement()
+        self.setup_target_measurements()
         
     def setup_prepare_sequences_settings(self, sequences_dir='prepare_sequences'):
         '''checks *sequences_dir* for sequences that should be run before a measurements. 
@@ -60,50 +60,49 @@ class GenericSweeper(Measurement):
                 sequencer.load_file(handle['fname'])
                 self.start_nested_measure_and_wait(sequencer, nested_interrupt=False)
             
-    def setup_collect_measurement(self):
-        '''checks if measurements of the app has a data (dictionary) 
-            attribute and if so it adds a measurement'''
+    def setup_target_measurements(self):
+        '''checks if measurements of the app has a "data" (dictionary) 
+            attribute and if so it adds a measurement. 
+            Note that GenericSweeper should be the last added to make this work properly'''
         self.includes_measurements = []
         for m in self.app.measurements.values():
             if hasattr(m, 'data'):
                 self.settings.New(m.name, bool, initial=False,
-                        description=f'runs {m.name} and save its .data dict at each iteration')
+                        description='measurement is run and its .data dict at each iteration will be collected.')
                 self.includes_measurements.append(m.name)
             
     def setup_figure(self):
         self.ui = QWidget()
-        self.layout = QVBoxLayout(self.ui)
-        
-        # Start Stop
-        self.layout.addWidget(self.settings.activation.new_pushButton())
 
         # # Generate settings Layout
-        # settings_layout
-        # sweep_settings | collect | additional_layout
-        #                             _additional_layout
-        #                              y_settings_layout | list_layout
+        # layout (V)
+        # - settings_layout (H)
+        #     sweep_settings_groubBox | target_measurements_groubBox |             target_data_groupBox
+        #                                                                      target_data_layout (H)
+        #                                                              target_data_layout_L (V) | target_data_layout_R (V)
+        # - graph_layout
+        # - post_process_layout (H)
+        layout = QVBoxLayout(self.ui)
         settings_layout = QHBoxLayout()
-        self.layout.addLayout(settings_layout)
-        
+        layout.addLayout(settings_layout)
         sweep_settings_groubBox = QGroupBox('sweep settings')
-        sweep_settings_layout = QVBoxLayout()
-        sweep_settings_groubBox.setLayout(sweep_settings_layout)
-        collect_groubBox = QGroupBox('measurements to do')
-        collect_layout = QVBoxLayout()        
-        collect_groubBox.setLayout(collect_layout)
-        collect_groubBox.setToolTip('''measurements with a <i>data</i> dictionary will show up here. 
+        sweep_settings_layout = QVBoxLayout(sweep_settings_groubBox)
+        target_measurements_groubBox = QGroupBox('target measurements')
+        target_measurements_layout = QVBoxLayout(target_measurements_groubBox)
+        target_measurements_groubBox.setToolTip('''measurements with a <i>data</i> dictionary will show up here. 
                                     If checked the measurement is run and its data is 
                                     collected at every iteration and saved''')
-        additional_groupBox = QGroupBox('additional attributes && settings to save')
-        additional_groupBox.setToolTip('''runs corresponding measurement and save the attribute or reads current setting value''')
-        additional_layout = QVBoxLayout()
-        additional_groupBox.setLayout(additional_layout)
-        additional_groupBox.setMaximumHeight(280)
+        target_data_groupBox = QGroupBox('additional attributes && settings targets')
+        target_data_groupBox.setToolTip('''runs corresponding measurement and save
+                                            the attribute or reads current setting value''')
+        target_data_layout = QHBoxLayout(target_data_groupBox)
+        target_data_groupBox.setMaximumHeight(300)
             
-        for gb in [sweep_settings_groubBox, collect_groubBox, additional_groupBox]: 
-            settings_layout.addWidget(gb)
+        for w in [sweep_settings_groubBox,
+                   target_measurements_groubBox,
+                   target_data_groupBox]: 
+            settings_layout.addWidget(w)
 
-        # # Fill settings layouts
         # sweep_settings
         paths = self.get_list_of_settings()
         self.settings.sweep_setting.change_choice_list(paths)
@@ -117,68 +116,70 @@ class GenericSweeper(Measurement):
         sweep_settings_layout.addWidget(w)
         sweep_settings_layout.addWidget(self.range.New_UI())
 
-        # collect layout
+        # target_measurements_layout
         w = self.settings.New_UI(self.includes_measurements)
-        collect_layout.addWidget(w)
+        target_measurements_layout.addWidget(w)
+
+        # start_stop
+        target_measurements_layout.addWidget(self.settings.activation.new_pushButton())
         
-        # additional_layout
+        # target_data_layout
+        target_data_layout_L = QVBoxLayout()
+        target_data_layout_R = QVBoxLayout()
+        for l in [target_data_layout_L, target_data_layout_R]:
+            target_data_layout.addLayout(l)      
+
+        # target_data_layout_L
         attrs = self.get_list_of_attributes()
-        self.y_lineEdit = QLineEdit()
+        self.target_data_lineEdit = QLineEdit()
         completer = QCompleter(attrs + paths)
         completer.setCompletionMode(QCompleter.PopupCompletion)
         completer.setModelSorting(QCompleter.UnsortedModel)
         completer.setFilterMode(QtCore.Qt.MatchContains)
         completer.setCaseSensitivity(QtCore.Qt.CaseInsensitive)
-        self.y_lineEdit.setCompleter(completer)
-        additional_layout.addWidget(self.y_lineEdit)
-        
-        y_settings_layout = QVBoxLayout()
-        list_layout = QVBoxLayout()
-        _additional_layout = QHBoxLayout()
-        for l in [y_settings_layout, list_layout]:
-            _additional_layout.addLayout(l)      
-        additional_layout.addLayout(_additional_layout)  
+        self.target_data_lineEdit.setCompleter(completer)
+        target_data_layout_L.addWidget(self.target_data_lineEdit)
         
         add_btn = QPushButton('add -->')
-        y_settings_layout.addWidget(add_btn)
-        add_btn.clicked.connect(self.on_add_additional_attr_item)
+        target_data_layout_L.addWidget(add_btn)
+        add_btn.clicked.connect(self.on_add_target_data_attr_item)
         
         remove_btn = QPushButton('remove')
-        y_settings_layout.addWidget(remove_btn)
-        remove_btn.clicked.connect(self.on_remove_additional_attr_item)   
+        target_data_layout_L.addWidget(remove_btn)
+        remove_btn.clicked.connect(self.on_remove_target_data_attr_item)   
 
-        # list 
-        self.listWidget = QListWidget()
-        self.listWidget.setDefaultDropAction(QtCore.Qt.MoveAction)
-        self.listWidget.setDragDropMode(QListWidget.DragDrop)
-        list_layout.addWidget(self.listWidget)
-        self.listWidget.keyReleaseEvent = self._keyReleaseEvent        
-        
-        # plot
+        # target_data_layout_R 
+        self.target_data_listWidget = QListWidget()
+        self.target_data_listWidget.setDefaultDropAction(QtCore.Qt.MoveAction)
+        self.target_data_listWidget.setDragDropMode(QListWidget.DragDrop)
+        target_data_layout_R.addWidget(self.target_data_listWidget)
+        self.target_data_listWidget.keyReleaseEvent = self._keyReleaseEvent
+
+        # graph_layout
         self.graph_layout = pg.GraphicsLayoutWidget()
-        self.layout.addWidget(self.graph_layout)
-        self.plot = self.graph_layout.addPlot(title="generic sweep")
+        layout.addWidget(self.graph_layout)
+        self.plot = self.graph_layout.addPlot()
+        self.status = {'title':"generic sweep", 'color':'g'}       
         self.plot.showGrid(True, True)
         self.display_ready = False
         self.set_sweep_setting = self.plot.addLine(x=0, movable=True, pen='y')
 
-        # plot x
-        plot_x_layout = QHBoxLayout()
-        plot_x_layout.addWidget(QLabel('plot x'))
+        # post_process_layout
+        post_process_layout = QHBoxLayout()
+        post_process_layout.addWidget(QLabel('plot x'))
         self.plot_x_comboBox = QComboBox()
-        plot_x_layout.addWidget(self.plot_x_comboBox)
-        self.layout.addLayout(plot_x_layout)
+        post_process_layout.addWidget(self.plot_x_comboBox)
+        layout.addLayout(post_process_layout)
         self.plot_x_comboBox.currentTextChanged.connect(self.on_plot_x_changed)
-        plot_x_layout.addWidget(self.settings.polar_plot.new_default_widget())
-        
+        post_process_layout.addWidget(self.settings.polar_plot.new_default_widget())
         set_btn = QPushButton('set sweep setting')
-        set_btn.setToolTip('set <b>sweep_quantity</b> to equivalent value of yellow')
-        plot_x_layout.addWidget(set_btn)
+        set_btn.setToolTip('set <b>sweep_quantity</b> to equivalent value of yellow line.')
+        post_process_layout.addWidget(set_btn)
         set_btn.clicked.connect(self.on_set_sweep_setting)
         
     def _keyReleaseEvent(self, event):
         if event.key() == QtCore.Qt.Key_Delete:
-            self.on_remove_additional_attr_item()
+            self.on_remove_target_data_attr_item()
         
     def on_set_sweep_setting(self):
         if 'stop' in self.settings['run_state']:
@@ -193,39 +194,38 @@ class GenericSweeper(Measurement):
         self.plot_x_data_name = text
         self.update_display()
                 
-    def on_add_additional_attr_item(self):
-        data_input = self.y_lineEdit.text()
-        self.listWidget.addItem(QListWidgetItem(data_input))
+    def on_add_target_data_attr_item(self):
+        target_data = self.target_data_lineEdit.text()
+        self.target_data_listWidget.addItem(QListWidgetItem(target_data))
         
-    def on_remove_additional_attr_item(self): 
-        item = self.listWidget.item(self.listWidget.currentRow())            
-        self.listWidget.takeItem(self.listWidget.row(item))
+    def on_remove_target_data_attr_item(self): 
+        item = self.target_data_listWidget.item(self.target_data_listWidget.currentRow())            
+        self.target_data_listWidget.takeItem(self.target_data_listWidget.row(item))
         del item
         
-    def make_data_input_list(self): 
-        self.data_input_list = []  
-        # checked measurements
+    def make_target_data_list(self): 
+        self.target_data_list = []  
         for name in self.includes_measurements:
-            data_input = f'measurements.{name}.data'
-            self.data_input_list.append(data_input)
-        self.data_input_list.append(self.settings['sweep_setting'])
-        # additional data_input list      
-        N = self.listWidget.count()        
+            if self.settings[name]:
+                target_data = f'measurements.{name}.data'
+                self.target_data_list.append(target_data)
+        self.target_data_list.append(self.settings['sweep_setting'])
+        N = self.target_data_listWidget.count()        
         for i in range(N):
-            data_input = self.listWidget.item(i).text()
-            if data_input != '':
-                self.data_input_list.append(data_input)
+            target_data = self.target_data_listWidget.item(i).text()
+            if target_data != '':
+                self.target_data_list.append(target_data)
                 
-    def make_to_read_lists(self):
-        self.measurements_to_read = []  # Measurements class
-        self.settings_to_read = []  # lq_paths strings
-        for data_input in self.data_input_list:
-            if data_input.startswith('measurements'):
-                _, name, _ = data_input.split('.')
-                if not name in self.measurements_to_read:
-                    self.measurements_to_read.append(self.app.measurements[name])
+    def make_target_lists(self):
+        self.target_measurements = []  # Measurement class
+        self.target_settings = []  # lq_paths strings
+        for target_data in self.target_data_list:
+            if target_data.startswith('measurements'):
+                _, name, _ = target_data.split('.')
+                if not name in self.target_measurements:
+                    self.target_measurements.append(self.app.measurements[name])
             else:  # is a setting path
-                self.settings_to_read.append(data_input)    
+                self.target_settings.append(target_data)    
 
     def new_plot_line(self, dset_name):
         self.plot_x_comboBox.addItem(dset_name)
@@ -270,15 +270,17 @@ class GenericSweeper(Measurement):
     def get_list_of_attributes(self):
         attrs = []        
         for m in self.app.measurements.values():
-            for a in dir(m):
-                if not callable(getattr(m, a)) and\
-                    a.startswith('__') == False and\
-                    not a in ('settings', 'activation', 'name',
-                              'log', 'gui', 'app', 'ui', 'display_update_period'
-                              'display_update_timer', 'acq_thread',
-                              'interrupt_measurement_called',
-                              'operations', 'run_state', 't_start', 'end_state'):
-                    attrs.append(f'measurements.{m.name}.' + a)
+            if m.name != self.name:
+                for a in dir(m):
+                    if not callable(getattr(m, a)) and\
+                        a.startswith('__') == False and\
+                        self.valid_type(x=getattr(m, a)) and\
+                        not a in ('settings', 'activation', 'name',
+                                  'log', 'gui', 'app', 'ui', 'display_update_period'
+                                  'display_update_timer', 'acq_thread',
+                                  'interrupt_measurement_called',
+                                  'operations', 'run_state', 't_start', 'end_state'):
+                        attrs.append(f'measurements.{m.name}.' + a)
         return attrs 
     
     def get_list_of_settings(self):
@@ -294,59 +296,59 @@ class GenericSweeper(Measurement):
                 return type(x)        
             elif len(x) == 0:
                 return None
-            else:
-                return get_type(x[0])  # if attribute is list of lists
-            
-        return get_type(x) in (int, float, np.array, bool, np.ndarray, dict, set)
+            elif type(x) in (list, set) and len(x) > 0:
+                return get_type(x[0])
+                
+        return get_type(x) in (int, float, np.array, bool, np.ndarray, dict, set, None)
         
     def pre_run(self): 
+
         self.display_ready = False
         self.plot.clear()
         self.ii = 0
         self.data_sets = {}
         self.plot_lines = {}
+
         self.plot_x_comboBox.clear()
                 
         if self.settings['sweep_setting'] in ('', '0'):
-            self.plot.setTitle('set a quantity to sweep', color='r')
-            self.interrupt_measurement_called = True
+            self.status = {'title':'set a quantity to sweep', "color":'r'}
             return
 
-        self.make_data_input_list()        
-        if not len(self.data_input_list):
-            self.plot.setTitle('add a data attribute', color='r')
-            self.interrupt_measurement_called = True
+        self.make_target_data_list()        
+        if not len(self.target_data_list):
+            self.status = {'title':'add a data attribute', "color":'r'}
             return
         
-        self.make_to_read_lists()
-
-        self.plot.setTitle('measurement started', color='g')
+        self.make_target_lists()
+        self.status = {'title':'measurement started', 'color':'g'}       
         
     def run(self):
         S = self.settings
         N = len(self.range.sweep_array)
         for ii, x in enumerate(self.range.sweep_array):
             if self.interrupt_measurement_called:
-                break
+                break            
             self.set_progress(100.0 * (ii + 1) / N)
             self.app.lq_path(S['sweep_setting']).update_value(x)
             time.sleep(S['collection_delay'])
 
-            # perform all measurements
-            for measurement in self.measurements_to_read:
+            # perform target measurements
+            for measurement in self.target_measurements:
                 if self.interrupt_measurement_called:
                     break                
                 self.run_prepare_sequence(measurement.name)
                 self.start_nested_measure_and_wait(measurement, nested_interrupt=False)
+                self.status = {'title':f'{measurement.name} ({ii+1} of {N})', "color":'g'}
                 # get measurement attributes
-                for data_input in self.data_input_list:
-                    if data_input.startswith('measurements'):
-                        _, name, attr = data_input.split('.')
+                for target_data in self.target_data_list:
+                    if target_data.startswith('measurements'):
+                        _, name, attr = target_data.split('.')
                         if name == measurement.name:
                             self.add_attr_value_to_data_sets(measurement, attr)
 
-            # read settings                            
-            for path in self.settings_to_read:
+            # target settings                            
+            for path in self.target_settings:
                 self.add_setting_value_to_data_sets(path)
             
             self.display_ready = True
@@ -364,11 +366,11 @@ class GenericSweeper(Measurement):
         self.h5_meas_group.attrs['sweep_quantity'] = self.settings['sweep_setting']
         self.h5_file.close()
 
-    def post_run(self):
-        self.plot.setTitle('finished', color='g')       
+    def post_run(self): 
         self.plot.addItem(self.set_sweep_setting)     
 
     def update_display(self):
+        self.plot.setTitle(**self.status)
         if self.display_ready:
             ii = self.ii + 1
             x = self.data_sets[self.plot_x_data_name]['plot_values'][:ii]
