@@ -13,23 +13,26 @@ from inspect import signature
 from ScopeFoundry.widgets import MinMaxQSlider
 import os
 
-#import threading
+# import threading
 
 # python 2/3 compatibility
 if sys.version_info[0] == 3:
     unicode = str
+
     
 class DummyLock(object):
+
     def acquire(self):
         pass
+
     def release(self):
         pass
+
     def __enter__(self):
         return self
+
     def __exit__(self, *args):
         pass
-
-
 
 
 class LoggedQuantity(QtCore.QObject):
@@ -54,28 +57,28 @@ class LoggedQuantity(QtCore.QObject):
     """
 
     # signal sent when value has been updated
-    updated_value = QtCore.Signal((float,),(int,),(bool,), (), (str,),) 
+    updated_value = QtCore.Signal((float,), (int,), (bool,), (), (str,),) 
     # signal sent when value has been updated, sends text representation
     updated_text_value = QtCore.Signal(str) 
     # emits the index of the value in self.choices
     updated_choice_index_value = QtCore.Signal(int)
      
     # signal sent when min max range updated
-    updated_min_max = QtCore.Signal((float,float),(int,int), (),)
+    updated_min_max = QtCore.Signal((float, float), (int, int), (),)
     # signal sent when read only (ro) status has changed 
     updated_readonly = QtCore.Signal((bool,), (),) 
     
-    def __init__(self, name, dtype=float, 
-                 #hardware_read_func=None, hardware_set_func=None, 
+    def __init__(self, name, dtype=float,
+                 # hardware_read_func=None, hardware_set_func=None, 
                  initial=0, fmt="%g", si=False,
-                 ro = False, # read only flag
-                 unit = None,
-                 spinbox_decimals = 2,
+                 ro=False,  # read only flag
+                 unit=None,
+                 spinbox_decimals=2,
                  spinbox_step=0.1,
                  vmin=-1e12, vmax=+1e12, choices=None,
-                 reread_from_hardware_after_write = False,
-                 description = None,
-                 colors = None,
+                 reread_from_hardware_after_write=False,
+                 description=None,
+                 colors=None,
                  ):
         QtCore.QObject.__init__(self)
         
@@ -92,16 +95,16 @@ class LoggedQuantity(QtCore.QObject):
         self.val = dtype(initial)
         self.hardware_read_func = None
         self.hardware_set_func = None
-        self.fmt = fmt # string formatting string. This is ignored if dtype==str
+        self.fmt = fmt  # string formatting string. This is ignored if dtype==str
         if self.dtype == str:
             self.fmt = "%s"
-        self.si   = si # will use pyqtgraph SI Spinbox if True
+        self.si = si  # will use pyqtgraph SI Spinbox if True
         self.unit = unit
         self.vmin = vmin
         self.vmax = vmax
         # choices should be tuple [ ('name', val) ... ] or simple list [val, val, ...]
         self.choices = self._expand_choices(choices) 
-        self.ro = ro # Read-Only
+        self.ro = ro  # Read-Only
         self.is_array = False
         self.description = description
         
@@ -114,7 +117,7 @@ class LoggedQuantity(QtCore.QObject):
                     self.qcolors.append(qcolor)
                 else:
                     self.qcolors.append(QtGui.QColor('lightgrey'))
-                    #print(self.name, color, 'invalid color - used "lightgrey" instead')
+                    # print(self.name, color, 'invalid color - used "lightgrey" instead')
         
         self.log = get_logger_from_class(self)
         
@@ -131,15 +134,15 @@ class LoggedQuantity(QtCore.QObject):
         
         self.oldval = None
         
-        self._in_reread_loop = False # flag to prevent reread from hardware loops
+        self._in_reread_loop = False  # flag to prevent reread from hardware loops
         
         self.widget_list = []
         self.listeners = []
         
         # threading lock
-        #self.lock = threading.Lock()
-        #self.lock = DummyLock()
-        self.lock = QLock(mode=1) # mode 0 is non-reentrant lock
+        # self.lock = threading.Lock()
+        # self.lock = DummyLock()
+        self.lock = QLock(mode=1)  # mode 0 is non-reentrant lock
         
     def coerce_to_type(self, x):
         """
@@ -154,7 +157,7 @@ class LoggedQuantity(QtCore.QObject):
         quantity
         
         """
-        if self.dtype==bool and isinstance(x, str):
+        if self.dtype == bool and isinstance(x, str):
             return str2bool(x)       
         return self.dtype(x)
         
@@ -175,9 +178,9 @@ class LoggedQuantity(QtCore.QObject):
         for c in choices:
             if isinstance(c, tuple):
                 name, val = c
-                expanded_choices.append( ( str(name), self.dtype(val) ) )
+                expanded_choices.append((str(name), self.dtype(val)))
             else:
-                expanded_choices.append( ( str(c), self.dtype(c) ) )
+                expanded_choices.append((str(c), self.dtype(c)))
         return expanded_choices
     
     def __str__(self):
@@ -185,11 +188,10 @@ class LoggedQuantity(QtCore.QObject):
     
     def __repr__(self):
         return "LQ: {} = {}".format(self.name, self.val)
-
     
     def read_from_hardware(self, send_signal=True):
         self.log.debug("{}: read_from_hardware send_signal={}".format(self.name, send_signal))
-        if self.hardware_read_func is not None:        
+        if self.hardware_read_func is not None: 
             with self.lock:
                 self.oldval = self.val
                 val = self.hardware_read_func()
@@ -268,7 +270,6 @@ class LoggedQuantity(QtCore.QObject):
             # actually change internal state value
             self.val = new_val
         
-        
         # Read from Hardware
         if update_hardware and self.hardware_set_func:
             self.hardware_set_func(self.val)
@@ -290,7 +291,7 @@ class LoggedQuantity(QtCore.QObject):
         :returns: None
         
         """
-        #self.log.debug("{}:send_display_updates: force={}. From {} to {}".format(self.name, force, self.oldval, self.val))
+        # self.log.debug("{}:send_display_updates: force={}. From {} to {}".format(self.name, force, self.oldval, self.val))
         if (not self.same_values(self.oldval, self.val)) or (force):
             self.updated_value[()].emit()
             
@@ -306,7 +307,7 @@ class LoggedQuantity(QtCore.QObject):
             if self.choices is not None:
                 choice_vals = [c[1] for c in self.choices]
                 if self.val in choice_vals:
-                    self.updated_choice_index_value.emit(choice_vals.index(self.val) )
+                    self.updated_choice_index_value.emit(choice_vals.index(self.val))
             self.oldval = self.val
         else:
             # no updates sent
@@ -338,7 +339,6 @@ class LoggedQuantity(QtCore.QObject):
         :returns: A string showing the logged quantity value.
         """
         return str(self.val)
-
     
     def update_choice_index_value(self, new_choice_index, **kwargs):
         self.update_value(self.choices[new_choice_index][1], **kwargs)
@@ -372,7 +372,6 @@ class LoggedQuantity(QtCore.QObject):
         # DEPRECATED
         return self.connect_to_widget(widget)
     
-    
     def set_widget_toolTip(self, widget, text=None):
         try:
             tips = [f'<b>{self.name}</b>']
@@ -384,7 +383,6 @@ class LoggedQuantity(QtCore.QObject):
             return tips
         except:
             pass        
-
 
     def connect_to_widget(self, widget):
         """
@@ -426,11 +424,12 @@ class LoggedQuantity(QtCore.QObject):
             if self.vmax is not None:
                 widget.setMaximum(self.vmax)
             if self.unit is not None:
-                widget.setSuffix(" "+self.unit)
+                widget.setSuffix(" " + self.unit)
             widget.setDecimals(self.spinbox_decimals)
             widget.setSingleStep(self.spinbox_step)
             widget.setValue(self.val)
-            #events
+
+            # events
             def update_widget_value(x):
                 """
                 block signals from widget when value is set via lq.update_value.
@@ -441,9 +440,10 @@ class LoggedQuantity(QtCore.QObject):
                     widget.setValue(x)
                 finally:
                     widget.blockSignals(False)                    
-            #self.updated_value[float].connect(widget.setValue)
+
+            # self.updated_value[float].connect(widget.setValue)
             self.updated_value[float].connect(update_widget_value)
-            #if not self.ro:
+            # if not self.ro:
             widget.valueChanged[float].connect(self.update_value)
         
         elif type(widget) == MinMaxQSlider:
@@ -459,12 +459,15 @@ class LoggedQuantity(QtCore.QObject):
         elif type(widget) == QtWidgets.QSlider:
             if self.dtype == float:
                 self.vrange = self.vmax - self.vmin
+
                 def transform_to_slider(x):
-                    pct = 100*(x-self.vmin)/self.vrange
+                    pct = 100 * (x - self.vmin) / self.vrange
                     return int(pct)
+
                 def transform_from_slider(x):
-                    val = self.vmin + (x*self.vrange/100)
+                    val = self.vmin + (x * self.vrange / 100)
                     return val
+
                 def update_widget_value(x):
                     """
                     block signals from widget when value is set via lq.update_value.
@@ -478,6 +481,7 @@ class LoggedQuantity(QtCore.QObject):
                         
                 def update_spinbox(x):
                     self.update_value(transform_from_slider(x))    
+
                 if self.vmin is not None:
                     widget.setMinimum(transform_to_slider(self.vmin))
                 if self.vmax is not None:
@@ -488,7 +492,7 @@ class LoggedQuantity(QtCore.QObject):
                 widget.valueChanged[int].connect(update_spinbox)
             elif self.dtype == int:
                 self.updated_value[int].connect(widget.setValue)
-                #widget.sliderMoved[int].connect(self.update_value)
+                # widget.sliderMoved[int].connect(self.update_value)
                 widget.valueChanged[int].connect(self.update_value)
                 
                 widget.setSingleStep(1)            
@@ -497,17 +501,17 @@ class LoggedQuantity(QtCore.QObject):
 
             def update_widget_value(x):
                 lq = widget.sender()
-                #self.log.debug("LQ {} update qcheckbox: {} arg{} lq value{}".format(lq.name,   widget, x, lq.value))                
+                # self.log.debug("LQ {} update qcheckbox: {} arg{} lq value{}".format(lq.name,   widget, x, lq.value))                
                 widget.setChecked(lq.value)                    
 
             self.updated_value[bool].connect(update_widget_value)
-            widget.clicked[bool].connect(self.update_value) # another option is stateChanged signal
+            widget.clicked[bool].connect(self.update_value)  # another option is stateChanged signal
             if self.ro:
-                #widget.setReadOnly(True)
+                # widget.setReadOnly(True)
                 widget.setEnabled(False)
                 
             if self.colors != None:
-                if len(self.colors) in (2,3): # QCheckBoxes can have 3 states! (tristate)
+                if len(self.colors) in (2, 3):  # QCheckBoxes can have 3 states! (tristate)
                     if len(self.colors) == 2:
                         colors = [self.colors[0], 'lightgrey', self.colors[1]]
                     elif len(self.qcolors) == 3:
@@ -515,13 +519,13 @@ class LoggedQuantity(QtCore.QObject):
                     s = f"""QCheckBox:!checked {{ background: {colors[0]} }}
                             QCheckBox:checked  {{ background: {colors[2]} }}"""
                     widget.setStyleSheet(widget.styleSheet() + s)
-                
                                 
         elif type(widget) == QtWidgets.QLineEdit:
             self.updated_text_value[str].connect(widget.setText)
             self.updated_value[str].connect(widget.setText)
             if self.ro:
                 widget.setReadOnly(True)  # FIXME
+
             def on_edit_finished():
                 self.log.debug(self.name + " qLineEdit on_edit_finished")
                 try:
@@ -529,6 +533,7 @@ class LoggedQuantity(QtCore.QObject):
                     self.update_value(widget.text())
                 finally:
                     widget.blockSignals(False)
+
             widget.editingFinished.connect(on_edit_finished)
             
         elif type(widget) == QtWidgets.QPlainTextEdit:
@@ -537,11 +542,11 @@ class LoggedQuantity(QtCore.QObject):
             def on_lq_changed(new_text):
                 current_cursor = widget.textCursor()
                 current_cursor_pos = current_cursor.position()
-                #print('current_cursor', current_cursor, current_cursor.position())
+                # print('current_cursor', current_cursor, current_cursor.position())
                 widget.document().setPlainText(new_text)
                 current_cursor.setPosition(current_cursor_pos)
                 widget.setTextCursor(current_cursor)
-                #print('current_cursor', current_cursor, current_cursor.position())
+                # print('current_cursor', current_cursor, current_cursor.position())
             
             def on_widget_textChanged():
                 try:
@@ -550,22 +555,22 @@ class LoggedQuantity(QtCore.QObject):
                 finally:
                     widget.blockSignals(False)
 
-            #self.updated_text_value[str].connect(widget.document().setPlainText)
+            # self.updated_text_value[str].connect(widget.document().setPlainText)
             self.updated_text_value[str].connect(on_lq_changed)
             widget.textChanged.connect(on_widget_textChanged)
             
         elif type(widget) == QtWidgets.QComboBox:
             # need to have a choice list to connect to a QComboBox
             assert self.choices is not None 
-            widget.clear() # removes all old choices
+            widget.clear()  # removes all old choices
             for choice_name, choice_value in self.choices:
                 widget.addItem(choice_name, choice_value)
             self.updated_choice_index_value[int].connect(widget.setCurrentIndex)
             widget.currentIndexChanged.connect(self.update_choice_index_value)
             if self.colors != None:
                 if len(self.qcolors) == len(self.choices):
-                    for i,qcolor in enumerate(self.qcolors):
-                        widget.setItemData(i,  qcolor, QtCore.Qt.BackgroundRole )
+                    for i, qcolor in enumerate(self.qcolors):
+                        widget.setItemData(i, qcolor, QtCore.Qt.BackgroundRole)
                         
                     def update_background_color(idx):
                         qcolor = self.qcolors[idx]
@@ -575,21 +580,22 @@ class LoggedQuantity(QtCore.QObject):
                                     background: {qcolor.name()};
                                     }}"""                      
                         widget.setStyleSheet(widget.styleSheet() + s)
+
                     widget.currentIndexChanged.connect(update_background_color)
             
         elif type(widget) == pyqtgraph.widgets.SpinBox.SpinBox:
-            #widget.setFocusPolicy(QtCore.Qt.StrongFocus)
+            # widget.setFocusPolicy(QtCore.Qt.StrongFocus)
             suffix = self.unit
             if self.unit is None:
                 suffix = ""
             if self.dtype == int:
                 integer = True
-                minStep=1
-                step=1
+                minStep = 1
+                step = 1
             else:
                 integer = False
-                minStep=.1
-                step=.1
+                minStep = .1
+                step = .1
             opts = dict(
                         suffix=suffix,
                         siPrefix=True,
@@ -608,12 +614,13 @@ class LoggedQuantity(QtCore.QObject):
                 widget.setEnabled(False)
                 widget.setButtonSymbols(QtWidgets.QAbstractSpinBox.NoButtons)
                 widget.setReadOnly(True)
-            #widget.setDecimals(self.spinbox_decimals)
+            # widget.setDecimals(self.spinbox_decimals)
             if not self.si:
                 widget.setSingleStep(self.spinbox_step)
-            #self.updated_value[float].connect(widget.setValue)
-            #if not self.ro:
-                #widget.valueChanged[float].connect(self.update_value)
+
+            # self.updated_value[float].connect(widget.setValue)
+            # if not self.ro:
+                # widget.valueChanged[float].connect(self.update_value)
             def update_widget_value(x):
                 """
                 block signals from widget when value is set via lq.update_value.
@@ -624,19 +631,22 @@ class LoggedQuantity(QtCore.QObject):
                     widget.setValue(x)
                 finally:
                     widget.blockSignals(False)                    
+
             self.updated_value[float].connect(update_widget_value)
+
             def on_widget_update(_widget):
                 self.update_value(_widget.value())
-            widget.sigValueChanged.connect(on_widget_update)
-            
 
+            widget.sigValueChanged.connect(on_widget_update)
 
         elif type(widget) == QtWidgets.QLabel:
             self.updated_text_value.connect(widget.setText)
         elif type(widget) == QtWidgets.QProgressBar:
+
             def set_progressbar(x, widget=widget):
                 self.log.debug("set_progressbar {}".format(x))
                 widget.setValue(int(x))
+
             self.updated_value.connect(set_progressbar)
         elif type(widget) == QtWidgets.QLCDNumber:
             self.updated_value[(self.dtype)].connect(widget.display)
@@ -644,30 +654,31 @@ class LoggedQuantity(QtCore.QObject):
             raise ValueError("Unknown widget type")
         
         self.send_display_updates(force=True)
-        #self.widget = widget
+        # self.widget = widget
         self.widget_list.append(widget)
         self.change_readonly(self.ro)
         
-    def connect_to_pushButton(self, pushButton, colors=['rgba( 0, 255, 0, 180)','rgba(255, 69, 0, 180)'], 
+    def connect_to_pushButton(self, pushButton, colors=['rgba( 0, 255, 0, 180)', 'rgba(255, 69, 0, 180)'],
                               texts=['START', 'INTERRUPT'],
-                              styleSheet_amendment = '''QPushButton{ padding:3px }
+                              styleSheet_amendment='''QPushButton{ padding:3px }
                                                         QPushButton:hover:!pressed{ border: 1px solid black; }
                                                          '''):
         assert type(pushButton) == QtWidgets.QPushButton
         assert self.dtype == bool
-        if colors==None and self.colors!=None:
+        if colors == None and self.colors != None:
             colors = self.colors
         pushButton.setCheckable(True)
+
         def update_pushButton_value(x):
             lq = pushButton.sender()
             pushButton.setChecked(lq.value)
             pushButton.setText(texts[int(x)])              
+
         self.updated_value[bool].connect(update_pushButton_value)
         pushButton.toggled[bool].connect(self.update_value)
         s = f"""QPushButton:!checked{{ background:{colors[0]}; border: 1px solid grey; }}
                 QPushButton:checked{{ background:{colors[1]}; border: 1px solid grey; }}"""
         pushButton.setStyleSheet(pushButton.styleSheet() + s + styleSheet_amendment)
-
 
         if self.ro:
             pushButton.setEnabled(False)
@@ -678,10 +689,9 @@ class LoggedQuantity(QtCore.QObject):
     def connect_to_lq(self, lq):
         self.updated_value[(self.dtype)].connect(lq.update_value)
         lq.updated_value[(lq.dtype)].connect(self.update_value)
-        
     
     def change_choice_list(self, choices):
-        #widget = self.widget
+        # widget = self.widget
         with self.lock:
             self.choices = self._expand_choices(choices)
             
@@ -691,7 +701,7 @@ class LoggedQuantity(QtCore.QObject):
                     assert self.choices is not None 
                     try:
                         widget.blockSignals(True)
-                        widget.clear() # removes all old choices
+                        widget.clear()  # removes all old choices
                         for choice_name, choice_value in self.choices:
                             widget.addItem(choice_name, choice_value)
                     finally:
@@ -700,14 +710,13 @@ class LoggedQuantity(QtCore.QObject):
                     raise RuntimeError("Invalid widget type.")
         
         self.send_display_updates(force=True)
-        
     
     def add_choices(self, choices, allow_duplicates=False, new_val=None):
         if not isinstance(choices, (list, tuple)):
             choices = [choices]
         choices = self._expand_choices(choices)
         if not allow_duplicates:
-            choices = list( set(choices) - set(self.choices) )
+            choices = list(set(choices) - set(self.choices))
         if len(choices) > 0:
             new_choices_list = self.choices + choices
             self.change_choice_list(new_choices_list)
@@ -728,13 +737,13 @@ class LoggedQuantity(QtCore.QObject):
         if not isinstance(choices, (list, tuple)):
             choices = [choices]
         choices = self._expand_choices(choices)
-        new_choices_list = list( set(self.choices) - set(choices) )
+        new_choices_list = list(set(self.choices) - set(choices))
         if len(new_choices_list) < len(self.choices):
             self.change_choice_list(new_choices_list)
             if new_val == None:
                 new_val = v0
-            for c,v in new_choices_list:
-                if v==self.dtype(new_val):
+            for c, v in new_choices_list:
+                if v == self.dtype(new_val):
                     self.update_value(self.dtype(new_val))
                     break
                 else:
@@ -748,9 +757,9 @@ class LoggedQuantity(QtCore.QObject):
         with self.lock:
             self.vmin = vmin
             self.vmax = vmax
-            for widget in self.widget_list: # may not work for certain widget types
+            for widget in self.widget_list:  # may not work for certain widget types
                 widget.setRange(vmin, vmax)
-            self.updated_min_max.emit(vmin,vmax)
+            self.updated_min_max.emit(vmin, vmax)
         
     def change_readonly(self, ro=True):
         with self.lock:
@@ -760,7 +769,7 @@ class LoggedQuantity(QtCore.QObject):
                     widget.setReadOnly(self.ro)
                 else:
                     widget.setEnabled(not self.ro)
-                #TODO other widget types
+                # TODO other widget types
             self.updated_readonly.emit(self.ro)
             
     def change_unit(self, unit):
@@ -769,10 +778,10 @@ class LoggedQuantity(QtCore.QObject):
             for widget in self.widget_list:
                 if type(widget) == QtWidgets.QDoubleSpinBox:
                     if self.unit is not None:
-                        widget.setSuffix(" "+self.unit)
+                        widget.setSuffix(" " + self.unit)
                          
                 elif type(widget) == pyqtgraph.widgets.SpinBox.SpinBox:
-                    #widget.setFocusPolicy(QtCore.Qt.StrongFocus)
+                    # widget.setFocusPolicy(QtCore.Qt.StrongFocus)
                     suffix = self.unit
                     if self.unit is None:
                         suffix = ""
@@ -828,7 +837,7 @@ class LoggedQuantity(QtCore.QObject):
         
         try:
             self.math_lqs = tuple(lqs)
-        except TypeError: # if not iterable, assume its a single LQ
+        except TypeError:  # if not iterable, assume its a single LQ
             self.math_lqs = (lqs,)
         self.math_func = func
         
@@ -840,10 +849,11 @@ class LoggedQuantity(QtCore.QObject):
         def update_math():
             lq_vals = [lq.value for lq in self.math_lqs]
             new_val = self.math_func(*lq_vals)
-            #print(self.name, "update_math", lq_vals, "-->", new_val, )
+            # print(self.name, "update_math", lq_vals, "-->", new_val, )
             self.update_value(new_val)
         
         if reverse_func:
+
             def update_math_reverse():
                 lq_vals = [lq.value for lq in self.math_lqs]
                 if self.reverse_func_num_params > 1:
@@ -853,7 +863,7 @@ class LoggedQuantity(QtCore.QObject):
                     
                 try:
                     new_vals = tuple(new_vals)
-                except TypeError: # if not iterable, assume its a single value
+                except TypeError:  # if not iterable, assume its a single value
                     new_vals = (new_vals,)
 
                 for lq, new_val in zip(self.math_lqs, new_vals):
@@ -869,14 +879,13 @@ class LoggedQuantity(QtCore.QObject):
     def read_from_lq_math(self):
         lq_vals = [lq.value for lq in self.math_lqs]
         new_val = self.math_func(*lq_vals)
-        #print("read_from_lq_math", lq_vals, "-->", new_val, )
+        # print("read_from_lq_math", lq_vals, "-->", new_val, )
         self.update_value(new_val)
-        
 
     def connect_lq_scale(self, lq, scale):
         self.lq_scale = scale
-        self.connect_lq_math((lq,), func=lambda x: scale*x,
-                          reverse_func=lambda y, old_vals: [y * 1.0/scale,])
+        self.connect_lq_math((lq,), func=lambda x: scale * x,
+                          reverse_func=lambda y, old_vals: [y * 1.0 / scale, ])
 
     def new_default_widget(self):
         """ returns the appropriate QWidget for the datatype of the
@@ -918,10 +927,9 @@ class LoggedQuantity(QtCore.QObject):
             def update_param(v):
                 print("updating parameter", self.name, p, v)
                 p.setValue(v)
-
             
-            self.updated_value[self.dtype].connect(update_param)#(lambda v, p=p: p.setValue(v))
-            p.sigValueChanged.connect(lambda p,v: self.update_value(v))
+            self.updated_value[self.dtype].connect(update_param)  # (lambda v, p=p: p.setValue(v))
+            p.sigValueChanged.connect(lambda p, v: self.update_value(v))
 
             return p
         if self.is_array:
@@ -936,8 +944,8 @@ class LoggedQuantity(QtCore.QObject):
                 print("updating parameter", self.name, p, v)
                 p.setValue(v)
                 
-            self.updated_value[self.dtype].connect(update_param)#(lambda v, p=p: p.setValue(v))
-            p.sigValueChanged.connect(lambda p,v: self.update_value(v))
+            self.updated_value[self.dtype].connect(update_param)  # (lambda v, p=p: p.setValue(v))
+            p.sigValueChanged.connect(lambda p, v: self.update_value(v))
             
             return p
         
@@ -987,14 +995,15 @@ class FileLQ(LoggedQuantity):
         widget.layout().addWidget(browseButton)
         return widget
 
+
 class ArrayLQ(LoggedQuantity):
     updated_shape = QtCore.Signal(str)
     
-    def __init__(self, name, dtype=float, 
-                 #hardware_read_func=None, hardware_set_func=None, 
+    def __init__(self, name, dtype=float,
+                 # hardware_read_func=None, hardware_set_func=None, 
                  initial=[], fmt="%g", si=True,
-                 ro = False,
-                 unit = None,
+                 ro=False,
+                 unit=None,
                  vmin=-1e12, vmax=+1e12, choices=None,
                  description=None):
         QtCore.QObject.__init__(self)
@@ -1007,13 +1016,13 @@ class ArrayLQ(LoggedQuantity):
             self.val = np.array(initial, dtype=dtype)
         self.hardware_read_func = None
         self.hardware_set_func = None
-        self.fmt = fmt # % string formatting string. This is ignored if dtype==str
+        self.fmt = fmt  # % string formatting string. This is ignored if dtype==str
         if self.dtype == str:
             self.fmt = "%s"
         self.unit = unit
         self.vmin = vmin
         self.vmax = vmax
-        self.ro = ro # Read-Only
+        self.ro = ro  # Read-Only
         self.choices = choices
         self.description = description
         
@@ -1027,28 +1036,27 @@ class ArrayLQ(LoggedQuantity):
         
         self.oldval = None
         
-        self._in_reread_loop = False # flag to prevent reread from hardware loops
+        self._in_reread_loop = False  # flag to prevent reread from hardware loops
         
         self.widget_list = []
         self.listeners = []
 
         # threading lock
-        self.lock = QLock(mode=0) # mode 0 is non-reentrant lock
+        self.lock = QLock(mode=0)  # mode 0 is non-reentrant lock
         
         self.is_array = True
         
         self._tableView = None
-        
 
     def same_values(self, v1, v2):
         if v1.shape == v2.shape:
             return np.all(v1 == v2)
-            self.log.debug("same_values %s %s" % (v2-v1, np.all(v1 == v2)))        
+            self.log.debug("same_values %s %s" % (v2 - v1, np.all(v1 == v2)))        
         else:
             return False
 
     def change_shape(self, newshape):
-        #TODO
+        # TODO
         pass
  
     def string_value (self):
@@ -1058,50 +1066,49 @@ class ArrayLQ(LoggedQuantity):
         return json.dumps(self.val.tolist())
     
     def coerce_to_type(self, x):
-        #print type(x)
+        # print type(x)
         if type(x) in (unicode, str):
             x = json.loads(x)
-            #print repr(x)
+            # print repr(x)
         return np.array(x, dtype=self.dtype)
     
     def send_display_updates(self, force=False):
-        with self.lock:            
+        with self.lock: 
             self.log.debug(self.name + ' send_display_updates')
-            #print "send_display_updates: {} force={}".format(self.name, force)
+            # print "send_display_updates: {} force={}".format(self.name, force)
             if force or np.any(self.oldval != self.val):
                 
-                #print "send display updates", self.name, self.val, self.oldval
+                # print "send display updates", self.name, self.val, self.oldval
                 str_val = self.string_value()
                 self.updated_value[str].emit(str_val)
                 self.updated_text_value.emit(str_val)
                     
-                #self.updated_value[float].emit(self.val)
-                #if self.dtype != float:
+                # self.updated_value[float].emit(self.val)
+                # if self.dtype != float:
                 #    self.updated_value[int].emit(self.val)
-                #self.updated_value[bool].emit(self.val)
+                # self.updated_value[bool].emit(self.val)
                 self.updated_value[()].emit()
                 
                 self.oldval = self.val
             else:
                 self.log.debug(self.name + ' send_display_updates skipped (olval!=self.val)={} force={} oldval={} val={}'.format(
                     (self.oldval != self.val) , (force), self.oldval, self.val))
-                #print "\t no updates sent", (self.oldval != self.val) , (force), self.oldval, self.val
+                # print "\t no updates sent", (self.oldval != self.val) , (force), self.oldval, self.val
     
     @property
     def array_tableView(self):
         if self._tableView == None:
-            self._tableView  = self.create_tableView()
+            self._tableView = self.create_tableView()
             self._tableView.setWindowTitle(self.name)
         return self._tableView
     
     def create_tableView(self, **kwargs):
         widget = QtWidgets.QTableView()
-        #widget.horizontalHeader().hide()
-        #widget.verticalHeader().hide()
+        # widget.horizontalHeader().hide()
+        # widget.verticalHeader().hide()
         model = ArrayLQ_QTableModel(self, transpose=(len(self.val.shape) == 1), **kwargs)
         widget.setModel(model)
         return widget
-
 
     def connect_element_follower_lq(self, lq, index, bidir=True):
         """
@@ -1112,9 +1119,10 @@ class ArrayLQ(LoggedQuantity):
                            func=lambda arr, index=index: arr[index])
         
         if bidir:
+
             # when LQ is updated, update element in self
             def on_element_follower_lq(lq=lq, arr_lq=self, index=index):
-                #print("on_element_follower_lq", arr_lq.value, lq.value, index)
+                # print("on_element_follower_lq", arr_lq.value, lq.value, index)
                 old_val = arr_lq.value[index]
                 new_val = lq.value
                 if new_val == old_val:
@@ -1148,11 +1156,10 @@ class LQCircularNetwork(QtCore.QObject):
             for lq in lq_list:
                 lq_dict[lq.name] = lq
         self.lq_dict = lq_dict  # {lq_key:lq}
-        self.locked = False     # some lock that does NOT allow blocked routines to be executed after release()
+        self.locked = False  # some lock that does NOT allow blocked routines to be executed after release()
                                 # a flag (as it is now) works well.
-
     
-    def update_values_synchronously(self,**kwargs):
+    def update_values_synchronously(self, **kwargs):
         '''
         kwargs is dict containing lq_key and new_vals 
         Note: lq_key is not necessarily the name of the lq but key of lq_dict
@@ -1160,7 +1167,7 @@ class LQCircularNetwork(QtCore.QObject):
         '''
         if self.locked == False:
             self.locked = True
-            for kev,val in kwargs.items():
+            for kev, val in kwargs.items():
                 self.lq_dict[kev].update_value(val)
                 self.updated_values.emit()
                 self.locked = False
@@ -1171,7 +1178,6 @@ class LQCircularNetwork(QtCore.QObject):
         self.lq_dict[name] = lq
 
 
-
 class LQRange(LQCircularNetwork):
     """
     LQRange is a collection of logged quantities that describe a
@@ -1179,11 +1185,12 @@ class LQRange(LQCircularNetwork):
     Four (or six) LQ's are defined, min, max, num, step (center, span)
     and are connected by signals/slots that keep the quantities
     in sync.
-    LQRange.array is the linspace array and is kept upto date
+    LQRange.array is the linspace or logspace array and is kept up-to date
     with changes to the 4 (or 6) LQ's
+    LQRange.sweep_array is derivative of LQRange.array that takes the sweep_type into account
     """       
 
-    def __init__(self, min_lq, max_lq, step_lq, num_lq, center_lq=None, span_lq=None, sweep_type_lq=None):
+    def __init__(self, min_lq, max_lq, step_lq, num_lq, center_lq=None, span_lq=None, sweep_type_lq=None, space_lq=None):
         QtCore.QObject.__init__(self)
         self.log = get_logger_from_class(self)
         self.min = min_lq
@@ -1192,7 +1199,6 @@ class LQRange(LQCircularNetwork):
         self.step = step_lq
         self.center = center_lq
         self.span = span_lq
-        
         
         lq_dict = {'min':self.min, 'max':self.max, 'num':self.num, 'step':self.step}        
         
@@ -1207,6 +1213,9 @@ class LQRange(LQCircularNetwork):
         if sweep_type_lq:
             self.type = sweep_type_lq
             lq_dict.update({'type':sweep_type_lq})
+        if space_lq:
+            self.space = space_lq
+            lq_dict.update({'space':space_lq})
         
         LQCircularNetwork.__init__(self, lq_dict)
       
@@ -1223,68 +1232,65 @@ class LQRange(LQCircularNetwork):
             self.min.add_listener(self.on_change_min_max)
             self.max.add_listener(self.on_change_min_max)
 
-        self.step.connect_lq_math((self.min,self.max,self.num), self.calc_step)
+        self.step.connect_lq_math((self.min, self.max, self.num), self.calc_step)
         
         if sweep_type_lq is not None:
-            self.sweep_type_map = {'up':self.up_sweep_array,           'down':self.down_sweep_array, 
+            self.sweep_type_map = {'up':self.up_sweep_array, 'down':self.down_sweep_array,
                                    'up_down':self.up_down_sweep_array, 'down_up':self.down_up_sweep_array,
-                                   'zig_zag':self.zig_zag_sweep_array, 'zag_zig':self.zag_zig_sweep_array,
-                                   'logarithmic':self.logarithmic_sweep_array}
+                                   'zig_zag':self.zig_zag_sweep_array, 'zag_zig':self.zag_zig_sweep_array}
             self.sweep_type = sweep_type_lq
             self.sweep_type.change_choice_list(self.sweep_type_map.keys())
-        
 
     def calc_num(self, min_, max_, step):
         '''
         enforces num to be a positive integer and adjust step accordingly
         returns num,step 
         '''
-        span = max_-min_
-        if step==0:
+        span = max_ - min_
+        if step == 0:
             n = 10 
         else: 
-            n = span/step #num = n+1 
+            n = span / step  # num = n+1 
             if n < 0:
                 n = -n
             n = np.ceil(n)
-        step = span/n
-        num = n+1
-        return int(num),step
+        step = span / n
+        num = n + 1
+        return int(num), step
     
     def calc_step(self, min_, max_, num):
         """
         excludes num=1 to prevent division by zero,
         returns step
         """
-        if num==1: #prevent division by zero
+        if num == 1:  # prevent division by zero
             num = 2
-        step=(max_-min_)/(num-1)
+        step = (max_ - min_) / (num - 1)
         return step
     
     def calc_span(self, min_, max_):
-        return (max_-min_)
-    
+        return (max_ - min_)
     
     def calc_center(self, min_, max_):
-        return (max_-min_)/2+min_
+        return (max_ - min_) / 2 + min_
 
     def calc_min(self, center, span):
-        return center-span/2.0
+        return center - span / 2.0
     
     def calc_max(self, center, span):
-        return center+span/2.0  
+        return center + span / 2.0  
     
     def on_change_step(self):
         step = self.step.val
-        num,step = self.calc_num(self.min.val, self.max.val, step)
+        num, step = self.calc_num(self.min.val, self.max.val, step)
         self.update_values_synchronously(num=num, step=step)
         
     def on_change_num(self):
         num = self.num.val
-        if num ==1:
+        if num == 1:
             num = 2
         step = self.calc_step(self.min.val, self.max.val, self.num.val)
-        self.update_values_synchronously(num=num,step=step)
+        self.update_values_synchronously(num=num, step=step)
                
     def on_change_min_max(self):
         min_ = self.min.val
@@ -1302,33 +1308,38 @@ class LQRange(LQCircularNetwork):
     
     @property
     def array(self):
+        if hasattr(self, 'space'):
+            if self.space.val == 'logarithmic':
+                return np.logspace(self.min.val, self.max.val, self.num.val)                
         return np.linspace(self.min.val, self.max.val, self.num.val)
     
-    def zig_zag_sweep_array(self):
-        mid_arg = int(self.num.val/2)
-        ar = self.array
-        return np.concatenate([ar[mid_arg:],ar[::-1],ar[0:mid_arg]])
-    def zag_zig_sweep_array(self):
-        return self.zig_zag_sweep_array()[::-1]
-    def up_down_sweep_array(self):
-        ar = self.array
-        return np.concatenate([ar,ar[::-1]])
-    def down_up_sweep_array(self):
-        return self.up_down_sweep_array()[::-1]
-    def down_sweep_array(self):
-        return self.array[::-1]
-    def up_sweep_array(self):
-        return self.array
-    def logarithmic_sweep_array(self):
-        return np.logspace(self.min.val, self.max.val, self.num.val)
-        
     @property
     def sweep_array(self):
-        print(self.sweep_type.val)
         if hasattr(self, 'sweep_type'):
             return self.sweep_type_map[self.sweep_type.val]()
         else:
             return self.array
+    
+    def zig_zag_sweep_array(self):
+        mid_arg = int(self.num.val / 2)
+        ar = self.array
+        return np.concatenate([ar[mid_arg:], ar[::-1], ar[0:mid_arg]])
+
+    def zag_zig_sweep_array(self):
+        return self.zig_zag_sweep_array()[::-1]
+
+    def up_down_sweep_array(self):
+        ar = self.array
+        return np.concatenate([ar, ar[::-1]])
+
+    def down_up_sweep_array(self):
+        return self.up_down_sweep_array()[::-1]
+
+    def down_sweep_array(self):
+        return self.array[::-1]
+
+    def up_sweep_array(self):
+        return self.array
 
     def add_listener(self, func, argtype=(), **kwargs):
         self.min.add_listener(func, argtype, **kwargs)
@@ -1336,10 +1347,10 @@ class LQRange(LQCircularNetwork):
         self.num.add_listener(func, argtype, **kwargs)
         
     def New_UI(self):
-        ui_widget =  QtWidgets.QWidget()
+        ui_widget = QtWidgets.QWidget()
         formLayout = QtWidgets.QFormLayout()
         ui_widget.setLayout(formLayout)
-        for lqname,lq in self.lq_dict.items():
+        for lqname, lq in self.lq_dict.items():
             formLayout.addRow(lqname, lq.new_default_widget())
         return ui_widget
 
@@ -1358,29 +1369,28 @@ class LQ3Vector(object):
     @property
     def length(self):
         vec = self.values
-        return np.sqrt(np.dot(vec,vec))
+        return np.sqrt(np.dot(vec, vec))
     
     @property
     def normed_values(self):
-        return self.values/self.length
+        return self.values / self.length
     
     def dot(self, _lq_vector):
         '''
         returns the scalar product with _lq_vector
         '''
-        return np.dot(_lq_vector.values,self.values)
+        return np.dot(_lq_vector.values, self.values)
     
     def project_on(self, _lq_vector):
         return np.dot(_lq_vector.normed_values, self.values)
     
     def angle_to(self, _lq_vector):
-        return np.arccos(np.dot(_lq_vector.normed_values,self.normed_values))
+        return np.arccos(np.dot(_lq_vector.normed_values, self.normed_values))
     
     def add_listener(self, func, argtype=(), **kwargs):
         self.x_lq.add_listener(func, argtype, **kwargs)
         self.y_lq.add_listener(func, argtype, **kwargs)
         self.z_lq.add_listener(func, argtype, **kwargs)        
-
 
 
 class LQCollection(object):
@@ -1412,7 +1422,7 @@ class LQCollection(object):
         """
         
         is_array = kwargs.pop('array', False)
-        #self.log.debug("{} is_array? {}".format(name, is_array))
+        # self.log.debug("{} is_array? {}".format(name, is_array))
         if is_array:
             lq = ArrayLQ(name=name, dtype=dtype, **kwargs)
         else:
@@ -1431,7 +1441,7 @@ class LQCollection(object):
         assert not (name in self._logged_quantities)
         assert not (name in self.__dict__)
         self._logged_quantities[name] = lq
-        self.__dict__[name] = lq # allow attribute access
+        self.__dict__[name] = lq  # allow attribute access
         return lq
 
     def get_lq(self, key):
@@ -1469,13 +1479,13 @@ class LQCollection(object):
         "Dictionary-like access reads and sets value of LQ's"
         return self._logged_quantities[key].val
     
-    
     def __setitem__(self, key, item):
         "Dictionary-like access reads and sets value of LQ's"
         self._logged_quantities[key].update_value(item)
 
     def __contains__(self, key):
         return self._logged_quantities.__contains__(key)
+
     """
     def __getattribute__(self,name):
         if name in self.logged_quantities.keys():
@@ -1484,45 +1494,46 @@ class LQCollection(object):
             return object.__getattribute__(self, name)
     """
     
-    def New_Range(self, name, include_center_span=False, include_sweep_type = False, initials = [0, 1., 0.1], **kwargs):
+    def New_Range(self, name, include_center_span=False, include_sweep_type=False, initials=[0, 1., 0.1], include_space=True, **kwargs):
                         
-        mn,mx,d = initials
-        min_lq  = self.New( name + "_min" , initial=mn, **kwargs ) 
-        max_lq  = self.New( name + "_max" , initial=mx, **kwargs ) 
-        step_lq = self.New( name + "_step", initial=d, **kwargs)
-        num_lq  = self.New( name + "_num", dtype=int, vmin=1, initial=11)
+        mn, mx, d = initials
+        min_lq = self.New(name + "_min" , initial=mn, **kwargs) 
+        max_lq = self.New(name + "_max" , initial=mx, **kwargs) 
+        step_lq = self.New(name + "_step", initial=d, **kwargs)
+        num_lq = self.New(name + "_num", dtype=int, vmin=1, initial=11)
         
         LQRange_kwargs = {'min_lq':min_lq, 'max_lq':max_lq, 'step_lq':step_lq, 'num_lq':num_lq}
         if include_center_span:
             center_lq = self.New(name + "_center", **kwargs, initial=0.5)
-            span_lq = self.New( name + "_span", **kwargs, initial=1.0)
-            LQRange_kwargs.update({'center_lq':center_lq,'span_lq':span_lq})
+            span_lq = self.New(name + "_span", **kwargs, initial=1.0)
+            LQRange_kwargs.update({'center_lq':center_lq, 'span_lq':span_lq})
         if include_sweep_type:
-            sweep_type_lq  = self.New( name + "_sweep_type", dtype=str, choices=('up','down'), initial='up')
+            sweep_type_lq = self.New(name + "_sweep_type", dtype=str, choices=('up', 'down'), initial='up')
             LQRange_kwargs.update({'sweep_type_lq':sweep_type_lq})
-        
+        if include_space:
+            space_lq = self.New(name + "_space", dtype=str, choices=('linear', 'logarithmic'), initial='linear',
+                                description='if <i>logarithmic</i> the maximum value will be 10^max')
+            LQRange_kwargs.update({'space_lq':space_lq})        
         lqrange = LQRange(**LQRange_kwargs)
 
         self.ranges[name] = lqrange
         return lqrange
     
-    
-    def New_Vector(self, name, components = 'xyz', initial = [1,0,0], **kwargs):
+    def New_Vector(self, name, components='xyz', initial=[1, 0, 0], **kwargs):
 
         assert len(components) == len(initial)
         
         if len(components) == 3:
 
-            lq_x = self.New(name+'_'+components[0], initial = initial[0], **kwargs)
-            lq_y = self.New(name+'_'+components[1], initial = initial[1], **kwargs)
-            lq_z = self.New(name+'_'+components[2], initial = initial[2], **kwargs)
+            lq_x = self.New(name + '_' + components[0], initial=initial[0], **kwargs)
+            lq_y = self.New(name + '_' + components[1], initial=initial[1], **kwargs)
+            lq_z = self.New(name + '_' + components[2], initial=initial[2], **kwargs)
                 
-            lq_vector = LQ3Vector(lq_x,lq_y,lq_z)
+            lq_vector = LQ3Vector(lq_x, lq_y, lq_z)
             self.vectors[name] = lq_vector
             return lq_vector
     
-    
-    def New_UI(self, include = None, exclude = [], style='form'):
+    def New_UI(self, include=None, exclude=[], style='form'):
         """create a default Qt Widget that contains 
         widgets for all settings in the LQCollection
         """
@@ -1532,26 +1543,25 @@ class LQCollection(object):
         else:
             lqnames = include
 
-        ui_widget =  QtWidgets.QWidget()
+        ui_widget = QtWidgets.QWidget()
 
         if style == 'form':
             formLayout = QtWidgets.QFormLayout()
             ui_widget.setLayout(formLayout)
             
-            
             for lqname in lqnames:
                 if lqname in exclude:
                     continue
                 lq = self.get_lq(lqname)
-                #: :type lq: LoggedQuantity
+                # : :type lq: LoggedQuantity
                 widget = lq.new_default_widget()
                 # Add to formlayout
                 formLayout.addRow(lqname, widget)
-                #lq_tree_item = QtWidgets.QTreeWidgetItem(self.tree_item, [lqname, ""])
-                #self.tree_item.addChild(lq_tree_item)
-                #lq.hardware_tree_widget = widget
-                #tree.setItemWidget(lq_tree_item, 1, lq.hardware_tree_widget)
-                #self.control_widgets[lqname] = widget  
+                # lq_tree_item = QtWidgets.QTreeWidgetItem(self.tree_item, [lqname, ""])
+                # self.tree_item.addChild(lq_tree_item)
+                # lq.hardware_tree_widget = widget
+                # tree.setItemWidget(lq_tree_item, 1, lq.hardware_tree_widget)
+                # self.control_widgets[lqname] = widget  
         
         elif style == 'hbox':
             hboxLayout = QtWidgets.QHBoxLayout()
@@ -1579,7 +1589,7 @@ class LQCollection(object):
                 if lqname in exclude:
                     continue
                 lq = self.get_lq(lqname)
-                #: :type lq: LoggedQuantity
+                # : :type lq: LoggedQuantity
                 widget = lq.new_default_widget()
                 # Add to formlayout
                 formLayout.addRow(lqname, widget)
@@ -1591,7 +1601,7 @@ class LQCollection(object):
     def add_widgets_to_subtree(self, tree_item):
         lq_tree_items = []
         for lqname, lq in self.as_dict().items():
-            #: :type lq: LoggedQuantity
+            # : :type lq: LoggedQuantity
             if isinstance(lq, ArrayLQ):
                 lineedit = QtWidgets.QLineEdit()
                 button = QtWidgets.QPushButton('...')
@@ -1601,12 +1611,12 @@ class LQCollection(object):
                 layout.addWidget(lineedit)
                 layout.addWidget(button)
                 layout.setSpacing(0)
-                layout.setContentsMargins(0,0,0,0)
+                layout.setContentsMargins(0, 0, 0, 0)
                 
                 lq.connect_to_widget(lineedit)
                 button.clicked.connect(lq.array_tableView.show)
                 button.clicked.connect(lq.array_tableView.raise_)
-            elif isinstance(lq,FileLQ):
+            elif isinstance(lq, FileLQ):
                 lineedit = QtWidgets.QLineEdit()
                 button = QtWidgets.QPushButton('...')
                 widget = QtWidgets.QWidget()
@@ -1615,9 +1625,9 @@ class LQCollection(object):
                 layout.addWidget(lineedit)
                 layout.addWidget(button)
                 layout.setSpacing(0)
-                layout.setContentsMargins(0,0,0,0)
+                layout.setContentsMargins(0, 0, 0, 0)
                 
-                lq.connect_to_browse_widgets(lineedit,button)
+                lq.connect_to_browse_widgets(lineedit, button)
             else:
                 if lq.choices is not None:
                     widget = QtWidgets.QComboBox()
@@ -1637,13 +1647,10 @@ class LQCollection(object):
             tree_item.addChild(lq_tree_item)
             lq.tree_widget = widget
             tree_item.treeWidget().setItemWidget(lq_tree_item, 1, lq.tree_widget)
-            #self.control_widgets[lqname] = widget
+            # self.control_widgets[lqname] = widget
         return lq_tree_items
-
     
     def disconnect_all_from_hardware(self):
         for lq in self.as_list():
             lq.disconnect_from_hardware()
-            
-
 
