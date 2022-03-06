@@ -5,6 +5,8 @@ import pyqtgraph as pg
 from qtpy import QtWidgets
 from ScopeFoundry import Measurement, h5_io
 
+from confocal_measure.post_processor.post_processor_manager import PostProcessorManager
+
 
 class RangedOptimization(Measurement):
     """Sweeps a setting z within a range and measures an optimization quantity f(z)
@@ -87,12 +89,15 @@ class RangedOptimization(Measurement):
         self.t0 = time.time()
 
         self.z_original, self.z0_coarse, self.z0_fine = 0, 0, 0
-
-        self.settings.New('post_process_option', str, initial='gauss', choices=('gauss',),
-                          description='e.g. fit gaussian to data and use the derived mean as optimized value')
-        self.add_operation('post process', self.post_process)
-        self.add_operation('take processed value', self.go_to_post_process_value)
         
+        self.post_processor_manager = PostProcessorManager()
+        choices = self.post_processor_manager.processors.keys()
+        self.settings.New('post_processor', str, initial='gauss', choices=choices,
+                          description='e.g. fit gaussian to data and use the derived mean as optimized value')
+        self.settings.New('take_post_process_value', bool, initial=False)
+        self.add_operation('post process', self.post_process)
+        self.add_operation('go to optimal_value', self.go_to_optimal_value)
+        self.add_operation('go to post_process_value', self.go_to_post_process_value)        
         self.settings.New("save_h5", bool, initial=True)
 
     def setup_figure(self):
@@ -132,7 +137,9 @@ class RangedOptimization(Measurement):
         )
         
         # third settings widget
-        w3 = S.New_UI(["z_offset", "use_fine_optimization", "post_process_option"])
+        w3 = S.New_UI(["z_offset", 
+                       "use_fine_optimization", 
+                       "post_processor"])
         settings_layout.addWidget(w3)
         post_process_pushButton = QtWidgets.QPushButton('post_process')
         post_process_pushButton.clicked.connect(self.post_process)
@@ -219,9 +226,6 @@ class RangedOptimization(Measurement):
 
     def run(self):
         S = self.settings        
-        
-        self.plot_line_post_process.setVisible(False)
-        self.line_z0_post_process.setVisible(False)
 
         self.take_current = False
 
@@ -293,7 +297,11 @@ class RangedOptimization(Measurement):
             time.sleep(S["z_span_travel_time"] / 4)
         else:
             print(self.name, "finished, moving to range optimal")
-            z_target.update_value(self.z0 + S["z_offset"])
+            if S['take_post_process_value']:
+                self.go_to_post_process_value()
+            else:
+                self.go_to_optimal_value()
+            
             self.save_h5_file()
 
             # Update history
@@ -309,7 +317,6 @@ class RangedOptimization(Measurement):
                 print(template.format(*rec))
 
             time.sleep(S["z_span_travel_time"] / 4)
-
             # TODO, make a plot of the history
             
     def pre_run(self):
@@ -333,18 +340,18 @@ class RangedOptimization(Measurement):
             self.hw0.settings['int_time'] = S['sampling_period']
             
         # self.app.hardware.flip_mirror.settings['mirror_position'] = True
+        self.post_processor_manager.set_ready(False)
+        self.set_post_process_lines_visible(False)
             
     def post_run(self):
         if self.S0 and self.hw0:
             for k, v in self.S0.items():
                 self.hw0.settings[k] = v
-
         
-        #self.app.hardware.flip_mirror.settings['mirror_position'] = False
-
+        # self.app.hardware.flip_mirror.settings['mirror_position'] = False
             
-    def save_h5_file(self):        
-        if self.settings['save_h5']:            
+    def save_h5_file(self): 
+        if self.settings['save_h5']: 
             self.t0 = time.time()
             self.h5_file = h5_io.h5_base_file(app=self.app, measurement=self)
             try:
@@ -367,10 +374,7 @@ class RangedOptimization(Measurement):
                 self.h5_file.close()
 
     def update_display(self):
-
         S = self.settings
-
-        # self.plot.enableAutoRange()
         self.plot.setLabels(bottom=S["optimization_quantity"], left="z")
 
         self.plot_line_coarse.setData(self.f_coarse, self.z_coarse)
@@ -396,34 +400,25 @@ class RangedOptimization(Measurement):
         else:
             z, f = self.z_coarse, self.f_coarse
         
+        func = self.post_processor_manager.post_process
+        self.z0_post_process, self.f_post_process = func(z, f, S["post_processor"])
         self.z_post_process = z
-        self.f_post_process = f  # typically to be overwritten
-        self.z0_post_process = z.mean()  # overwrite this!
-                
-        if S['post_process_option'] == 'gauss':
-            a, mean, sigma = fit_gauss(z, f - f.min())
-            self.f_post_process = gauss(z, a, mean, sigma) + f.min()
-            self.z0_post_process = mean
-            
-        print(self.name, f'used {S["post_process_option"]} fit option')
-        self.plot_line_post_process.setVisible(True)
+        
         self.plot_line_post_process.setData(self.f_post_process, self.z_post_process)
-        self.line_z0_post_process.setVisible(True)
         self.line_z0_post_process.setPos(self.z0_post_process)
-
+        self.set_post_process_lines_visible(True)
+        
+    def set_post_process_lines_visible(self, visible:bool):
+        self.plot_line_post_process.setVisible(visible)
+        self.line_z0_post_process.setVisible(visible)
+        
     def go_to_post_process_value(self):
         S = self.settings
-        z_target = self.app.hardware[S["z_hw"]].settings.get_lq(S["z_target"])        
-        z_target.update_value(self.z0_post_process + S["z_offset"])
-
+        z_target = self.app.hardware[S["z_hw"]].settings.get_lq(S["z_target"]) 
+        z_value = self.post_processor_manager.get_value() + S["z_offset"]       
+        z_target.update_value(z_value)
         
-def gauss(x, a, x0, sigma):
-    return a * np.exp(-(x - x0) ** 2 / (2 * sigma ** 2))
-
-    
-def fit_gauss(x, y):
-    from scipy.optimize import curve_fit
-    p0 = [y.max(), x[y.argmax()], 10]
-    popt, pcov = curve_fit(gauss, x, y, p0=p0)
-    return popt  # a,mean,sigma 
-
+    def go_to_optimal_value(self):
+        S = self.settings
+        z_target = self.app.hardware[S["z_hw"]].settings.get_lq(S["z_target"])       
+        z_target.update_value(self.z0 + S["z_offset"])
