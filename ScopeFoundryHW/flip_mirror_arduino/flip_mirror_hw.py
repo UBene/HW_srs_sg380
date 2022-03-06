@@ -30,7 +30,7 @@ class FlipMirrorHW(HardwareComponent):
     
     def setup(self):
         self.settings.New('port', dtype=str, initial='COM8')
-        self.flip_mirror_position = self.settings.New("mirror_position",
+        self.flip_mirror_position = self.settings.New("position",
                                                       dtype=bool,
                                                       choices=self.choices,
                                                       colors=self.colors
@@ -41,7 +41,7 @@ class FlipMirrorHW(HardwareComponent):
         dev = self.dev = FlipMirrorArduino(port=S['port'],
                                              debug=S['debug_mode'])
 
-        S.mirror_position.connect_to_hardware(dev.read_position,
+        S.position.connect_to_hardware(dev.read_position,
                                 dev.write_posititon)
         
     def disconnect(self): 
