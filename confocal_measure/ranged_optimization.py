@@ -33,6 +33,7 @@ class RangedOptimization(Measurement):
             ("spotoptimizer max value", "measure/toupcam_spot_optimizer/max_val"),
             ("spotoptimizer focus measure", "measure/toupcam_spot_optimizer/focus_measure"),
             ("andor count rate (cont.)", "measure/andor_ccd_readout/count_rate"),
+            ("picam count rate (cont.)", "measure/picam_readout/count_rate"),
             ("apd count rate", "hardware/apd_counter/count_rate"),
         ],
         lq_kwargs={"spinbox_decimals": 6, "unit": ""},
@@ -74,7 +75,7 @@ class RangedOptimization(Measurement):
         self.settings.New("use_fine_optimization", bool, initial=True)
         self.settings.New("z_span_travel_time", initial=2.0, unit="sec")
 
-        self.settings.New("z_hw", dtype=str, initial="dynamixel_linear")
+        self.settings.New("z_hw", dtype=str, initial="focus_wheel")
         self.settings.New("z", dtype=str, initial="position")
         self.settings.New("z_target", dtype=str, initial="target_position")
         self.settings.New("coarse_to_fine_span_ratio", initial=4.0)
@@ -320,13 +321,18 @@ class RangedOptimization(Measurement):
             self.S0 = self.hw0.settings.as_value_dict()
             self.hw0.settings['explore_mode_exposure_time'] = S['sampling_period']
             self.hw0.settings['explore_mode'] = True
+            
+        if S['optimization_quantity'] == 'measure/picam_readout/count_rate':
+            self.hw0 = self.app.measurements.picam_readout
+            self.S0 = self.hw0.settings.as_value_dict()
+            self.hw0.settings['continuous'] = True
+                    
         elif S['optimization_quantity'] == 'hardware/apd_counter/count_rate':
             self.hw0 = self.app.hardware.apd_counter
             self.S0 = self.hw0.settings.as_value_dict()
             self.hw0.settings['int_time'] = S['sampling_period']
             
-            
-        #self.app.hardware.flip_mirror.settings['mirror_position'] = True
+        # self.app.hardware.flip_mirror.settings['mirror_position'] = True
             
     def post_run(self):
         if self.S0 and self.hw0:
