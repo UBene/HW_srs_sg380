@@ -11,7 +11,6 @@ from ScopeFoundryHW.powerwheel_arduino.power_wheel_arduino_dev import PowerWheel
 import time
 
 
-
 class PowerWheelArduinoHW(HardwareComponent):
     
     name = 'power_wheel'
@@ -20,7 +19,7 @@ class PowerWheelArduinoHW(HardwareComponent):
         self.conv = conv  # steps per deg
         HardwareComponent.__init__(self, app, debug=debug, name=name)
     
-    def setup(self):       
+    def setup(self): 
         S = self.settings     
         self.settings.New('encoder_pos', dtype=int, unit='steps', ro=True)
         self.settings.New('port', dtype=str, initial='COM4')
@@ -33,7 +32,6 @@ class PowerWheelArduinoHW(HardwareComponent):
         self.add_operation("zero_encoder", self.zero_encoder)
         self.add_operation("jog_forward", self.jog_forward)
         self.add_operation("jog_backward", self.jog_backward)
-
 
     def connect(self):
                 
@@ -93,4 +91,5 @@ class PowerWheelArduinoHW(HardwareComponent):
         time.sleep(0.1)
         pos = self.settings.encoder_pos.read_from_hardware()
         self.settings['position'] = pos / self.conv
+        self.settings['target_position'] = pos / self.conv
 
