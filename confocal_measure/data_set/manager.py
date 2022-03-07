@@ -6,17 +6,56 @@ Created on Mar 6, 2022
 import numpy as np
 
 from qtpy import QtCore
+from ScopeFoundry.measurement import Measurement
+from ScopeFoundry.hardware import HardwareComponent
+from typing import Union, Sequence
 
 
 class DataSetManager(QtCore.QObject):
     
+    """
+    A class to represent a data sets.
+
+    data_set = {'dataset_name_1':{'values':[[data0], [data1] ...],
+                                  'plot_values':[sum([data0]), sum([data1])...]}
+         ....
+         }
+        
+
+
+    dataset_name is autoenerated if the two convience methods `add_from_obj_attr`
+    and `add_from_setting`
+    
+    ...
+
+
+    Setter Methods
+    -------
+    reset()
+        deletes all entries
+        
+    add_from_obj_attr(obj:Union[Measurement, HardwareComponent], attr:str)
+    add_from_setting(lq_path:str):
+    
+        
+    Getter Methods
+    -------
+    get_plot_values(dset_name):
+    get_values(dset_name):
+    save_to_h5_meas_group(h5_meas_group)
+    """
+    
     new_data_set_registered = QtCore.Signal(str)
     
-    def __init__(self, app):
+    def __init__(self, measurement:Measurement):
         super().__init__()
-        self.app = app
+        self.measurement = measurement
+        self.app = measurement.app
         self.reset()
         self.set_compress(False)
+        measurement.settings.New('compress_data', bool, initial=False,
+                          description='guesses data set duplicates across iteration and only stores one copy.')
+        measurement.compress_data.add_listener(self.data_sets.set_compress)
             
     def set_compress(self, compress:bool):
         self.compress = compress
@@ -24,11 +63,11 @@ class DataSetManager(QtCore.QObject):
     def reset(self):
         self.data_sets = {}
         
-    def dset_name(self, prefix, suffix):
+    def dset_name(self, names:Sequence):
         '''data_set name generator'''
-        return '_'.join((prefix, suffix))
+        return '_'.join(names)
     
-    def add(self, dset_name, values):
+    def _add(self, dset_name:str, values):
 
         if self.valid_type(values):
             if not dset_name in self.data_sets.keys():
@@ -42,27 +81,34 @@ class DataSetManager(QtCore.QObject):
                         return    
                 self.data_sets[dset_name]['values'].append(np.array(values))
                 
-    def add_attr_value(self, obj, attr):
+    def add_from_obj_attr(self, obj:Union[Measurement, HardwareComponent],
+                       attr:str):
         values = getattr(obj, attr)
         if type(values) == dict:
             for attr, _values in values.items():
-                dset_name = self.dset_name(obj.name, attr)
-                self.add(dset_name, _values)  
+                dset_name = self.dset_name((obj.name, attr))
+                self._add(dset_name, _values)  
         else:
-            dset_name = self.dset_name(obj.name, attr)
-            self.add(dset_name, values)  
+            dset_name = self.dset_name((obj.name, attr))
+            self._add(dset_name, values)  
                 
-    def add_setting_value(self, lq_path:str):
+    def add_from_setting(self, lq_path:str):
         value = self.app.lq_path(lq_path).read_from_hardware()
         _, name, setting = lq_path.split('/')       
-        dset_name = self.dset_name(name, setting)
-        self.add(dset_name, value)
+        dset_name = self.dset_name((name, setting))
+        self._add(dset_name, value)
                 
-    def add_to_meas_group(self, h5_meas_group):
+    def save_to_h5_meas_group(self, h5_meas_group):
         for k, v in self.data_sets.items():
             h5_meas_group[str(k) + '_plot_values'] = v['plot_values']
             h5_meas_group[str(k)] = np.squeeze(v['values'])
             
+    def get_plot_values(self, dset_name):
+        return self.data_sets[dset_name]['plot_values']
+    
+    def get_values(self, dset_name):
+        return self.data_sets[dset_name]['values']
+    
     def __contains__(self, key):
         return key in self.data_sets
     
@@ -91,4 +137,24 @@ class DataSetManager(QtCore.QObject):
             #    return get_type(x[0])
                 
         return get_type(x) in (int, float, np.array, bool, np.ndarray, dict, set, None)
+    
+    def get_list_of_attributes(self):
+        attrs = []        
+        for m in self.app.measurements.values():
+            if m.name != self.measurement.name:
+                for a in dir(m):
+                    if not callable(getattr(m, a)) and\
+                        a.startswith('__') == False and\
+                        self.valid_type(x=getattr(m, a)) and\
+                        not a in ('settings', 'activation', 'name',
+                                  'log', 'gui', 'app', 'ui', 'display_update_period'
+                                  'display_update_timer', 'acq_thread',
+                                  'interrupt_measurement_called',
+                                  'operations', 'run_state', 't_start', 'end_state'):
+                        attrs.append(f'measurements.{m.name}.' + a)
+        return attrs 
+    
+    def get_list_of_settings(self):
+        exclude = ('activation', 'connected', 'run_state', 'debug_mode')
+        return [p for p in self.app.lq_paths_list() if not p.split('/')[-1] in exclude]
         
