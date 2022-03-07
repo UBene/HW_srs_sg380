@@ -262,10 +262,11 @@ class PowerScanMeasure(Measurement):
             for hw, Tacq_lq in self.used_hws.items():
                 acq_times_array = np.ones_like(self.power_wheel_position) * Tacq_lq.val  # easy peasy const time array.
                 self.Tacq_arrays.append((hw, Tacq_lq, acq_times_array))
-                self.total_acquisition_time += acq_times_array.sum()      
+                self.total_acquisition_time += acq_times_array.sum()
         
-        # print(self.name, self.settings['acq_mode'], 'total_acquisition_time (s)', self.total_acquisition_time)
-                    
+        if self.settings['collect_picam']:
+            self.total_acquisition_time /= 1000   
+                            
         self.ii = 0
 
         # prepare plot curves
@@ -287,7 +288,7 @@ class PowerScanMeasure(Measurement):
         
         # update hardware settings (microscope specific)
         if 'lakeshore_measure' in self.app.measurements:
-            if self.app.hardware.lakeshore331.settings['connected']:
+            if self.app.hardware.lakeshore335.settings['connected']:
                 self.app.measurements.lakeshore_measure.settings['activation'] = True
                 self.app.measurements.lakeshore_measure.set_history_start()
         if 'rigol_waveform_generator' in self.app.hardware:
@@ -477,7 +478,7 @@ class PowerScanMeasure(Measurement):
             self.h5_file.close()
             
         if 'lakeshore_measure' in self.app.measurements:
-            if self.app.hardware.lakeshore331.settings['connected']:
+            if self.app.hardware.lakeshore335.settings['connected']:
                 self.app.measurements.lakeshore_measure.save_history()
 
     def update_display(self):
