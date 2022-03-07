@@ -12,8 +12,9 @@ import numpy as np
 from qtpy.QtWidgets import QListWidget, QListWidgetItem, QCompleter, QComboBox, \
     QHBoxLayout, QPushButton, QVBoxLayout, QWidget, QLineEdit, QGroupBox, QLabel
 from qtpy import QtCore
+from confocal_measure.data_set.manager import DataSetManager
 
-    
+
 def norm(x):
     x = np.array(x)
     x -= x.min() * 0.99
@@ -34,13 +35,17 @@ class GenericSweeper(Measurement):
         self.setup_prepare_sequences_settings()
         self.setup_target_measurements()
         
-    def setup_prepare_sequences_settings(self, sequences_dir='prepare_sequences'):
+        self.data_sets = DataSetManager(app=self.app)
+        self.data_sets.new_data_set_registered[str].connect(self.new_plot_line)
+        self.settings.compress.add_listener(self.data_sets.set_compress)
+        
+    def setup_prepare_sequences_settings(self, sequences_dir='measurements'):
         '''checks *sequences_dir* for sequences that should be run before a measurements. 
             The sequence file must have the same name as measurement'''
+        self.prepare_sequences = {}
         try:
             _dir = os.path.abspath(os.path.join('.', sequences_dir))
             _prepare_sequences = [fname for fname in os.listdir(_dir) if fname.endswith('.json')]
-            self.prepare_sequences = {}
             for fname in _prepare_sequences:
                 name = fname.split('.')[0]
                 setting = self.settings.New(f'run_{name}_sequence',
@@ -227,45 +232,13 @@ class GenericSweeper(Measurement):
             else:  # is a setting path
                 self.target_settings.append(target_data)    
 
+    @QtCore.Slot(str)
     def new_plot_line(self, dset_name):
         self.plot_x_comboBox.addItem(dset_name)
         self.plot_lines.update({dset_name:self.plot.plot([1, 3, 2, 4])})
         self.plot_x_data_name = dset_name
         N = self.plot_x_comboBox.count()
         self.plot_x_comboBox.setCurrentIndex(N - 1)
-                
-    def dset_name(self, prefix, suffix):
-        '''data_set name generator'''
-        return '_'.join((prefix, suffix))
-        
-    def add_to_data_sets(self, dset_name, values):
-        if self.valid_type(values):
-            if not dset_name in self.data_sets.keys():
-                self.data_sets.update({dset_name:{'plot_values':[np.array(values).sum()],  # needed such
-                                       'values':[np.array(values)]}})
-                self.new_plot_line(dset_name)
-            else:
-                self.data_sets[dset_name]['plot_values'].append(np.array(values).sum())
-                if self.settings['compress']:
-                    if np.array(values) == self.data_sets[dset_name]['values'][-1]:
-                        return    
-                self.data_sets[dset_name]['values'].append(np.array(values))
-                
-    def add_attr_value_to_data_sets(self, obj, attr):
-        values = getattr(obj, attr)
-        if type(values) == dict:
-            for attr, _values in values.items():
-                dset_name = self.dset_name(obj.name, attr)
-                self.add_to_data_sets(dset_name, _values)  
-        else:
-            dset_name = self.dset_name(obj.name, attr)
-            self.add_to_data_sets(dset_name, values)  
-                
-    def add_setting_value_to_data_sets(self, path):
-        value = self.app.lq_path(path).read_from_hardware()
-        _, name, setting = path.split('/')       
-        dset_name = self.dset_name(name, setting)
-        self.add_to_data_sets(dset_name, value)
 
     def get_list_of_attributes(self):
         attrs = []        
@@ -286,27 +259,12 @@ class GenericSweeper(Measurement):
     def get_list_of_settings(self):
         exclude = ('activation', 'connected', 'run_state', 'debug_mode')
         return [p for p in self.app.lq_paths_list() if not p.split('/')[-1] in exclude]
-            
-    def valid_type(self, x):
 
-        def get_type(x):
-            if type(x) in (np.array, dict, np.ndarray, set):
-                return type(x)
-            if not hasattr(x, '__iter__'):
-                return type(x)        
-            elif len(x) == 0:
-                return None
-            elif type(x) in (list, set) and len(x) > 0:
-                return get_type(x[0])
-                
-        return get_type(x) in (int, float, np.array, bool, np.ndarray, dict, set, None)
-        
     def pre_run(self): 
-
         self.display_ready = False
         self.plot.clear()
         self.ii = 0
-        self.data_sets = {}
+        self.data_sets.reset()
         self.plot_lines = {}
 
         self.plot_x_comboBox.clear()
@@ -324,6 +282,7 @@ class GenericSweeper(Measurement):
         self.status = {'title':'measurement started', 'color':'g'}       
         
     def run(self):
+
         S = self.settings
         N = len(self.range.sweep_array)
         for ii, x in enumerate(self.range.sweep_array):
@@ -345,13 +304,13 @@ class GenericSweeper(Measurement):
                     if target_data.startswith('measurements'):
                         _, name, attr = target_data.split('.')
                         if name == measurement.name:
-                            self.add_attr_value_to_data_sets(measurement, attr)
+                            self.data_sets.add_attr_value(measurement, attr)
 
             # target settings                            
             for path in self.target_settings:
-                self.add_setting_value_to_data_sets(path)
+                self.data_sets.add_setting_value(path)
             
-            self.display_ready = True
+            self.display_ready = ii >= 2
             self.ii = ii
             
         self.save_h5_data()
@@ -359,9 +318,7 @@ class GenericSweeper(Measurement):
     def save_h5_data(self):
         self.h5_file = h5_io.h5_base_file(app=self.app, measurement=self)
         self.h5_meas_group = h5_io.h5_create_measurement_group(self, self.h5_file)
-        for k, v in self.data_sets.items():
-            self.h5_meas_group[str(k) + '_plot_values'] = v['plot_values']
-            self.h5_meas_group[str(k)] = np.squeeze(v['values'])
+        self.data_sets.add_to_meas_group(self.h5_meas_group)
         self.h5_meas_group['sweep_array'] = self.range.sweep_array
         self.h5_meas_group.attrs['sweep_quantity'] = self.settings['sweep_setting']
         self.h5_file.close()
@@ -374,12 +331,27 @@ class GenericSweeper(Measurement):
         if self.display_ready:
             ii = self.ii + 1
             x = self.data_sets[self.plot_x_data_name]['plot_values'][:ii]
-            for k in self.data_sets:
+            for k in self.data_sets.keys():
                 if k != self.plot_x_data_name:
-                    y = norm(self.data_sets[k]['plot_values'][:ii])
+                    #y = norm(self.data_sets[k]['plot_values'][:ii])
+                    y = self.data_sets[k]['plot_values'][:ii]
                     if self.settings['polar_plot']:
                         x, y = y * np.cos(x), y * np.sin(x)
                     self.plot_lines[k].setData(x, y)
                 else:
                     self.plot_lines[k].clear()
-    
+                    
+    def valid_type(self, x):
+
+        def get_type(x):
+            if type(x) in (np.array, dict, np.ndarray, set):
+                return type(x)
+            # elif not hasattr(x, '__iter__'):
+            #    return type(x)        
+            # elif len(x) == 0:
+            #    return None
+            # elif type(x) in (list, set) and len(x) > 0:
+            #    return get_type(x[0])
+                
+        return get_type(x) in (int, float, np.array, bool, np.ndarray, dict, set, None)
+
