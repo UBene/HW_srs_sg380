@@ -34,9 +34,14 @@ class NikonMicroscope(BaseMicroscopeApp):
         # from ScopeFoundryHW.thorlabs_powermeter import ThorlabsPowerMeterAnalogReadOut
         # self.add_hardware(ThorlabsPowerMeterAnalogReadOut(self))
         
+        from ScopeFoundryHW.flip_mirror_arduino import FlipMirrorHW
+        self.add_hardware(FlipMirrorHW(self, name='flip_mirror'))
+        
         from ScopeFoundryHW.powerwheel_arduino import PowerWheelArduinoHW
         self.add_hardware(PowerWheelArduinoHW(self, name='main_beam_power_wheel', conv=3200.0 / 360))
         self.add_hardware(PowerWheelArduinoHW(self, name='side_beam_power_wheel', conv=3200.0 / 360))
+                
+        self.settings.New('select_power_wheel', str, choices=('power_wheel', 'power_wheel_2') )
                 
         from ScopeFoundryHW.thorlabs_integrated_stepper import ThorlabsIntegratedStepperMottorHW
         self.add_hardware(ThorlabsIntegratedStepperMottorHW(self))
@@ -111,21 +116,23 @@ class NikonMicroscope(BaseMicroscopeApp):
         self.add_measurement(CalibrationSweep(self, 'calibration_sweep',
                                               'picam_readout', 'pi_spectrometer',))
 
-        # from ScopeFoundryHW.dynamixel_servo.dynamixel_x_servo_hw import DynamixelXServosHW
-        # from ScopeFoundryHW.dynamixel_servo.dynamixel_single_hw import DynamixelServoHW
-        # servos = self.add_hardware(DynamixelXServosHW(self, devices=dict(power_wheel=10,)))
-        # self.add_hardware(DynamixelServoHW(self, name='power_wheel'))       
+        from ScopeFoundryHW.dynamixel_servo.dynamixel_x_servo_hw import DynamixelXServosHW
+        from ScopeFoundryHW.dynamixel_servo.dynamixel_single_hw import DynamixelServoHW
+        servos = self.add_hardware(DynamixelXServosHW(self, devices=dict(focus_knob=50,
+                                                                         power_wheel=51)))
+        self.add_hardware(DynamixelServoHW(self, name='focus_knob'))       
+        self.add_hardware(DynamixelServoHW(self, name='power_wheel'))       
 
         from ScopeFoundryHW.lakeshore_335.lakeshore_hw import Lakeshore335HW
         self.add_hardware(Lakeshore335HW(self))
         from ScopeFoundryHW.lakeshore_335.lakeshore_measure import LakeshoreMeasure
         self.add_measurement(LakeshoreMeasure(self))
-        
-        from confocal_measure.ranged_optimization import RangedOptimization
-        self.add_measurement(RangedOptimization(self))
-        
+                
         from confocal_measure.generic_sweep import GenericSweeper
         self.add_measurement(GenericSweeper(self))
+        
+        from confocal_measure.ranged_optimization import RangedOptimization
+        self.add_measurement(RangedOptimization(self, name='auto_focus'))
         
     def setup_ui(self):
         '''sets up a quickbar'''
@@ -137,32 +144,32 @@ class NikonMicroscope(BaseMicroscopeApp):
         DS.position.connect_to_widget(Q.shutter_open_comboBox)
 
         # Flip mirror
-        # DS = self.hardware.dual_position_slider.settings
-        # DS.connected.connect_to_widget(Q.flip_mirror_connected_checkBox)
-        # DS.position.connect_to_pushButton(Q.flip_mirror_pushButton,
-        #                          texts=('APD -> SPEC', 'SPECTROMER -> APD'),
-        #                      )
+        FS = self.hardware.flip_mirror.settings
+        FS.connected.connect_to_widget(Q.flip_mirror_connected_checkBox)
+        FS.position.connect_to_widget(Q.flip_mirror_position_checkBox)
         
         # DLI Power switch
         widget = self.hardware.dli_powerswitch.new_mini_Widget()
         Q.additional_widgets.addWidget(widget)
         
         # Power wheel
-        n = 'main_beam_power_wheel'
+        #n = 'main_beam_power_wheel'
+        n = 'power_wheel'
         PW = self.hardware[n]
         PWS = self.hardware[n].settings        
         PWS.connected.connect_to_widget(Q.power_wheel_connected_checkBox)
-        Q.power_wheel_jog_forward_pushButton.clicked.connect(lambda x:PW.jog_forward())            
+        Q.power_wheel_jog_forward_pushButton.clicked.connect(lambda x:PW.jog_fwd())            
         PWS.jog.connect_to_widget(Q.power_wheel_jog_doubleSpinBox)
-        Q.power_wheel_jog_backward_pushButton.clicked.connect(lambda x:PW.jog_backward())        
+        Q.power_wheel_jog_backward_pushButton.clicked.connect(lambda x:PW.jog_bkwd())        
         PWS.position.connect_to_widget(Q.power_wheel_position_label)
         PWS.target_position.connect_to_widget(Q.power_wheel_target_position_doubleSpinBox)
         update_value = PWS.target_position.update_value
-        Q.power_wheel_0_pushButton.clicked.connect(lambda x: update_value(0))
+        Q.power_wheel_0_pushButton.clicked.connect(lambda x: update_value(0.1))
         Q.power_wheel_90_pushButton.clicked.connect(lambda x: update_value(90))
         Q.power_wheel_180_pushButton.clicked.connect(lambda x: update_value(180))
         Q.power_wheel_270_pushButton.clicked.connect(lambda x: update_value(270))
-        Q.power_wheel_zero_encoder_pushButton.clicked.connect(lambda x:PW.zero_encoder())            
+        Q.power_wheel_zero_encoder_pushButton.setVisible(False)
+        #Q.power_wheel_zero_encoder_pushButton.clicked.connect(lambda x:PW.zero_encoder())            
         
         # Picam
         S = self.hardware['picam'].settings
@@ -208,6 +215,15 @@ class NikonMicroscope(BaseMicroscopeApp):
         M = self.measurements['toupcam_spot_optimizer']
         M.settings.activation.connect_to_widget(Q.toupcam_live_checkBox)
         Q.toupcam_show_ui_pushButton.clicked.connect(M.show_ui)
+        
+        knob = self.hardware.focus_knob
+        S = knob.settings
+        S.connected.connect_to_widget(Q.focus_wheel_connected_checkBox)
+        S.position.connect_to_widget(Q.focus_wheel_position_doubleSpinBox)
+        S.target_position.connect_to_widget(Q.focus_wheel_target_position_doubleSpinBox)
+        S.jog.connect_to_widget(Q.focus_wheel_jog_doubleSpinBox)
+        Q.focus_wheel_foreward_pushButton.clicked.connect(knob.jog_fwd)
+        Q.focus_wheel_backward_pushButton.clicked.connect(knob.jog_bkwd)
 
     def link_2D_scan_params(self, parent_scan_name='apd_asi',
                             children_scan_names=['hyperspec_asi', 'asi_trpl_2d_scan']):
