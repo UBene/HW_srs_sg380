@@ -5,7 +5,7 @@ import pyqtgraph as pg
 from qtpy import QtWidgets
 from ScopeFoundry import Measurement, h5_io
 
-from confocal_measure.post_processor.post_processor_manager import PostProcessorManager
+from confocal_measure.post_processor.manager import PostProcessorManager
 
 
 class RangedOptimization(Measurement):
