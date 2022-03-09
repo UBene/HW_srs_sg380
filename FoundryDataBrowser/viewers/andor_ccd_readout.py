@@ -11,7 +11,7 @@ class AndorCCDReadout(DataBrowserView):
     def setup(self):
         
         self.plot_n_fit = PlotNFit(fitters=[PeakUtilsFitter()])                
-        self.ui = self.plot_n_fit.get_docks_as_dockarea()
+        self.ui = self.plot_n_fit.ui
         self.plot_n_fit.settings['fit_options'] = 'DisableFit'
         
     def is_file_supported(self, fname):
