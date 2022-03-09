@@ -296,7 +296,7 @@ class GenericSweeper(Measurement):
     def save_h5_data(self):
         self.h5_file = h5_io.h5_base_file(app=self.app, measurement=self)
         self.h5_meas_group = h5_io.h5_create_measurement_group(self, self.h5_file)
-        self.data_manager.to_h5_meas_group(self.h5_meas_group)
+        self.data_manager.save_to_h5_meas_group(self.h5_meas_group)
         self.h5_meas_group['sweep_array'] = self.range.sweep_array
         self.h5_meas_group.attrs['sweep_quantity'] = self.settings['sweep_setting']
         self.h5_file.close()

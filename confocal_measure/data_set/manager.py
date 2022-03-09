@@ -21,12 +21,9 @@ class DataSetManager(QtCore.QObject):
          ....
          }
         
-
-
-    dataset_name is auto generated if the two convenience methods `add_from_obj_attr`
+    'data_set_name' is auto generated if the two convenience methods `add_from_obj_attr`
     and `add_from_setting` are used.
     
-    ...
 
 
     Setter Methods
