@@ -1,7 +1,16 @@
+'''
+Created on Jan 15, 2022
+
+@author: Benedikt Ursprung
+
+requires: pip install lakeshore
+'''
+
 from ScopeFoundry import HardwareComponent
-# import threading
-# import time
-from lakeshore.model_335 import *
+from lakeshore.model_335 import Model335HeaterRange, Model335HeaterOutputMode, \
+    Model335InputSensor, Model335InputSensorType, Model335InputSensorUnits, \
+    Model335DiodeRange, Model335RTDRange, Model335ThermocoupleRange, \
+    Model335InputSensorSettings, Model335
 
 WAIT_TIME = 0.1
 HEATER_RANGE_CHOICES = [(a.name, a.value) for a in Model335HeaterRange]
@@ -13,11 +22,6 @@ INPUT_RANGES_CHOICES = []
 for t in [Model335DiodeRange, Model335RTDRange, Model335ThermocoupleRange]:
     for a in t:
         INPUT_RANGES_CHOICES.append((a.name, a.value))
-
-SENSOR_CURVES = ['DT-470 1.4-475K', 'DT-670 1.4-500K', 'DT-500-D 1.4-365K', 'DT-500-E1 1.1-330K',
-                 '05 Reserved', 'PT-100 30-800K', 'PT-1000 30-800K', 'RX-102A-AA 0.05-40K',
-                 'RX-202A-AA 0.05-40K', '10 Reserved', '11 Reserved', 'Type K 3-1645K',
-                 'Type E 3-1274K', 'Type T 3-670K', 'AuFe 0.03% 3.5-500K', 'AuFe 0.07% 3.15-610K']
 
 
 class Lakeshore335HW(HardwareComponent):
@@ -167,186 +171,9 @@ class Lakeshore335HW(HardwareComponent):
             ans = self.face.get_heater_output_mode(output)
             self.settings['heater_output_mode'] = ans['mode'].value
             self.settings['input_sensor'] = ans['channel'].value
-            # self.settings['powerup_enable'] = ans['powerup_enable']
         
     def disconnect(self):
         if hasattr(self, 'face'):
             self.face.disconnect_usb()
             del self.face
 
-        '''
-        self.settings.T_A.connect_to_hardware(lambda:self.face.read_T(chan='A'))
-        self.settings.T_B.connect_to_hardware(lambda:self.face.read_T(chan='B'))
-
-        S.analog_out_enable.connect_to_hardware(
-            read_func=self.face.get_output_enabled,
-            write_func=self.face.set_output_enabled)
-        
-        S.analog_out_channel.connect_to_hardware(
-            read_func=self.face.get_output_channel,
-            write_func=self.face.set_output_channel)
-        
-        S.T_at_10V.connect_to_hardware(
-            read_func=self.face.get_output_vmax,
-            write_func=self.face.set_output_vmax)
-        
-        S.T_at_0V.connect_to_hardware(
-            read_func=self.face.get_output_vmin,
-            write_func=self.face.set_output_vmin)
-            
-        S.setpoint_T.connect_to_hardware(
-            read_func=self.face.get_setpoint,
-            write_func=self.face.set_setpoint)
-        
-        S.heater_output.connect_to_hardware(
-            read_func=self.face.get_heater_output)
-        
-        S.heater_range.connect_to_hardware(
-            read_func=self.face.get_heater_range,
-            write_func=self.face.set_heater_range)
-        
-        S.control_mode.connect_to_hardware(
-            read_func=self.face.get_cmode,
-            write_func=self.face.set_cmode)
-        
-        S.manual_heater_output.connect_to_hardware(
-            self.face.get_manual_heater_output,
-            self.face.set_manual_heater_output
-            )
-        
-        def set_sensor_A_type(val):
-            self.face.set_sensor_type(val, inp='A')
-
-        def get_sensor_A_type():
-            return self.face.get_sensor_type(inp='A')
-
-        S.type_A.connect_to_hardware(
-            read_func=get_sensor_A_type,
-            write_func=set_sensor_A_type)
-        
-        def set_sensor_A_comp(val):
-            self.face.set_sensor_comp(val, inp='A')
-
-        def get_sensor_A_comp():
-            return self.face.get_sensor_comp(inp='A')
-
-        S.comp_A.connect_to_hardware(
-            read_func=get_sensor_A_comp,
-            write_func=set_sensor_A_comp)
-        
-        def set_sensor_A_curve(val):
-            self.face.set_input_curve(val, inp='A')
-
-        def get_sensor_A_curve():
-            return self.face.get_input_curve(inp='A')
-
-        S.curve_A.connect_to_hardware(
-            read_func=get_sensor_A_curve,
-            write_func=set_sensor_A_curve)        
-                
-        def set_sensor_B_type(val):
-            self.face.set_sensor_type(val, inp='B')
-
-        def get_sensor_B_type():
-            return self.face.get_sensor_type(inp='B')
-
-        S.type_B.connect_to_hardware(
-            read_func=get_sensor_B_type,
-            write_func=set_sensor_B_type)
-        
-        def set_sensor_B_comp(val):
-            self.face.set_sensor_comp(val, inp='B')
-
-        def get_sensor_B_comp():
-            return self.face.get_sensor_comp(inp='B')
-
-        S.comp_B.connect_to_hardware(
-            read_func=get_sensor_B_comp,
-            write_func=set_sensor_B_comp)
-
-        def set_sensor_B_curve(val):
-            self.face.set_input_curve(val, inp='B')
-
-        def get_sensor_B_curve():
-            return self.face.get_input_curve(inp='B')
-
-        S.curve_B.connect_to_hardware(
-            read_func=get_sensor_B_curve,
-            write_func=set_sensor_B_curve)
-
-        # Note only loop 1 (out of 2 possible loops) is used. 
-        S.K_P1.connect_to_hardware(
-            read_func=lambda:self.get_P(1),
-            write_func=lambda x:self.write_PID(1))
-        S.K_I1.connect_to_hardware(
-            read_func=lambda: self.get_I(1),
-            write_func=lambda x:self.write_PID(1))     
-        S.K_D1.connect_to_hardware(
-            read_func=lambda: self.get_D(1),
-            write_func=lambda x:self.write_PID(1))
-        
-        S.ramp_on.connect_to_hardware(
-            read_func=lambda:self.face.get_ramp_onoff(1),
-            write_func=lambda x:self.face.set_ramp_params(x, self.settings['ramp_rate'], 1)
-            )
-        S.ramp_rate.connect_to_hardware(
-            read_func=lambda:self.face.get_ramp_rate(1),
-            write_func=lambda x:self.face.set_ramp_params(self.settings['ramp_on'], x, 1)
-            )        
-        S.is_ramping.connect_to_hardware(lambda:self.face.is_ramping(1))
-        S.is_tunning.connect_to_hardware(self.face.get_tune_status)     
-        S.control_input.connect_to_hardware(
-            read_func=lambda: self.face.get_cset(1)[0],
-            write_func=lambda x:self.face.set_cset(1, x),
-            )
-
-        self.read_from_hardware()
-        
-        self.update_thread_interrupted = False
-        self.update_thread = threading.Thread(target=self.update_thread_run)
-        time.sleep(0.2)
-        self.update_thread.start()
-        
-        
-    def get_P(self, loop):
-        return self.face.get_PID(loop)[0]
-
-    def get_I(self, loop):
-        return self.face.get_PID(loop)[1]
-
-    def get_D(self, loop):
-        return self.face.get_PID(loop)[2]
-    
-    def write_PID(self, loop):
-        S = self.settings
-        l = loop
-        self.face.set_PID(l, S[f'K_P{l}'], S[f'K_I{l}'], S[f'K_D{l}'])    
-        
-    def disconnect(self):
-        
-        if hasattr(self, 'update_thread'):
-            self.update_thread_interrupted = True
-            self.update_thread.join(timeout=1.0)
-            del self.update_thread
-    
-        if hasattr(self, 'face'):
-            self.face.set_heater_range('off')
-            self.face.set_cmode('Manual PID')
-            self.face.set_output_enabled(False)        
-            self.face.ask('*CLS')
-            self.face.close()
-            del self.face
-        
-    def update_thread_run(self):
-        while not self.update_thread_interrupted:
-            self.settings.T_A.read_from_hardware()
-            self.settings.T_B.read_from_hardware()
-            self.settings.heater_output.read_from_hardware()
-            self.settings.is_ramping.read_from_hardware()
-            self.settings.is_tunning.read_from_hardware()
-            P1, I1, D1 = self.face.get_PID(1)
-            self.settings.K_P1.update_value(P1)
-            self.settings.K_I1.update_value(I1)
-            self.settings.K_D1.update_value(D1)
-            time.sleep(1.0)
-    '''

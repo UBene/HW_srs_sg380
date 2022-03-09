@@ -12,7 +12,7 @@ from ScopeFoundryHW.lakeshore_335.lakeshore_measure import LakeshoreMeasure
 class LakeshoreTestApp(BaseMicroscopeApp):
     
     def setup(self):
-        hw = self.add_hardware(Lakeshore335HW(self))
+        self.add_hardware(Lakeshore335HW(self))
         self.add_measurement(LakeshoreMeasure(self))
         
         
