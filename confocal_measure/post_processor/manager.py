@@ -34,4 +34,3 @@ class PostProcessorManager:
                                 
     def set_ready(self, ready:bool):
         self.ready = ready
-        self.plot_line.setVisible(ready)
