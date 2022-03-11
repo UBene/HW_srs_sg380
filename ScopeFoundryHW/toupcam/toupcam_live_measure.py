@@ -1,6 +1,5 @@
 from ScopeFoundry import Measurement
 import pyqtgraph as pg
-from qtpy import QtCore
 import numpy as np
 import time
 from ScopeFoundry.helper_funcs import load_qt_ui_file, sibling_path
@@ -13,6 +12,8 @@ class ToupCamLiveMeasure(Measurement):
         self.settings.New('auto_level', bool, initial=False)
         self.settings.New('rotate_90', int, initial=0,
                           description='number of times the pictures is rotated before shown')
+        self.settings.New('flip_x', bool, initial=False)
+        self.settings.New('flip_y', bool, initial=False)
 
     def setup_figure(self):
         
@@ -86,7 +87,7 @@ class ToupCamLiveMeasure(Measurement):
         tcam.settings['connected'] = True
         
         while not self.interrupt_measurement_called:
-            self.im = self.get_rgb_image().swapaxes(0,1)
+            self.im = self.get_rgb_image()
             time.sleep(0.05)
             if tcam.settings['auto_exposure']:
                 tcam.settings.exposure.read_from_hardware()
@@ -124,24 +125,20 @@ class ToupCamLiveMeasure(Measurement):
         data = cam.get_image_data()
         raw = data.view(np.uint8).reshape(data.shape + (-1,))
         bgr = raw[..., :3]
+        if self.settings['flip_x']:
+            bgr = np.flip(bgr, axis=0)
+        if self.settings['flip_y']:
+            bgr = np.flip(bgr, axis=1)
         if self.settings['rotate_90']:
             bgr = np.rot90(bgr, self.settings['rotate_90'], (0,1))
         return bgr[..., ::-1]
 
 
     def snap_h5(self):
-        
-        #
         from ScopeFoundry import h5_io
-        #self.app.hardware['asi_stage'].correct_backlash(0.02)
-
-
         self.h5_file = h5_io.h5_base_file(app=self.app, measurement=self)
         H = self.h5_meas_group  =  h5_io.h5_create_measurement_group(self, self.h5_file)
         im = self.get_rgb_image()
-        im = np.flip(im.swapaxes(0,1),0)
         H['image'] = im
-        self.h5_file.close()
-        print('saved file successfully', im.sum())
-        
+        self.h5_file.close()        
         return im
