@@ -3,6 +3,7 @@ from FoundryDataBrowser.viewers.plot_n_fit import PlotNFit, PeakUtilsFitter
 import numpy as np
 import h5py
 
+
 class AndorCCDReadout(DataBrowserView):
     
     name = 'andor_ccd_readout'
@@ -10,13 +11,11 @@ class AndorCCDReadout(DataBrowserView):
     def setup(self):
         
         self.plot_n_fit = PlotNFit(fitters=[PeakUtilsFitter()])                
-        self.ui = self.plot_n_fit.get_docks_as_dockarea()
+        self.ui = self.plot_n_fit.ui
         self.plot_n_fit.settings['fit_options'] = 'DisableFit'
-
         
     def is_file_supported(self, fname):
         return "andor_ccd_readout.npz" in fname or "andor_ccd_readout.h5" in fname
-
 
     def on_change_data_filename(self, fname):
         if fname is None:
@@ -36,6 +35,6 @@ class AndorCCDReadout(DataBrowserView):
             self.plot_n_fit.update_data(self.wls, self.spec)
             
         except Exception as err:
-            self.plot_n_fit.update_data([0,1,2,3],[1,3,2,4])
-            self.databrowser.ui.statusbar.showMessage("failed to load %s:\n%s" %(fname, err))
+            self.plot_n_fit.update_data([0, 1, 2, 3], [1, 3, 2, 4])
+            self.databrowser.ui.statusbar.showMessage("failed to load %s:\n%s" % (fname, err))
             raise(err)

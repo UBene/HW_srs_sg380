@@ -8,155 +8,58 @@ import pyqtgraph as pg
 import pyqtgraph.dockarea as dockarea
 
 import numpy as np
-from ScopeFoundry.logged_quantity import LQCollection
+from ScopeFoundry.logged_quantity import LQCollection, LoggedQuantity
 from qtpy import QtWidgets, QtGui
 
 
-class PlotNFit(object):
+class PlotNFitPGDockArea(dockarea.DockArea):
     '''
-    provides 2 pyqtgraph docks: 
-        1. graph_dock: with plot
-        2. settings_dock: with fit options
-        
-    add fitters of type <BaseFitter> (or more specific
-    <LeastSquaresBaseFitter>):
+    ui for plotNFit that provides
+        1. setting_dock
+        2. graph_dock with fit_line and data_lines
+    '''
     
-    update_data(self, x, y, n_plot=0, is_fit_data=True) 
-        to plot data. 
-        if flag is_fit_data is False use:
-            update_fit_data(self, x_fit_data, y_fit_data)
-                this allows the data to differ.
-    '''
-
-    #fit_updated = QtCore.Signal()
-
-
     def __init__(self,
-                 fitters=[],
-                 Ndata_lines=1,
-                 pens=['g', 'w', 'r', 'b', 'y', 'm', 'c']):
-        '''
-        *fitters*      list of <BaseFitter> or <LeastSquaresBaseFitter>
-        *Ndata_lines*  number of data plots 
-        *pens*         list of pens. p[0] will be used for fit line
-                       and pens[1:] for data plot lines.   
-        '''
-
-        self.pens = pens
-
-        self.x_fit_data = np.arange(4)
-        self.y_fit_data = np.arange(4)
-
-        # Settings
-        self.settings = LQCollection()
-        self.fit_options = self.settings.New(
-            'fit_options', str, choices=['DisableFit'], initial='DisableFit')
-
-        # layouts
+                 Ndata_lines=0,
+                 pens=['w']):
+        super().__init__()
+        
         self.settings_ui = QtWidgets.QWidget()
         self.settings_layout = QtWidgets.QVBoxLayout()
-        self.settings_layout.insertWidget(
-            0, QtWidgets.QLabel('<h2>Plot&Fit</h2>'))
         self.settings_ui.setLayout(self.settings_layout)
-        self.settings_dock = dockarea.Dock(
-            name='Fit Settings', widget=self.settings_ui)
-        self.settings_layout.addWidget(self.settings.New_UI())
-
-        self.graph_layout = pg.GraphicsLayoutWidget()
-        self.plot = self.graph_layout.addPlot()
-        self.graph_dock = dockarea.Dock(
-            name='Graph Plot', widget=self.graph_layout)
-
-        self.data_lines = []
-        for i in range(Ndata_lines):
-            data_line = self.plot.plot(y=[0, 2, 1, 3, 2], pen=pens[i + 1])
-            self.data_lines.append(data_line)
-        self.fit_line = self.plot.plot(y=[0, 2, 1, 3, 2], pen=pens[0])
-        self.vertical_lines = []
-
-        #fitters
-        self.fitter_uis = []
-        for fitter in fitters:
-            self.add_fitter(fitter)
-
-        self.result_message = 'No fit results yet!'
-
-
-        for lq in self.settings.as_list():
-            lq.add_listener(self.on_change_fit_options)
-
-        self.on_change_fit_options()
-        
-        self.add_button('refit', self.update_fit)
-        self.add_button('clipboard plot', self.clipboard_plot)
-        self.add_button('clipboard results', self.clipboard_result)
+        self.settings_dock = dockarea.Dock(name='Fit Settings', widget=self.settings_ui)
+        self.addDock(self.settings_dock)
         VSpacerItem = QtWidgets.QSpacerItem(0, 0,
                                             QtWidgets.QSizePolicy.Minimum,
                                             QtWidgets.QSizePolicy.Expanding)
         self.settings_layout.addItem(VSpacerItem)
-
-    def add_fitter(self, fitter):
-        name = fitter.name
-        print('PlotNFit is adding fitter', name)
-        F = self.__dict__[name] = fitter
-        self.fitter_uis.append([name, F.ui])
-        self.settings_layout.addWidget(F.ui)
-        F.ui.setVisible(False)
-        self.fit_options.add_choices(name)
-
-    def get_docks_as_dockarea(self):
-        self.dockarea = dockarea.DockArea()
-        self.add_docks_to_dockarea(self.dockarea)
-        return self.dockarea
-
-    def add_docks_to_dockarea(self, dockArea):
-        dockArea.addDock(self.settings_dock)
-        dockArea.addDock(
-            self.graph_dock, position='right', relativeTo=self.settings_dock)
+        
+        self.graph_layout = pg.GraphicsLayoutWidget()
+        self.plot = self.graph_layout.addPlot()
+        self.graph_dock = dockarea.Dock(name='Graph Plot', widget=self.graph_layout)        
+        self.addDock(self.graph_dock, position='right', relativeTo=self.settings_dock)        
         self.settings_dock.setStretch(1, 1)
 
-    def on_change_fit_options(self):
-        choice = self.fit_options.val
-        for name, ui in self.fitter_uis:
-            ui.setVisible(choice == name)
-        self.update_fit()
+        self.data_lines = []
+        for i in range(Ndata_lines):
+            self.data_lines.append(self.plot.plot(y=[0, 2, 1, 3, 2], pen=pens[i])) 
+        self.fit_line = self.plot.plot(y=[0, 2, 1, 3, 2], pen='g') 
 
-    def update_data(self, x, y, n_plot=0, is_fit_data=True):
-        self.data_lines[n_plot].setData(x, y)
-        self.x, self.y = x, y  #Note: this is the set data
-        if is_fit_data:
-            self.update_fit_data(x, y)
-
-    def update_fit_data(self, x_fit_data, y_fit_data):
-        self.x_fit_data = x_fit_data
-        self.y_fit_data = y_fit_data
-        self.update_fit()
-
-    def update_fit(self):
-        self.remove_lines()
-        choice = self.fit_options.val
-        enabled = choice != 'DisableFit'
-        self.fit_line.setVisible(enabled)
-        if enabled:
-            x, y = self.x_fit_data, self.y_fit_data
-            active_fitter = self.__dict__[choice]
-            self.fit = active_fitter.fit_xy(x, y)
-            self.fit_line.setData(x, self.fit)
-            self.result_message = active_fitter.result_message
-            self.set_vertical_lines(active_fitter)
-            #self.fit_updated.emit()
-
-    def remove_lines(self):
-        for l in self.vertical_lines:
-            self.plot.removeItem(l)
-            l.deleteLater()
+        self.fitter_widgets = {}
+        self.reset_highlight_x_values()
+        
+    def reset_highlight_x_values(self):
+        if hasattr(self, 'vertical_lines'):
+            for l in self.vertical_lines:
+                self.plot.removeItem(l)
+                l.deleteLater()
         self.vertical_lines = []
         
-    def set_vertical_lines(self, active_fitter):
-        self.remove_lines()
-        pen = self.pens[0]
+    def highlight_x_values(self, values):
+        self.reset_highlight_x_values()
+        pen = 'g'
 
-        for x in np.atleast_1d(active_fitter.highlight_x_vals):
+        for x in values:
             l = pg.InfiniteLine(
                 pos=(x, 0),
                 movable=False,
@@ -170,21 +73,121 @@ class PlotNFit(object):
                 })
             self.plot.addItem(l)
             self.vertical_lines.append(l)
+            
+    def update_fit_line(self, x, y):
+        self.fit_line.setData(x, y)
+        
+    def update_data_line(self, x, y, line_number=0):
+        self.data_lines[line_number].setData(x, y)    
+        
+    def add_to_settings_layout(self, widget):
+        n = self.settings_layout.count() - 1
+        self.settings_layout.insertWidget(n, widget)
+        
+    def add_button(self, name, callback_func):
+        PB = QtWidgets.QPushButton(name)
+        PB.clicked.connect(callback_func)
+        self.add_to_settings_layout(PB)
+        
+    def add_fitter_widget(self, name, widget):
+        self.fitter_widgets[name] = widget
+        widget.setVisible(False)
+        self.add_to_settings_layout(widget)
+        
+    def activate_fitter_widget(self, name:str):
+        for k, widget in self.fitter_widgets.items():
+            widget.setVisible(k == name)
+
+
+class PlotNFit:
+    '''        
+    add fitters of type <BaseFitter> (or more specific
+    <LeastSquaresBaseFitter>):
+    
+    self.update_data(self, x, y, line_number=0, is_data_to_fit=True) 
+        to plot data. 
+        if flag is_data_to_fit is False use:
+            update_fit_data(self, x_fit_data, y_fit_data)
+                this allows the data to differ.
+    '''
+
+    def __init__(self,
+                 fitters=[],
+                 Ndata_lines=1,
+                 pens=['g', 'w', 'r', 'b', 'y', 'm', 'c']):
+        '''
+        *fitters*      list of <BaseFitter> or <LeastSquaresBaseFitter>
+        '''
+
+        self.pens = pens
+        
+        # Settings
+        self.settings = LQCollection()
+        self.fit_options = self.settings.New(
+            'fit_options', str, choices=['DisableFit'], initial='DisableFit')
+
+        # ui
+        self.ui = PlotNFitPGDockArea(Ndata_lines, pens)              
+        self.ui.add_to_settings_layout(self.settings.New_UI())
+        self.ui.add_button('refit', self.update_fit)
+        self.ui.add_button('clipboard plot', self.clipboard_plot)
+        self.ui.add_button('clipboard results', self.clipboard_result)
+
+        # fitters
+        self.fitters = {}
+        for fitter in fitters:
+            self.add_fitter(fitter)
+
+        self.update_data_to_fit(np.arange(4), np.arange(4))
+        self.result_message = 'No fit results yet!'
+
+        for lq in self.settings.as_list():
+            lq.add_listener(self.on_change_fit_options)
+
+        self.on_change_fit_options()
+
+    def add_fitter(self, fitter):
+        self.fitters[fitter.name] = fitter
+        self.ui.add_fitter_widget(fitter.name, fitter.ui)
+        self.fit_options.add_choices(fitter.name)
+
+    def on_change_fit_options(self):
+        self.ui.activate_fitter_widget(self.fit_options.val)
+        self.update_fit()
+
+    def update_data(self, x, y, line_number=0, is_data_to_fit=True):
+        self.ui.update_data_line(x, y, line_number)
+        if is_data_to_fit:
+            self.update_data_to_fit(x, y)
+            self.update_fit()
+
+    def update_data_to_fit(self, x, y):
+        self.data_to_fit_x = x
+        self.data_to_fit_y = y
+
+    def update_fit(self):
+        choice = self.fit_options.val
+        enabled = choice != 'DisableFit'
+        self.ui.fit_line.setVisible(enabled)
+        if enabled:
+            active_fitter = self.fitters[choice]
+            self.fit = active_fitter.fit_xy(self.data_to_fit_x, self.data_to_fit_y)
+            self.ui.update_fit_line(self.data_to_fit_x, self.fit)
+            self.result_message = active_fitter.result_message
+            self.ui.highlight_x_values(np.atleast_1d(active_fitter.highlight_x_vals))
 
     def fit_hyperspec(self, x, _hyperspec, axis=-1):
         choice = self.fit_options.val
         if self.fit_options.val == 'DisableFit':
             print('Warning!', self.state_info)
         else:
-            F = self.__dict__[choice]
+            F = self.fitters[choice]
             Res = F.fit_hyperspec(x, _hyperspec, axis=axis)
             Descriptions = F.hyperspec_descriptions()
             return [Descriptions, Res]
-
-    def add_button(self, name, callback_func):
-        PB = QtWidgets.QPushButton(name)
-        self.settings_layout.addWidget(PB)
-        PB.clicked.connect(callback_func)
+        
+    def get_docks_as_dockarea(self):
+        return self.ui
 
     @property
     def state_info(self):
@@ -192,15 +195,14 @@ class PlotNFit(object):
         if choice == 'DisableFit':
             return 'Plot&Fit disabled'
         else:
-            return self.__dict__[choice].state_info
+            return self.fitters[choice].state_info
 
     def get_result_table(self, decimals=3, include=None):
         choice = self.fit_options.val
         if choice == 'DisableFit':
             return 'Plot&Fit disabled'
         else:
-            return self.__dict__[choice].get_result_table(decimals, include)
-            
+            return self.fitters[choice].get_result_table(decimals, include)
         
     def clipboard_plot(self):
         import pyqtgraph.exporters as exp
@@ -218,16 +220,43 @@ class PlotNFit(object):
         for line in table.findAll('tr'):
             for l in line.findAll('td'):
                 print(l.getText())
-                text += l.getText()
-    
-        print(text)
-        
+                text += l.getText()        
         QtGui.QApplication.clipboard().setText(text)
-        
-        
 
+    
+class FitterQWidget(QtWidgets.QWidget):
+    ''' ui widget for  BaseFitter'''
+    
+    def __init__(self):
+        super().__init__()
+        self.layout = layout = QtWidgets.QVBoxLayout()
+        self.setLayout(layout)
 
-class BaseFitter(object):
+        self.result_label = QtWidgets.QLabel()
+        layout.addWidget(self.result_label)
+    
+    def add_collection_widget(self, collection, title):
+        self.layout.addWidget(QtWidgets.QLabel(f'<h3>{title}</h3>'))
+        widget = collection.New_UI()
+        self.layout.addWidget(widget)
+        return widget
+        
+    def add_enabable_collection_widget(self, collection:LQCollection,
+                                       title:str,
+                                       enable_setting:LoggedQuantity):
+        widget = self.add_collection_widget(collection, title)
+        enable_setting.add_listener(widget.setEnabled)
+        
+    def add_button(self, name, callback_func):
+        PB = QtWidgets.QPushButton(name)
+        self.layout.addWidget(PB)
+        PB.clicked.connect(callback_func)
+        
+    def set_result_label(self, text):
+        self.result_label.setText(text)
+        
+    
+class BaseFitter:
     '''    
         *fit_params* list of parameters to be optimized and associated values: 
                      [
@@ -254,15 +283,15 @@ class BaseFitter(object):
 
         self.fit_results = LQCollection()
         self.derived_results = LQCollection()
-        self.bounds = LQCollection()
-        self.initials = LQCollection()
         self.settings = LQCollection()
+        self.initials = LQCollection()
+        self.bounds = LQCollection()
 
         for name, init in self.fit_params:
             self.fit_results.New(name, initial=0.0)
             if init is None:
                 continue
-            if len(init) ==3:
+            if len(init) == 3:
                 (val, lower, upper) = init
                 self.bounds.New(name + "_lower", initial=lower)
                 self.bounds.New(name + "_upper", initial=upper)
@@ -273,32 +302,19 @@ class BaseFitter(object):
         self.add_derived_result_quantities()
         self.add_settings_quantities()
 
-        layout = QtWidgets.QVBoxLayout()
-        self.ui = ui = QtWidgets.QWidget()
-        ui.setLayout(layout)
-        for collection in ['settings', 'bounds', 'initials']:
-            widget = self.__dict__[collection].New_UI()
-            self.__dict__[collection + '_ui'] = widget
-            if len(self.__dict__[collection].as_list()) != 0:
-                layout.addWidget(QtWidgets.QLabel(f'<h3>{collection}</h3>'))
-                layout.addWidget(widget)
+        self.ui = FitterQWidget()
+        self.ui.add_collection_widget(self.settings, 'settings')
+        self.ui.add_collection_widget(self.initials, 'initials')
+        self.ui.add_enabable_collection_widget(self.bounds, 'bounds', self.use_bounds)
 
-
-        self.result_label = QtWidgets.QLabel()
-        layout.addWidget(self.result_label)
-        self.add_button('initials from results',
-                        self.set_initials_from_results)
-
-        self.bounds_ui.setEnabled(self.use_bounds.val)
-        self.use_bounds.add_listener(lambda: self.bounds_ui.setEnabled(
-            self.use_bounds.val))
+        self.ui.add_button('initials from results',
+                self.set_initials_from_results)
 
         self.result_message = self.name + ': result_message message not set yet'
 
         self.highlight_x_vals = []  # just a container for x_values that can be used
 
-
-    def fit_xy(self, x, y):
+    def fit_xy(self, x:np.array, y:np.array) -> np.array:
         ''' 
         has to return an array with the fit of len(y)
         recommended properties/functions to use:
@@ -337,11 +353,6 @@ class BaseFitter(object):
             self.set_result_message(msg)
         else:
             self.set_result_message(html_table)
-
-    def add_button(self, name, callback_func):
-        PB = QtWidgets.QPushButton(name)
-        self.ui.layout().addWidget(PB)
-        PB.clicked.connect(callback_func)
 
     def add_derived_result_quantities(self):
         '''add results other than fit_params eg: 
@@ -407,7 +418,7 @@ class BaseFitter(object):
         Convention: this function should fit along *axis* and should 
                     return the params along the 0th axis! 
         '''
-        raise NotImplementedError(self.name +
+        raise NotImplementedError(self.name + 
                                   '_fit_hyperspec() not implemented')
 
     def get_result_table(self, decimals=3, include=None):
@@ -426,7 +437,7 @@ class BaseFitter(object):
 
     def set_result_message(self, message):
         self.result_message = message
-        self.result_label.setText('<h3>results</h3>' + self.result_message)
+        self.ui.set_result_label('<h3>results</h3>' + self.result_message)
 
     def set_initials_from_results(self):
         for k in self.initials.as_dict().keys():
@@ -507,6 +518,7 @@ class LeastSquaresBaseFitter(BaseFitter):
         return fit
 
     def fit_hyperspec(self, t, _hyperspec, axis=-1):
+
         def f(y, t):
             res = least_squares(
                 fun=self._residuals,
@@ -526,18 +538,17 @@ class TauXFitter(BaseFitter):
     name = 'tau_x'
 
     def fit_xy(self, x, y):
-                                
 
-        t = x-x.min()
+        t = x - x.min()
 
-        tau = tau_x_calc(y-y[-3:].mean(), t)
+        tau = tau_x_calc(y - y[-3:].mean(), t)
 
         '''
         there is an inaccuracy from integrating over a finite time interval rather than
         to infinity. 
         '''
-        decay_pct = (1 - y[-3:].mean()**2 / y[0:3].mean()**2 ) * 100 # should be 100%
-        inaccuracy_pct = (1 - np.exp( -tau / t.max())) * 100         # should be 0
+        decay_pct = (1 - y[-3:].mean() ** 2 / y[0:3].mean() ** 2) * 100  # should be 100%
+        inaccuracy_pct = (1 - np.exp(-tau / t.max())) * 100  # should be 0
         
         msg1 = f'decay level: {decay_pct:0.1f}%'.rjust(100)
         msg2 = f'normalization inaccuracy: {inaccuracy_pct:0.1f}%'.rjust(100)
@@ -545,10 +556,9 @@ class TauXFitter(BaseFitter):
 
         # Error from not integrating over 
 
-        if tau == 0: # handle wierd case so it doesn't crash
+        if tau == 0:  # handle wierd case so it doesn't crash
             return np.ones_like(y)
         return y[0:3].mean() * np.exp(-t / tau)
-
 
     def fit_hyperspec(self, x, _hyperspec, axis=-1):
         return tau_x_calc_map(x, _hyperspec, axis=axis)
@@ -559,7 +569,7 @@ class TauXFitter(BaseFitter):
 
 def tau_x_calc(time_trace, time_array, X=0.6321205588300001):
     f = time_trace
-    return time_array[ np.argmin( (np.cumsum(f) / np.sum(f) - X)**2 ) ]
+    return time_array[ np.argmin((np.cumsum(f) / np.sum(f) - X) ** 2) ]
 
 
 def tau_x_calc_map(time_array, time_trace_map, X=0.6321205588300001, axis=-1):
@@ -574,7 +584,6 @@ class PolyFitter(BaseFitter):
 
     def add_settings_quantities(self):
         self.settings.New('deg', int, initial=1)
-        
 
     def transform(self, x, y):
         return x, y
@@ -633,7 +642,7 @@ class SemiLogYPolyFitter(PolyFitter):
 class MonoExponentialFitter(LeastSquaresBaseFitter):
 
     fit_params = [ 
-       ['A0',   (1.0, 0.0, 1e10)],
+       ['A0', (1.0, 0.0, 1e10)],
        ['tau0', (1.0, 0.0, 1e10)],
     ]
     
@@ -646,9 +655,9 @@ class MonoExponentialFitter(LeastSquaresBaseFitter):
 class BiExponentialFitter(LeastSquaresBaseFitter):
 
     fit_params = [
-        ['A0',   (1.0, 0.0, 1e10)],
+        ['A0', (1.0, 0.0, 1e10)],
         ['tau0', (1.0, 0.0, 1e10)],
-        ['A1',   (1.0, 0.0, 1e10)],
+        ['A1', (1.0, 0.0, 1e10)],
         ['tau1', (9.9, 0.0, 1e10)],
     ]
 
@@ -714,7 +723,7 @@ def sort_biexponential_components(A0, tau0, A1, tau1):
         tau1 = np.asscalar(tau1)
     except ValueError:
         pass
-    return new_A0, new_tau0, A1, tau1  #Note, generally A1,tau1 were also modified.
+    return new_A0, new_tau0, A1, tau1  # Note, generally A1,tau1 were also modified.
 
 
 class PeakUtilsFitter(BaseFitter):
@@ -784,7 +793,7 @@ def peaks(spec,
     import peakutils
     indexes = peakutils.indexes(spec, thres, min_dist=min_dist)
     if unique_solution:
-        #we only want the highest amplitude peak here!
+        # we only want the highest amplitude peak here!
         indexes = [indexes[spec[indexes].argmax()]]
 
     if refinement:
@@ -823,32 +832,30 @@ if __name__ == '__main__':
     app = QtWidgets.QApplication([])
 
     W = PlotNFit(fitters=[
-        #BiExponentialFitter(),
+        # BiExponentialFitter(),
         MonoExponentialFitter(),
         TauXFitter(),
-        #PolyFitter(),
-        #SemiLogYPolyFitter(),
-        #PeakUtilsFitter(),
+        PolyFitter(),
+        # SemiLogYPolyFitter(),
+        # PeakUtilsFitter(),
     ])
 
-    A = W.get_docks_as_dockarea()
-    app.setActiveWindow(A)
-    A.show()
+    app.setActiveWindow(W.ui)
+    W.ui.show()
 
     # Test latest fitter:
     x = np.arange(1200) / 12
-
     y = np.exp(-x / 8.0) + 0.01 * np.random.rand(len(x))
-    #y = x - 10 + 0.001 * np.random.rand(len(x))
+    # y = x - 10 + 0.001 * np.random.rand(len(x))
 
     W.update_data(x, y)
 
-    x, y, = x[10:1100], y[10:1100]
-    W.update_fit_data(x, y)
+    # x, y, = x[10:1100], y[10:1100]
+    # W.update_fit_data(x, y)
 
-    hyperspec = np.array([y, y*2, y*3, y*4, y*5, y*6]).reshape((3, 2, len(x)))
+    # hyperspec = np.array([y, y * 2, y * 3, y * 4, y * 5, y * 6]).reshape((3, 2, len(x)))
 
-    print(W.fit_hyperspec(x, hyperspec, -1))
+    # print(W.fit_hyperspec(x, hyperspec, -1))
 
     import sys
     sys.exit(app.exec())

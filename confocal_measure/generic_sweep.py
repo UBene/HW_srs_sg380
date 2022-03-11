@@ -30,14 +30,12 @@ class GenericSweeper(Measurement):
         self.settings.New('sweep_setting', str, choices=('a', 'b'))
         self.settings.New('collection_delay', float, initial=0.1)
         self.settings.New('polar_plot', bool, initial=False)
-        self.settings.New('compress', bool, initial=False,
-                          description='guesses data set duplicates across iteration and only stores one copy.')
+
+        self.data_manager = DataSetManager(measurement=self)
+        self.data_manager.new_data_set_registered[str].connect(self.new_plot_line)
+        
         self.setup_prepare_sequences_settings()
         self.setup_target_measurements()
-        
-        self.data_sets = DataSetManager(app=self.app)
-        self.data_sets.new_data_set_registered[str].connect(self.new_plot_line)
-        self.settings.compress.add_listener(self.data_sets.set_compress)
         
     def setup_prepare_sequences_settings(self, sequences_dir='measurements'):
         '''checks *sequences_dir* for sequences that should be run before a measurements. 
@@ -109,7 +107,7 @@ class GenericSweeper(Measurement):
             settings_layout.addWidget(w)
 
         # sweep_settings
-        paths = self.get_list_of_settings()
+        paths = self.data_manager.get_list_of_settings()
         self.settings.sweep_setting.change_choice_list(paths)
         w = self.settings.sweep_setting.new_default_widget()
         completer = QCompleter(paths)
@@ -135,7 +133,7 @@ class GenericSweeper(Measurement):
             target_data_layout.addLayout(l)      
 
         # target_data_layout_L
-        attrs = self.get_list_of_attributes()
+        attrs = self.data_manager.get_list_of_attributes()
         self.target_data_lineEdit = QLineEdit()
         completer = QCompleter(attrs + paths)
         completer.setCompletionMode(QCompleter.PopupCompletion)
@@ -164,7 +162,7 @@ class GenericSweeper(Measurement):
         self.graph_layout = pg.GraphicsLayoutWidget()
         layout.addWidget(self.graph_layout)
         self.plot = self.graph_layout.addPlot()
-        self.status = {'title':"generic sweep", 'color':'g'}       
+        self.status = {'title':"generic sweep", 'color':'g'}
         self.plot.showGrid(True, True)
         self.display_ready = False
         self.set_sweep_setting = self.plot.addLine(x=0, movable=True, pen='y')
@@ -189,7 +187,7 @@ class GenericSweeper(Measurement):
     def on_set_sweep_setting(self):
         if 'stop' in self.settings['run_state']:
             x = self.set_sweep_setting.getXPos()
-            x_array = np.array(self.data_sets[self.plot_x_data_name]['plot_values'])
+            x_array = np.array(self.data_manager.get_plot_values(self.plot_x_data_name))
             value = np.interp(x, x_array, self.range.sweep_array)
             sweep_setting = self.settings['sweep_setting']
             self.app.lq_path(sweep_setting).update_value(value)
@@ -240,31 +238,11 @@ class GenericSweeper(Measurement):
         N = self.plot_x_comboBox.count()
         self.plot_x_comboBox.setCurrentIndex(N - 1)
 
-    def get_list_of_attributes(self):
-        attrs = []        
-        for m in self.app.measurements.values():
-            if m.name != self.name:
-                for a in dir(m):
-                    if not callable(getattr(m, a)) and\
-                        a.startswith('__') == False and\
-                        self.valid_type(x=getattr(m, a)) and\
-                        not a in ('settings', 'activation', 'name',
-                                  'log', 'gui', 'app', 'ui', 'display_update_period'
-                                  'display_update_timer', 'acq_thread',
-                                  'interrupt_measurement_called',
-                                  'operations', 'run_state', 't_start', 'end_state'):
-                        attrs.append(f'measurements.{m.name}.' + a)
-        return attrs 
-    
-    def get_list_of_settings(self):
-        exclude = ('activation', 'connected', 'run_state', 'debug_mode')
-        return [p for p in self.app.lq_paths_list() if not p.split('/')[-1] in exclude]
-
     def pre_run(self): 
         self.display_ready = False
         self.plot.clear()
         self.ii = 0
-        self.data_sets.reset()
+        self.data_manager.reset()
         self.plot_lines = {}
 
         self.plot_x_comboBox.clear()
@@ -304,11 +282,11 @@ class GenericSweeper(Measurement):
                     if target_data.startswith('measurements'):
                         _, name, attr = target_data.split('.')
                         if name == measurement.name:
-                            self.data_sets.add_attr_value(measurement, attr)
+                            self.data_manager.add_from_obj_attr(measurement, attr)
 
             # target settings                            
             for path in self.target_settings:
-                self.data_sets.add_setting_value(path)
+                self.data_manager.add_from_setting(path)
             
             self.display_ready = ii >= 2
             self.ii = ii
@@ -318,7 +296,7 @@ class GenericSweeper(Measurement):
     def save_h5_data(self):
         self.h5_file = h5_io.h5_base_file(app=self.app, measurement=self)
         self.h5_meas_group = h5_io.h5_create_measurement_group(self, self.h5_file)
-        self.data_sets.add_to_meas_group(self.h5_meas_group)
+        self.data_manager.save_to_h5_meas_group(self.h5_meas_group)
         self.h5_meas_group['sweep_array'] = self.range.sweep_array
         self.h5_meas_group.attrs['sweep_quantity'] = self.settings['sweep_setting']
         self.h5_file.close()
@@ -330,28 +308,13 @@ class GenericSweeper(Measurement):
         self.plot.setTitle(**self.status)
         if self.display_ready:
             ii = self.ii + 1
-            x = self.data_sets[self.plot_x_data_name]['plot_values'][:ii]
-            for k in self.data_sets.keys():
+            x = self.data_manager.get_plot_values(self.plot_x_data_name)[:ii]
+            for k in self.data_manager.keys():
                 if k != self.plot_x_data_name:
-                    #y = norm(self.data_sets[k]['plot_values'][:ii])
-                    y = self.data_sets[k]['plot_values'][:ii]
+                    # y = norm(self.data_manager[k]['plot_values'][:ii])
+                    y = self.data_manager.get_plot_values(k)[:ii]
                     if self.settings['polar_plot']:
                         x, y = y * np.cos(x), y * np.sin(x)
                     self.plot_lines[k].setData(x, y)
                 else:
                     self.plot_lines[k].clear()
-                    
-    def valid_type(self, x):
-
-        def get_type(x):
-            if type(x) in (np.array, dict, np.ndarray, set):
-                return type(x)
-            # elif not hasattr(x, '__iter__'):
-            #    return type(x)        
-            # elif len(x) == 0:
-            #    return None
-            # elif type(x) in (list, set) and len(x) > 0:
-            #    return get_type(x[0])
-                
-        return get_type(x) in (int, float, np.array, bool, np.ndarray, dict, set, None)
-
