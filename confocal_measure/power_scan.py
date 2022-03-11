@@ -143,6 +143,7 @@ class PowerScanMeasure(Measurement):
             self.ui.manual_acq_times_lineEdit.setVisible(False)
 
     def pre_run(self): 
+        self.microscope_specific_pre_run()
         self.display_ready = False
         
         # Prepare data arrays and links to components:
@@ -283,16 +284,13 @@ class PowerScanMeasure(Measurement):
         if self.settings['use_shutter']:
             self.shutter_open.update_value(False)     
         self.update_display()  
+        self.microscope_specific_post_run()
+            
+    
             
     def run(self):
         
-        # update hardware settings (microscope specific)
-        if 'lakeshore_measure' in self.app.measurements:
-            if self.app.hardware.lakeshore335.settings['connected']:
-                self.app.measurements.lakeshore_measure.settings['activation'] = True
-                self.app.measurements.lakeshore_measure.set_history_start()
-        if 'rigol_waveform_generator' in self.app.hardware:
-            self.app.hardware.rigol_waveform_generator.read_from_hardware()
+
 
         S = self.settings
         
@@ -327,19 +325,10 @@ class PowerScanMeasure(Measurement):
                 # print("power scan {} of {}, {} acq_times {}".format(ii + 1, self.Np, hw, acq_times_array[ii]))
                 Tacq_lq.update_value(acq_times_array[ii])
 
-            # optimize
-            if ii % S['opt_period'] == 0 and S['opt_period'] > 0:
-                if S['opt_pw_pos'] != -1.0:
-                    p = S['opt_pw_pos']
-                else:
-                    p = self.power_wheel_position[ii]    
-                self.pw_target_position.update_value(p)
-                if 'lakeshore_measure' in self.app.measurements:
-                    self.app.measurements.lakeshore_measure.add_history_event(f'started optimization at {ii}')                
-                    self.optimize_at_opt_pw_pos() 
-                    self.app.measurements.lakeshore_measure.add_history_event(f'ended optimization at {ii}')
-
+            self.optimize_if_applicable(ii)
+                
             print("moving power wheel to " + str(self.pw_target_position.value))            
+
             self.pw_target_position.update_value(self.power_wheel_position[ii])
             print(self.name, 'moved target position', self.power_wheel_position[ii])
             
@@ -422,7 +411,10 @@ class PowerScanMeasure(Measurement):
             self.pm_powers_after[ii] = self.collect_pm_power_data()
 
         self.status = {'title':'Power scan finished', 'color':'y'}
+        self.save_h5()
+        self.microscope_specific_post_run()
 
+    def save_h5(self):
         # write data to h5 file on disk        
         self.t0 = time.time()
         self.h5_file = h5_io.h5_base_file(app=self.app, measurement=self)
@@ -477,9 +469,21 @@ class PowerScanMeasure(Measurement):
             self.log.info("data saved " + self.h5_file.filename)
             self.h5_file.close()
             
+
+    def microscope_specific_pre_run(self):
+        # update hardware settings (microscope specific)
+        if 'lakeshore_measure' in self.app.measurements and 'lakeshore335' in self.app.hardware:
+            if self.app.hardware.lakeshore335.settings['connected']:
+                self.app.measurements.lakeshore_measure.settings['activation'] = True
+                self.app.measurements.lakeshore_measure.set_history_start()
+        if 'rigol_waveform_generator' in self.app.hardware:
+            self.app.hardware.rigol_waveform_generator.read_from_hardware()
+            
+    def microscope_specific_post_run(self):
         if 'lakeshore_measure' in self.app.measurements:
             if self.app.hardware.lakeshore335.settings['connected']:
-                self.app.measurements.lakeshore_measure.save_history()
+                self.app.measurements.lakeshore_measure.save_history()        
+
 
     def update_display(self):
 
@@ -629,7 +633,7 @@ class PowerScanMeasure(Measurement):
         return acq_times_array
     
     def optimize_at_opt_pw_pos(self):
-
+        
         _measure = self.settings['opt_measure']
         measure = self.app.measurements[_measure]    
         
@@ -658,6 +662,29 @@ class PowerScanMeasure(Measurement):
         else:
             self.start_nested_measure_and_wait(measure, nested_interrupt=False)
         
+    def swap_reflector_and_collect_power(self, ii):
+        reflector_pos = self.app.hardware['reflector_wheel'].settings.get_lq('named_position')                                 
+        reflector_pos.update_value('mirror')
+        time.sleep(self.settings['reflector_swap_duration'])  # wait to swap detector
+        
+        ac = self.pm_hw.settings.average_count.val
+        Ns = self.settings['power_meter_sample_number']
+        t0 = time.time()
+        self.pm_powers[ii] = self.collect_pm_power_data()
+        
+        reflector_pos.update_value('empty')
+        time.sleep(self.settings['reflector_swap_duration'])  # wait to swap detector
+
+    def optimize_if_applicable(self, ii):
+        S = self.settings
+        if ii % S['opt_period'] == 0 and S['opt_period'] > 0:
+            if S['opt_pw_pos'] != -1.0:
+                p = S['opt_pw_pos']
+            else:
+                p = self.power_wheel_position[ii]
+            self.pw_target_position.update_value(p)
+            self.optimize_at_opt_pw_pos()
+
     def optimize_at_opt_pw_pos_(self):
         '''
         this function is invoked every S['opt_reriod']
@@ -684,17 +711,3 @@ class PowerScanMeasure(Measurement):
         ccdHWS['exposure_time'] = T0
         ccdHWS['acq_mode'] = acq_mode0
         time.sleep(0.1)
-        
-    def swap_reflector_and_collect_power(self, ii):
-        reflector_pos = self.app.hardware['reflector_wheel'].settings.get_lq('named_position')                                 
-        reflector_pos.update_value('mirror')
-        time.sleep(self.settings['reflector_swap_duration'])  # wait to swap detector
-        
-        ac = self.pm_hw.settings.average_count.val
-        Ns = self.settings['power_meter_sample_number']
-        t0 = time.time()
-        self.pm_powers[ii] = self.collect_pm_power_data()
-        
-        reflector_pos.update_value('empty')
-        time.sleep(self.settings['reflector_swap_duration'])  # wait to swap detector
-    
