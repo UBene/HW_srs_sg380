@@ -76,7 +76,6 @@ class NI_FreqCounterCallBackHW(HardwareComponent):
         """function called every N samples determined by cb_interval setting
         Stores count rate in the buffer
         """
-        return 
         S = self.settings
         try:
             self.current_count = self.counter_task.read_buffer(count=self.n_samples_cb)[-1]
