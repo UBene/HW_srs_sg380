@@ -93,3 +93,10 @@ class PlotNFitPGDockArea(dockarea.DockArea):
 
     def set_clipboard_text(self, text):
         self.clipboard.setText(text)
+
+    def clipboard_plot(self):
+        import pyqtgraph.exporters as exp
+
+        exporter = exp.SVGExporter(self.plot)
+        exporter.parameters()["scaling stroke"] = False
+        exporter.export(copy=True)

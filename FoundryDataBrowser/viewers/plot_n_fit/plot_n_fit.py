@@ -39,7 +39,7 @@ class PlotNFit:
         self.ui = PlotNFitPGDockArea(Ndata_lines, colors)
         self.ui.add_to_settings_layout(self.settings.New_UI())
         self.ui.add_button("refit", self.update_fit)
-        self.ui.add_button("clipboard plot", self.clipboard_plot)
+        self.ui.add_button("clipboard plot", self.ui.clipboard_plot)
         self.ui.add_button("clipboard results", self.clipboard_result)
 
         # fitters
@@ -112,13 +112,6 @@ class PlotNFit:
             return "Plot&Fit disabled"
         else:
             return self.fitters[choice].get_result_table(decimals, include)
-
-    def clipboard_plot(self):
-        import pyqtgraph.exporters as exp
-
-        exporter = exp.SVGExporter(self.plot)
-        exporter.parameters()["scaling stroke"] = False
-        exporter.export(copy=True)
 
     def clipboard_result(self):
 

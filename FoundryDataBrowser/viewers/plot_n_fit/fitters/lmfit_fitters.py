@@ -6,8 +6,8 @@ Created on Mar 14, 2022
 
 from lmfit import Model
 import numpy as np
-from FoundryDataBrowser.viewers.plot_n_fit.fitters.base_fitter import BaseFitter
-from FoundryDataBrowser.viewers.plot_n_fit.helper_functions import dict2htmltable
+from .base_fitter import BaseFitter
+from ..helper_functions import dict2htmltable
 
 
 class LmfitBaseFitter(BaseFitter):

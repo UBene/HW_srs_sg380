@@ -4,10 +4,8 @@ Created on Mar 9, 2022
 @author: Benedikt Ursprung
 """
 import numpy as np
-from lmfit import Model, Parameter, Parameters, report_fit
 from scipy import integrate, optimize
-from FoundryDataBrowser.viewers.plot_n_fit.fitters.base_fitter import BaseFitter
-from FoundryDataBrowser.viewers.plot_n_fit.helper_functions import dict2htmltable
+from .lmfit_fitters import LmfitBaseFitter
 
 
 def power2flux(power, wls=1064e-9):
@@ -96,7 +94,7 @@ def fit_function(
     return scale * _flourescences[1:]  # measured flouresence
 
 
-class RateEquationFitter(BaseFitter):
+class RateEquationFitter(LmfitBaseFitter):
 
     fit_params = [
         ["acs_12", (6.0000e-29, 0.0, 1e30, False)],
@@ -114,17 +112,9 @@ class RateEquationFitter(BaseFitter):
     ]
     name = "rate_equation"
 
-    def fit_xy(self, x: np.array, y: np.array) -> np.array:
-        model = Model(fit_function, independent_vars=["power_densities"])
-        params = model.make_params()
-        for p in params:
-            params[p].value = self.initials[p]
-            params[p].init_value = self.initials[p]
-            params[p].min = self.bounds[p + "_lower"]
-            params[p].max = self.bounds[p + "_upper"]
-            params[p].vary = self.vary[p]
-        res = model.fit(y, params, power_densities=x)
-        fit = fit_function(x, **res.values)
+    def func(self, **kwargs):
+        return fit_function(**kwargs)
 
-        self.set_result_message(res.message + dict2htmltable(res.values))
-        return fit
+    @property
+    def independent_vars(self):
+        return ["power_densities"]

@@ -5,7 +5,7 @@ Created on Mar 9, 2022
 """
 import numpy as np
 from .base_fitter import BaseFitter
-from FoundryDataBrowser.viewers.plot_n_fit.helper_functions import table2html
+from ..helper_functions import table2html
 
 
 class TauXFitter(BaseFitter):
