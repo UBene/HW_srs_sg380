@@ -1485,6 +1485,9 @@ class LQCollection(object):
 
     def __contains__(self, key):
         return self._logged_quantities.__contains__(key)
+    
+    def __len__(self):
+        return len(self._logged_quantities)
 
     """
     def __getattribute__(self,name):

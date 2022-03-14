@@ -34,7 +34,7 @@ class LeastSquaresBaseFitter(BaseFitter):
         """Override! This is the fit function!"""
         raise NotImplementedError(self.name + " needs a fit function")
 
-    def _residuals(self, params, x, data, constants):
+    def _residuals(self, params, x, data):
         return self.func(params, x) - data
 
     def fit_xy(self, x, y):
@@ -45,7 +45,7 @@ class LeastSquaresBaseFitter(BaseFitter):
             fun=self._residuals,
             bounds=self.bounds_array,
             x0=self.initials_array,
-            args=(t, y, self.constants_dict),
+            args=(t, y),
         )
 
         self.update_fit_results(res.x, res.message + f"<br>nfval:{res.nfev}")

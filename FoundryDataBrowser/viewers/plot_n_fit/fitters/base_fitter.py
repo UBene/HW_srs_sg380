@@ -48,6 +48,7 @@ class BaseFitter:
             if len(init) in (3, 4):
                 if len(init) == 4:
                     (val, lower, upper, vary) = init
+                    self.vary.New(name, bool, initial=vary)
                 else:
                     (val, lower, upper) = init
                     vary = True
@@ -55,7 +56,6 @@ class BaseFitter:
                 self.bounds.New(name + "_lower", initial=lower)
                 self.bounds.New(name + "_upper", initial=upper)
                 self.initials.New(name, initial=val, si=True)
-                self.vary.New(name, bool, initial=vary)
 
         self.use_bounds = self.settings.New("use_bounds", bool, initial=False)
 
@@ -164,26 +164,20 @@ class BaseFitter:
     @property
     def initials_array(self):
         return np.array([lq.val for lq in self.initials.as_list()])
-    
+
     @property
     def initials_dict(self):
         d = {}
-        for k,v in self.initials.as_value_dict():
+        for k, v in self.initials.as_value_dict():
             if self.vary[k]:
                 d[k] = v
         return d
-    
-    @property
-    def constants_dict(self):
-        d = {}
-        for k,v in self.initials.as_value_dict():
-            if not self.vary[k]:
-                d[k] = v
-        return d
-        
+
     @property
     def constants_array(self):
-        return np.array([lq.val for name,lq in self.initials.as_dict() if self.vary[name]])
+        return np.array(
+            [lq.val for name, lq in self.initials.as_dict() if self.vary[name]]
+        )
 
     def hyperspec_descriptions(self):
         """overwrite these if the results of fit_hyperspec is not
@@ -227,6 +221,3 @@ class BaseFitter:
 
     def state_description(self):
         return ""
-
-
-

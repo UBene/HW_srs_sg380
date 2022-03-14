@@ -19,11 +19,12 @@ class FitterQWidget(QtWidgets.QWidget):
         layout.addWidget(QtWidgets.QLabel("<h3>results</h3>"))
         layout.addWidget(self.result_label)
 
-    def add_collection_widget(self, collection, title):
-        self.layout.addWidget(QtWidgets.QLabel(f"<h3>{title}</h3>"))
-        widget = collection.New_UI()
-        self.layout.addWidget(widget)
-        return widget
+    def add_collection_widget(self, collection: LQCollection, title):
+        if len(collection):
+            self.layout.addWidget(QtWidgets.QLabel(f"<h3>{title}</h3>"))
+            widget = collection.New_UI()
+            self.layout.addWidget(widget)
+            return widget
 
     def add_enabable_collection_widget(
         self, collection: LQCollection, title: str, enable_setting: LoggedQuantity
