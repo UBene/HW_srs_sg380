@@ -1,17 +1,16 @@
-'''
+"""
 Created on Aug 3, 2019
 
 @author: Benedikt Ursprung
-'''
+"""
 
 import numpy as np
 from ScopeFoundry.logged_quantity import LQCollection
-from qtpy import QtGui  # used for clipboard 
 from FoundryDataBrowser.viewers.plot_n_fit.pgwidget import PlotNFitPGDockArea
 
 
 class PlotNFit:
-    '''        
+    """        
     add fitters of type <BaseFitter> (or more specific
     <LeastSquaresBaseFitter>):
     
@@ -20,27 +19,27 @@ class PlotNFit:
         if flag is_data_to_fit is False use:
             self.update_data_to_fit(self, x, y)
                 this allows the data to differ.
-    '''
+    """
 
-    def __init__(self,
-                 fitters=[],
-                 Ndata_lines=1,
-                 colors=['w', 'r', 'b', 'y', 'm', 'c', 'g']):
-        '''
+    def __init__(
+        self, fitters=[], Ndata_lines=1, colors=["w", "r", "b", "y", "m", "c", "g"]
+    ):
+        """
         *fitters*      list of <BaseFitter> or <LeastSquaresBaseFitter>
-        '''
-        
+        """
+
         # Settings
         self.settings = LQCollection()
         self.fit_options = self.settings.New(
-            'fit_options', str, choices=['DisableFit'], initial='DisableFit')
+            "fit_options", str, choices=["DisableFit"], initial="DisableFit"
+        )
 
         # ui
-        self.ui = PlotNFitPGDockArea(Ndata_lines, colors)              
+        self.ui = PlotNFitPGDockArea(Ndata_lines, colors)
         self.ui.add_to_settings_layout(self.settings.New_UI())
-        self.ui.add_button('refit', self.update_fit)
-        self.ui.add_button('clipboard plot', self.clipboard_plot)
-        self.ui.add_button('clipboard results', self.clipboard_result)
+        self.ui.add_button("refit", self.update_fit)
+        self.ui.add_button("clipboard plot", self.clipboard_plot)
+        self.ui.add_button("clipboard results", self.clipboard_result)
 
         # fitters
         self.fitters = {}
@@ -48,12 +47,12 @@ class PlotNFit:
             self.add_fitter(fitter)
 
         self.update_data_to_fit(np.arange(4), np.arange(4))
-        self.result_message = 'No fit results yet!'
+        self.result_message = "No fit results yet!"
 
         for lq in self.settings.as_list():
             lq.add_listener(self.on_change_fit_options)
 
-        #self.on_change_fit_options()
+        # self.on_change_fit_options()
 
     def add_fitter(self, fitter):
         self.fitters[fitter.name] = fitter
@@ -76,7 +75,7 @@ class PlotNFit:
 
     def update_fit(self):
         choice = self.fit_options.val
-        enabled = choice != 'DisableFit'
+        enabled = choice != "DisableFit"
         self.ui.fit_line.setVisible(enabled)
         if enabled:
             active_fitter = self.fitters[choice]
@@ -87,48 +86,49 @@ class PlotNFit:
 
     def fit_hyperspec(self, x, _hyperspec, axis=-1):
         choice = self.fit_options.val
-        if self.fit_options.val == 'DisableFit':
-            print('Warning!', self.state_info)
+        if self.fit_options.val == "DisableFit":
+            print("Warning!", self.state_info)
         else:
             F = self.fitters[choice]
             Res = F.fit_hyperspec(x, _hyperspec, axis=axis)
             Descriptions = F.hyperspec_descriptions()
             return [Descriptions, Res]
-        
+
     def get_docks_as_dockarea(self):
         return self.ui
 
     @property
     def state_info(self):
         choice = self.fit_options.val
-        if choice == 'DisableFit':
-            return 'Plot&Fit disabled'
+        if choice == "DisableFit":
+            return "Plot&Fit disabled"
         else:
             return self.fitters[choice].state_info
 
     def get_result_table(self, decimals=3, include=None):
         choice = self.fit_options.val
-        if choice == 'DisableFit':
-            return 'Plot&Fit disabled'
+        if choice == "DisableFit":
+            return "Plot&Fit disabled"
         else:
             return self.fitters[choice].get_result_table(decimals, include)
-        
+
     def clipboard_plot(self):
         import pyqtgraph.exporters as exp
-        exporter = exp.SVGExporter(self.plot)   
-        exporter.parameters()['scaling stroke'] = False
+        exporter = exp.SVGExporter(self.plot)
+        exporter.parameters()["scaling stroke"] = False
         exporter.export(copy=True)
-        
+
     def clipboard_result(self):
 
         html_string = self.result_message
         from bs4 import BeautifulSoup
-        soup = BeautifulSoup(html_string, 'lxml')
-        table = soup.find_all('table')[0]
-        text = ''
-        for line in table.findAll('tr'):
-            for l in line.findAll('td'):
-                print(l.getText())
-                text += l.getText()        
-        QtGui.QApplication.clipboard().setText(text)
 
+        soup = BeautifulSoup(html_string, "lxml")
+        table = soup.find_all("table")[0]
+        text = ""
+        for line in table.findAll("tr"):
+            for l in line.findAll("td"):
+                print(l.getText())
+                text += l.getText()
+        print('clipboard_result', text)
+        self.ui.set_clipboard_text(text)
