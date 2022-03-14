@@ -52,7 +52,7 @@ class DataSetManager(QtCore.QObject):
         self.set_compress(False)
         measurement.settings.New('compress_data', bool, initial=False,
                           description='guesses data set duplicates across iteration and only stores one copy.')
-        measurement.compress_data.add_listener(self.data_sets.set_compress)
+        measurement.settings.compress_data.add_listener(self.set_compress)
             
     def set_compress(self, compress:bool):
         self.compress = compress
