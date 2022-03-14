@@ -7,6 +7,7 @@ Created on Aug 3, 2019
 import numpy as np
 from ScopeFoundry.logged_quantity import LQCollection
 from FoundryDataBrowser.viewers.plot_n_fit.pgwidget import PlotNFitPGDockArea
+from .fitters.base_fitter import BaseFitter
 
 
 class PlotNFit:
@@ -22,10 +23,10 @@ class PlotNFit:
     """
 
     def __init__(
-        self, fitters=[], Ndata_lines=1, colors=["w", "r", "b", "y", "m", "c", "g"]
+        self, fitters:[BaseFitter], Ndata_lines=1, colors=["w", "r", "b", "y", "m", "c", "g"]
     ):
         """
-        *fitters*      list of <BaseFitter> or <LeastSquaresBaseFitter>
+        *fitters*      list of <BaseFitter> or <LeastSquaresBaseFitter> or <
         """
 
         # Settings
@@ -52,7 +53,7 @@ class PlotNFit:
         for lq in self.settings.as_list():
             lq.add_listener(self.on_change_fit_options)
 
-        # self.on_change_fit_options()
+        self.on_change_fit_options()
 
     def add_fitter(self, fitter):
         self.fitters[fitter.name] = fitter
@@ -114,6 +115,7 @@ class PlotNFit:
 
     def clipboard_plot(self):
         import pyqtgraph.exporters as exp
+
         exporter = exp.SVGExporter(self.plot)
         exporter.parameters()["scaling stroke"] = False
         exporter.export(copy=True)
@@ -128,7 +130,6 @@ class PlotNFit:
         text = ""
         for line in table.findAll("tr"):
             for l in line.findAll("td"):
-                print(l.getText())
                 text += l.getText()
-        print('clipboard_result', text)
+
         self.ui.set_clipboard_text(text)

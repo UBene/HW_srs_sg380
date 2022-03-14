@@ -22,7 +22,7 @@ from FoundryDataBrowser.viewers.plot_n_fit import (
 
 def test_logistic_func(W):
     x = np.linspace(-10, 10, 50)
-    from FoundryDataBrowser.viewers.plot_n_fit.fitters.lmfit import logistic_func
+    from FoundryDataBrowser.viewers.plot_n_fit.fitters.lmfit_fitters import logistic_func
 
     L, A, x0, C = 11, 1, 0.5, 2.1
     params = [L, A, x0, C]
