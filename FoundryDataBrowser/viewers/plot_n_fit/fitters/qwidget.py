@@ -30,7 +30,8 @@ class FitterQWidget(QtWidgets.QWidget):
         self, collection: LQCollection, title: str, enable_setting: LoggedQuantity
     ):
         widget = self.add_collection_widget(collection, title)
-        enable_setting.add_listener(lambda: widget.setEnabled(enable_setting.val))
+        if widget:
+            enable_setting.add_listener(lambda: widget.setEnabled(enable_setting.val))
 
     def add_button(self, name, callback_func):
         PB = QtWidgets.QPushButton(name)
