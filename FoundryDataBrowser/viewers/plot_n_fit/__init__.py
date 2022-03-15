@@ -1,4 +1,4 @@
-from .fitters.default_fitters import TauXFitter, PeakUtilsFitter
+from .fitters.default_fitters import TauXFitter, PeakUtilsFitter, NonLinearityFitter
 from .fitters.least_squares_fitters import MonoExponentialFitter, BiExponentialFitter
 from .fitters.lmfit_fitters import LogisticFunctionFitter
 from .fitters.poly_fitters import PolyFitter, SemiLogYPolyFitter                                    

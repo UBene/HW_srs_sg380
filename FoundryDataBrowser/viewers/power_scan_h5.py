@@ -1,8 +1,7 @@
-import pyqtgraph as pg
+import numpy as np
 import h5py
 from qtpy import QtWidgets
-import numpy as np
-
+import pyqtgraph as pg
 import pyqtgraph.dockarea as dockarea
 
 from ScopeFoundry.widgets import DataSelector
@@ -10,7 +9,7 @@ from ScopeFoundry.data_browser import DataBrowserView
 from FoundryDataBrowser.viewers.plot_n_fit import (
     PlotNFit,
     LogisticFunctionFitter,
-    PolyFitter,
+    NonLinearityFitter,
 )
 
 
@@ -68,14 +67,14 @@ class PowerScanH5View(DataBrowserView):
 
         # data format
         self.wls = np.arange(512)
-        self.spectra = 0.5 * np.arange(512 * 21 * 1).reshape((21, 1, 512))
+        self.spectra = 0.5 * np.arange(512 * 21 * 1).reshape((21, 1, 512)) + 1
         self.power_arrays = {
             "pm_powers": np.arange(21) / 2.1,
             "pm_powers_after": np.arange(21) / 2,
             "power_wheel_position": np.arange(21),
         }
 
-        self.plot_n_fit = PlotNFit([LogisticFunctionFitter(), PolyFitter()])
+        self.plot_n_fit = PlotNFit([LogisticFunctionFitter(), NonLinearityFitter()])
         self.ui = UI(self.plot_n_fit)
 
         # settings

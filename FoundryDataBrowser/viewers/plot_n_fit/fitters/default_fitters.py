@@ -174,3 +174,21 @@ def peak_map(
         refinement=refinement,
         ignore_phony_refinements=ignore_phony_refinements,
     )
+
+
+class NonLinearityFitter(BaseFitter):
+
+    fit_params = (("BG", (1.0, 0.0, 1e10)), 
+                  ("Slope", (1.0, 0.0, 1e10)))
+
+    name = 'non linearity'
+
+    def fit_xy(self, x: np.array, y: np.array) -> np.array:
+        x_, y_ = np.log10(x), np.log10(y)
+        coefs = np.polynomial.polynomial.polyfit(x_, y_, 1)
+        fit = 10 ** np.polynomial.polynomial.polyval(x_, coefs)
+    
+        self.update_fit_results(coefs)
+        return fit
+    
+

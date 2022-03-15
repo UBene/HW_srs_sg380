@@ -55,9 +55,9 @@ class PlotNFit:
         for lq in self.settings.as_list():
             lq.add_listener(self.on_change_fit_options)
 
-        self.slicer = DataSelector(self.ui.data_lines[0], name="selector")
-        self.slicer.add_listener(self.update)
-        self.ui.add_to_settings_layout(self.slicer.New_UI())
+        self.data_selector = DataSelector(self.ui.data_lines[0], name="selector")
+        self.data_selector.add_listener(self.update)
+        self.ui.add_to_settings_layout(self.data_selector.New_UI())
 
     def add_fitter(self, fitter):
         self.fitters[fitter.name] = fitter
@@ -82,7 +82,7 @@ class PlotNFit:
         self.data_to_fit_y = y
         
     def update_data_to_fit(self):
-        self.set_data_to_fit(*self.slicer.get_data())
+        self.set_data_to_fit(*self.data_selector.get_data())
 
     def update_fit(self):
         choice = self.fit_options.val
@@ -95,6 +95,7 @@ class PlotNFit:
             self.ui.update_select_scatter(self.data_to_fit_x, self.data_to_fit_y)
             self.result_message = active_fitter.result_message
             self.ui.highlight_x_values(np.atleast_1d(active_fitter.highlight_x_vals))
+            self.data_selector.set_label(active_fitter.get_resuts_html())
         else:
             self.ui.clear()
 

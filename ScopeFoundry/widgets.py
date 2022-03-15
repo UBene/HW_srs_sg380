@@ -414,7 +414,6 @@ class DataSelector:
     def on_region_changed(self):
         mn, mx = self.linear_region_item.getRegion()
         x, _ = self.plot_data_item.getData()
-        print(x.max(), mx, np.argmin((x - mx) ** 2))
         self.settings["start"] = np.argmin((x - mn) ** 2)
         self.settings["stop"] = np.argmin((x - mx) ** 2) + 1
 
@@ -427,7 +426,6 @@ class DataSelector:
     def get_masked_data(self):
         x, y = self.plot_data_item.getData()
         mask = self.mask
-        print(mask)
         return x[mask], y[mask]
 
     def get_sliced_data(self):
