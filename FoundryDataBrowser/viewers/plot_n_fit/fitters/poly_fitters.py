@@ -1,11 +1,12 @@
-'''
+"""
 Created on Mar 14, 2022
 
-@author: bened
-'''
-from FoundryDataBrowser.viewers.plot_n_fit.fitters.base_fitter import BaseFitter
+@author: Benedikt Ursprung
+"""
 import numpy as np
-from FoundryDataBrowser.viewers.plot_n_fit.helper_functions import table2html
+from .base_fitter import BaseFitter
+from ..helper_functions import table2html
+
 
 class PolyFitter(BaseFitter):
 

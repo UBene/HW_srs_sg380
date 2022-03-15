@@ -4,6 +4,7 @@ Created on Mar 9, 2022
 @author: Benedikt Ursprung
 """
 from qtpy import QtWidgets
+
 from ScopeFoundry.logged_quantity import LoggedQuantity, LQCollection
 
 
