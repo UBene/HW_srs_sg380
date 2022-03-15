@@ -8,22 +8,23 @@ import numpy as np
 from ScopeFoundry.logged_quantity import LQCollection
 from FoundryDataBrowser.viewers.plot_n_fit.pgwidget import PlotNFitPGDockArea
 from .fitters.base_fitter import BaseFitter
+from ScopeFoundry.widgets import DataSelector
 
 
 class PlotNFit:
     """        
-    add fitters of type <BaseFitter> (or more specific
-    <LeastSquaresBaseFitter>):
+    add fitters of type <BaseFitter>, <LeastSquaresBaseFitter>, <LmfitBaseFitter>:
     
-    self.update_data(self, x, y, line_number=0, is_data_to_fit=True) 
-        to plot data. 
-        if flag is_data_to_fit is False use:
-            self.update_data_to_fit(self, x, y)
-                this allows the data to differ.
+    
+    methods:
+        update_data(self, x, y, line_number=0, is_data_to_fit=True) 
     """
 
     def __init__(
-        self, fitters:[BaseFitter], Ndata_lines=1, colors=["w", "r", "b", "y", "m", "c", "g"]
+        self,
+        fitters: [BaseFitter]=[],
+        Ndata_lines=1,
+        colors=["w", "r", "b", "y", "m", "c", "g"],
     ):
         """
         *fitters*      list of <BaseFitter> or <LeastSquaresBaseFitter> or <
@@ -38,7 +39,7 @@ class PlotNFit:
         # ui
         self.ui = PlotNFitPGDockArea(Ndata_lines, colors)
         self.ui.add_to_settings_layout(self.settings.New_UI())
-        self.ui.add_button("refit", self.update_fit)
+        self.ui.add_button("refit", self.on_slicer_change_slicer)
         self.ui.add_button("clipboard plot", self.ui.clipboard_plot)
         self.ui.add_button("clipboard results", self.clipboard_result)
 
@@ -55,6 +56,14 @@ class PlotNFit:
 
         self.on_change_fit_options()
 
+        self.slicer = DataSelector(self.ui.data_lines[0])
+        self.slicer.add_listener(self.on_slicer_change_slicer)
+        self.ui.add_to_settings_layout(self.slicer.New_UI())
+
+    def on_slicer_change_slicer(self):
+        self.update_data_to_fit(*self.slicer.get_data())
+        self.update_fit()
+
     def add_fitter(self, fitter):
         self.fitters[fitter.name] = fitter
         self.ui.add_fitter_widget(fitter.name, fitter.ui)
@@ -67,8 +76,7 @@ class PlotNFit:
     def update_data(self, x, y, line_number=0, is_data_to_fit=True):
         self.ui.update_data_line(x, y, line_number)
         if is_data_to_fit:
-            self.update_data_to_fit(x, y)
-            self.update_fit()
+            self.on_slicer_change_slicer()
 
     def update_data_to_fit(self, x, y):
         self.data_to_fit_x = x
@@ -82,8 +90,11 @@ class PlotNFit:
             active_fitter = self.fitters[choice]
             self.fit = active_fitter.fit_xy(self.data_to_fit_x, self.data_to_fit_y)
             self.ui.update_fit_line(self.data_to_fit_x, self.fit)
+            self.ui.update_select_scatter(self.data_to_fit_x, self.data_to_fit_y)
             self.result_message = active_fitter.result_message
             self.ui.highlight_x_values(np.atleast_1d(active_fitter.highlight_x_vals))
+        else:
+            self.ui.clear()
 
     def fit_hyperspec(self, x, _hyperspec, axis=-1):
         choice = self.fit_options.val

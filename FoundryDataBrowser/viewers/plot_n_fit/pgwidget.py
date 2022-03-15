@@ -37,7 +37,12 @@ class PlotNFitPGDockArea(dockarea.DockArea):
         self.data_lines = []
         for i in range(Ndata_lines):
             self.data_lines.append(self.plot.plot(y=[0, 2, 1, 3, 2], pen=pens[i]))
-        self.fit_line = self.plot.plot(y=[0, 2, 1, 3, 2], pen="g")
+
+        self.fit_line = self.plot.plot(x=[0, 1, 2, 3], y=[0, 2, 1, 3], pen=pg.mkColor("g"))
+        self.select_scatter = pg.ScatterPlotItem(
+            x=[0, 1, 2, 3], y=[0, 2, 1, 3], pen="g"
+        )
+        self.plot.addItem(self.select_scatter)
 
         self.fitter_widgets = {}
         self.reset_highlight_x_values()
@@ -67,8 +72,15 @@ class PlotNFitPGDockArea(dockarea.DockArea):
             self.plot.addItem(l)
             self.vertical_lines.append(l)
 
+    def clear(self):
+        self.select_scatter.clear()
+        self.fit_line.clear()
+
     def update_fit_line(self, x, y):
         self.fit_line.setData(x, y)
+
+    def update_select_scatter(self, x, y):
+        self.select_scatter.setData(x, y)
 
     def update_data_line(self, x, y, line_number=0):
         self.data_lines[line_number].setData(x, y)
