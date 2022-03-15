@@ -398,7 +398,6 @@ class DataSelector:
 
         self.linear_region_item = pg.LinearRegionItem(pen=pg.mkPen(pg.mkColor(color)))
         self.linear_region_item.sigRegionChangeFinished.connect(self.on_region_changed)
-        self.plot_data_item.sigPlotChanged.connect(self.on_change_start_stop)
         self.label = pg.InfLineLabel(
             self.linear_region_item.lines[0],
             self.name,
