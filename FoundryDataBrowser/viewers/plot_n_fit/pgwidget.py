@@ -15,7 +15,7 @@ class PlotNFitPGDockArea(dockarea.DockArea):
         2. graph_dock with fit_line and data_lines
     """
 
-    def __init__(self, Ndata_lines=0, pens=["w"]):
+    def __init__(self, Ndata_lines=1, pens=["w"]):
         super().__init__()
 
         self.settings_ui = QtWidgets.QWidget()

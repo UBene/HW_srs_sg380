@@ -13,8 +13,7 @@ from ScopeFoundry.widgets import DataSelector
 
 class PlotNFit:
     """        
-    add fitters of type <BaseFitter>, <LeastSquaresBaseFitter>, <LmfitBaseFitter>:
-    
+    provides a ui <PlotNFitPGDockArea> and plotter
     
     methods:
         update_data(self, x, y, line_number=0, is_data_to_fit=True) 
@@ -22,12 +21,14 @@ class PlotNFit:
 
     def __init__(
         self,
-        fitters: [BaseFitter]=[],
+        fitters: [BaseFitter()] = [],
         Ndata_lines=1,
         colors=["w", "r", "b", "y", "m", "c", "g"],
     ):
         """
-        *fitters*      list of <BaseFitter> or <LeastSquaresBaseFitter> or <
+        *fitters*      list <BaseFitter> instances 
+                       for new fitter I recommend inheritance of
+                       <LeastSquaresBaseFitter> or <LmFitBaseFitter>
         """
 
         # Settings
@@ -39,7 +40,7 @@ class PlotNFit:
         # ui
         self.ui = PlotNFitPGDockArea(Ndata_lines, colors)
         self.ui.add_to_settings_layout(self.settings.New_UI())
-        self.ui.add_button("refit", self.on_slicer_change_slicer)
+        self.ui.add_button("refit", self.update_fit)
         self.ui.add_button("clipboard plot", self.ui.clipboard_plot)
         self.ui.add_button("clipboard results", self.clipboard_result)
 
@@ -48,39 +49,40 @@ class PlotNFit:
         for fitter in fitters:
             self.add_fitter(fitter)
 
-        self.update_data_to_fit(np.arange(4), np.arange(4))
+        self.set_data_to_fit(np.arange(4), np.arange(4))
         self.result_message = "No fit results yet!"
 
         for lq in self.settings.as_list():
             lq.add_listener(self.on_change_fit_options)
 
-        self.on_change_fit_options()
-
-        self.slicer = DataSelector(self.ui.data_lines[0])
-        self.slicer.add_listener(self.on_slicer_change_slicer)
+        self.slicer = DataSelector(self.ui.data_lines[0], name="selector")
+        self.slicer.add_listener(self.update)
         self.ui.add_to_settings_layout(self.slicer.New_UI())
-
-    def on_slicer_change_slicer(self):
-        self.update_data_to_fit(*self.slicer.get_data())
-        self.update_fit()
 
     def add_fitter(self, fitter):
         self.fitters[fitter.name] = fitter
         self.ui.add_fitter_widget(fitter.name, fitter.ui)
         self.fit_options.add_choices(fitter.name)
+        
+    def update(self):
+        self.update_data_to_fit()
+        self.update_fit()
 
     def on_change_fit_options(self):
         self.ui.activate_fitter_widget(self.fit_options.val)
-        self.update_fit()
+        self.update()
 
-    def update_data(self, x, y, line_number=0, is_data_to_fit=True):
+    def update_data(self, x, y, line_number=0, is_data_to_fit=False):
         self.ui.update_data_line(x, y, line_number)
         if is_data_to_fit:
-            self.on_slicer_change_slicer()
+            self.update_fit()
 
-    def update_data_to_fit(self, x, y):
+    def set_data_to_fit(self, x, y):
         self.data_to_fit_x = x
         self.data_to_fit_y = y
+        
+    def update_data_to_fit(self):
+        self.set_data_to_fit(*self.slicer.get_data())
 
     def update_fit(self):
         choice = self.fit_options.val
