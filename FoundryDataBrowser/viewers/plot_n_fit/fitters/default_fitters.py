@@ -176,19 +176,29 @@ def peak_map(
     )
 
 
+def non_linearity(x, y):
+    x_, y_ = np.log10(x), np.log10(y)
+    return np.polynomial.polynomial.polyfit(x_, y_, 1)
+
+
+def non_linearity_map(x, data, axis):
+    kwargs = dict(x=x)
+    return np.apply_along_axis(non_linearity, axis=axis, arr=data, **kwargs)
+
+
 class NonLinearityFitter(BaseFitter):
 
-    fit_params = (("BG", (1.0, 0.0, 1e10)), 
-                  ("Slope", (1.0, 0.0, 1e10)))
+    fit_params = (("BG", (1.0, 0.0, 1e10)), ("Slope", (1.0, 0.0, 1e10)))
 
-    name = 'non linearity'
+    name = "non linearity"
 
     def fit_xy(self, x: np.array, y: np.array) -> np.array:
         x_, y_ = np.log10(x), np.log10(y)
         coefs = np.polynomial.polynomial.polyfit(x_, y_, 1)
         fit = 10 ** np.polynomial.polynomial.polyval(x_, coefs)
-    
+
         self.update_fit_results(coefs)
         return fit
-    
 
+    def fit_hyperspec(self, t, _hyperspec, axis=-1):
+        return non_linearity_map(t, _hyperspec, axis)
