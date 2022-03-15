@@ -66,7 +66,7 @@ class BaseFitter:
         self.ui.add_collection_widget(self.settings, "settings")
         self.ui.add_collection_widget(self.initials, "initials")
         self.ui.add_collection_widget(self.vary, "vary")
-        self.ui.add_enabable_collection_widget(self.bounds, "bounds", self.use_bounds)
+        self.ui.add_enableable_collection_widget(self.bounds, "bounds", self.use_bounds)
 
         self.ui.add_button("initials from results", self.set_initials_from_results)
 

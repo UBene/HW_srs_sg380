@@ -26,7 +26,7 @@ class FitterQWidget(QtWidgets.QWidget):
             self.layout.addWidget(widget)
             return widget
 
-    def add_enabable_collection_widget(
+    def add_enableable_collection_widget(
         self, collection: LQCollection, title: str, enable_setting: LoggedQuantity
     ):
         widget = self.add_collection_widget(collection, title)
