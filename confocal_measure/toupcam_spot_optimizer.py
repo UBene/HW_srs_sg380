@@ -162,7 +162,7 @@ class ToupCamSpotOptimizer(ToupCamLiveMeasure):
         self.focus_roi.blockSignals(False)
             
     def update_display(self):
-        im = np.flip(self.get_rgb_image().swapaxes(0, 1), 0)
+        im = self.get_rgb_image()
         self.img_item.setImage(im, autoLevels=self.settings['auto_level'])
         if not self.settings['auto_level']:
             self.img_item.setLevels((0, 255))
