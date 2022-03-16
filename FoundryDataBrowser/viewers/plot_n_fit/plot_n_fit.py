@@ -74,6 +74,7 @@ class PlotNFit:
 
     def update_data(self, x, y, line_number=0, is_data_to_fit=False):
         self.ui.update_data_line(x, y, line_number)
+        self.data_selector.linear_region_item.setBounds([x.min(), x.max()])
         if is_data_to_fit:
             self.update_fit()
 

@@ -8,7 +8,7 @@ from ScopeFoundry.widgets import DataSelector
 from ScopeFoundry.data_browser import DataBrowserView
 from FoundryDataBrowser.viewers.plot_n_fit import (
     PlotNFit,
-    LogisticFunctionFitter,
+    #LogisticFunctionFitter,
     NonLinearityFitter,
 )
 
@@ -61,6 +61,7 @@ class PowerScanH5View(DataBrowserView):
     name = "power_scan_h5"
 
     def is_file_supported(self, fname):
+        print(self.name, fname)
         return ("power_scan" in fname) and (".h5" in fname)
 
     def setup(self):
@@ -74,7 +75,8 @@ class PowerScanH5View(DataBrowserView):
             "power_wheel_position": np.arange(21),
         }
 
-        self.plot_n_fit = PlotNFit([LogisticFunctionFitter(), NonLinearityFitter()])
+        self.plot_n_fit = PlotNFit([#LogisticFunctionFitter(),
+                                     NonLinearityFitter()])
         self.ui = UI(self.plot_n_fit)
 
         # settings

@@ -396,7 +396,7 @@ class DataSelector:
         self.plot_data_item = plot_data_item
         self.plot = plot_data_item.parentItem()
 
-        self.linear_region_item = pg.LinearRegionItem(pen=pg.mkPen(pg.mkColor(color)))
+        self.linear_region_item = pg.LinearRegionItem()
         self.linear_region_item.sigRegionChangeFinished.connect(self.on_region_changed)
         self.label = pg.InfLineLabel(
             self.linear_region_item.lines[0],
@@ -479,9 +479,14 @@ class DataSelector:
     def set_visible(self, v=None):
         if not v:
             v = self.activated.val
+        
+        #if v and not self.linear_region_item.parent():
+        self.plot.addItem(self.linear_region_item)
+        self.linear_region_item.setParent(self.plot)
+        print(self.linear_region_item.parent())
         self.label.setVisible(v)
         self.linear_region_item.setVisible(v)
-
+        
     def add_listener(
         self, func, include=["start", "stop", "step", "activated"], argtype=(), **kwargs
     ):

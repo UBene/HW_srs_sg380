@@ -638,7 +638,7 @@ class HyperSpectralBaseView(DataBrowserView):
         x_fit_data, y_fit_data = self.get_xy(
             self.circ_roi_slice, apply_use_x_slice=True
         )
-        self.plot_n_fit.update_data_to_fit(x_fit_data, y_fit_data)
+        self.plot_n_fit.set_data_to_fit(x_fit_data, y_fit_data)
         text = self.plot_n_fit.result_message
         title = self.plot_n_fit.state_info + " circ"
         self.x_slicer.set_label(text, title, color=self.line_colors[1])

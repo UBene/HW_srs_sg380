@@ -196,8 +196,10 @@ class NonLinearityFitter(BaseFitter):
         x_, y_ = np.log10(x), np.log10(y)
         coefs = np.polynomial.polynomial.polyfit(x_, y_, 1)
         fit = 10 ** np.polynomial.polynomial.polyval(x_, coefs)
-
-        self.update_fit_results(coefs)
+        print(coefs, np.all(np.isnan(coefs)), coefs[0]==np.nan, type(coefs[0]), coefs==np.nan, np.any(coefs==np.nan))
+        
+        if not np.all(np.isnan(coefs)):
+            self.update_fit_results(coefs)
         return fit
 
     def fit_hyperspec(self, t, _hyperspec, axis=-1):
