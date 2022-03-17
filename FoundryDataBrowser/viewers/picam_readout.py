@@ -4,24 +4,23 @@ import h5py
 
 
 class PicamReadout(DataBrowserView):
-    
-    name = 'picam_readout'
-    
+
+    name = "picam_readout"
+
     def setup(self):
-        
-        self.plot_n_fit = PlotNFit(fitters=[PeakUtilsFitter()])                
+
+        self.plot_n_fit = PlotNFit(fitters=[PeakUtilsFitter()])
         self.ui = self.plot_n_fit.get_docks_as_dockarea()
-        self.plot_n_fit.settings['fit_options'] = 'DisableFit'
-        
+        self.plot_n_fit.settings["fit_options"] = "DisableFit"
+
     def is_file_supported(self, fname):
-        return 'picam_readout' in fname
+        return "picam_readout" in fname
 
     def on_change_data_filename(self, fname):
 
         dat = self.dat = h5py.File(fname)
-        self.M = dat['measurement/picam_readout']
-        self.spec = self.M['spectrum'][:]        
-        self.wls = self.M['wavelengths'][:]
-            
+        self.M = dat["measurement/picam_readout"]
+        self.spec = self.M["spectrum"][:]
+        self.wls = self.M["wavelengths"][:]
+
         self.plot_n_fit.update_data(self.wls, self.spec)
-            

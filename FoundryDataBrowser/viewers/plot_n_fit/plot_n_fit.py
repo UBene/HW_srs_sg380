@@ -25,12 +25,14 @@ class PlotNFit:
         Ndata_lines=1,
         colors=["w", "r", "b", "y", "m", "c", "g"],
     ):
+
         """
         *fitters*      list <BaseFitter> instances 
                        for new fitter I recommend inheritance of
                        <LeastSquaresBaseFitter> or <LmFitBaseFitter>
         """
 
+        self.ready = False
         self._data = [[(1, 2, 3), (0.1, 2, 1)] * Ndata_lines]
 
         # Settings
@@ -62,6 +64,8 @@ class PlotNFit:
         self.ui.add_to_settings_layout(self.data_selector.New_UI())
 
         self.active_line = 0
+        self.on_change_fit_options()
+        self.ready = True
 
     def add_fitter(self, fitter):
         self.fitters[fitter.name] = fitter
@@ -69,8 +73,9 @@ class PlotNFit:
         self.fit_options.add_choices(fitter.name)
 
     def update(self):
-        self.update_data_to_fit()
-        self.update_fit()
+        if self.ready:
+            self.update_data_to_fit()
+            self.update_fit()
 
     def on_change_fit_options(self):
         self.ui.activate_fitter_widget(self.fit_options.val)
@@ -96,7 +101,7 @@ class PlotNFit:
         choice = self.fit_options.val
         enabled = choice != "DisableFit"
         self.ui.fit_line.setVisible(enabled)
-        self.ui.update_select_scatter(self.data_to_fit_x, self.data_to_fit_y)
+        self.ui.update_select_line(self.data_to_fit_x, self.data_to_fit_y)
 
         if enabled:
             active_fitter = self.fitters[choice]

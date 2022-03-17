@@ -41,15 +41,13 @@ class PlotNFitPGDockArea(dockarea.DockArea):
         self.fit_line = self.plot.plot(
             x=[0, 1, 2, 3], y=[0, 2, 1, 3], pen=pg.mkColor("g")
         )
-        self.select_scatter = self.plot.plot(
-            x=[0, 1, 2, 3], y=[0, 2, 1, 3], pen=None, symbol='o', symbolBrush=pg.mkBrush('g'),
+        self.select_line = self.plot.plot(
+            x=[0, 1, 2, 3],
+            y=[0, 2, 1, 3],
+            pen=None,
+            symbol="o",
+            symbolBrush=pg.mkBrush("g"),
         )
-        #pg.ScatterPlotItem(
-        #    x=[0, 1, 2, 3], y=[0, 2, 1, 3], pen="g"
-        #)
-        self.plot.addItem(self.select_scatter)
-
-        #self.highlight_line = self.plot.plot(x=[], y=[], pen=pg.mkColor(None))
 
         self.fitter_widgets = {}
         self.reset_highlight_x_values()
@@ -80,15 +78,14 @@ class PlotNFitPGDockArea(dockarea.DockArea):
             self.vertical_lines.append(l)
 
     def clear(self):
-        self.select_scatter.clear()
+        self.select_line.clear()
         self.fit_line.clear()
 
     def update_fit_line(self, x, y):
         self.fit_line.setData(x, y)
 
-    def update_select_scatter(self, x, y):
-        print('update_select_scatter', x,y)
-        self.select_scatter.setData(x, y)
+    def update_select_line(self, x, y):
+        self.select_line.setData(x, y)
 
     def update_data_line(self, x, y, line_number=0):
         self.data_lines[line_number].setData(x, y)

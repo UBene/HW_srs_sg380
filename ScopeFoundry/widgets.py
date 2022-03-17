@@ -374,10 +374,9 @@ class RegionSlicer(QtWidgets.QWidget):
 class DataSelector:
     def __init__(
         self,
-        plot_data_item: pg.PlotDataItem,
-        name: str = "slicer",
+        plot_data_item: pg.PlotDataItem = None,
+        name: str = "data_selector",
         initials: [int] = [0, 10, 1],
-        color="g",
     ):
         self.name = name
 
@@ -393,9 +392,6 @@ class DataSelector:
             "mode", str, initial="mask", choices=("slice", "mask")
         )
 
-        self.plot_data_item = plot_data_item
-        self.plot = plot_data_item.parentItem()
-
         self.linear_region_item = pg.LinearRegionItem()
         self.linear_region_item.sigRegionChangeFinished.connect(self.on_region_changed)
         self.label = pg.InfLineLabel(
@@ -404,19 +400,19 @@ class DataSelector:
             position=0.78,
             anchor=(0.5, 0.5),
         )
-        self.plot.addItem(self.linear_region_item)
 
         self.activated.add_listener(self.set_visible)
 
+        if plot_data_item:
+            self.set_plot_data_item(plot_data_item)
+
     def get_data_item_values(self):
-        # s = self.plot_data_item._dataset
-        # print(self.name, "get_data_item_values", s.x, s.y, self.linear_region_item.getRegion())
-        # return (s.x, s.y)
-        print("get_data_item_values", self.plot_data_item.getData())
         return self.plot_data_item.getData()
 
-    def set_plot_data_item(self, plot_data_item):
+    def set_plot_data_item(self, plot_data_item:pg.PlotItem):
         self.plot_data_item = plot_data_item
+        self.plot = plot_data_item.parentItem()
+        self.plot.addItem(self.linear_region_item)
 
     def on_region_changed(self):
         mn, mx = self.linear_region_item.getRegion()
@@ -425,36 +421,14 @@ class DataSelector:
         self.settings["stop"] = np.argmin((x - mx) ** 2) + 1
 
     def on_change_start_stop(self):
-        x, _ = self.get_data_item_values()
-        mn = x[self.settings["start"]]
-        mx = x[self.settings["stop"]]
-        self.linear_region_item.setRegion((mn, mx))
+        try:
+            x, _ = self.get_data_item_values()
+            mn = x[self.settings["start"]]
+            mx = x[self.settings["stop"]]
+            self.linear_region_item.setRegion((mn, mx))
+        except (IndexError, TypeError):
+            pass
 
-    # def get_masked_data(self):
-    #     x, y = self.get_data_item_values()
-    #     mask = self.mask
-    #     return x[mask], y[mask]
-    #
-    # def get_sliced_data(self):
-    #     x, y = self.get_data_item_values()
-    #     s = self.slice
-    #     return x[s], y[s]
-    #
-    # def get_data(self):
-    #     if self.activated.val:
-    #         if self.mode.val == "mask":
-    #             return self.get_masked_data()
-    #         else:
-    #             return self.get_sliced_data()
-    #     else:
-    #         return self.get_data_item_values()
-    # @property
-    # def x(self):
-    #     return self.get_data()[0]
-    #
-    # @property
-    # def y(self):
-    #     return self.get_data()[1]
     def mask_XY(self, XY):
         x, y = XY
         mask = self.mask
@@ -473,23 +447,27 @@ class DataSelector:
                 return self.slice_XY(XY)
         else:
             return XY
-        
-        
+
     def slice_array(self, array, axis=-1):
-        return array.take(indices=self.slice, axis=axis)
+        return array.take(self.indices, axis)
 
     def mask_array(self, array, axis=-1):
         return array.take(indices=self.mask, axis=axis)
-        
+
     def select(self, array, axis=-1):
-        ''' NOT TESTED'''
+        """ NOT TESTED"""
         if self.activated.val:
             if self.mode.val == "mask":
                 return self.slice_array(array, axis)
             else:
                 return self.mask_array(array, axis)
         else:
-            return array        
+            return array
+
+    @property
+    def indices(self):
+        S = self.settings
+        return np.arange(S["start"], S["stop"], S["step"])
 
     @property
     def mask(self):
@@ -522,7 +500,8 @@ class DataSelector:
             v = self.activated.val
         self.label.setVisible(v)
         self.linear_region_item.setVisible(v)
-        self.linear_region_item.setBounds(self.plot.dataBounds())
+        if hasattr(self, 'plot_data_item'):
+            self.linear_region_item.setBounds(self.plot_data_item.dataBounds(0))
 
     def add_listener(
         self, func, include=["start", "stop", "step", "activated"], argtype=(), **kwargs

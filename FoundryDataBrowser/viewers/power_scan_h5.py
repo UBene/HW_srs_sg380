@@ -8,12 +8,11 @@ from ScopeFoundry.widgets import DataSelector
 from ScopeFoundry.data_browser import DataBrowserView
 from FoundryDataBrowser.viewers.plot_n_fit import (
     PlotNFit,
-    # LogisticFunctionFitter,
     NonLinearityFitter,
 )
 
 
-class UI(dockarea.DockArea):
+class PowerScanUI(dockarea.DockArea):
     def __init__(
         self, plot_n_fit,
     ):
@@ -48,13 +47,29 @@ class UI(dockarea.DockArea):
 
         plot_n_fit.ui.settings_dock.setStretch(1, 2)
         self.fit_settings_dock = self.addDock(
-            plot_n_fit.ui.settings_dock, "right", self.data_select_dock
+            plot_n_fit.ui.settings_dock, "right", self.spec_dock
         )
 
         self.target = pg.TargetItem(pen="r")
-        self.scatter_label = pg.TextItem(color="r")
+        self.target_label = pg.TextItem(color="r")
         self.plot_n_fit.ui.plot.addItem(self.target)
-        self.plot_n_fit.ui.plot.addItem(self.scatter_label)
+        self.plot_n_fit.ui.plot.addItem(self.target_label)
+
+    def add_to_select_layout(self, widget):
+        self.data_select_layout.addWidget(widget)
+
+    def view_position(self, x, y):
+        if self.plot_n_fit.ui.plot.ctrl.logXCheck.isChecked():
+            x = np.log10(x)
+        if self.plot_n_fit.ui.plot.ctrl.logYCheck.isChecked():
+            y = np.log10(y)
+        return (x, y)
+
+    def set_target(self, x, y, text=""):
+        x, y = self.view_position(x, y)
+        self.target.setPos(x, y)
+        self.target_label.setPos(x, y)
+        self.target_label.setText(text)
 
 
 class PowerScanH5View(DataBrowserView):
@@ -62,7 +77,6 @@ class PowerScanH5View(DataBrowserView):
     name = "power_scan_h5"
 
     def is_file_supported(self, fname):
-        print(self.name, fname)
         return ("power_scan" in fname) and (".h5" in fname)
 
     def setup(self):
@@ -75,9 +89,6 @@ class PowerScanH5View(DataBrowserView):
             "pm_powers_after": np.arange(21) / 2,
             "power_wheel_position": np.arange(21),
         }
-
-        self.plot_n_fit = PlotNFit([NonLinearityFitter()])  # LogisticFunctionFitter(),
-        self.ui = UI(self.plot_n_fit)
 
         # settings
         self.settings.New("spec_index", dtype=int, initial=0)
@@ -96,24 +107,38 @@ class PowerScanH5View(DataBrowserView):
         self.settings.New("power_binning", int, initial=1, vmin=1)
         self.settings.New("conversion_factor", float, initial=1.0)
 
+        # data selectors
+        self.signal_selector = DataSelector(name="signal select")
+        self.bg_selector = DataSelector(name="background select")
+
+        # listeners
         self.settings.spec_index.add_listener(self.update_spec_plot)
         self.settings.power_x_axis.add_listener(self.update_spec_plot)
-
-        self.signal_selector = DataSelector(self.ui.spec_line, "signal select")
-        self.bg_selector = DataSelector(self.ui.spec_line, "background select")
-
         self.signal_selector.add_listener(self.update_fit)
         self.bg_selector.add_listener(self.update_fit)
-
         for key in self.settings.keys():
             self.settings.get_lq(key).add_listener(self.update_fit)
 
-        # more ui stuff
-        self.ui.data_select_layout.addWidget(self.settings.New_UI())
-        self.ui.data_select_layout.addWidget(self.bg_selector.New_UI())
-        self.ui.data_select_layout.addWidget(self.signal_selector.New_UI())
-
         self.update_settings_min_max()
+
+        fitters = [NonLinearityFitter()]
+        try:
+            from FoundryDataBrowser.viewers.plot_n_fit import LogisticFunctionFitter
+
+            fitters.append(LogisticFunctionFitter())
+        except ModuleNotFoundError:
+            print("Warining LogisticFunctionFitter not loaded: pip install lmfit")
+            pass
+
+        self.plot_n_fit = PlotNFit(fitters)
+
+        # UI
+        self.ui = PowerScanUI(self.plot_n_fit)
+        self.ui.add_to_select_layout(self.settings.New_UI())
+        self.ui.add_to_select_layout(self.bg_selector.New_UI())
+        self.ui.add_to_select_layout(self.signal_selector.New_UI())
+        self.signal_selector.set_plot_data_item(self.ui.spec_line)
+        self.bg_selector.set_plot_data_item(self.ui.spec_line)
 
     def update_hyperspec(self):
         self.wls = np.arange(512)
@@ -121,20 +146,16 @@ class PowerScanH5View(DataBrowserView):
         self.power_arrays = {"pm_powers": np.arange(21)}
 
     def get_bg(self):
+        S = self.settings
         if self.bg_selector.activated.val:
-            s = np.s_[:, self.settings["channel"], self.bg_selector.slice]
-            return self.spectra[s].sum()
-        
+            return self.bg_selector.select(self.spectra[:, S["channel"], :], -1).mean()
         else:
             return 0
 
     def get_dependence_data(self):
-        if self.signal_selector.activated.val:
-            s = np.s_[:, self.settings["channel"], self.signal_selector.slice]
-        else:
-            s = np.s_[:, self.settings["channel"], :]
-        data = self.spectra[s]
-        binning = self.settings["power_binning"]
+        S = self.settings
+        data = self.signal_selector.select(self.spectra[:, S["channel"], :], -1)
+        binning = S["power_binning"]
         if binning > 1:
             Np, ns = data.shape
             data = (
@@ -143,7 +164,6 @@ class PowerScanH5View(DataBrowserView):
                 .mean(axis=1)
             )
         y = data.sum(axis=-1) - self.get_bg()
-        print(y.shape)
 
         x = self.power_arrays[self.settings["power_x_axis"]]
         binning = self.settings["power_binning"]
@@ -152,8 +172,8 @@ class PowerScanH5View(DataBrowserView):
 
         x = x * self.settings["conversion_factor"]
 
+        # only positive values
         mask = (y > 0) * (x > 0)
-        #print("get_dependence_data", x.shape, y.shape, mask.shape, mask.sum())
         return x[mask], y[mask]
 
     def update_spec_plot(self):
@@ -162,33 +182,25 @@ class PowerScanH5View(DataBrowserView):
         self.ui.spec_line.setData(self.wls, y)
 
     def update_fit(self):
-        print(self.name, "update_fit")
         x, y = self.get_dependence_data()
-        print("after get_dependence_data", x, y)
-
-        print(x.shape, y.shape)
         self.plot_n_fit.set_data(x, y, 0, False)
         self.plot_n_fit.update()
 
+        # set target label
         S = self.settings
         ii = int(S["spec_index"] / S["power_binning"])
-        self.ui.target.setPos(np.log10(x[ii]), np.log10(y[ii]))
-        self.ui.scatter_label.setPos(np.log10(x[ii]), np.log10(y[ii]))
         pos = self.power_arrays["power_wheel_position"][ii]
         power = self.power_arrays["pm_powers"][ii]
-        self.ui.scatter_label.setText(f"wheel {pos}\n power {power}\n counts {y[ii]}")
+        text = f"wheel {pos}\n power {power}\n counts {y[ii]}"
+        self.ui.set_target(x[ii], y[ii], text)
 
     def on_change_data_filename(self, fname=None):
         try:
             self.h5file = h5py.File(fname, "r")
 
-            self.sample = ""
+            self.sample = "-"
             if "sample" in self.h5file["app/settings"].attrs.keys():
                 self.sample = self.h5file["app/settings"].attrs["sample"]
-            if self.sample == "":
-                self.sample = "<->"
-            print("sample string", self.sample)
-
             if "measurement/power_scan_df" in self.h5file:
                 H = self.h5file["measurement/power_scan_df"]
             else:
@@ -219,9 +231,7 @@ class PowerScanH5View(DataBrowserView):
             for harp in ["picoharp", "hydraharp"]:
                 if "{}_histograms".format(harp) in H:
                     histograms = H["{}_histograms".format(harp)][:]
-                    acq_times_array = elapsed_time = H["{}_elapsed_time".format(harp)][
-                        :
-                    ]
+                    acq_times_array = H["{}_elapsed_time".format(harp)][:]
                     self.wls = H["{}_time_array".format(harp)][:]
                     if np.ndim(histograms) == 2:
                         histograms = histograms.reshape(-1, 1, len(self.wls))
@@ -269,9 +279,6 @@ class PowerScanH5View(DataBrowserView):
             self.ui.spec_plot.setTitle(self.aquisition_type)
 
             self.update_fit()
-            print(self.name, "asdfasf", self.spectra.shape)
-
-            print(self.name, self.spectra, fname, self.spectra.shape)
 
         except Exception as err:
             self.databrowser.ui.statusbar.showMessage(
