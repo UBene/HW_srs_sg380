@@ -31,6 +31,8 @@ class PlotNFit:
                        <LeastSquaresBaseFitter> or <LmFitBaseFitter>
         """
 
+        self._data = [[(1, 2, 3), (0.1, 2, 1)] * Ndata_lines]
+
         # Settings
         self.settings = LQCollection()
         self.fit_options = self.settings.New(
@@ -59,11 +61,13 @@ class PlotNFit:
         self.data_selector.add_listener(self.update)
         self.ui.add_to_settings_layout(self.data_selector.New_UI())
 
+        self.active_line = 0
+
     def add_fitter(self, fitter):
         self.fitters[fitter.name] = fitter
         self.ui.add_fitter_widget(fitter.name, fitter.ui)
         self.fit_options.add_choices(fitter.name)
-        
+
     def update(self):
         self.update_data_to_fit()
         self.update_fit()
@@ -72,28 +76,32 @@ class PlotNFit:
         self.ui.activate_fitter_widget(self.fit_options.val)
         self.update()
 
-    def update_data(self, x, y, line_number=0, is_data_to_fit=False):
+    def set_data(self, x, y, line_number=0, is_data_to_fit=False):
+        self.active_line = line_number
+        self._data[line_number] = [x, y]
         self.ui.update_data_line(x, y, line_number)
-        self.data_selector.linear_region_item.setBounds([x.min(), x.max()])
+        self.data_selector.on_change_start_stop()
         if is_data_to_fit:
             self.update_fit()
 
     def set_data_to_fit(self, x, y):
         self.data_to_fit_x = x
         self.data_to_fit_y = y
-        
-    def update_data_to_fit(self):
-        self.set_data_to_fit(*self.data_selector.get_data())
+
+    def update_data_to_fit(self, line_number=0):
+        data = self.data_selector.select_XY(self._data[line_number])
+        self.set_data_to_fit(*data)
 
     def update_fit(self):
         choice = self.fit_options.val
         enabled = choice != "DisableFit"
         self.ui.fit_line.setVisible(enabled)
+        self.ui.update_select_scatter(self.data_to_fit_x, self.data_to_fit_y)
+
         if enabled:
             active_fitter = self.fitters[choice]
             self.fit = active_fitter.fit_xy(self.data_to_fit_x, self.data_to_fit_y)
             self.ui.update_fit_line(self.data_to_fit_x, self.fit)
-            self.ui.update_select_scatter(self.data_to_fit_x, self.data_to_fit_y)
             self.result_message = active_fitter.result_message
             self.ui.highlight_x_values(np.atleast_1d(active_fitter.highlight_x_vals))
             self.data_selector.set_label(active_fitter.get_resuts_html())

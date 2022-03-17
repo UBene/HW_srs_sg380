@@ -194,10 +194,15 @@ class NonLinearityFitter(BaseFitter):
 
     def fit_xy(self, x: np.array, y: np.array) -> np.array:
         x_, y_ = np.log10(x), np.log10(y)
-        coefs = np.polynomial.polynomial.polyfit(x_, y_, 1)
+        try:
+            coefs = np.polynomial.polynomial.polyfit(x_, y_, 1)
+        except (np.linalg.LinAlgError,TypeError) as er:
+            print('NonLinearityFitter', len(x),len(y))
+            print('Warning:', self.name, 'did not work')
+            coefs = [1, 1]
+
         fit = 10 ** np.polynomial.polynomial.polyval(x_, coefs)
-        print(coefs, np.all(np.isnan(coefs)), coefs[0]==np.nan, type(coefs[0]), coefs==np.nan, np.any(coefs==np.nan))
-        
+
         if not np.all(np.isnan(coefs)):
             self.update_fit_results(coefs)
         return fit

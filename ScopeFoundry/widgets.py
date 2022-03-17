@@ -408,51 +408,92 @@ class DataSelector:
 
         self.activated.add_listener(self.set_visible)
 
+    def get_data_item_values(self):
+        # s = self.plot_data_item._dataset
+        # print(self.name, "get_data_item_values", s.x, s.y, self.linear_region_item.getRegion())
+        # return (s.x, s.y)
+        print("get_data_item_values", self.plot_data_item.getData())
+        return self.plot_data_item.getData()
+
     def set_plot_data_item(self, plot_data_item):
         self.plot_data_item = plot_data_item
 
     def on_region_changed(self):
         mn, mx = self.linear_region_item.getRegion()
-        x, _ = self.plot_data_item.getData()
+        x, _ = self.get_data_item_values()
         self.settings["start"] = np.argmin((x - mn) ** 2)
         self.settings["stop"] = np.argmin((x - mx) ** 2) + 1
 
     def on_change_start_stop(self):
-        x, _ = self.plot_data_item.getData()
+        x, _ = self.get_data_item_values()
         mn = x[self.settings["start"]]
         mx = x[self.settings["stop"]]
         self.linear_region_item.setRegion((mn, mx))
 
-    def get_masked_data(self):
-        x, y = self.plot_data_item.getData()
+    # def get_masked_data(self):
+    #     x, y = self.get_data_item_values()
+    #     mask = self.mask
+    #     return x[mask], y[mask]
+    #
+    # def get_sliced_data(self):
+    #     x, y = self.get_data_item_values()
+    #     s = self.slice
+    #     return x[s], y[s]
+    #
+    # def get_data(self):
+    #     if self.activated.val:
+    #         if self.mode.val == "mask":
+    #             return self.get_masked_data()
+    #         else:
+    #             return self.get_sliced_data()
+    #     else:
+    #         return self.get_data_item_values()
+    # @property
+    # def x(self):
+    #     return self.get_data()[0]
+    #
+    # @property
+    # def y(self):
+    #     return self.get_data()[1]
+    def mask_XY(self, XY):
+        x, y = XY
         mask = self.mask
         return x[mask], y[mask]
 
-    def get_sliced_data(self):
-        x, y = self.plot_data_item.getData()
+    def slice_XY(self, XY):
+        x, y = XY
         s = self.slice
         return x[s], y[s]
 
-    def get_data(self):
+    def select_XY(self, XY):
         if self.activated.val:
             if self.mode.val == "mask":
-                return self.get_masked_data()
+                return self.mask_XY(XY)
             else:
-                return self.get_sliced_data()
+                return self.slice_XY(XY)
         else:
-            return self.plot_data_item.getData()
+            return XY
+        
+        
+    def slice_array(self, array, axis=-1):
+        return array.take(indices=self.slice, axis=axis)
 
-    @property
-    def x(self):
-        return self.get_data()[0]
-
-    @property
-    def y(self):
-        return self.get_data()[1]
+    def mask_array(self, array, axis=-1):
+        return array.take(indices=self.mask, axis=axis)
+        
+    def select(self, array, axis=-1):
+        ''' NOT TESTED'''
+        if self.activated.val:
+            if self.mode.val == "mask":
+                return self.slice_array(array, axis)
+            else:
+                return self.mask_array(array, axis)
+        else:
+            return array        
 
     @property
     def mask(self):
-        x, _ = self.plot_data_item.getData()
+        x, _ = self.get_data_item_values()
         mn, mx = self.linear_region_item.getRegion()
         return (x >= mn) * (x <= mx)
 
@@ -479,14 +520,10 @@ class DataSelector:
     def set_visible(self, v=None):
         if not v:
             v = self.activated.val
-        
-        #if v and not self.linear_region_item.parent():
-        self.plot.addItem(self.linear_region_item)
-        self.linear_region_item.setParent(self.plot)
-        print(self.linear_region_item.parent())
         self.label.setVisible(v)
         self.linear_region_item.setVisible(v)
-        
+        self.linear_region_item.setBounds(self.plot.dataBounds())
+
     def add_listener(
         self, func, include=["start", "stop", "step", "activated"], argtype=(), **kwargs
     ):

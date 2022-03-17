@@ -8,7 +8,7 @@ from ScopeFoundry.widgets import DataSelector
 from ScopeFoundry.data_browser import DataBrowserView
 from FoundryDataBrowser.viewers.plot_n_fit import (
     PlotNFit,
-    #LogisticFunctionFitter,
+    # LogisticFunctionFitter,
     NonLinearityFitter,
 )
 
@@ -20,6 +20,7 @@ class UI(dockarea.DockArea):
         super().__init__()
 
         self.plot_n_fit = plot_n_fit
+        self.plot_n_fit.ui.plot.setLogMode(True, True)
 
         self.data_select_widget = QtWidgets.QWidget()
         self.data_select_layout = QtWidgets.QHBoxLayout(self.data_select_widget)
@@ -50,9 +51,9 @@ class UI(dockarea.DockArea):
             plot_n_fit.ui.settings_dock, "right", self.data_select_dock
         )
 
-        self.scatter = pg.ScatterPlotItem([1], [1], pen="r")
+        self.target = pg.TargetItem(pen="r")
         self.scatter_label = pg.TextItem(color="r")
-        self.plot_n_fit.ui.plot.addItem(self.scatter)
+        self.plot_n_fit.ui.plot.addItem(self.target)
         self.plot_n_fit.ui.plot.addItem(self.scatter_label)
 
 
@@ -75,8 +76,7 @@ class PowerScanH5View(DataBrowserView):
             "power_wheel_position": np.arange(21),
         }
 
-        self.plot_n_fit = PlotNFit([#LogisticFunctionFitter(),
-                                     NonLinearityFitter()])
+        self.plot_n_fit = PlotNFit([NonLinearityFitter()])  # LogisticFunctionFitter(),
         self.ui = UI(self.plot_n_fit)
 
         # settings
@@ -124,11 +124,15 @@ class PowerScanH5View(DataBrowserView):
         if self.bg_selector.activated.val:
             s = np.s_[:, self.settings["channel"], self.bg_selector.slice]
             return self.spectra[s].sum()
+        
         else:
             return 0
 
     def get_dependence_data(self):
-        s = np.s_[:, self.settings["channel"], self.signal_selector.slice]
+        if self.signal_selector.activated.val:
+            s = np.s_[:, self.settings["channel"], self.signal_selector.slice]
+        else:
+            s = np.s_[:, self.settings["channel"], :]
         data = self.spectra[s]
         binning = self.settings["power_binning"]
         if binning > 1:
@@ -138,14 +142,19 @@ class PowerScanH5View(DataBrowserView):
                 .reshape(-1, binning, ns)
                 .mean(axis=1)
             )
-        y = self.spectra[s].sum(axis=-1) - self.get_bg()
+        y = data.sum(axis=-1) - self.get_bg()
+        print(y.shape)
 
         x = self.power_arrays[self.settings["power_x_axis"]]
         binning = self.settings["power_binning"]
         if binning > 1:
             x = x[: (len(x) // binning) * binning].reshape(-1, binning).mean(-1)
 
-        return x * self.settings["conversion_factor"], y
+        x = x * self.settings["conversion_factor"]
+
+        mask = (y > 0) * (x > 0)
+        #print("get_dependence_data", x.shape, y.shape, mask.shape, mask.sum())
+        return x[mask], y[mask]
 
     def update_spec_plot(self):
         S = self.settings
@@ -155,16 +164,19 @@ class PowerScanH5View(DataBrowserView):
     def update_fit(self):
         print(self.name, "update_fit")
         x, y = self.get_dependence_data()
-        self.plot_n_fit.update_data(x, y, 0, False)
+        print("after get_dependence_data", x, y)
+
+        print(x.shape, y.shape)
+        self.plot_n_fit.set_data(x, y, 0, False)
         self.plot_n_fit.update()
 
         S = self.settings
         ii = int(S["spec_index"] / S["power_binning"])
-        self.ui.scatter.setData(x=(x[ii],), y=(y[ii],))
-        self.ui.scatter_label.setPos(x[ii], y[ii])
+        self.ui.target.setPos(np.log10(x[ii]), np.log10(y[ii]))
+        self.ui.scatter_label.setPos(np.log10(x[ii]), np.log10(y[ii]))
         pos = self.power_arrays["power_wheel_position"][ii]
         power = self.power_arrays["pm_powers"][ii]
-        self.ui.scatter_label.setText(f"wheel {pos}\n power {power}")
+        self.ui.scatter_label.setText(f"wheel {pos}\n power {power}\n counts {y[ii]}")
 
     def on_change_data_filename(self, fname=None):
         try:
@@ -217,15 +229,15 @@ class PowerScanH5View(DataBrowserView):
                     self.aquisition_type = harp
 
             if "apd_count_rates" in H:
-                self.spec_x_slicer.settings["activated"] = False
-                self.bg_slicer.settings["activated"] = False
+                self.signal_selector.settings["activated"] = False
+                self.bg_selector.settings["activated"] = False
                 apd_count_rates = H["apd_count_rates"][:]
                 self.spectra = apd_count_rates.reshape((-1, 1, 1))
                 self.aquisition_type = "APD"
 
             if "thorlabs_powermeter_2_powers" in H:
-                self.spec_x_slicer.settings["activated"] = False
-                self.bg_slicer.settings["activated"] = False
+                self.signal_selector.settings["activated"] = False
+                self.bg_selector.settings["activated"] = False
                 powers_y = H["thorlabs_powermeter_2_powers"][:]
                 self.spectra = powers_y.reshape((-1, 1, 1))
                 self.aquisition_type = "power_meter_2"
@@ -255,6 +267,11 @@ class PowerScanH5View(DataBrowserView):
             self.update_settings_min_max()
 
             self.ui.spec_plot.setTitle(self.aquisition_type)
+
+            self.update_fit()
+            print(self.name, "asdfasf", self.spectra.shape)
+
+            print(self.name, self.spectra, fname, self.spectra.shape)
 
         except Exception as err:
             self.databrowser.ui.statusbar.showMessage(
