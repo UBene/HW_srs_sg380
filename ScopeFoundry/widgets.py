@@ -409,7 +409,7 @@ class DataSelector:
     def get_data_item_values(self):
         return self.plot_data_item.getData()
 
-    def set_plot_data_item(self, plot_data_item:pg.PlotItem):
+    def set_plot_data_item(self, plot_data_item: pg.PlotItem):
         self.plot_data_item = plot_data_item
         self.plot = plot_data_item.parentItem()
         self.plot.addItem(self.linear_region_item)
@@ -449,13 +449,13 @@ class DataSelector:
             return XY
 
     def slice_array(self, array, axis=-1):
-        return array.take(self.indices, axis)
+        return np.take(array, self.indices, axis)
 
     def mask_array(self, array, axis=-1):
-        return array.take(indices=self.mask, axis=axis)
+        indices = np.arange(len(array.shape[axis]))[self.mask]
+        return np.take(array, indices, axis)
 
     def select(self, array, axis=-1):
-        """ NOT TESTED"""
         if self.activated.val:
             if self.mode.val == "mask":
                 return self.slice_array(array, axis)
@@ -500,7 +500,7 @@ class DataSelector:
             v = self.activated.val
         self.label.setVisible(v)
         self.linear_region_item.setVisible(v)
-        if hasattr(self, 'plot_data_item'):
+        if hasattr(self, "plot_data_item"):
             self.linear_region_item.setBounds(self.plot_data_item.dataBounds(0))
 
     def add_listener(
