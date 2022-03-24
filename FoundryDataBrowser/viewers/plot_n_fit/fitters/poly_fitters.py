@@ -67,14 +67,14 @@ class SemiLogYPolyFitter(PolyFitter):
 
     def inverse_transform(self, x, y):
         return x, np.exp(y)
-    
-    
+
+
 class LogLogPolyFitter(PolyFitter):
-    
+
     name = "loglog"
 
     def transform(self, x, y):
         return np.log10(x), np.log10(y)
 
     def inverse_transform(self, x, y):
-        return 10**x, 10**y
+        return 10 ** x, 10 ** y

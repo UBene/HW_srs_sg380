@@ -206,10 +206,9 @@ class BaseFitter:
                     unit = ""
                 res_table.append([q, val, unit])
         return res_table
-    
+
     def get_resuts_html(self, decimals=3, include=None):
         return table2html(self.get_result_table(decimals, include))
-        
 
     def set_result_message(self, message):
         self.result_message = message

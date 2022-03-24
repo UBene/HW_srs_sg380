@@ -69,3 +69,13 @@ class LogisticFunctionFitter(LmfitBaseFitter):
         L, A, x0, C = fit_results
         self.derived_results["max_slope"] = -L / (4 * A)
         return fit_results
+
+
+class LogLogLogisticFunctionFitter(LogisticFunctionFitter):
+
+    name = "log_log_logistic_function"
+
+    def fit_xy(self, x: np.array, y: np.array) -> np.array:
+        x, y = np.log10(x), np.log10(y)
+        fit = LmfitBaseFitter.fit_xy(self, x, y)
+        return 10 ** fit

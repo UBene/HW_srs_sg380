@@ -16,7 +16,7 @@ class PlotNFit:
     provides a ui <PlotNFitPGDockArea> and plotter
     
     methods:
-        update_data(self, x, y, line_number=0, is_data_to_fit=True) 
+        set_data(self, x, y, line_number=0, is_data_to_fit=True)
     """
 
     def __init__(
@@ -33,7 +33,7 @@ class PlotNFit:
         """
 
         self.ready = False
-        self._data = [[(1, 2, 3), (0.1, 2, 1)] * Ndata_lines]
+        self._data = [[(1, 2, 3), (0.1, 2, 1)]] * Ndata_lines
 
         # Settings
         self.settings = LQCollection()
@@ -74,7 +74,7 @@ class PlotNFit:
 
     def update(self):
         if self.ready:
-            self.update_data_to_fit()
+            self.update_data_to_fit(self.active_line)
             self.update_fit()
 
     def on_change_fit_options(self):
