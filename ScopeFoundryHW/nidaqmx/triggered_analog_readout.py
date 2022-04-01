@@ -1,10 +1,9 @@
 """
 Created on Mar 22, 2022
 
-@author: bened
+@author: Benedikt Ursprung
 """
 from ScopeFoundry.hardware import HardwareComponent
-
 
 import nidaqmx
 from nidaqmx.constants import Edge, AcquisitionType, TerminalConfiguration, VoltageUnits
@@ -16,6 +15,8 @@ class DAQTriggeredAReadout(HardwareComponent):
 
     def setup(self):
         S = self.settings
+        
+        print((e.name, e.value, type(e.value)) for e in AcquisitionType)
 
         S.New(
             "input_channel",
@@ -46,17 +47,19 @@ class DAQTriggeredAReadout(HardwareComponent):
         )
         S.New(
             "terminal_config",
-            choices=[(e.name, e.val) for e in TerminalConfiguration],
-            initial=TerminalConfiguration.DEFAULT,
+            int,
+            choices=[(e.name, e.value) for e in TerminalConfiguration],
+            initial=TerminalConfiguration.DEFAULT.value,
         )
         S.New("rate", int, initial=250000, unit="Hz", description="sampling rate")
         S.New(
-            "active_edge", choices=[(e.name, e.val) for e in Edge], initial=Edge.RISING
+            "active_edge", choices=[(e.name, e.value) for e in Edge],  # initial=Edge.RISING
         )
         S.New(
             "sample_mode",
-            choices=[(e.name, e.val) for e in AcquisitionType],
-            initial=AcquisitionType.FINITE,
+            int,
+            choices=[(e.name, e.value) for e in AcquisitionType],
+            initial=AcquisitionType.FINITE.value,
         )
         S.New("samps_per_chan", int, initial=1000)
         S.New("max_val", initial=10.0, unit="V")
@@ -67,19 +70,20 @@ class DAQTriggeredAReadout(HardwareComponent):
         S = self.settings
         self.task = task = nidaqmx.Task()
         task.ai_channels.add_ai_voltage_chan(
-            S["input_channel"],
-            "",
-            S[""],
-            S["min_val"],
-            S["max_val"],
-            VoltageUnits.VOLTS,
+            
+            physical_channel=S["input_channel"],
+            name_to_assign_to_channel="",
+            terminal_config=TerminalConfiguration.DEFAULT,
+            min_val=S["min_val"],
+            max_val=S["max_val"],
+            units=VoltageUnits.VOLTS
         )
         task.timing.cfg_samp_clk_timing(
-            S["rate"],
-            S["source"],
-            S["active_edge"],
-            S["sample_mode"],
-            S["samps_per_chan"],
+            rate=S["rate"],
+            source=S["source"],
+            active_edge=S["active_edge"],
+            sample_mode=S["sample_mode"],
+            samps_per_chan=S["samps_per_chan"],
         )
         task.timing.ai_conv_src = S["sample_clock"]
         task.timing.ai_conv_active_edge = S["edge"]
@@ -99,79 +103,13 @@ class DAQTriggeredAReadout(HardwareComponent):
                 type(excpt).__name__,
                 ".",
                 excpt,
+                counts=0
             )
         return counts
 
     def disconnect(self):
         self.task.close()
 
-
-class DAQTriggeredDReadout(HardwareComponent):
-
-    name = "DAQ_triggered_digital_readout"
-
-    def setup(self):
-        S = self.settings
-
-        S.New(
-            "counter",
-            str,
-            initial="Dev1/ai1",
-            description="""Specifies the name of the counter to use to
-                create the virtual channel. The DAQmx physical channel
-                constant lists all physical channels, including
-                counters, for devices installed in the system.""",
-        )
-        S.New(
-            "trigger_source",
-            initial="Dev1/di0",
-            str,
-            description="""Specifies the name of the counter to use to
-                create the virtual channel. The DAQmx physical channel
-                constant lists all physical channels, including
-                counters, for devices installed in the system.""",
-        )
-        S.New(
-            "trigger_edge",
-            choices=[(e.name, e.val) for e in Edge],
-            initial=Edge.RISING,
-            description="""specifies
-                on which edge of the digital signal to start acquiring
-                or generating samples.""",
-        )
-        
-        S.New('duration', float=0.1, unit='s', )
-
-    def connect(self):
-
-        S = self.settings
-        self.task = task = nidaqmx.Task()
-        task.ci_channels.add_ci_count_edges_chan(S["counter"], edge=S["edge"])
-        task.triggers.start_trigger.cfg_dig_edge_start_trig(
-            S["trigger_source"], S["trigger_edge"]
-        )
-        task.timing.cfg_samp_clk_timing(
-            100_000,
-            active_edge=Edge.RISING,
-            sample_mode=AcquisitionType.FINITE,
-            samps_per_chan=1000,
-        )
-
-    def read_counts(self, N, timeout=10):
-        try:
-            counts = self.task.read(N, timeout)
-        except Exception as excpt:
-            print(
-                self.name,
-                "Error: could not read DAQ. Please check your DAQ's connections. Exception details:",
-                type(excpt).__name__,
-                ".",
-                excpt,
-            )
-        return counts
-
-    def disconnect(self):
-        self.task.close()
 
 
 if __name__ == "__main__":
