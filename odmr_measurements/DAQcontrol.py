@@ -28,6 +28,13 @@ import sys
 def configureDAQ(Nsamples):
 	try:
 		#Create and configure an analog input voltage task
+		
+		DAQ_APDInput = "Dev2/ai1"
+		DAQ_SampleClk = "PFI0"
+		DAQ_StartTrig = "PFI5"
+		
+		
+		
 		NsampsPerDAQread=2*Nsamples
 		readTask = nidaqmx.Task()
 		channel = readTask.ai_channels.add_ai_voltage_chan(DAQ_APDInput,"",TerminalConfiguration.RSE,minVoltage,maxVoltage,VoltageUnits.VOLTS)
@@ -41,7 +48,7 @@ def configureDAQ(Nsamples):
 		readStartTrig.cfg_dig_edge_start_trig(DAQ_StartTrig,Edge.RISING)
 	except Exception as excpt:
 		print('Error configuring DAQ. Please check your DAQ is connected and powered. Exception details:', type(excpt).__name__,'.',excpt)
-		closeDAQTask(task)
+		closeDAQTask(readTask)
 		sys.exit()
 	return readTask
 

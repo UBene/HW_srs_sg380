@@ -1,0 +1,160 @@
+2022-04-01T00:05:52|DEBUG|GalvoMirrorAPDScanMeasure|compute_scan_params
+2022-04-01T00:05:52|DEBUG|GalvoMirrorAPDScanMeasure|compute_scan_params
+2022-04-01T00:05:52|DEBUG|GalvoMirrorAPDScanMeasure|compute_scan_params
+2022-04-01T00:05:52|DEBUG|GalvoMirrorAPDScanMeasure|compute_scan_params
+2022-04-01T00:05:52|DEBUG|GalvoMirrorAPDScanMeasure|compute_scan_params
+2022-04-01T00:05:52|DEBUG|GalvoMirrorAPDScanMeasure|compute_scan_params
+2022-04-01T00:05:52|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\schuck_owen\eclipse-workspace\scope_foundry\ScopeFoundry\scanning\base_raster_scan.py", line 408, in show_hide_previous_scans
+    if len(self.img_items) < 2:
+AttributeError: 'GalvoMirrorAPDScanMeasure' object has no attribute 'img_items'
+
+2022-04-01T00:05:52|DEBUG|GalvoMirrorAPDScanMeasure|compute_scan_params
+2022-04-01T00:05:53|INFO|PowerMeterOptimizerMeasure|powermeter_optimizer start_stop False
+2022-04-01T00:05:53|INFO|PowerMeterOptimizerMeasure|measurement powermeter_optimizer stopping stop_first
+2022-04-01T00:05:53|INFO|ToupCamSpotOptimizer|toupcam_spot_optimizer start_stop False
+2022-04-01T00:05:53|INFO|ToupCamSpotOptimizer|measurement toupcam_spot_optimizer stopping stop_first
+2022-04-01T00:05:53|INFO|HydraHarpOptimizerMeasure|hydraharp_channel_optimizer start_stop False
+2022-04-01T00:05:53|INFO|HydraHarpOptimizerMeasure|measurement hydraharp_channel_optimizer stopping stop_first
+2022-04-01T00:05:53|INFO|SweepSequencer|sweep_sequencer start_stop False
+2022-04-01T00:05:53|INFO|SweepSequencer|measurement sweep_sequencer stopping stop_first
+2022-04-01T00:05:53|INFO|APDOptimizerCBMeasurement|apd_optimizer start_stop False
+2022-04-01T00:05:53|INFO|APDOptimizerCBMeasurement|measurement apd_optimizer stopping stop_first
+2022-04-01T00:05:53|INFO|GalvoMirrorAPDScanMeasure|galvo_mirror_2D_apd_scan start_stop False
+2022-04-01T00:05:53|INFO|GalvoMirrorAPDScanMeasure|measurement galvo_mirror_2D_apd_scan stopping stop_first
+2022-04-01T00:05:53|DEBUG|GalvoMirrorAPDScanMeasure|compute_scan_params
+2022-04-01T00:05:53|DEBUG|GalvoMirrorAPDScanMeasure|compute_scan_params
+2022-04-01T00:05:53|DEBUG|GalvoMirrorAPDScanMeasure|compute_scan_params
+2022-04-01T00:05:53|DEBUG|GalvoMirrorAPDScanMeasure|compute_scan_params
+2022-04-01T00:05:53|DEBUG|GalvoMirrorAPDScanMeasure|compute_scan_params
+2022-04-01T00:05:53|DEBUG|GalvoMirrorAPDScanMeasure|compute_scan_params
+2022-04-01T00:05:53|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\schuck_owen\eclipse-workspace\scope_foundry\ScopeFoundry\scanning\base_raster_scan.py", line 408, in show_hide_previous_scans
+    if len(self.img_items) < 2:
+AttributeError: 'GalvoMirrorAPDScanMeasure' object has no attribute 'img_items'
+
+2022-04-01T00:05:53|INFO|GenericSweeper|generic_sweeper start_stop False
+2022-04-01T00:05:53|INFO|GenericSweeper|measurement generic_sweeper stopping stop_first
+2022-04-01T00:05:53|CRITICAL|root|Unhandled exception:TypeError: set_compress() missing 1 required positional argument: 'compress'
+
+2022-04-01T00:05:53|INFO|RangedOptimization|auto_focus start_stop False
+2022-04-01T00:05:53|INFO|RangedOptimization|measurement auto_focus stopping stop_first
+2022-04-01T00:05:53|INFO|ConfigMeasurement|config_measurement start_stop False
+2022-04-01T00:05:53|INFO|ConfigMeasurement|measurement config_measurement stopping stop_first
+2022-04-01T00:05:53|INFO|NikonMicroscope|setting up figures for powermeter_optimizer measurement powermeter_optimizer
+2022-04-01T00:05:53|INFO|PowerMeterOptimizerMeasure|powermeter_optimizer start_stop False
+2022-04-01T00:05:53|INFO|PowerMeterOptimizerMeasure|measurement powermeter_optimizer stopping stop_first
+2022-04-01T00:05:53|INFO|NikonMicroscope|setting up figures for toupcam_spot_optimizer measurement toupcam_spot_optimizer
+2022-04-01T00:05:53|INFO|ToupCamSpotOptimizer|toupcam_spot_optimizer start_stop False
+2022-04-01T00:05:53|INFO|ToupCamSpotOptimizer|measurement toupcam_spot_optimizer stopping stop_first
+2022-04-01T00:05:53|INFO|NikonMicroscope|setting up figures for hydraharp_channel_optimizer measurement hydraharp_channel_optimizer
+2022-04-01T00:05:53|INFO|HydraHarpOptimizerMeasure|hydraharp_channel_optimizer start_stop False
+2022-04-01T00:05:53|INFO|HydraHarpOptimizerMeasure|measurement hydraharp_channel_optimizer stopping stop_first
+2022-04-01T00:05:53|INFO|NikonMicroscope|setting up figures for sweep_sequencer measurement sweep_sequencer
+2022-04-01T00:05:53|INFO|SweepSequencer|sweep_sequencer start_stop False
+2022-04-01T00:05:53|INFO|SweepSequencer|measurement sweep_sequencer stopping stop_first
+2022-04-01T00:05:53|WARNING|PowerMeterOptimizerMeasure|Measurement.gui is deprecated, use Measurement.app <class 'DeprecationWarning'>
+2022-04-01T00:05:53|WARNING|ToupCamSpotOptimizer|Measurement.gui is deprecated, use Measurement.app <class 'DeprecationWarning'>
+2022-04-01T00:05:53|WARNING|HydraHarpOptimizerMeasure|Measurement.gui is deprecated, use Measurement.app <class 'DeprecationWarning'>
+2022-04-01T00:05:53|WARNING|SweepSequencer|Measurement.gui is deprecated, use Measurement.app <class 'DeprecationWarning'>
+2022-04-01T00:05:53|WARNING|APDOptimizerCBMeasurement|Measurement.gui is deprecated, use Measurement.app <class 'DeprecationWarning'>
+2022-04-01T00:05:53|WARNING|GalvoMirrorAPDScanMeasure|Measurement.gui is deprecated, use Measurement.app <class 'DeprecationWarning'>
+2022-04-01T00:05:53|WARNING|GenericSweeper|Measurement.gui is deprecated, use Measurement.app <class 'DeprecationWarning'>
+2022-04-01T00:05:53|WARNING|RangedOptimization|Measurement.gui is deprecated, use Measurement.app <class 'DeprecationWarning'>
+2022-04-01T00:05:53|WARNING|ConfigMeasurement|Measurement.gui is deprecated, use Measurement.app <class 'DeprecationWarning'>
+2022-04-01T00:05:53|INFO|NikonMicroscope|setting up figures for apd_optimizer measurement apd_optimizer
+2022-04-01T00:05:53|INFO|APDOptimizerCBMeasurement|apd_optimizer start_stop False
+2022-04-01T00:05:53|INFO|APDOptimizerCBMeasurement|measurement apd_optimizer stopping stop_first
+2022-04-01T00:05:53|INFO|NikonMicroscope|setting up figures for galvo_mirror_2D_apd_scan measurement galvo_mirror_2D_apd_scan
+2022-04-01T00:05:53|DEBUG|GalvoMirrorAPDScanMeasure|compute_scan_params
+2022-04-01T00:05:53|DEBUG|GalvoMirrorAPDScanMeasure|update_scan_roi
+2022-04-01T00:05:53|INFO|NikonMicroscope|setting up figures for generic_sweeper measurement generic_sweeper
+2022-04-01T00:05:53|INFO|GenericSweeper|generic_sweeper start_stop False
+2022-04-01T00:05:53|INFO|GenericSweeper|measurement generic_sweeper stopping stop_first
+2022-04-01T00:05:53|WARNING|PowerMeterOptimizerMeasure|Measurement.gui is deprecated, use Measurement.app <class 'DeprecationWarning'>
+2022-04-01T00:05:53|WARNING|PowerMeterOptimizerMeasure|Measurement.gui is deprecated, use Measurement.app <class 'DeprecationWarning'>
+2022-04-01T00:05:53|WARNING|ToupCamSpotOptimizer|Measurement.gui is deprecated, use Measurement.app <class 'DeprecationWarning'>
+2022-04-01T00:05:53|WARNING|ToupCamSpotOptimizer|Measurement.gui is deprecated, use Measurement.app <class 'DeprecationWarning'>
+2022-04-01T00:05:53|WARNING|HydraHarpOptimizerMeasure|Measurement.gui is deprecated, use Measurement.app <class 'DeprecationWarning'>
+2022-04-01T00:05:53|WARNING|HydraHarpOptimizerMeasure|Measurement.gui is deprecated, use Measurement.app <class 'DeprecationWarning'>
+2022-04-01T00:05:53|WARNING|SweepSequencer|Measurement.gui is deprecated, use Measurement.app <class 'DeprecationWarning'>
+2022-04-01T00:05:53|WARNING|SweepSequencer|Measurement.gui is deprecated, use Measurement.app <class 'DeprecationWarning'>
+2022-04-01T00:05:53|WARNING|APDOptimizerCBMeasurement|Measurement.gui is deprecated, use Measurement.app <class 'DeprecationWarning'>
+2022-04-01T00:05:53|WARNING|APDOptimizerCBMeasurement|Measurement.gui is deprecated, use Measurement.app <class 'DeprecationWarning'>
+2022-04-01T00:05:53|WARNING|GalvoMirrorAPDScanMeasure|Measurement.gui is deprecated, use Measurement.app <class 'DeprecationWarning'>
+2022-04-01T00:05:53|WARNING|GalvoMirrorAPDScanMeasure|Measurement.gui is deprecated, use Measurement.app <class 'DeprecationWarning'>
+2022-04-01T00:05:53|WARNING|RangedOptimization|Measurement.gui is deprecated, use Measurement.app <class 'DeprecationWarning'>
+2022-04-01T00:05:53|WARNING|RangedOptimization|Measurement.gui is deprecated, use Measurement.app <class 'DeprecationWarning'>
+2022-04-01T00:05:53|WARNING|ConfigMeasurement|Measurement.gui is deprecated, use Measurement.app <class 'DeprecationWarning'>
+2022-04-01T00:05:53|WARNING|ConfigMeasurement|Measurement.gui is deprecated, use Measurement.app <class 'DeprecationWarning'>
+2022-04-01T00:05:53|INFO|NikonMicroscope|setting up figures for auto_focus measurement auto_focus
+2022-04-01T00:05:53|INFO|RangedOptimization|auto_focus start_stop False
+2022-04-01T00:05:53|INFO|RangedOptimization|measurement auto_focus stopping stop_first
+2022-04-01T00:05:53|INFO|NikonMicroscope|setting up figures for config_measurement measurement config_measurement
+2022-04-01T00:05:54|INFO|ConfigMeasurement|config_measurement start_stop False
+2022-04-01T00:05:54|INFO|ConfigMeasurement|measurement config_measurement stopping stop_first
+2022-04-01T00:05:54|INFO|ConfigMeasurement|config_measurement start_stop False
+2022-04-01T00:05:54|INFO|ConfigMeasurement|measurement config_measurement stopping stop_first
+2022-04-01T00:05:54|INFO|NikonMicroscope|ini settings loading from defaults.ini
+2022-04-01T00:05:54|DEBUG|FileLQ|save_dir: update_value 'C:\\Users\\schuck_owen\\eclipse-workspace\\scope_foundry\\upright_odmr_microscope\\data' --> "F:\\User's Data"    sender=None
+2022-04-01T00:05:54|DEBUG|FileLQ|save_dir: different values C:\Users\schuck_owen\eclipse-workspace\scope_foundry\upright_odmr_microscope\data F:\User's Data
+2022-04-01T00:05:54|INFO|NikonMicroscope|hardware/hydraharp
+2022-04-01T00:05:54|INFO|NikonMicroscope|hardware/thorlabs_powermeter
+2022-04-01T00:05:54|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\schuck_owen\eclipse-workspace\scope_foundry\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\schuck_owen\eclipse-workspace\scope_foundry\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\schuck_owen\eclipse-workspace\scope_foundry\ScopeFoundryHW\thorlabs_powermeter\thorlabs_powermeter.py", line 53, in connect
+    self.power_meter = ThorlabsPM100D(debug=self.settings['debug_mode'], port=self.settings['port'])
+  File "C:\Users\schuck_owen\eclipse-workspace\scope_foundry\ScopeFoundryHW\thorlabs_powermeter\thorlabs_pm100d.py", line 35, in __init__
+    self.pm = self.visa_resource_manager.get_instrument(port)
+  File "C:\Users\schuck_owen\anaconda3\envs\scopefoundry\lib\site-packages\pyvisa\highlevel.py", line 3358, in get_instrument
+    resource_name, access_mode, open_timeout, resource_pyclass, **kwargs
+  File "C:\Users\schuck_owen\anaconda3\envs\scopefoundry\lib\site-packages\pyvisa\highlevel.py", line 3304, in open_resource
+    res.open(access_mode, open_timeout)
+  File "C:\Users\schuck_owen\anaconda3\envs\scopefoundry\lib\site-packages\pyvisa\resources\resource.py", line 298, in open
+    self._resource_name, access_mode, open_timeout
+  File "C:\Users\schuck_owen\anaconda3\envs\scopefoundry\lib\site-packages\pyvisa\highlevel.py", line 3232, in open_bare_resource
+    return self.visalib.open(self.session, resource_name, access_mode, open_timeout)
+  File "C:\Users\schuck_owen\anaconda3\envs\scopefoundry\lib\site-packages\pyvisa\ctwrapper\functions.py", line 1852, in open
+    session, resource_name, access_mode, open_timeout, byref(out_session)
+  File "C:\Users\schuck_owen\anaconda3\envs\scopefoundry\lib\site-packages\pyvisa\ctwrapper\highlevel.py", line 222, in _return_handler
+    return self.handle_return_value(session, ret_value)  # type: ignore
+  File "C:\Users\schuck_owen\anaconda3\envs\scopefoundry\lib\site-packages\pyvisa\highlevel.py", line 251, in handle_return_value
+    raise errors.VisaIOError(rv)
+pyvisa.errors.VisaIOError: VI_ERROR_RSRC_NFOUND (-1073807343): Insufficient location information or the requested device or resource is not present in the system.
+
+2022-04-01T00:05:54|INFO|NikonMicroscope|hardware/toupcam
+2022-04-01T00:05:54|INFO|NikonMicroscope|hardware/apd_counter
+2022-04-01T00:05:54|INFO|NikonMicroscope|hardware/galvo_mirrors
+2022-04-01T00:05:54|INFO|NikonMicroscope|hardware/srs_control
+2022-04-01T00:05:54|INFO|NikonMicroscope|hardware/pulse_blaster
+2022-04-01T00:05:54|INFO|NikonMicroscope|hardware/triggered_counter
+2022-04-01T00:05:54|INFO|NikonMicroscope|ini settings loaded from: defaults.ini
+2022-04-01T00:05:54|DEBUG|FileLQ|config_file qLineEdit on_edit_finished
+2022-04-01T00:05:54|DEBUG|FileLQ|config_file: update_value '0' --> 'C:\\Users\\schuck_owen\\eclipse-workspace\\scope_foundry\\upright_odmr_microscope'    sender=<PyQt5.QtWidgets.QLineEdit object at 0x0000027D4B4BC5E8>
+2022-04-01T00:05:54|DEBUG|FileLQ|config_file: different values 0 C:\Users\schuck_owen\eclipse-workspace\scope_foundry\upright_odmr_microscope
+2022-04-01T00:05:56|DEBUG|FileLQ|config_file qLineEdit on_edit_finished
+2022-04-01T00:05:56|DEBUG|FileLQ|config_file: update_value 'C:\\Users\\schuck_owen\\eclipse-workspace\\scope_foundry\\upright_odmr_microscope' --> 'C:\\Users\\schuck_owen\\eclipse-workspace\\scope_foundry\\upright_odmr_microscope'    sender=<PyQt5.QtWidgets.QLineEdit object at 0x0000027D4B4BC5E8>
+2022-04-01T00:05:56|DEBUG|FileLQ|config_file: same_value so returning C:\Users\schuck_owen\eclipse-workspace\scope_foundry\upright_odmr_microscope C:\Users\schuck_owen\eclipse-workspace\scope_foundry\upright_odmr_microscope
+2022-04-01T00:05:56|DEBUG|FileLQ|config_file qLineEdit on_edit_finished
+2022-04-01T00:05:56|DEBUG|FileLQ|config_file: update_value 'C:\\Users\\schuck_owen\\eclipse-workspace\\scope_foundry\\upright_odmr_microscope' --> 'C:\\Users\\schuck_owen\\eclipse-workspace\\scope_foundry\\upright_odmr_microscope'    sender=<PyQt5.QtWidgets.QLineEdit object at 0x0000027D4B4BC5E8>
+2022-04-01T00:05:56|DEBUG|FileLQ|config_file: same_value so returning C:\Users\schuck_owen\eclipse-workspace\scope_foundry\upright_odmr_microscope C:\Users\schuck_owen\eclipse-workspace\scope_foundry\upright_odmr_microscope
+2022-04-01T00:05:59|DEBUG|ScopeFoundryHW.ni_daq.devices.ni_counter_task|NI_CounterTask.set_channel-- Dev1/ctr0 /Dev1/PFI0
+2022-04-01T00:06:03|INFO|APDOptimizerCBMeasurement|apd_optimizer start_stop True
+2022-04-01T00:06:03|INFO|APDOptimizerCBMeasurement|measurement apd_optimizer start called from thread: 8240
+2022-04-01T00:06:06|INFO|APDOptimizerCBMeasurement|apd_optimizer start_stop False
+2022-04-01T00:06:06|INFO|APDOptimizerCBMeasurement|measurement apd_optimizer stopping run_thread_run
+2022-04-01T00:06:06|INFO|APDOptimizerCBMeasurement|measurement apd_optimizer interrupt called
+2022-04-01T00:06:16|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\schuck_owen\eclipse-workspace\scope_foundry\ScopeFoundry\hardware.py", line 220, in enable_connection
+    raise err
+  File "C:\Users\schuck_owen\eclipse-workspace\scope_foundry\ScopeFoundry\hardware.py", line 210, in enable_connection
+    self.connect()
+  File "C:\Users\schuck_owen\eclipse-workspace\scope_foundry\ScopeFoundryHW\nidaqmx\triggered_counter_hw.py", line 40, in connect
+    self.start_task()
+  File "C:\Users\schuck_owen\eclipse-workspace\scope_foundry\ScopeFoundryHW\nidaqmx\triggered_counter_hw.py", line 56, in start_task
+    self.task = readTask = nidaqmx.Task()
+NameError: name 'nidaqmx' is not defined
+
