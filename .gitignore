@@ -1,4 +1,5 @@
 *.pyc
+.metadata/*
 *~
 .DS_Store
 .project
