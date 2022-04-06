@@ -38,7 +38,8 @@ class PowerScanMeasure(Measurement):
                      'winspec_remote_client': 'acq_time',
                      'apd_counter': 'int_time',
                      'picam': 'ExposureTime',
-                     'thorlabs_powermeter_2': 'average_count'}
+                     'thorlabs_powermeter_2': 'average_count',
+                     'labspec': 'exposure_time'}
                 
         for key in self.hws.keys():
             self.settings.New('collect_{}'.format(key), dtype=bool, initial=False)
@@ -229,6 +230,15 @@ class PowerScanMeasure(Measurement):
             self.pm2_powers = []
             self.used_hws.update({'thorlabs_powermeter_2':self.installed_hw['thorlabs_powermeter_2']})
 
+        if self.settings['collect_labspec']:
+            self.labspec_readout = self.app.measurements['labspec_readout']
+            self.labspec_readout.start_stop(False)
+            self.labspec_readout.settings['save_h5'] = False
+            self.spectra = []  # don't know size of ccd until after measurement
+            self.integrated_spectra = []
+            self.used_hws.update({'labspec':self.installed_hw['labspec']})
+
+
         # Prepare for different acquisition modes        
         # if self.settings['acq_mode'] == 'const_SNR':
         #    self.spec_acq_times_array = self.spec_acq_time.val / np.exp(2*self.log_power_index)
@@ -406,6 +416,15 @@ class PowerScanMeasure(Measurement):
             if self.settings['collect_thorlabs_powermeter_2']:
                 power = self.pm2_hw.power.read_from_hardware()
                 self.pm2_powers.append(power)
+
+            if self.settings['collect_labspec']:
+                #self.labspec_readout.settings['continuous'] = False
+                self.start_nested_measure_and_wait(self.labspec_readout, nested_interrupt=False)
+                spec = self.labspec_readout.data['spectrum']
+                if not (spec == None).any():
+                    self.spectra.append(spec)
+                    self.integrated_spectra.append(spec.sum()) 
+
                 
             # collect power meter value after measurement W/O SWAPPING
             self.pm_powers_after[ii] = self.collect_pm_power_data()
@@ -451,6 +470,11 @@ class PowerScanMeasure(Measurement):
             
             if self.settings['collect_picam']:
                 H['wls'] = self.picam_readout.wls
+                H['spectra'] = np.squeeze(np.array(self.spectra))
+                H['integrated_spectra'] = np.array(self.integrated_spectra)
+            
+            if self.settings['collect_labspec']:
+                H['wls'] = self.labspec.data['wavelengths']
                 H['spectra'] = np.squeeze(np.array(self.spectra))
                 H['integrated_spectra'] = np.array(self.integrated_spectra)
             
@@ -535,6 +559,11 @@ class PowerScanMeasure(Measurement):
             if self.settings['collect_thorlabs_powermeter_2']:
                 self.plot_lines[jj].setData(X, self.pm2_powers[:ii])
                 jj += 1 
+
+            if self.settings['collect_labspec']:
+                acq_times_array = self.Tacq_arrays[jj][2]
+                self.plot_lines[jj].setData(X, self.integrated_spectra[:ii] / acq_times_array[:ii])
+                jj += 1
                         
     def aquire_histogram(self, hw): 
         hw.start_histogram()
