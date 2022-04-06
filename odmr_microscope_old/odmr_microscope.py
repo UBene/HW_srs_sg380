@@ -1,6 +1,6 @@
-from __future__ import division, print_function
 from ScopeFoundry import BaseMicroscopeApp
 import logging
+from odmr_microscope.measurements.config_measurement import ConfigMeasurement
 
 
 
@@ -23,9 +23,13 @@ class Microscope(BaseMicroscopeApp):
         
         from ScopeFoundryHW.spincore.spinapi_hw import PulseBlasterHW
         self.add_hardware(PulseBlasterHW(self))
-        
-        from measurements.transition import ConfigMeasurement
-        self.add_measurement(ConfigMeasurement)
+
+
+        from ScopeFoundryHW.nidaqmx.triggered_analog_readout import DAQTriggeredDReadout, DAQTriggeredAReadout
+        self.add_hardware(DAQTriggeredDReadout(self))
+        #self.add_hardware(DAQTriggeredAReadout(self))
+                
+        self.add_measurement(ConfigMeasurement(self))
                 
                 
 if __name__ == '__main__':

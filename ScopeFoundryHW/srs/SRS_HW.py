@@ -51,7 +51,7 @@ class SRS(HardwareComponent):
         S.New("port", str, initial="GPIB0::GPIBaddr::INSTR")
         S.New("output", bool, initial=False)
         S.New("frequency", unit="Hz", si=True)
-        S.New("amplitude", float, unit="dBm")
+        S.New("amplitude", float, unit="dBm", vmax=9)
         S.New("modulation", bool, initial=False)
         S.New("TYPE", int, #initial=MODULATIONTYPES[0][1], 
               choices=MODULATIONTYPES)
@@ -65,6 +65,7 @@ class SRS(HardwareComponent):
 
         rm = visa.ResourceManager()
         self.dev = SRS = rm.open_resource(S["port"])
+        
 
         try:
             deviceID = SRS.query("*IDN?")
@@ -81,16 +82,32 @@ class SRS(HardwareComponent):
         SRS.write("*CLS")
 
         S.output.connect_to_hardware(
-            self.read_enable_output, self.write_enable_RFOutput
+            self.read_enable_output, self.write_enable_output
         )
-        S.frequency.connect_to_hardware(write_func=self.write_frequency)
-        S.amplitude.connect_to_hardware(write_func=self.write_amplitude)
+        S.frequency.connect_to_hardware(self.read_frequency, self.write_frequency)
+        S.amplitude.connect_to_hardware(self.read_amplitude, self.write_amplitude)
         S.modulation.connect_to_hardware(
             self.read_enable_modulation, self.write_enable_modulation
         )
-        S.TYPE.connect_to_hardware(write_func=self.write_type)
-        S.QFNC.connect_to_hardware(write_func=self.write_qfnc)
+        S.TYPE.connect_to_hardware(self.read_type, self.write_type)
+        S.QFNC.connect_to_hardware(self.read_qfnc, self.write_qfnc)
+        
+    def disconnect(self):
+        if hasattr(self, 'dev'):
+            self.dev.close()
+            del self.dev
+        
+    def ask(self, cmd):
+        resp = self.dev.query(cmd)
+        if self.settings['debug_mode']: 
+            print(self.name, 'ask', cmd, repr(resp), repr(resp.split('\r\n')[0]))
+        return resp.split('\r\n')[0]
 
+    def write(self, cmd):
+        if self.settings['debug_mode']: 
+            print(self.name, 'write', cmd)
+        self.dev.write(cmd)
+        
     def SRSerrCheck(self,):
         err = self.dev.query("LERR?")
         if int(err) is not 0:
@@ -122,24 +139,35 @@ class SRS(HardwareComponent):
         #                        - units: string describing units (e.g. 'MHz'). For SRS384, minimum unit is 'Hz', max 'GHz'
         self.write("FREQ " + str(freq) + " " + units)
 
-    def write_amplitude(self, RFamplitude, units="dBm"):
-        self.write("AMPR " + str(RFamplitude) + " " + units)
 
-    def ask(self, cmd):
-        resp = self.dev.query(cmd)[:-4]
+    def read_amplitude(self):
+        resp = self.ask("AMPR?")
         return resp
 
-    def write(self, cmd):
-        self.dev.query(cmd)
 
+    def write_amplitude(self, RFamplitude, units="dBm"):
+        if RFamplitude>=9:
+            print(self.name, 'Warning: did not write amplitude >9 dBm', RFamplitude)
+            return 
+        self.write("AMPR " + str(RFamplitude) + " " + units)
+
+
+        
     def write_enable_modulation(self, enable: bool):
         self.write(f"MODL {bool2str(enable)}")
 
     def read_enable_modulation(self):
         return str2bool(self.ask("MODL?"))
 
+    def read_type(self):
+        return self.ask("TYPE?")
+
+
     def write_type(self, _type: int):
         self.write(f"TYPE {_type}")
+
+    def read_qfnc(self):
+        return self.ask("QFNC?")
 
     def write_qfnc(self, val):
         self.write(f"QFNC {val}")

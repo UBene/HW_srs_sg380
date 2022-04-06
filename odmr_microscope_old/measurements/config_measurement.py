@@ -26,12 +26,12 @@ from qtpy.QtWidgets import (
 )
 from qtpy import QtCore
 
-from importlib import import_module
+
 
 
 from random import shuffle
 from ScopeFoundry.logged_quantity import FileLQ
-from measurements.helper_funcs_constants import ContrastModes, calculateContrast
+from odmr_microscope.measurements.helper_funcs_constants import ContrastModes, calculateContrast
 
 sequences = ["ESR", "Rabi", "T1", "T2", "XY8", "correlSpecconfig"]
 
@@ -114,8 +114,7 @@ class ConfigMeasurement(Measurement):
         self.data_ready = False
 
     def run(self):
-        self.data_ready = False
-        D = self.data = {}
+        self.data = {}
         S = self.settings
 
         SRS = self.app.hardware["srs_control"]
@@ -172,8 +171,8 @@ class ConfigMeasurement(Measurement):
             SRS.settings["modulation"] = True
 
             # Configure DAQ
-            DAQclosed = False
-            DAQtask = DAQctl.configureDAQ(expCfg.Nsamples)
+            #DAQclosed = False
+            #DAQtask = DAQctl.configureDAQ(expCfg.Nsamples)
             #
             # if expCfg.plotPulseSequence:
             #     # Plot sequence
@@ -205,12 +204,13 @@ class ConfigMeasurement(Measurement):
             # Initialize data arrays
             N_scanPts = len(scannedParam)
             Navg = S["Navg"]
+            
             meanSignalCurrentRun = np.zeros(N_scanPts)
             meanBackgroundCurrentRun = np.zeros(N_scanPts)
             contrastCurrentRun = np.zeros(N_scanPts)
-            signal = np.zeros([N_scanPts, Navg])
-            background = np.zeros([N_scanPts, Navg])
-            contrast = np.zeros([N_scanPts, Navg])
+            signal = np.zeros((N_scanPts, Navg))
+            background = np.zeros_like(signal)
+            contrast = np.zeros_like(signal)
 
             # Run experiment
             for i_run in range(Navg):
@@ -236,8 +236,13 @@ class ConfigMeasurement(Measurement):
                     # cts = DAQctl.readDAQ(DAQtask, 2 * S['Nsamples'], DAQtimeout)
 
                     # Extract signal and background counts
-                    sig = cts[0::2]
-                    bkgnd = cts[1::2]
+                    cts = [3,6]
+                    
+                    
+                    sig = cts[0]
+                    bkgnd = cts[1]-cts[0]                   
+                    #sig = cts[0::2]
+                    #bkgnd = cts[1::2]
 
                     # Take average of counts
                     ii = index[i_scanPoint]
@@ -288,33 +293,33 @@ class ConfigMeasurement(Measurement):
                     self.data["background":background]
                     self.data["contrast":contrast]
                     self.data["scannedParam":scannedParam]
-
+                    self.data_ready = True
                 # Sort current run counts in order of increasing delay
 
-                dataCurrentRun = np.transpose(
-                    np.array(
-                        [
-                            scannedParam,
-                            meanSignalCurrentRun,
-                            meanBackgroundCurrentRun,
-                            contrastCurrentRun,
-                        ]
-                    )
-                )
-                sortingIndices = np.argsort(dataCurrentRun[:, 0])
-                dataCurrentRun = dataCurrentRun[sortingIndices]
-                # Fill in current run data:
-                sortedScanParam = dataCurrentRun[:, 0]
-                signal[:, i_run] = dataCurrentRun[:, 1]
-                background[:, i_run] = dataCurrentRun[:, 2]
-                contrast[:, i_run] = dataCurrentRun[:, 3]
-
-                # Update quantities for plotting
-                updatedSignal = np.mean(signal[:, 0 : i_run + 1], 1)
-                updatedBackground = np.mean(background[:, 0 : i_run + 1], 1)
-                updatedContrast = np.mean(contrast[:, 0 : i_run + 1], 1)
-
-                self.data_ready = True
+                # dataCurrentRun = np.transpose(
+                #     np.array(
+                #         [
+                #             scannedParam,
+                #             meanSignalCurrentRun,
+                #             meanBackgroundCurrentRun,
+                #             contrastCurrentRun,
+                #         ]
+                #     )
+                # )
+                # sortingIndices = np.argsort(dataCurrentRun[:, 0])
+                # dataCurrentRun = dataCurrentRun[sortingIndices]
+                # # Fill in current run data:
+                # sortedScanParam = dataCurrentRun[:, 0]
+                # signal[:, i_run] = dataCurrentRun[:, 1]
+                # background[:, i_run] = dataCurrentRun[:, 2]
+                # contrast[:, i_run] = dataCurrentRun[:, 3]
+                #
+                # # Update quantities for plotting
+                # updatedSignal = np.mean(signal[:, 0 : i_run + 1], 1)
+                # updatedBackground = np.mean(background[:, 0 : i_run + 1], 1)
+                # updatedContrast = np.mean(contrast[:, 0 : i_run + 1], 1)
+                #
+                # self.data_ready = True
 
                 # Update plot:
                 # if expCfg.livePlotUpdate:
@@ -363,7 +368,7 @@ class ConfigMeasurement(Measurement):
                 # SRSctl.disableSRS_RFOutput(SRS)
                 SRS.settings["output"] = False
 
-            if ("DAQtask" in vars()) and (not DAQclosed):
+            #if ("DAQtask" in vars()) and (not DAQclosed):
                 # Close DAQ task:
-                DAQctl.closeDAQTask(DAQtask)
-                DAQclosed = True
+                #DAQctl.closeDAQTask(DAQtask)
+            #    DAQclosed = True

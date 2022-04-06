@@ -1,60 +1,34 @@
-import time
-from ScopeFoundryHW.ni_daq.measure.galvo_mirror_slow_scan import GalvoMirror2DSlowScan
-
+from ScopeFoundryHW.nidaqmx.galvo_mirrors.galvo_mirror_2d_slow_scan import GalvoMirror2DSlowScan
 
 
 class GalvoMirrorAPDScanMeasure(GalvoMirror2DSlowScan):
     
     name = 'galvo_mirror_2D_apd_scan'
 
-    def __init__(self, app, use_external_range_sync=False, circ_roi_size=0.001):
-        GalvoMirror2DSlowScan.__init__(self, app, h_limits=(-12.5,12.5), v_limits=(-12.5,12.5), h_unit="V", v_unit="V", 
-                                      use_external_range_sync=use_external_range_sync,
-                                      circ_roi_size=circ_roi_size)        
+    def __init__(self, app):
+        GalvoMirror2DSlowScan.__init__(self, app)        
         
     def setup(self):
-        self.stage = self.app.hardware['attocube_xyz_stage']
-        self.target_range = 0.050e-3 # um
-        self.slow_move_timeout = 10. # sec
+        GalvoMirror2DSlowScan.setup(self)
+        self.stage = self.app.hardware['galvo_mirrors']
 
-        self.settings.New("h_axis", initial="x", dtype=str, choices=("x", "y", "z"))
-        self.settings.New("v_axis", initial="y", dtype=str, choices=("x", "y", "z"))
+        self.target_range = 0.050e-3  # um
+        self.slow_move_timeout = 10.  # sec
 
     def pre_scan_setup(self):
         self.apd = self.app.hardware['apd_counter']
-
         if self.settings['save_h5']:
-            self.count_rate_map_h5 = self.h5_meas_group.create_dataset('count_rate_map', 
+            self.count_rate_map_h5 = self.h5_meas_group.create_dataset('count_rate_map',
                                                                        shape=self.scan_shape,
-                                                                       dtype=float, 
+                                                                       dtype=float,
                                                                        compression='gzip')
-
 
     def collect_pixel(self, pixel_num, k, j, i):
         count_rate = self.apd.settings.count_rate.read_from_hardware()
         
-        self.display_image_map[k,j,i] = count_rate
+        self.display_image_map[k, j, i] = count_rate
         if self.settings['save_h5']:
-            self.count_rate_map_h5[k,j,i] = count_rate
-
-
-
-    def move_position_start(self, h,v):
-        self.move_position_slow(h,v, 0, 0, timeout=30)
-
-
-
-    def move_position_slow(self, h,v, dh,dv, timeout=10):
-        # update target position
-        self.stage.move_slow_x(h)
-        self.stage.move_slow_y(v)
-        
-
-    def move_position_fast(self,  h,v, dh,dv):
-        # Note implemented
-        self.move_position_slow( h,v, dh,dv)
-
-
+            self.count_rate_map_h5[k, j, i] = count_rate
 
             
 # class PicoharpApdScan(AttoCube2DSlowScan):
