@@ -108,7 +108,7 @@ class NikonMicroscope(BaseMicroscopeApp):
         from confocal_measure.apd_optimizer_cb import APDOptimizerCBMeasurement
         self.add_measurement(APDOptimizerCBMeasurement(self)) 
         
-        from ScopeFoundryHW.nidaqmx.galvo_mirrors.galvo_mirrors_hw import GalvoMirrorsHW
+        from ScopeFoundryHW.nidaqmx.galvo_mirrors.pydaqmx_galvo_mirrors_hw import GalvoMirrorsHW
         self.add_hardware(GalvoMirrorsHW(self))
         
         from ScopeFoundryHW.nidaqmx.galvo_mirrors.galvo_mirror_2d_apd_slow_scan import GalvoMirrorAPDScanMeasure
@@ -130,11 +130,11 @@ class NikonMicroscope(BaseMicroscopeApp):
         # from ScopeFoundryHW.lakeshore_335.lakeshore_measure import LakeshoreMeasure
         # self.add_measurement(LakeshoreMeasure(self))
                 
-        from confocal_measure.generic_sweep import GenericSweeper
-        self.add_measurement(GenericSweeper(self))
+        #from confocal_measure.generic_sweep import GenericSweeper
+        #self.add_measurement(GenericSweeper(self))
         
-        from confocal_measure.ranged_optimization import RangedOptimization
-        self.add_measurement(RangedOptimization(self, name='auto_focus'))
+        #from confocal_measure.ranged_optimization import RangedOptimization
+        #self.add_measurement(RangedOptimization(self, name='auto_focus'))
         
         from ScopeFoundryHW.srs.SRS_HW import SRS
         self.add_hardware(SRS(self))
@@ -144,9 +144,19 @@ class NikonMicroscope(BaseMicroscopeApp):
         
         from ScopeFoundryHW.nidaqmx.triggered_counter_hw import TriggeredCounterHW
         self.add_hardware(TriggeredCounterHW(self))        
-        
+
+        from ScopeFoundryHW.nidaqmx.pulse_width_counter_hw import PulseWidthCounter
+        self.add_hardware(PulseWidthCounter(self))  
+
         from odmr_measurements.config_measurement import ConfigMeasurement
         self.add_measurement(ConfigMeasurement(self))
+
+        from odmr_measurements.esr import ESR
+        self.add_measurement(ESR(self))
+
+        from odmr_measurements.rabi import Rabi
+        self.add_measurement(Rabi(self))
+
         # self.add_measurement(HahnEcho(self))
         
     def setup_ui(self):

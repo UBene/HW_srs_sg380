@@ -2,6 +2,8 @@
 Created on Mar 21, 2022
 
 @author: Benedikt Ursprung
+
+to be retired! use 
 """
 
 import numpy as np
@@ -18,10 +20,14 @@ from pyqtgraph.dockarea.DockArea import DockArea
 
 from ScopeFoundry import Measurement
 from ScopeFoundry import h5_io
-from ScopeFoundry.logged_quantity import FileLQ
-from odmr_measurements.pulse_blaster_functions import PulseBlasterCtrl, ContrastModes, calculateContrast
+from odmr_measurements.pulse_blaster_functions import ContrastModes, calculateContrast
+from odmr_measurements.esr import ESRPulseProgramGenerator
 
 sequences = ["ESR", "Rabi", "T1", "T2", "XY8", "correlSpecconfig"]
+
+
+def norm(x):
+    return 1.0 * x / x.max()
 
 
 class ConfigMeasurement(Measurement):
@@ -38,18 +44,18 @@ class ConfigMeasurement(Measurement):
         # S.New(
         #    "microwavePower", float, initial=-5, unit="dBm",
         # )
-        S.New("sequence", str, choices=sequences, initial="ESR")
-        S.New("t_duration", float, initial=80.0e3, si=False, unit="ns")
-        S.New("t_AOM", float, initial=80.0, si=False, unit="ns")
-        S.New("t_readoutDelay", float, initial=80.0, si=False, unit="ns")
-        S.New("t_pi", float, initial=80.0, si=False, unit="ns")
-        S.New("t_uW", float, initial=80.0, si=False, unit="ns")
-        S.New("t_delay", float, initial=80.0, si=False, unit="ns")
+        # S.New("sequence", str, choices=sequences, initial="ESR")
+        # S.New("t_duration", float, initial=80.0e3, si=False, unit="ns")
+        # S.New("t_AOM", float, initial=80.0, si=False, unit="ns")
+        # S.New("t_readoutDelay", float, initial=80.0, si=False, unit="ns")
+        # S.New("t_pi", float, initial=80.0, si=False, unit="ns")
+        # S.New("t_uW", float, initial=80.0, si=False, unit="ns")
+        # S.New("t_delay", float, initial=80.0, si=False, unit="ns")
 
-        S.New("IQpadding", float, initial=80.0)
-        S.New("numberOfPiPulses", int, initial=1)
-        S.New("numberOfRepeats", int, initial=1)
-        S.New("t_delay_betweenXY8seqs", float, initial=80.0, si=False, unit="ns")
+        # S.New("IQpadding", float, initial=80.0)
+        # S.New("numberOfPiPulses", int, initial=1)
+        # S.New("numberOfRepeats", int, initial=1)
+        # S.New("t_delay_betweenXY8seqs", float, initial=80.0, si=False, unit="ns")
 
         S.New("Nsamples", int, initial=1000, description='Number of samples per frequency')
         S.New("Navg", int, initial=1)
@@ -63,60 +69,52 @@ class ConfigMeasurement(Measurement):
             choices=ContrastModes,
         )
 
-        self.file = FileLQ("config_file")
-
         S.New("save_h5", bool, initial=True)
         
-        self.pb_control = PulseBlasterCtrl(self)
+        self.pulse_generator = ESRPulseProgramGenerator(self)
 
     def setup_figure(self):
         self.ui = DockArea()        
         
         widget = QWidget()
-        self.plot_dock = self.ui.addDock(name='plot', widget=widget, position='right')
+        self.plot_dock = self.ui.addDock(name=self.name, widget=widget, position='right')
         self.layout = QVBoxLayout(widget)
                 
         settings_layout = QHBoxLayout()
-        settings_layout.addWidget(self.file.new_default_widget())
-        settings_layout.addWidget(self.settings.sequence.new_default_widget())
+        settings_layout.addWidget(self.frequency_range.New_UI())
+        settings_layout.addWidget(self.settings.New_UI(include=["contrast_mode", "Nsamples", "Navg", "randomize", "save_h5"], style='form'))
         settings_layout.addWidget(self.settings.activation.new_pushButton())
         self.layout.addLayout(settings_layout)
 
-        if hasattr(self, "graph_layout"):
-            self.graph_layout.deleteLater()  # see http://stackoverflow.com/questions/9899409/pyside-removing-a-widget-from-a-layout
-            del self.graph_layout
         self.graph_layout = pg.GraphicsLayoutWidget(border=(100, 100, 100))
         self.layout.addWidget(self.graph_layout)
         self.plot = self.graph_layout.addPlot(title=self.name)
         self.data = {
             "signal": np.arange(10),
-            "background": np.arange(10) / 10,
+            "reference": np.arange(10) / 10,
             "contrast": np.arange(10) / 100,
         }
         colors = ["g", "r", "w"]
         self.plot_lines = {}
-        for i, name in enumerate(self.data):
+        for i, name in enumerate(["signal", "reference", "contrast"]):
             self.plot_lines[name] = self.plot.plot(
                 self.data[name], pen=colors[i], symbol="o", symbolBrush=colors[i]
             )
         self.data["frequencies"] = np.arange(10) * 1e9
         self.data_ready = False
+        self.i_run = 0
         
-        settings_dock = self.ui.addDock(name='settings', widget=self.settings.New_UI(style='form'),
-                                        position='right')
-        graph_layout = pg.GraphicsLayoutWidget(border=(100, 100, 100))
-        settings_dock.addWidget(graph_layout)
-        self.pulse_plot = graph_layout.addPlot(title='Pulse setting')
+        self.ui.addDock(dock=self.pulse_generator.make_dock(), position='right')
         
     def update_display(self):
         if self.data_ready:
-            for name in ["signal", "background", "contrast"]:
-                self.plot_lines[name].setData(
-                    self.data["frequencies"], self.data[name].mean(-1)
-                )
-        self.plot.setTitle(self.settings["sequence"])
+            for name in ["signal", "reference", "contrast"]:
+                y = self.data[name][:, 0:self.i_run + 1].mean(-1)
+                self.plot_lines[name].setData(self.data["frequencies"], norm(y))
+        self.plot.setTitle('ESR')
 
     def pre_run(self):
+        self.pulse_generator.update_pulse_plot()
         self.data_ready = False
 
     def run(self):
@@ -126,13 +124,11 @@ class ConfigMeasurement(Measurement):
 
         SRS = self.app.hardware["srs_control"]
         PB = self.app.hardware["pulse_blaster"]
-        DAQ = self.app.hardware['DAQ_triggered_digital_readout']
+        DAQ = self.app.hardware['triggered_counter']
 
         frequencies = self.frequency_range.sweep_array
         self.data['frequencies'] = frequencies
-        sequence = S["sequence"]
-        PBchannels = PB.get_register_addresses_dict(["AOM", "uW", "DAQ", "STARTtrig"])
-        sequenceArgs = [S["t_duration"]]
+        sequence = 'ESR'
 
         try:
             """Runs the experiment."""
@@ -175,7 +171,8 @@ class ConfigMeasurement(Measurement):
                 # SRSctl.setSRS_Freq(SRS, expCfg.frequencies[0])
                 SRS.settings["frequency"] = frequencies[0]
             # Program PB
-            self.pb_control.program()
+            self.pulse_generator.program_hw()
+            PB.configure()
             # SRSctl.enableSRS_RFOutput(SRS)
             SRS.settings["output"] = True
 
@@ -219,11 +216,12 @@ class ConfigMeasurement(Measurement):
             # meanBackgroundCurrentRun = np.zeros(N_freqs)
             # contrastCurrentRun = np.zeros(N_freqs)
             signal = np.zeros((N_freqs, Navg))
-            background = np.zeros_like(signal)
+            reference = np.zeros_like(signal)
             contrast = np.zeros_like(signal)
 
             # Run experiment
             for i_run in range(Navg):
+                self.i_run = i_run
                 if self.interrupt_measurement_called:
                     break
                 print("Run ", i_run + 1, " of ", Navg)
@@ -247,26 +245,34 @@ class ConfigMeasurement(Measurement):
                     #    seqArgList[0] = frequencies[i_scanPoint]
                     #    instructionArray = PB.programPB(sequence, seqArgList)
                     print("Scan point ", i_scanPoint + 1, " of ", N_freqs)
-
-                    # read DAQ
-                    # TODO: handle this line
+                    time.sleep(0.01)
                     
-                    cts = DAQ.read_counts(2 * S['Nsamples'])
-                    sig = np.array(cts[0::2])
-                    bkgnd = np.array(cts[1::2])
-                    print(sig.sum(), bkgnd.sum())
-                    bkgnd = bkgnd - sig
+                    cts = np.array(DAQ.read_counts(2 * S['Nsamples']))
+                    # sig = cts[0::2]
+                    # ref = cts[1::2]
+                    # ref = ref - sig
+                    # sig = cts[0::2] - cts[1::2]
+                    ref = np.sum(cts[1::2] - cts[0::2])
+                    sig = np.sum(cts[2::2] - cts[1:-2:2]) + cts[0]                 
+                    
+                    # print(cts[0::4].mean(), cts[1::4].mean(), cts[2::4].mean(), cts[3::4].mean(),)
+                    # print(cts[:8])
+                    
+                    # sig = cts[1::4] - cts[0::4]
+                    # ref = cts[3::4] - cts[2::4]
+                    
+                    print(sig.sum(), ref.sum())
                     # Take average of counts
                     ii = index[i_scanPoint]
-                    signal[ii][i_run] = np.mean(sig)
-                    background[ii][i_run] = np.mean(bkgnd)
+                    signal[ii][i_run] = sig
+                    reference[ii][i_run] = ref
                     if S["shotByShotNormalization"]:
                         contrast[ii][i_run] = np.mean(
-                            calculateContrast(S["contrastMode"], sig, bkgnd)
+                            calculateContrast(S["contrastMode"], sig, ref)
                         )
                     else:
                         contrast[ii][i_run] = calculateContrast(
-                            S["contrast_mode"], signal[ii][i_run], background[ii][i_run],
+                            S["contrast_mode"], signal[ii][i_run], reference[ii][i_run],
                         )
 
                     # if i_run == 0:
@@ -302,11 +308,10 @@ class ConfigMeasurement(Measurement):
                     #         paramFile.close()
 
                     self.data["signal"] = signal
-                    self.data["background"] = background
+                    self.data["reference"] = reference
                     self.data["contrast"] = contrast
                     self.data["frequencies"] = frequencies
                     self.data_ready = True
-                    time.sleep(0.1)
                 # Sort current run counts in order of increasing delay
 
                 # dataCurrentRun = np.transpose(
@@ -366,28 +371,24 @@ class ConfigMeasurement(Measurement):
 
         finally:
             # Turn off SRS output
-            # SRSctl.disableSRS_RFOutput(SRS)
             SRS.settings["output"] = False
-            # Turn off SRS output
-            # SRSctl.disableSRS_RFOutput(SRS)
-            SRS.disconnect()
+            SRS.settings["modulation"] = False
             DAQ.end_task()
 
-            # TODO: closed DAQ
-            # Close DAQ task:
-            # DAQctl.closeDAQTask(DAQtask)
-            # DAQclosed = True
-
-            # if ("DAQtask" in vars()) and (not DAQclosed):
-                # Close DAQ task:
-                # DAQctl.closeDAQTask(DAQtask)
-            #    DAQclosed = True
-        if S['save_h5']:
+    def post_run(self):
+        if self.settings['save_h5']:
             self.save_h5_data()
         
     def save_h5_data(self):
         self.h5_file = h5_io.h5_base_file(app=self.app, measurement=self)
         self.h5_meas_group = h5_io.h5_create_measurement_group(self, self.h5_file)
+        ref = self.data['reference'].mean(-1)
+        sig = self.data['signal'].mean(-1)
+        self.h5_meas_group['reference'] = ref
+        self.h5_meas_group['signal'] = sig
+        for c in ContrastModes:
+            self.h5_meas_group[c] = calculateContrast(c, sig, ref)
         for k, v in self.data.items():
-            self.h5_meas_group[k] = v
+            self.h5_meas_group[k] = v        
+        self.pulse_generator.save_to_h5(self.h5_meas_group)
         self.h5_file.close()

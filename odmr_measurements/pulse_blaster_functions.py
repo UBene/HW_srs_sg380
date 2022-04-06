@@ -78,10 +78,12 @@ class PulseBlasterCtrl:
 	def __init__(self, measurement, pulse_blaser_hw_name:str='pulse_blaster'):
 		self.hw:PulseBlasterHW = measurement.app.hardware[pulse_blaser_hw_name]
 		self.measurement = measurement
-		self.measurement.settings.t_duration.add_listener(self.update_instruction_array)
+		self.measurement.settings.t_duration.add_listener(self.get_instructions)
 
-	def sequenceEventCataloguer(self, channels):
-		# Catalogs sequence events in terms of consecutive rising edges on the channels provided. Returns a dictionary, channelBitMasks, whose keys are event (rising/falling edge) times and values are the channelBitMask which indicate which channels are on at that time.
+	def _sequenceEventCataloguer(self, channels):
+		# Catalogs sequence events in terms of consecutive rising edges on the channels provided. 
+		# Returns a dictionary, channelBitMasks, whose keys are event (rising/falling edge) times 
+		# and values are the channelBitMask which indicate which channels are on at that time.
 		eventCatalog = {}  # dictionary where the keys are rising/falling edge times and the values are the channel bit masks which turn on/off at that time
 		print('sequenceEventCataloguer', channels)
 		for channel in channels:
@@ -140,41 +142,58 @@ class PulseBlasterCtrl:
 			return makeReadoutDelaySweep(addresses, t_min, t_readoutDelay, t_AOM)
 		
 	def update_pulse_plot(self):
-		#FIXME
 		plot:PlotItem = self.measurement.pulse_plot
 		plot.clear()
+		pens = ['g', 'y', 'b', 'r', 'w', 'p']
+		pulse_data = self.get_pulse_data()
+		print('update_pulse_plot', pulse_data)
+		for ii, (name, (t, y)) in enumerate(pulse_data.items()):
+			y = np.array(y) - 2 * ii
+			t = np.array(t) / 1e9
+			plot.plot(t, y, name=name, pen=pens[ii])
+
 		
-		def add_pulse(t, y, start, dt):
-			t.append([start, start, start + dt, start + dt])
-			y.append([0, 1, 1, 0])
+		plot.addLegend()
+		plot.setLabel('bottom', units='s')
+		return pulse_data
+		
+	def get_pulse_data(self):
+		names = {v:k for k, v in self.hw.get_register_addresses_dict().items()}
+		sequence = self.makeSequence()
+		pulse_data = {}
+		max_t = 0
+		for c in sequence:
+			name = names[c.channelNumber]
+			pulse_data[name] = [[0], [0]]
+			for start, dt in zip(c.startTimes, c.pulseDurations):
+				pulse_data[name][0] += [start, start, start + dt, start + dt]
+				pulse_data[name][1] += [0, 1, 1, 0]
+				max_t = max(max_t, start + dt)
+		
+		# makes a plot look better	
+		for v in pulse_data.values():
+			v[0] += [max_t]
+			v[1] += [v[1][-1]]
 			
-			
-		channels = self.hw.get_channel_names()
-		data = {}
-		print('update_pulse_plot')
-		for p in self.pulses:
-			for start, dt in zip(p.startTimes, p.pulseDurations):
-				if not p.channelNumber in data:
-					data[p.channelNumber] = ([], [])
-				t, y = data[p.channelNumber]
-				add_pulse(t, y, start, dt)
-				print(data)
-		print(data)	
-				
-		for (t,y) in data:
-			plot.plot(t,y)
+		self.pulse_data = pulse_data
+		return pulse_data
 		
 	def program(self):
-		a = self.update_instruction_array()
-		self.hw.program_hw(a)
+		instructions = self.get_instructions()
+		self.hw.configure()
+		self.hw.write_pulse_program(instructions)
 
-	def update_instruction_array(self):
-		self.pulses = channels = self.makeSequence()
-		print('update_instruction_array channels', channels)
-		channelBitMasks = self.sequenceEventCataloguer(channels)
+	def get_instructions(self):
+		channels = self.makeSequence()
+		channelBitMasks = self._sequenceEventCataloguer(channels)
 		eventTimes = list(channelBitMasks.keys())
-		print('update_instruction_array', eventTimes)
-
+		eventDurations = self._event_durations(eventTimes)
+		instructions = self._pb_instructions(channelBitMasks, eventDurations)
+		print('get_instructions')
+		print(channels, channelBitMasks, eventTimes, eventDurations, instructions, sep='\n')
+		return instructions
+		
+	def _event_durations(self, eventTimes):
 		numEvents = len(eventTimes)
 		eventDurations = np.zeros(numEvents - 1)
 		numInstructions = numEvents - 1
@@ -183,17 +202,19 @@ class PulseBlasterCtrl:
 				eventDurations[i] = eventTimes[i + 1] - eventTimes[i]
 			else:
 				eventDurations[i] = eventTimes[i + 1] - eventTimes[i]
-		instructionArray = []
+		return eventDurations
+		
+	def _pb_instructions(self, channelBitMasks, eventDurations):
+		instructions = []
 		bitMasks = list(channelBitMasks.values())
 		start = [0]
-		for i in range(0, numEvents - 1):
-			if i == (numEvents - 2):
-				instructionArray.extend([[bitMasks[i], Inst.BRANCH, start[0], eventDurations[i]]])
+		for i, duration in enumerate(eventDurations):
+			if i == len(eventDurations) - 1:
+				instructions.extend([[bitMasks[i], Inst.BRANCH, start[0], duration]])
 			else:
-				instructionArray.extend([[bitMasks[i], Inst.CONTINUE, 0, eventDurations[i]]])
-		self.instruction_array = instructionArray
-		#self.update_pulse_plot()
-		return instructionArray
+				start[0] = instructions.extend([[bitMasks[i], Inst.CONTINUE, 0, duration]])
+		self.instructions = instructions
+		return instructions
 
 
 def makeESRseq(addresses, t_min, t_duration):
@@ -208,7 +229,12 @@ def makeESRseq(addresses, t_min, t_duration):
 	t_readoutBuffer = t_min * round(2 * us / t_min)
 	AOMchannel = PBchannel(AOM, [0], [t_sigAndref])
 	uWchannel = PBchannel(uW, [0], [t_sigAndref / 2])
-	DAQchannel = PBchannel(DAQ, [(t_sigAndref / 2) - t_readoutBuffer, t_sigAndref - t_readoutBuffer], [t_readout, t_readout])
+	# DAQchannel = PBchannel(DAQ, [(t_sigAndref / 2) - t_readoutBuffer, t_sigAndref - t_readoutBuffer], [t_readout, t_readout])
+	DAQchannel = PBchannel(DAQ, [(t_sigAndref * 1 / 4) - t_readoutBuffer,
+								(t_sigAndref * 2 / 4) - t_readoutBuffer,
+								(t_sigAndref * 3 / 4) - t_readoutBuffer,
+								 (t_sigAndref * 4 / 4) - t_readoutBuffer],
+								[t_readout] * 4)
 	STARTtrigchannel = PBchannel(STARTtrig, [0], [t_startTrig])
 	channels = [AOMchannel, DAQchannel, uWchannel, STARTtrigchannel]
 	return channels
@@ -484,6 +510,7 @@ def makeXY8pulses(start_delay, numberOfRepeats, t_delay, t_pi, t_piby2, IQpaddin
 	
 
 ContrastModes = ['ratio_SignalOverReference', 'ratio_DifferenceOverSum', 'signalOnly']
+
 
 def calculateContrast(contrastMode, signal, background):
     # Calculates contrast based on the user's chosen contrast mode (configured in the experiment config file e.g. ESRconfig, Rabiconfig, etc)
