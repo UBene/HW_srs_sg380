@@ -126,7 +126,7 @@ class PowerScanH5View(DataBrowserView):
             from FoundryDataBrowser.viewers.plot_n_fit import LogisticFunctionFitter
 
             fitters.append(LogisticFunctionFitter())
-        except ModuleNotFoundError:
+        except ImportError:
             print("Warining LogisticFunctionFitter not loaded: pip install lmfit")
             pass
 

@@ -1,4 +1,5 @@
 *.pyc
+.metadata/*
 *~
 .DS_Store
 .project
@@ -55,4 +56,4 @@ nikon_microscope/log/
 nikon_microscope/data/
 cage_microscope/log/
 cage_microscope/data/
-
+*log*.txt
