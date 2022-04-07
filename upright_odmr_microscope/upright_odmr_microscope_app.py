@@ -108,7 +108,7 @@ class NikonMicroscope(BaseMicroscopeApp):
         from confocal_measure.apd_optimizer_cb import APDOptimizerCBMeasurement
         self.add_measurement(APDOptimizerCBMeasurement(self)) 
         
-        from ScopeFoundryHW.nidaqmx.galvo_mirrors.pydaqmx_galvo_mirrors_hw import GalvoMirrorsHW
+        from ScopeFoundryHW.nidaqmx.galvo_mirrors.galvo_mirrors_hw import GalvoMirrorsHW
         self.add_hardware(GalvoMirrorsHW(self))
         
         from ScopeFoundryHW.nidaqmx.galvo_mirrors.galvo_mirror_2d_apd_slow_scan import GalvoMirrorAPDScanMeasure
