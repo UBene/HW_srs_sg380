@@ -196,6 +196,17 @@ try:
     app.load_view(ToupcamH5(app))
 except Exception as err: _on_load_err(err)
 
+try:
+    from FoundryDataBrowser.viewers.config_measurement import ConfigMeasurement
+    app.load_view(ConfigMeasurement(app))
+except Exception as err: _on_load_err(err)
+
+try:
+    from FoundryDataBrowser.viewers.galvo_mirror_2D_apd_scan import GalvoMirror2DApdScan
+    app.load_view(GalvoMirror2DApdScan(app))
+except Exception as err: _on_load_err(err)
+
+
 app.settings.browse_dir.update_value(r"F:\User's Data") 
 
 sys.exit(app.exec_())    
