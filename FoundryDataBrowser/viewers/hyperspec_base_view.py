@@ -171,6 +171,7 @@ class HyperSpectralBaseView(DataBrowserView):
         self.correlator.add_listener(self.on_change_corr_settings)
 
 
+        self.circ_roi_ji = (0, 0)
 
     def _new_data_loaded(self):
         self.image_manager.reset()
