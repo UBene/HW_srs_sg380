@@ -121,16 +121,16 @@ try:
     app.load_view(SyncRasterScanH5(app))
 except Exception as err: _on_load_err(err)
 
-try:
-    from FoundryDataBrowser.viewers.auger_spectrum_h5 import AugerSpectrumH5
-    app.load_view(AugerSpectrumH5(app))
-
-    from FoundryDataBrowser.viewers.auger_sync_raster_scan_h5 import AugerSyncRasterScanH5View
-    app.load_view(AugerSyncRasterScanH5View(app))
-    
-    from FoundryDataBrowser.viewers.auger_spec_map import AugerSpecMapView
-    app.load_view(AugerSpecMapView(app))
-except Exception as err: _on_load_err(err)
+# try:
+#     from FoundryDataBrowser.viewers.auger_spectrum_h5 import AugerSpectrumH5
+#     app.load_view(AugerSpectrumH5(app))
+#
+#     from FoundryDataBrowser.viewers.auger_sync_raster_scan_h5 import AugerSyncRasterScanH5View
+#     app.load_view(AugerSyncRasterScanH5View(app))
+#
+#     from FoundryDataBrowser.viewers.auger_spec_map import AugerSpecMapView
+#     app.load_view(AugerSpecMapView(app))
+# except Exception as err: _on_load_err(err)
 
 try: 
     from FoundryDataBrowser.viewers.power_scan_npz import PowerScanNPZView
