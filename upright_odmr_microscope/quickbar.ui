@@ -807,7 +807,7 @@
         </property>
        </widget>
       </item>
-      <item row="0" column="1">
+      <item row="0" column="2">
        <widget class="QDoubleSpinBox" name="apd_count_rate_doubleSpinBox">
         <property name="font">
          <font>
@@ -824,7 +824,7 @@
         </property>
        </widget>
       </item>
-      <item row="0" column="3">
+      <item row="0" column="4">
        <widget class="QPushButton" name="apd_show_ui_pushButton">
         <property name="minimumSize">
          <size>
@@ -852,6 +852,16 @@
         </property>
         <property name="text">
          <string>ui</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QDoubleSpinBox" name="apd_int_time_doubleSpinBox">
+        <property name="maximumSize">
+         <size>
+          <width>100</width>
+          <height>16777215</height>
+         </size>
         </property>
        </widget>
       </item>

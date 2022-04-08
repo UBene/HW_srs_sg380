@@ -216,6 +216,7 @@ class NikonMicroscope(BaseMicroscopeApp):
         import pyqtgraph as pg
         S = self.hardware.apd_counter.settings
         S.connected.connect_to_widget(Q.apd_connected_checkBox)
+        S.int_time.connect_to_widget(Q.apd_int_time_doubleSpinBox)
         W = replace_widget_in_layout(Q.apd_count_rate_doubleSpinBox,
                                      pg.widgets.SpinBox.SpinBox())
         S.count_rate.connect_to_widget(W)
