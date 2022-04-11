@@ -53,27 +53,23 @@ class TriggeredCounterHW(HardwareComponent):
         if not N: 
             N = S['N'] 
         
-        DAQ_APDInput = f"{S['dev']}/{S['counter']}"  # "Dev2/ai1"
-        DAQ_SampleClk = S['sample_clock']  # "PFI0"
-        DAQ_StartTrig = S['arm_trigger']  # "PFI5"
+        counter = DAQ_APDInput = f"{S['dev']}/{S['counter']}"  # "Dev2/ai1"
+        sample_clock = DAQ_SampleClk = S['sample_clock']  # "PFI0"
+        arm_trigger_source = DAQ_StartTrig = S['arm_trigger']  # "PFI5"
         
-        self.task = readTask = nidaqmx.Task()
-        channel = readTask.ci_channels.add_ci_count_edges_chan(DAQ_APDInput, edge=Edge.RISING)
-        readTask.timing.cfg_samp_clk_timing(rate=1000,
-                                            source=DAQ_SampleClk, active_edge=Edge.RISING,
+        self.task = task = nidaqmx.Task()
+        task.ci_channels.add_ci_count_edges_chan(counter, edge=Edge.RISING)
+        task.timing.cfg_samp_clk_timing(rate=1000,
+                                            source=sample_clock, active_edge=Edge.RISING,
                                             sample_mode=AcquisitionType.FINITE, samps_per_chan=N)
-        arm_trigger = readTask.triggers.arm_start_trigger
-        arm_trigger.dig_edge_src = DAQ_StartTrig
+        arm_trigger = task.triggers.arm_start_trigger
+        arm_trigger.dig_edge_src = arm_trigger_source
         arm_trigger.dig_edge_edge = Edge.RISING
 
     def read_counts(self, N=None, timeout=10):
         if not N: 
             N = self.settings['N'] 
         try:
-            # print(self.channel.ci_count)
-            # self.task.stop()
-            # self.task.start()
-            # time.sleep(1)
             counts = self.task.read(N, timeout)
         except Exception as excpt:
             print(
@@ -82,7 +78,6 @@ class TriggeredCounterHW(HardwareComponent):
                 type(excpt).__name__,
                 ".",
                 excpt,
-            
             )
             counts = [-1] * N
         if self.settings['debug_mode']:
