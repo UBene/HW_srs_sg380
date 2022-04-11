@@ -3,16 +3,40 @@ import numpy as np
 
 import nidaqmx
 from nidaqmx.constants import VoltageUnits, AcquisitionType, Edge
+from nidaqmx._lib import lib_importer, ctypes_byte_str, c_bool32
+from nidaqmx.errors import check_for_error
+
+
+def clear_task_with_handle(task_handle:int):
+        cfunc = lib_importer.windll.DAQmxClearTask
+        if cfunc.argtypes is None:
+            with cfunc.arglock:
+                if cfunc.argtypes is None:
+                    cfunc.argtypes = [
+                        lib_importer.task_handle]
+
+        error_code = cfunc(
+            task_handle)
+        check_for_error(error_code)
+
+        task_handle = None    
+
+
+def clear_task_callback(task_handle, status, callback_data):
+    print('clear_task_callback')
+    clear_task_with_handle(task_handle)
+    return 0
 
 
 class GalvoMirrorsHW(HardwareComponent):
     
     name = 'galvo_mirrors'
     
-    def __init__(self, app, debug=False, name=None, axes='xy', channels=(0, 1), min_value=-10, max_value=10, rate=1e3):
+    def __init__(self, app, debug=False, name=None, axes='xy', channels=(0, 1), min_value=-10, max_value=10, max_step_degree=0.2, rate=1e3):
         self.chan2axis = {c:a for c, a in zip(channels, axes)}
         self.axis2chan = {v:k for k, v in self.chan2axis.items()}
 
+        self._max_step_degree = max_step_degree
         self._MINVALUE = min_value  # V
         self._MAXVALUE = max_value  # V
         self._RATE = rate  # Hz rate at witch waveform is written to outputs
@@ -82,7 +106,7 @@ class GalvoMirrorsHW(HardwareComponent):
         voltages = self.get_control_ai()
         self.settings['voltage_0'] = voltages[0]
         self.settings['voltage_1'] = voltages[1]
-        print(self.name, 'update_output_voltages_using_control_ai_channels', voltages)
+        #print(self.name, 'update_output_voltages_using_control_ai_channels', voltages)
         return voltages
         
     @property
@@ -103,31 +127,54 @@ class GalvoMirrorsHW(HardwareComponent):
         pass
         
     def write_analog_voltages(self, voltages, channel=0):
+        voltages = np.atleast_1d(voltages)
+        print(self.name, 'write_analog_voltages', voltages)
         if np.max(voltages) >= self._MAXVALUE or np.min(voltages) <= self._MINVALUE:
             print(self.name, 'attempt to set voltage that breaks galvo??')
             return
+        
+        if not self.settings['connected']:
+            print(self.name, 'FOR SAFETY: CONNECT FIRST')
+            return
+        
         task = nidaqmx.Task()
         S = self.settings
         task.ao_channels.add_ao_voltage_chan(S[f'channel_{channel}'],
                                                  min_val=self._MINVALUE,
                                                  max_val=self._MAXVALUE,
                                                  units=VoltageUnits.VOLTS)
-        
-        voltages = np.atleast_1d(voltages)
-
         task.timing.cfg_samp_clk_timing(self._RATE,
                                         source="",
                                         active_edge=Edge.RISING,
                                         sample_mode=AcquisitionType.FINITE,
                                         samps_per_chan=len(voltages))
+        #task.register_done_event(clear_task_callback)
+        
         task.write(voltages, auto_start=False, timeout=10.0)
         task.start()
         task.wait_until_done(timeout=10.0)
+        # print('wait_until_done DONE')
+        
         task.close()
         self.settings[f'voltage_{channel}'] = voltages[-1]
         print(self.name, 'wrote', voltages, ' voltages to channel', channel)
         self.update_output_voltages_using_control_ai_channels()
         
+    def move_slow_xy(self, x_target, y_target):
+        S = self.settings
+        v_target_x = self.position_to_volts(x_target) + S[f"voltage_offset_{self.axis2chan['x']}"]
+        v_target_y = self.position_to_volts(y_target) + S[f"voltage_offset_{self.axis2chan['y']}"]
+        
+        v_0_x = S[f"voltage_{self.axis2chan['x']}"]
+        v_0_y = S[f"voltage_{self.axis2chan['y']}"]
+                
+        Nx = (v_target_x - v_0_x) / self.dv
+        Ny = (v_target_y - v_0_y) / self.dv
+        N = max((Nx, Ny))
+        
+        voltages_x = np.linspace(v_0_x, v_target_x, N)
+        voltages_y = np.linspace(v_0_y, v_target_y, N)
+                                         
     def move_slow_x(self, x_target):
         self.move_slow(x_target, self.axis2chan['x'])
         
@@ -139,14 +186,16 @@ class GalvoMirrorsHW(HardwareComponent):
         self.set_target_voltage(v_target, channel)
         
     def set_target_voltage(self, v_target, channel):
+        self.update_output_voltages_using_control_ai_channels()
         v0 = self.settings[f'voltage_{channel}']
-        dv = 0.2 * self.settings['volts_per_degree']        
-        num = int(np.ceil(np.abs(v0 - v_target) / dv))
+        num = int(np.ceil(np.abs(v0 - v_target) / self.dv))
         voltages = np.linspace(v0, v_target, num + 1)  
-        # print(self.name, 'voltages', voltages)
         self.write_analog_voltages(voltages, channel)
-        # self.settings[f'voltage_{channel}'] = voltages[-1]
         
+    @property
+    def dv(self):
+        return self._max_step_degree / self.settings['volts_per_degree']
+
         
 if __name__ == '__main__':
     Q = GalvoMirrorsHW(3)

@@ -1,4 +1,5 @@
 from ScopeFoundryHW.nidaqmx.galvo_mirrors.galvo_mirror_2d_slow_scan import GalvoMirror2DSlowScan
+import time
 
 
 class GalvoMirrorAPDScanMeasure(GalvoMirror2DSlowScan):
@@ -24,7 +25,9 @@ class GalvoMirrorAPDScanMeasure(GalvoMirror2DSlowScan):
                                                                        compression='gzip')
 
     def collect_pixel(self, pixel_num, k, j, i):
+        time.sleep(self.apd.settings['int_time'])
         count_rate = self.apd.settings.count_rate.read_from_hardware()
+        
         
         self.display_image_map[k, j, i] = count_rate
         if self.settings['save_h5']:

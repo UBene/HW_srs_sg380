@@ -43,12 +43,5 @@ class GalvoMirror2DSlowScan(BaseRaster2DSlowScan):
         t0 = time.time()
 
     def move_position_fast(self, h, v, dh, dv):
+        print("move_position_fast Not implemented, using move_position_slow instead")
         self.move_position_slow(h, v, dh, dv)
-        # settle time even on small steps seems to be 30ms,
-        # so we should always wait until settle
-        """# update target position, but don't wait to settle to target
-        self.stage.settings.x_target_position.update_value(x)
-        self.stage.settings.y_target_position.update_value(y)
-        self.stage.settings.x_position.read_from_hardware()
-        self.stage.settings.y_position.read_from_hardware()
-        """
