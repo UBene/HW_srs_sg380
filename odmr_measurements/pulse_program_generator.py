@@ -1,22 +1,19 @@
-import numpy as np
 from collections import namedtuple
-
-from spinapi import Inst
-
-from ScopeFoundryHW.spincore.spinapi_hw import PulseBlasterHW
-from ScopeFoundry.measurement import Measurement
+import numpy as np
 from pyqtgraph.dockarea.Dock import Dock
 import pyqtgraph as pg
-# from odmr_measurements.config_measurement import ConfigMeasurement
+from qtpy.QtWidgets import QPushButton
+from spinapi import Inst
+
+from ScopeFoundry.measurement import Measurement
+from ScopeFoundryHW.spincore.pulse_blaster_hw import PulseBlasterHW
 
 PBchannel = namedtuple('PBchannel', ['channelNumber', 'startTimes', 'pulseDurations']) 
-
-# Define t_min, time resolution of the PulseBlaster, given by 1/(clock frequency):
 
 # Short pulse flags:
 ONE_PERIOD = 0x200000
 
-pens = {'AOM':'g', 'uW':'y', 'DAQ':'b', 'STARTtrig':'r', 'I':'w', 'Q':'p'}
+pens = {'AOM':'g', 'uW':'y', 'DAQ':'b', 'DAQ_sig':'c', 'DAQ_ref':'b', 'STARTtrig':'r', 'I':'w', 'Q':'p'}
 
 
 class PulseProgramGenerator:
@@ -28,26 +25,26 @@ class PulseProgramGenerator:
 		self.hw:PulseBlasterHW = measurement.app.hardware[pulse_blaser_hw_name]
 		self.settings = measurement.settings
 		
-		self.exclude = [x.name for x in self.settings._logged_quantities.values()]
+		self.non_pg_setting_names = [x.name for x in self.settings._logged_quantities.values()]
 		self.setup_settings()
-		self.include_settings = [x for x in self.settings._logged_quantities.values() if not x.name in self.exclude]
+		self.pg_settings = [x for x in self.settings._logged_quantities.values() if not x.name in self.non_pg_setting_names]
 				
 	def setup_settings(self):
 		...
 
 	def make_pulse_channels(self):
-		...
+		raise NotImplementedError()
 				
 	def get_pulse_program_instructions(self):
 		channels = self.make_pulse_channels()
 		channelBitMasks = self._sequenceEventCataloguer(channels)
 		eventTimes = list(channelBitMasks.keys())
 		eventDurations = self._event_durations(eventTimes)
-		instructions = self._pb_instructions(channelBitMasks, eventDurations)
+		instructions = self._make_cont_pulse_program(channelBitMasks, eventDurations)
 		# print('get_pulse_program_instructions')
 		# print(channels, channelBitMasks, eventTimes, eventDurations, instructions, sep='\n')
 		return instructions
-
+	
 	def _sequenceEventCataloguer(self, channels):
 		# Catalogs sequence events in terms of consecutive rising edges on the channels provided. 
 		# Returns a dictionary, channelBitMasks, whose keys are event (rising/falling edge) times 
@@ -85,7 +82,7 @@ class PulseProgramGenerator:
 				eventDurations[i] = eventTimes[i + 1] - eventTimes[i]
 		return eventDurations
 		
-	def _pb_instructions(self, channelBitMasks, eventDurations):
+	def _make_cont_pulse_program(self, channelBitMasks, eventDurations):
 		instructions = []
 		bitMasks = list(channelBitMasks.values())
 		start = [0]
@@ -98,9 +95,7 @@ class PulseProgramGenerator:
 		return instructions
 		
 	def program_hw(self):
-		instructions = self.get_pulse_program_instructions()
-		self.hw.configure()
-		self.hw.write_pulse_program(instructions)
+		self.hw.write_pulse_program_and_start(self.get_pulse_program_instructions())
 		
 	def update_pulse_plot(self):
 		plot = self.plot
@@ -121,12 +116,16 @@ class PulseProgramGenerator:
 		return pulse_data
 	
 	def make_dock(self):
-		dock = Dock(name='pulse_generator', widget=self.settings.New_UI(exclude=self.exclude, style='form'))
+		dock = Dock(name='pulse_generator', widget=self.settings.New_UI(exclude=self.non_pg_setting_names, style='form'))
+		pb = QPushButton('program hw')
+		pb.clicked.connect(self.program_hw)
+		dock.addWidget(pb)
 		graph_layout = pg.GraphicsLayoutWidget(border=(100, 100, 100))
 		dock.addWidget(graph_layout)
 		self.plot = graph_layout.addPlot(title='pulse profile')
-		for lq in self.include_settings:
+		for lq in self.pg_settings:
 			lq.add_listener(self.update_pulse_plot)
+
 		self.update_pulse_plot()
 		return dock
 		
