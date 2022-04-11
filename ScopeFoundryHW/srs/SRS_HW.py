@@ -43,7 +43,7 @@ class SRS(HardwareComponent):
         S.New('error', str, ro=True)
         S.New("output", bool, initial=False)
         S.New("frequency", unit="Hz", si=True)
-        S.New("amplitude", float, unit="dBm", vmax=9)
+        S.New("amplitude", float, unit="dBm", vmax=9, description='SRS control')
         S.New("modulation", bool, initial=False)
         S.New("modulation_type", int, choices=MODULATIONTYPES)
         S.New("QFNC", str, initial=5, choices=QFNC,

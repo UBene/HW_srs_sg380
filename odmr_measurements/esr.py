@@ -12,6 +12,7 @@ from qtpy.QtWidgets import (
     QHBoxLayout,
     QVBoxLayout,
     QWidget,
+    QLabel,
 )
 import pyqtgraph as pg
 from pyqtgraph.dockarea.DockArea import DockArea
@@ -21,25 +22,28 @@ from ScopeFoundry import h5_io
 from odmr_measurements.pulse_program_generator import PulseProgramGenerator
 from odmr_measurements.helper_functions import ContrastModes, calculateContrast
 
+
 class ESRPulseProgramGenerator(PulseProgramGenerator):
 
     def setup_settings(self):
-        self.settings.New('t_duration', unit='ns', initial=160.0e3)
-        self.settings.New('t_gate', unit='ns', initial=300)
-        self.settings.New('t_readout', unit='ns', initial=2.0e3)
+        self.settings.New('t_duration', unit='us', initial=160.0)
+        self.settings.New('t_readout', unit='us', initial=10.0)
+        self.settings.New('t_gate', unit='us', initial=50.0)
     
     def make_pulse_channels(self):
         S = self.settings
+        t_duration = S['t_duration'] * 1e3
+        t_readout = S['t_readout'] * 1e3
+        t_gate = S['t_gate'] * 1e3
         
-        AOMchannel = self.new_channel('AOM', [0], [S['t_duration']])
-        uWchannel = self.new_channel('uW', [0], [S['t_duration'] / 2])
-        STARTtrigchannel = self.new_channel('STARTtrig', [0], [300])
-        
-        # DAQ
-        _readout = S['t_readout'] + S['t_gate']
-        start_times = [(S['t_duration'] / 2) - _readout, S['t_duration'] - _readout]
-        DAQchannel = self.new_channel('DAQ', start_times, [S['t_gate'], S['t_gate']])
-        return [AOMchannel, DAQchannel, uWchannel, STARTtrigchannel]
+        AOMchannel = self.new_channel('AOM', [0], [t_duration])
+        uWchannel = self.new_channel('uW', [0], [t_duration / 2])        
+        # DAQ 
+        _readout = t_readout + t_gate
+        DAQ_sig = self.new_channel('DAQ_sig', [t_duration * 1 / 2 - _readout], [t_gate])
+        DAQ_ref = self.new_channel('DAQ_ref', [t_duration * 2 / 2 - _readout], [t_gate])
+
+        return [AOMchannel, DAQ_sig, DAQ_ref, uWchannel]     
 
 
 def norm(x):
@@ -57,10 +61,9 @@ class ESR(Measurement):
         self.frequency_range = S.New_Range(
             "frequency", initials=[2.7e9, 3e9, 3e6], unit="Hz", si=True
         )
-
         S.New("Nsamples", int, initial=1000, description='Number of samples per frequency per sweep')
         S.New("Navg", int, initial=1, description='Number of sweeps')
-        S.New("randomize", bool, initial=True)
+        S.New("randomize", bool, initial=False)
         S.New("shotByShotNormalization", bool, initial=False)
         S.New(
             "contrast_mode",
@@ -79,10 +82,16 @@ class ESR(Measurement):
         self.layout = QVBoxLayout(widget)
                 
         settings_layout = QHBoxLayout()
+        self.layout.addLayout(settings_layout)
         settings_layout.addWidget(self.frequency_range.New_UI())
         settings_layout.addWidget(self.settings.New_UI(include=["contrast_mode", "Nsamples", "Navg", "randomize", "save_h5"], style='form'))
-        settings_layout.addWidget(self.settings.activation.new_pushButton())
-        self.layout.addLayout(settings_layout)
+        
+        start_layout = QVBoxLayout()
+        SRS = self.app.hardware["srs_control"]
+        start_layout.addWidget(QLabel('<b>SRS control</b>'))
+        start_layout.addWidget(SRS.settings.New_UI(['connected', 'amplitude']))
+        start_layout.addWidget(self.settings.activation.new_pushButton())
+        settings_layout.addLayout(start_layout)
 
         self.graph_layout = pg.GraphicsLayoutWidget(border=(100, 100, 100))
         self.layout.addWidget(self.graph_layout)
@@ -102,13 +111,13 @@ class ESR(Measurement):
         self.data_ready = False
         self.i_run = 0
         
-        self.ui.addDock(dock=self.pulse_generator.make_dock(), position='right')
+        self.ui.addDock(dock=self.pulse_generator.make_dock(), position='left')
         
     def update_display(self):
         if self.data_ready:
             for name in ["signal_raw", "reference_raw", "contrast_raw"]:
                 y = self.data[name][:, 0:self.i_run + 1].mean(-1)
-                self.plot_lines[name].setData(self.data["frequencies"], norm(y))
+                self.plot_lines[name].setData(self.data["frequencies"], y)
         self.plot.setTitle(self.name)
 
     def pre_run(self):
@@ -122,7 +131,7 @@ class ESR(Measurement):
 
         SRS = self.app.hardware["srs_control"]
         PB = self.app.hardware["pulse_blaster"]
-        DAQ = self.app.hardware['triggered_counter']
+        DAQ = self.app.hardware['pulse_width_counters']
 
         frequencies = self.frequency_range.sweep_array
         self.data['frequencies'] = frequencies
@@ -135,8 +144,11 @@ class ESR(Measurement):
             # Program PB
             self.pulse_generator.program_hw()
             PB.configure()
+            # PB.start()
             SRS.settings["output"] = True
-            DAQ.restart(2 * S['Nsamples'])
+            
+            N_DAQ_readouts = 2 * S['Nsamples']
+            DAQ.restart(N_DAQ_readouts)
             
             N_freqs = len(frequencies)
             Navg = S["Navg"]
@@ -166,20 +178,25 @@ class ESR(Measurement):
 
                     print("Scan point ", i_scanPoint + 1, " of ", N_freqs)
                     time.sleep(0.01)
-
-                    cts = np.array(DAQ.read_counts(2 * S['Nsamples']))
-                    ref = np.sum(cts[1::2] - cts[0::2])
-                    sig = np.sum(cts[2::2] - cts[1:-2:2]) + cts[0]                 
+                    
+                    DAQ.restart(N_DAQ_readouts)
+                    
+                    # cts = np.array(DAQ.read_counts(N_DAQ_readouts))
+                    # ref = np.sum(cts[1::2] - cts[0::2])
+                    # sig = np.sum(cts[2::2] - cts[1:-2:2]) + cts[0]                 
                     
                     # print(cts[0::4].mean(), cts[1::4].mean(), cts[2::4].mean(), cts[3::4].mean(),)
                     # print(cts[:8])
                     # sig = cts[1::4] - cts[0::4]
                     # ref = cts[3::4] - cts[2::4]
                     
+                    sig = np.array(DAQ.read_sig_counts(N_DAQ_readouts))
+                    ref = np.array(DAQ.read_ref_counts(N_DAQ_readouts))
+                    
                     print(sig.sum(), ref.sum())
                     ii = index[i_scanPoint]
-                    signal[ii][i_run] = sig
-                    reference[ii][i_run] = ref
+                    signal[ii][i_run] = sig.mean()
+                    reference[ii][i_run] = ref.mean()
                     if S["shotByShotNormalization"]:
                         contrast[ii][i_run] = np.mean(
                             calculateContrast(S["contrastMode"], sig, ref)
@@ -199,7 +216,8 @@ class ESR(Measurement):
         finally:
             SRS.settings["output"] = False
             SRS.settings["modulation"] = False
-            DAQ.end_task()
+            DAQ.end_tasks()
+            PB.write_close()
 
     def post_run(self):
         if self.settings['save_h5']:

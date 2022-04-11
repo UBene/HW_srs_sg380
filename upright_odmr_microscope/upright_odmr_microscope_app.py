@@ -139,14 +139,14 @@ class NikonMicroscope(BaseMicroscopeApp):
         from ScopeFoundryHW.srs.SRS_HW import SRS
         self.add_hardware(SRS(self))
         
-        from ScopeFoundryHW.spincore.spinapi_hw import PulseBlasterHW
+        from ScopeFoundryHW.spincore.pulse_blaster_hw import PulseBlasterHW
         self.add_hardware(PulseBlasterHW(self))
         
-        from ScopeFoundryHW.nidaqmx.triggered_counter_hw import TriggeredCounterHW
-        self.add_hardware(TriggeredCounterHW(self))        
-
-        from ScopeFoundryHW.nidaqmx.pulse_width_counter_hw import PulseWidthCounter
-        self.add_hardware(PulseWidthCounter(self))  
+        from ScopeFoundryHW.nidaqmx.buffered_edge_smpl_clk_counter_hw import BufferedEdgeSmplClkCounterHW
+        self.add_hardware(BufferedEdgeSmplClkCounterHW(self))        
+        
+        from ScopeFoundryHW.nidaqmx.pulse_width_counters_hw import PulseWidthCounters
+        self.add_hardware(PulseWidthCounters(self))          
 
         from odmr_measurements.config_measurement import ConfigMeasurement
         self.add_measurement(ConfigMeasurement(self))
@@ -154,12 +154,13 @@ class NikonMicroscope(BaseMicroscopeApp):
         from odmr_measurements.esr import ESR
         self.add_measurement(ESR(self))
 
-        from odmr_measurements.rabi import Rabi
-        self.add_measurement(Rabi(self))
+        #from odmr_measurements.rabi import Rabi
+        #self.add_measurement(Rabi(self))
 
         # self.add_measurement(HahnEcho(self))
         
     def setup_ui(self):
+        pass
         '''sets up a quickbar'''
         Q = self.add_quickbar(load_qt_ui_file(sibling_path(__file__, 'quickbar.ui')))
         # # Dual position slider
