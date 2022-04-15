@@ -6,7 +6,6 @@ Created on Apr 4, 2022
 
 import numpy as np
 from random import shuffle
-import time
 
 from qtpy.QtWidgets import (
     QHBoxLayout,
@@ -19,32 +18,37 @@ from pyqtgraph.dockarea.DockArea import DockArea
 
 from ScopeFoundry import Measurement
 from ScopeFoundry import h5_io
-from odmr_measurements.pulse_program_generator import PulseProgramGenerator
+from odmr_measurements.pulse_program_generator import PulseProgramGenerator, \
+    PulseBlasterChannel
 from odmr_measurements.helper_functions import ContrastModes, calculateContrast
+from spinapi.spinapi import us
 
 
 class ESRPulseProgramGenerator(PulseProgramGenerator):
 
-    def setup_settings(self):
-        self.settings.New('t_duration', unit='us', initial=160.0)
+    def setup_additional_settings(self) -> None:
         self.settings.New('t_readout', unit='us', initial=10.0)
         self.settings.New('t_gate', unit='us', initial=50.0)
     
-    def make_pulse_channels(self):
+    def make_pulse_channels(self) -> [PulseBlasterChannel]:
         S = self.settings
-        t_duration = S['t_duration'] * 1e3
-        t_readout = S['t_readout'] * 1e3
-        t_gate = S['t_gate'] * 1e3
+
+        # All times must be in ns
+        t_duration = S['program_duration'] * us
+        t_readout = S['t_readout'] * us
+        t_gate = S['t_gate'] * us
         
-        AOMchannel = self.new_channel('AOM', [0], [t_duration])
-        uWchannel = self.new_channel('uW', [0], [t_duration / 2])        
+        AOM = self.new_channel('AOM', [0], [t_duration])
+        uW = self.new_channel('uW', [0], [t_duration / 2])
+        
         # DAQ 
         _readout = t_readout + t_gate
         DAQ_sig = self.new_channel('DAQ_sig', [t_duration * 1 / 2 - _readout], [t_gate])
         DAQ_ref = self.new_channel('DAQ_ref', [t_duration * 2 / 2 - _readout], [t_gate])
 
-        return [AOMchannel, DAQ_sig, DAQ_ref, uWchannel]     
-
+        return [uW, AOM, 
+                #I, Q, 
+                DAQ_sig, DAQ_ref]
 
 def norm(x):
     return 1.0 * x / x.max()
@@ -61,8 +65,8 @@ class ESR(Measurement):
         self.frequency_range = S.New_Range(
             "frequency", initials=[2.7e9, 3e9, 3e6], unit="Hz", si=True
         )
-        S.New("Nsamples", int, initial=1000, description='Number of samples per frequency per sweep')
-        S.New("Navg", int, initial=1, description='Number of sweeps')
+        S.New("N_samples", int, initial=1000)
+        S.New("N_sweeps", int, initial=1)
         S.New("randomize", bool, initial=False)
         S.New("shotByShotNormalization", bool, initial=False)
         S.New(
@@ -71,7 +75,15 @@ class ESR(Measurement):
             initial="signalOverReference",
             choices=ContrastModes,
         )
-        S.New("save_h5", bool, initial=True)        
+        S.New("save_h5", bool, initial=True)                
+        
+        self.data = {
+            "frequencies": np.arange(10) * 1e9,
+            "signal_raw": np.random.rand(20).reshape(-1, 2),  # emulates N_sweeps=2
+            "reference_raw": np.random.rand(20).reshape(-1, 2),
+        }
+        self.i_sweep = 0
+
         self.pulse_generator = ESRPulseProgramGenerator(self)
 
     def setup_figure(self):
@@ -83,8 +95,8 @@ class ESR(Measurement):
                 
         settings_layout = QHBoxLayout()
         self.layout.addLayout(settings_layout)
-        settings_layout.addWidget(self.frequency_range.New_UI())
-        settings_layout.addWidget(self.settings.New_UI(include=["contrast_mode", "Nsamples", "Navg", "randomize", "save_h5"], style='form'))
+        settings_layout.addWidget(self.frequency_range.New_UI(True))
+        settings_layout.addWidget(self.settings.New_UI(include=["contrast_mode", "N_samples", "N_sweeps", "randomize", "save_h5"], style='form'))
         
         start_layout = QVBoxLayout()
         SRS = self.app.hardware["srs_control"]
@@ -92,126 +104,100 @@ class ESR(Measurement):
         start_layout.addWidget(SRS.settings.New_UI(['connected', 'amplitude']))
         start_layout.addWidget(self.settings.activation.new_pushButton())
         settings_layout.addLayout(start_layout)
-
+        
+        # Signal/reference Plots
         self.graph_layout = pg.GraphicsLayoutWidget(border=(100, 100, 100))
         self.layout.addWidget(self.graph_layout)
         self.plot = self.graph_layout.addPlot(title=self.name)
-        self.data = {
-            "signal_raw": np.arange(10),
-            "reference_raw": np.arange(10) / 10,
-            "contrast_raw": np.arange(10) / 100,
-        }
-        colors = ["g", "r", "w"]
-        self.plot_lines = {}
-        for i, name in enumerate(["signal_raw", "reference_raw", "contrast_raw"]):
-            self.plot_lines[name] = self.plot.plot(
-                self.data[name], pen=colors[i], symbol="o", symbolBrush=colors[i]
-            )
-        self.data["frequencies"] = np.arange(10) * 1e9
-        self.data_ready = False
-        self.i_run = 0
+        self.plot.addLegend()
         
-        self.ui.addDock(dock=self.pulse_generator.make_dock(), position='left')
+        self.plot_lines = {}
+        self.plot_lines["signal"] = self.plot.plot(pen="g", symbol="o", symbolBrush="g")
+        self.plot_lines["reference"] = self.plot.plot(pen="r", symbol="o", symbolBrush="r")
+        
+        # contrast Plots
+        self.contrast_plot = self.graph_layout.addPlot(title='contrast', row=1, col=0)
+        self.plot_lines['contrast'] = self.contrast_plot.plot(name=self.data["signal_raw"], pen='w')
+
+        self.ui.addDock(dock=self.pulse_generator.New_dock_UI(), position='left')
+        self.update_display()
         
     def update_display(self):
-        if self.data_ready:
-            for name in ["signal_raw", "reference_raw", "contrast_raw"]:
-                y = self.data[name][:, 0:self.i_run + 1].mean(-1)
-                self.plot_lines[name].setData(self.data["frequencies"], y)
-        self.plot.setTitle(self.name)
+        
+        signal = self.data["signal_raw"][:, 0:self.i_sweep + 1].mean(-1)
+        reference = self.data["reference_raw"][:, 0:self.i_sweep + 1].mean(-1)
+        
+        self.plot_lines["signal"].setData(self.data["frequencies"], signal)
+        self.plot_lines["reference"].setData(self.data["frequencies"], reference)
+                
+        S = self.settings
+        contrast = calculateContrast(S["contrast_mode"], signal, reference)
+        self.plot_lines['contrast'].setData(self.data["frequencies"], contrast)
 
     def pre_run(self):
         self.pulse_generator.update_pulse_plot()
-        self.data_ready = False
 
     def run(self):
-        self.data_ready = False
-        self.data = {}
         S = self.settings
 
         SRS = self.app.hardware["srs_control"]
+        if not SRS.settings['connected']:
+            raise RuntimeError('SRS_control hardware not connected')
         PB = self.app.hardware["pulse_blaster"]
         DAQ = self.app.hardware['pulse_width_counters']
 
         frequencies = self.frequency_range.sweep_array
         self.data['frequencies'] = frequencies
-
+        
         try:
-            SRS.connect()
+            PB.connect()
+            self.pulse_generator.write_pulse_program_and_start()
+            # PB.configure()  # DO WE NEED THIS LINE ?
+            
             SRS.settings["modulation"] = False
-
             SRS.settings["frequency"] = frequencies[0]
-            # Program PB
-            self.pulse_generator.program_hw()
-            PB.configure()
-            # PB.start()
             SRS.settings["output"] = True
             
-            N_DAQ_readouts = 2 * S['Nsamples']
+            N_DAQ_readouts = S['N_samples']
             DAQ.restart(N_DAQ_readouts)
             
-            N_freqs = len(frequencies)
-            Navg = S["Navg"]
+            N = len(frequencies)
+            N_sweeps = S["N_sweeps"]
             
-            signal = np.zeros((N_freqs, Navg))
-            reference = np.zeros_like(signal)
-            contrast = np.zeros_like(signal)
+            # data arrays
+            signal_raw = np.zeros((N, N_sweeps))
+            reference_raw = np.zeros_like(signal_raw)
 
             # Run experiment
-            for i_run in range(Navg):
-                self.i_run = i_run
+            for i_sweep in range(N_sweeps):
+                self.i_sweep = i_sweep
                 if self.interrupt_measurement_called:
                     break
-                print("Run ", i_run + 1, " of ", Navg)
+                self.log.info(f"sweep {i_sweep + 1} of {N_sweeps}")
                 if S["randomize"]:
-                    if i_run > 0:
+                    if i_sweep > 0:
                         shuffle(frequencies)
-                index = np.argsort(frequencies)
+                indices = np.argsort(frequencies)
                 
-                for i_scanPoint in range(N_freqs):
-                    pct = 100 * (i_run * N_freqs + i_scanPoint) / (Navg * N_freqs)
-                    self.set_progress(pct)
+                for i_scanPoint, frequency in enumerate(frequencies):
                     if self.interrupt_measurement_called:
                         break
+                    pct = 100 * (i_sweep * N + i_scanPoint) / (N_sweeps * N)
+                    self.set_progress(pct)
                     
-                    SRS.settings["frequency"] = frequencies[i_scanPoint]
-
-                    print("Scan point ", i_scanPoint + 1, " of ", N_freqs)
-                    time.sleep(0.01)
+                    SRS.settings["frequency"] = frequency                 
                     
                     DAQ.restart(N_DAQ_readouts)
-                    
-                    # cts = np.array(DAQ.read_counts(N_DAQ_readouts))
-                    # ref = np.sum(cts[1::2] - cts[0::2])
-                    # sig = np.sum(cts[2::2] - cts[1:-2:2]) + cts[0]                 
-                    
-                    # print(cts[0::4].mean(), cts[1::4].mean(), cts[2::4].mean(), cts[3::4].mean(),)
-                    # print(cts[:8])
-                    # sig = cts[1::4] - cts[0::4]
-                    # ref = cts[3::4] - cts[2::4]
-                    
                     sig = np.array(DAQ.read_sig_counts(N_DAQ_readouts))
-                    ref = np.array(DAQ.read_ref_counts(N_DAQ_readouts))
-                    
-                    print(sig.sum(), ref.sum())
-                    ii = index[i_scanPoint]
-                    signal[ii][i_run] = sig.mean()
-                    reference[ii][i_run] = ref.mean()
-                    if S["shotByShotNormalization"]:
-                        contrast[ii][i_run] = np.mean(
-                            calculateContrast(S["contrastMode"], sig, ref)
-                        )
-                    else:
-                        contrast[ii][i_run] = calculateContrast(
-                            S["contrast_mode"], signal[ii][i_run], reference[ii][i_run],
-                        )
+                    ref = np.array(DAQ.read_ref_counts(N_DAQ_readouts))   
+                    ii = indices[i_scanPoint]
+                    signal_raw[ii][i_sweep] = sig.mean()
+                    reference_raw[ii][i_sweep] = ref.mean()
 
                     # Update data array
-                    self.data["signal_raw"] = signal
-                    self.data["reference_raw"] = reference
-                    self.data["contrast_raw"] = contrast
+                    self.data["signal_raw"] = signal_raw
+                    self.data["reference_raw"] = reference_raw
                     self.data["frequencies"] = frequencies
-                    self.data_ready = True
 
         finally:
             SRS.settings["output"] = False
@@ -226,14 +212,14 @@ class ESR(Measurement):
     def save_h5_data(self):
         self.h5_file = h5_io.h5_base_file(app=self.app, measurement=self)
         self.h5_meas_group = h5_io.h5_create_measurement_group(self, self.h5_file)
-        ref = self.data['reference_raw'].mean(-1)
-        sig = self.data['signal_raw'].mean(-1)
-        self.h5_meas_group['reference'] = ref
-        self.h5_meas_group['signal'] = sig
+        reference = self.data['reference_raw'].mean(-1)
+        signal = self.data['signal_raw'].mean(-1)
+        self.h5_meas_group['reference'] = reference
+        self.h5_meas_group['signal'] = signal
         for c in ContrastModes:
-            self.h5_meas_group[c] = calculateContrast(c, sig, ref)
+            self.h5_meas_group[c] = calculateContrast(c, signal, reference)
         for k, v in self.data.items():
-            self.h5_meas_group[k] = v        
+            self.h5_meas_group[k] = v
         self.pulse_generator.save_to_h5(self.h5_meas_group)
         self.h5_file.close()
 

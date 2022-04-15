@@ -18,30 +18,37 @@ from pyqtgraph.dockarea.DockArea import DockArea
 
 from ScopeFoundry import Measurement
 from ScopeFoundry import h5_io
-from odmr_measurements.pulse_program_generator import PulseProgramGenerator
+from odmr_measurements.pulse_program_generator import PulseProgramGenerator,\
+    PulseBlasterChannel
 from odmr_measurements.helper_functions import ContrastModes, calculateContrast
-from spinapi.spinapi import us, ns
+from spinapi.spinapi import us
 
 
 class RabiPulseProgramGenerator(PulseProgramGenerator):
-
-    def setup_settings(self):
-        self.settings.New('t_uW', unit='ns', initial=200)
-        self.settings.New('t_readoutDelay', unit='us', initial=2.3)
-        self.settings.New('t_AOM', unit='us', initial=2.0)
     
-    def make_pulse_channels(self):
+    name = 'rabi_pulse_generator'
+
+    def setup_additional_settings(self) -> None:
+        self.settings.New('t_uW', unit='ns', initial=200)
+        self.settings.New('t_readout_delay', unit='us', initial=2.3)
+        self.settings.New('t_AOM', unit='us', initial=2.0)
+        self.settings.New('t_uW_to_AOM_delay', unit='us', initial=1.0)
+        self.settings['program_duration'] = 30  # in us
+        self.settings.New('t_gate', unit='us', initial=5.0)
+    
+    def make_pulse_channels(self) -> [PulseBlasterChannel]:
         S = self.settings
         t_min = self.t_min
         
         t_AOM = S['t_AOM'] * us
-        t_readoutDelay = S['t_readoutDelay'] * us
+        t_readout_delay = S['t_readout_delay'] * us
         
-        start_delay = t_min * round(1 * us / t_min) + t_readoutDelay
-        t_startTrig = t_min * round(300 * ns / t_min)
-        t_readout = t_min * round(300 * ns / t_min)
-        uWtoAOM_delay = t_min * round(1 * us / t_min)    
-        firstHalfDuration = start_delay + S['t_uW'] + uWtoAOM_delay + t_AOM
+        start_delay = 0  # t_min * round(1 * us / t_min) + t_readout_delay
+        # t_startTrig = t_min * round(300 * ns / t_min)
+        t_readout = S['t_gate'] * 1e3  # t_min * round(300 * ns / t_min)
+        t_uW_to_AOM_delay = S['t_uW_to_AOM_delay']    
+        
+        t_half = S['program_duration'] * us / 2
         if S['t_uW'] <= 5 * t_min and S['t_uW'] > 0: 
             # For microwave pulses < 5 * t_min, the microwave channel (PB_MW) is instructed 
             # to pulse for 5 * t_min, but the short-pulse flags of the PB are pulsed 
@@ -49,15 +56,22 @@ class RabiPulseProgramGenerator(PulseProgramGenerator):
             # This can be verified on an oscilloscope.          
             uWchannel = self.new_channel('uW', [start_delay], [5 * t_min])
             shortPulseChannel = self.new_one_period_channel(int(S['t_uW'] / 2), [start_delay], [5 * t_min])
-            channels = [shortPulseChannel, uWchannel]  # Short pulse feature
+            channels = [shortPulseChannel, uWchannel]  # Short pulse feature321e  
         else:
             uWchannel = self.new_channel('uW', [start_delay], [S['t_uW']])
             channels = [uWchannel]
-        AOMchannel = self.new_channel('AOM', [firstHalfDuration - t_AOM, 2 * firstHalfDuration - t_AOM], [t_AOM, t_AOM])
-        DAQchannel = self.new_channel('DAQ', [firstHalfDuration - t_AOM + t_readoutDelay, 2 * firstHalfDuration - t_AOM + t_readoutDelay], [t_readout, t_readout])
-        STARTtrigchannel = self.new_channel('STARTtrig', [0], [t_startTrig])
-        channels.extend([AOMchannel, DAQchannel, STARTtrigchannel])
+            
+        T = t_uW_to_AOM_delay + t_AOM + S['t_uW']
+        AOM = self.new_channel('AOM', [T, t_half + T], [t_AOM, t_AOM])
+        # DAQchannel = self.new_channel('DAQ', [t_half - t_AOM + t_readout_delay, 2 * t_half - t_AOM + t_readoutDelay], [t_readout, t_readout])
+        # STARTtrigchannel = self.new_channel('STARTtrig', [0], [t_startTrig])
+        
+        DAQ_sig = self.new_channel('DAQ_sig', [T + t_AOM + t_readout_delay], [t_readout])
+        DAQ_ref = self.new_channel('DAQ_ref', [t_half + T + t_AOM + t_readout_delay], [t_readout])
+        
+        channels.extend([AOM, DAQ_sig, DAQ_ref])
         return channels
+
 
 
 def norm(x):
@@ -76,8 +90,8 @@ class Rabi(Measurement):
             "pulse_duration", initials=[0, 200, 2], unit="ns", si=True
         )
 
-        S.New("Nsamples", int, initial=1000, description='Number of samples per frequency per sweep')
-        S.New("Navg", int, initial=1, description='Number of sweeps')
+        S.New("N_samples", int, initial=1000)
+        S.New("N_sweeps", int, initial=1)
         S.New("randomize", bool, initial=True)
         S.New("shotByShotNormalization", bool, initial=False)
         S.New(
@@ -97,9 +111,9 @@ class Rabi(Measurement):
         self.layout = QVBoxLayout(widget)
                 
         settings_layout = QHBoxLayout()
-        settings_layout.addWidget(self.pulse_duration_range.New_UI())
-        settings_layout.addWidget(self.settings.New_UI(include=["contrast_mode", "Nsamples",
-                                                                "Navg", "randomize", "save_h5"], style='form'))
+        settings_layout.addWidget(self.pulse_duration_range.New_UI(True))
+        settings_layout.addWidget(self.settings.New_UI(include=["contrast_mode", "N_samples",
+                                                                "N_sweeps", "randomize", "save_h5"], style='form'))
         settings_layout.addWidget(self.settings.activation.new_pushButton())
         self.layout.addLayout(settings_layout)
 
@@ -119,15 +133,15 @@ class Rabi(Measurement):
             )
         self.data["pulse_durations"] = np.arange(10) * 1e9
         self.data_ready = False
-        self.i_run = 0
+        self.i_sweep = 0
         
-        self.ui.addDock(dock=self.pulse_generator.make_dock(), position='right')
+        self.ui.addDock(dock=self.pulse_generator.New_dock_UI(), position='left')
         
     def update_display(self):
         if self.data_ready:
             for name in ["signal_raw", "reference_raw", "contrast_raw"]:
                 x = self.data["pulse_durations"] / 1e9
-                y = self.data[name][:, 0:self.i_run + 1].mean(-1)
+                y = self.data[name][:, 0:self.i_sweep + 1].mean(-1)
                 self.plot_lines[name].setData(x, norm(y))
         self.plot.setTitle(self.name)
         self.plot.setLabel("bottom", units='s')
@@ -159,39 +173,38 @@ class Rabi(Measurement):
             self.set_pulse_duration(pulse_durations[0])
             PB.configure()
             SRS.settings["output"] = True
-            DAQ.restart(2 * S['Nsamples'])
+            DAQ.restart(2 * S['N_samples'])
             
             N_freqs = len(pulse_durations)
-            Navg = S["Navg"]
+            N_sweeps = S["N_sweeps"]
             
-            signal = np.zeros((N_freqs, Navg))
+            signal = np.zeros((N_freqs, N_sweeps))
             reference = np.zeros_like(signal)
             contrast = np.zeros_like(signal)
 
             # Run experiment
-            for i_run in range(Navg):
-                self.i_run = i_run
+            for i_sweep in range(N_sweeps):
+                self.i_sweep = i_sweep
                 if self.interrupt_measurement_called:
                     break
-                print("Run ", i_run + 1, " of ", Navg)
+                self.log.info(f"sweep {i_sweep + 1} of {N_sweeps}")
                 if S["randomize"]:
-                    if i_run > 0:
+                    if i_sweep > 0:
                         shuffle(pulse_durations)
                 index = np.argsort(pulse_durations)
                 
-                for i_scanPoint in range(N_freqs):
-                    pct = 100 * (i_run * N_freqs + i_scanPoint) / (Navg * N_freqs)
+                for i_scanPoint, pulse_duration in enumerate(pulse_durations):
+                    pct = 100 * (i_sweep * N_freqs + i_scanPoint) / (N_sweeps * N_freqs)
                     self.set_progress(pct)
                     if self.interrupt_measurement_called:
                         break
                     
                     # SRS.settings["frequency"] = pulse_durations[i_scanPoint]
-                    self.set_pulse_duration(pulse_durations[i_scanPoint])
+                    self.set_pulse_duration(pulse_duration)
                     
-                    print("Scan point ", i_scanPoint + 1, " of ", N_freqs)
                     time.sleep(0.01)
 
-                    cts = np.array(DAQ.read_counts(2 * S['Nsamples']))
+                    cts = np.array(DAQ.read_counts(2 * S['N_samples']))
                     ref = np.sum(cts[1::2] - cts[0::2])
                     sig = np.sum(cts[2::2] - cts[1:-2:2]) + cts[0]                 
                     
@@ -202,15 +215,15 @@ class Rabi(Measurement):
                     
                     print(sig.sum(), ref.sum())
                     ii = index[i_scanPoint]
-                    signal[ii][i_run] = sig
-                    reference[ii][i_run] = ref
+                    signal[ii][i_sweep] = sig
+                    reference[ii][i_sweep] = ref
                     if S["shotByShotNormalization"]:
-                        contrast[ii][i_run] = np.mean(
+                        contrast[ii][i_sweep] = np.mean(
                             calculateContrast(S["contrastMode"], sig, ref)
                         )
                     else:
-                        contrast[ii][i_run] = calculateContrast(
-                            S["contrast_mode"], signal[ii][i_run], reference[ii][i_run],
+                        contrast[ii][i_sweep] = calculateContrast(
+                            S["contrast_mode"], signal[ii][i_sweep], reference[ii][i_sweep],
                         )
 
                     # Update data array

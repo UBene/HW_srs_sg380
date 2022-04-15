@@ -122,7 +122,7 @@ class ConfigMeasurement(Measurement):
 
         scannedParam = self.frequency_range.sweep_array
         sequence = S["sequence"]
-        PBchannels = PB.get_register_addresses_dict(["AOM", "uW", "DAQ", "STARTtrig"])
+        PBchannels = PB.address_lookup
         sequenceArgs = [S["t_duration"]]
 
         try:
