@@ -1150,6 +1150,7 @@ class LQCircularNetwork(QtCore.QObject):
     updated_values = QtCore.Signal((),)
     
     def __init__(self, lq_dict=None, lq_list=None):
+        QtCore.QObject.__init__(self)
         if lq_dict is None:
             lq_dict = dict()
         if lq_list is not None:
@@ -1190,7 +1191,7 @@ class LQRange(LQCircularNetwork):
     LQRange.sweep_array is derivative of LQRange.array that takes the sweep_type into account
     """       
 
-    def __init__(self, min_lq, max_lq, step_lq, num_lq, center_lq=None, span_lq=None, sweep_type_lq=None, space_lq=None):
+    def __init__(self, min_lq, max_lq, step_lq, num_lq, center_lq=None, span_lq=None, sweep_type_lq=None, space_lq=None, name='lq_range'):
         QtCore.QObject.__init__(self)
         self.log = get_logger_from_class(self)
         self.min = min_lq
@@ -1199,6 +1200,7 @@ class LQRange(LQCircularNetwork):
         self.step = step_lq
         self.center = center_lq
         self.span = span_lq
+        self.name = name
         
         lq_dict = {'min':self.min, 'max':self.max, 'num':self.num, 'step':self.step}        
         
@@ -1346,9 +1348,11 @@ class LQRange(LQCircularNetwork):
         self.max.add_listener(func, argtype, **kwargs)
         self.num.add_listener(func, argtype, **kwargs)
         
-    def New_UI(self):
+    def New_UI(self, include_name=False):
         ui_widget = QtWidgets.QWidget()
         formLayout = QtWidgets.QFormLayout()
+        if include_name:
+            formLayout.addWidget(QtWidgets.QLabel(f"<b>{self.name} range</b>"))
         ui_widget.setLayout(formLayout)
         for lqname, lq in self.lq_dict.items():
             formLayout.addRow(lqname, lq.new_default_widget())
@@ -1416,7 +1420,7 @@ class LQCollection(object):
         
         self.log = get_logger_from_class(self)
         
-    def New(self, name, dtype=float, **kwargs):
+    def New(self, name, dtype=float, **kwargs) -> LoggedQuantity:
         """
         Create a new LoggedQuantity with name and dtype
         """
@@ -1497,7 +1501,13 @@ class LQCollection(object):
             return object.__getattribute__(self, name)
     """
     
-    def New_Range(self, name, include_center_span=False, include_sweep_type=False, initials=[0, 1., 0.1], include_space=True, **kwargs):
+    def New_Range(self,
+                  name,
+                  include_center_span=False,
+                  include_sweep_type=False,
+                  initials=[0, 1., 0.1],
+                  include_space=True,
+                  **kwargs) -> LQRange:
                         
         mn, mx, d = initials
         min_lq = self.New(name + "_min" , initial=mn, **kwargs) 
@@ -1516,7 +1526,8 @@ class LQCollection(object):
         if include_space:
             space_lq = self.New(name + "_space", dtype=str, choices=('linear', 'logarithmic'), initial='linear',
                                 description='if <i>logarithmic</i> the maximum value will be 10^max')
-            LQRange_kwargs.update({'space_lq':space_lq})        
+            LQRange_kwargs.update({'space_lq':space_lq}) 
+        LQRange_kwargs['name'] = name
         lqrange = LQRange(**LQRange_kwargs)
 
         self.ranges[name] = lqrange
