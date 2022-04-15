@@ -10,7 +10,7 @@ logging.getLogger('LoggedQuantity').setLevel(logging.WARNING)
 logging.getLogger('pyvisa').setLevel(logging.WARNING)
 
 
-class NikonMicroscope(BaseMicroscopeApp):
+class Microscope(BaseMicroscopeApp):
 
     name = 'upright_odmr_microscope'
 
@@ -130,11 +130,11 @@ class NikonMicroscope(BaseMicroscopeApp):
         # from ScopeFoundryHW.lakeshore_335.lakeshore_measure import LakeshoreMeasure
         # self.add_measurement(LakeshoreMeasure(self))
                 
-        #from confocal_measure.generic_sweep import GenericSweeper
-        #self.add_measurement(GenericSweeper(self))
+        # from confocal_measure.generic_sweep import GenericSweeper
+        # self.add_measurement(GenericSweeper(self))
         
-        #from confocal_measure.ranged_optimization import RangedOptimization
-        #self.add_measurement(RangedOptimization(self, name='auto_focus'))
+        # from confocal_measure.ranged_optimization import RangedOptimization
+        # self.add_measurement(RangedOptimization(self, name='auto_focus'))
         
         from ScopeFoundryHW.srs.SRS_HW import SRS
         self.add_hardware(SRS(self))
@@ -148,16 +148,29 @@ class NikonMicroscope(BaseMicroscopeApp):
         from ScopeFoundryHW.nidaqmx.pulse_width_counters_hw import PulseWidthCounters
         self.add_hardware(PulseWidthCounters(self))          
 
-        from odmr_measurements.config_measurement import ConfigMeasurement
-        self.add_measurement(ConfigMeasurement(self))
+        # from odmr_measurements.config_measurement import ConfigMeasurement
+        # self.add_measurement(ConfigMeasurement(self))
 
         from odmr_measurements.esr import ESR
         self.add_measurement(ESR(self))
 
-        #from odmr_measurements.rabi import Rabi
-        #self.add_measurement(Rabi(self))
+        from odmr_measurements.rabi import Rabi
+        self.add_measurement(Rabi(self))
 
-        # self.add_measurement(HahnEcho(self))
+        from odmr_measurements.optimal_readout_delay import OptimalReadoutDelay
+        self.add_measurement(OptimalReadoutDelay(self))
+
+        from odmr_measurements.T1 import T1
+        self.add_measurement(T1(self))
+
+        from odmr_measurements.T2 import T2
+        self.add_measurement(T2(self))
+        
+        from odmr_measurements.XY8 import XY8
+        self.add_measurement(XY8(self))
+
+        from odmr_measurements.correlation_spectroscopy import CorrelationSpectroscopy
+        self.add_measurement(CorrelationSpectroscopy(self))
         
     def setup_ui(self):
         pass
@@ -267,7 +280,7 @@ class NikonMicroscope(BaseMicroscopeApp):
                 
 if __name__ == '__main__':
     import sys
-    app = NikonMicroscope(sys.argv)
+    app = Microscope(sys.argv)
     app.settings_load_ini('defaults.ini')
     # app.load_window_positions_json(r'window_positions.json')
     sys.exit(app.exec_())

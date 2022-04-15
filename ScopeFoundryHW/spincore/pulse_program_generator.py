@@ -4,8 +4,8 @@ import pyqtgraph as pg
 from qtpy.QtWidgets import QPushButton
 from spinapi import Inst
 
-from ScopeFoundry.measurement import Measurement
-from ScopeFoundryHW.spincore.pulse_blaster_hw import PulseBlasterHW
+from ScopeFoundry.measurement import Measurement 
+from .pulse_blaster_hw import PulseBlasterHW
 
 
 class PulseBlasterChannel:

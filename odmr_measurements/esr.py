@@ -18,8 +18,7 @@ from pyqtgraph.dockarea.DockArea import DockArea
 
 from ScopeFoundry import Measurement
 from ScopeFoundry import h5_io
-from odmr_measurements.pulse_program_generator import PulseProgramGenerator, \
-    PulseBlasterChannel
+from ScopeFoundryHW.spincore import PulseProgramGenerator, PulseBlasterChannel
 from odmr_measurements.helper_functions import ContrastModes, calculateContrast
 from spinapi.spinapi import us
 
