@@ -21,13 +21,17 @@
 # CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+
+
+# TO BE RETIRED
+
 import math
 import numpy as np
 from collections import namedtuple
 
 from spinapi import ns, us, ms, Inst
 
-from ScopeFoundryHW.spincore.spinapi_hw import PulseBlasterHW
+from ScopeFoundryHW.spincore.pulse_blaster_hw import PulseBlasterHW
 from pyqtgraph.graphicsItems.PlotItem.PlotItem import PlotItem
 # from odmr_measurements.config_measurement import ConfigMeasurement
 
@@ -122,7 +126,7 @@ class PulseBlasterCtrl:
 		numberOfRepeats = S['numberOfRepeats']
 		t_delay_betweenXY8seqs = S['t_delay_betweenXY8seqs']
 		
-		addresses = self.hw.get_register_addresses_dict()
+		addresses = self.hw.address_lookup
 
 		print('makeSequence', addresses, t_min, t_duration)
 
@@ -158,7 +162,7 @@ class PulseBlasterCtrl:
 		return pulse_data
 		
 	def get_pulse_data(self):
-		names = {v:k for k, v in self.hw.get_register_addresses_dict().items()}
+		names = self.hw.rev_address_lookup
 		sequence = self.makeSequence()
 		pulse_data = {}
 		max_t = 0
