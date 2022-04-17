@@ -23,49 +23,37 @@ class DiamondMicroscope(BaseMicroscopeApp):
         from ScopeFoundryHW.picoquant.hydraharp_hw import HydraHarpHW
         self.add_hardware(HydraHarpHW(self))
 
-        # from ScopeFoundryHW.acton_spec import ActonSpectrometerHW
-        # self.add_hardware(ActonSpectrometerHW(self))
+        from ScopeFoundryHW.acton_spec import ActonSpectrometerHW
+        self.add_hardware(ActonSpectrometerHW(self))
 
-        # from ScopeFoundryHW.pololu_servo.multi_servo_hw import PololuMaestroHW, PololuMaestroWheelServoHW, PololuMaestroShutterServoHW
-        # self.add_hardware(PololuMaestroHW(self, name='pololu_maestro'))
-        # self.add_hardware(PololuMaestroWheelServoHW(self, name='power_wheel', channel=0))
-
+        
         from ScopeFoundryHW.thorlabs_powermeter import ThorlabsPowerMeterHW
         self.add_hardware_component(ThorlabsPowerMeterHW(self))
         
         # from ScopeFoundryHW.thorlabs_powermeter.thorlabs_powermeter_analog_readout import ThorlabsPowerMeterAnalogReadOut
         # self.add_hardware(ThorlabsPowerMeterAnalogReadOut(self))
                 
-        # from ScopeFoundryHW.thorlabs_stepper_motors import ThorlabsStepperControllerHW
-        # self.add_hardware(ThorlabsStepperControllerHW(self))
                 
         from ScopeFoundryHW.thorlabs_integrated_stepper.thorlabs_integrated_stepper_motor_hw import ThorlabsIntegratedStepperMottorHW
         self.add_hardware_component(ThorlabsIntegratedStepperMottorHW(self))
 
-        # from ScopeFoundryHW.dli_powerswitch import DLIPowerSwitchHW
-        # dli = self.add_hardware(DLIPowerSwitchHW(self))
-
-        # from ScopeFoundryHW.thorlabs_motorized_filter_flipper.thorlabsMFF_hardware import ThorlabsMFFHW
-        # self.add_hardware_component(ThorlabsMFFHW(self))
-
-        # from ScopeFoundryHW.chameleon_compact_opo.chameleon_compact_opo_hw import ChameleonCompactOPOHW
-        # self.add_hardware(ChameleonCompactOPOHW(self))
-
-        # from ScopeFoundryHW.keithley_sourcemeter.keithley_sourcemeter_hc import KeithleySourceMeterComponent
-        # self.add_hardware(KeithleySourceMeterComponent(self))
-
-        # from ScopeFoundryHW.andor_camera import AndorCCDHW, AndorCCDReadoutMeasure
-        # self.add_hardware(AndorCCDHW(self))
-        # self.add_measurement(AndorCCDReadoutMeasure)
-
-        # from ScopeFoundryHW.toupcam.toupcam_hw import ToupCamHW
-        # self.add_hardware(ToupCamHW(self))
-
-        # from ScopeFoundryHW.thorlabs_elliptec.elliptec_hw import ThorlabsElliptecSingleHW
-        # self.add_hardware(ThorlabsElliptecSingleHW(self, name='polarizer'))
-
-        # from ScopeFoundryHW.lakeshore_331.lakeshore_hw import Lakeshore331HW
-        # self.add_hardware(Lakeshore331HW(self))
+        from confocal_measure.sequencer import SweepSequencer
+        self.add_measurement(SweepSequencer(self))
+        
+        from ScopeFoundryHW.ni_daq.hw.ni_freq_counter_callback import NI_FreqCounterCallBackHW
+        self.add_hardware(NI_FreqCounterCallBackHW(self, name='apd_counter'))
+        from confocal_measure.apd_optimizer_cb import APDOptimizerCBMeasurement
+        self.add_measurement(APDOptimizerCBMeasurement(self)) 
+        
+        from ScopeFoundryHW.pi_xyz_stage.pi_xyz_stage_hw import PIXYZStageHW
+        self.add_hardware(PIXYZStageHW)
+        
+        from ScopeFoundryHW.pi_spec import PISpectrometerHW
+        self.add_hardware(PISpectrometerHW(self))
+        #from ScopeFoundryHW.picam.picam_hw import PicamHW
+        #self.add_hardware(PicamHW(self))
+        #from ScopeFoundryHW.picam import PicamReadoutMeasure
+        #self.add_measurement(PicamReadoutMeasure(self))
 
         print("Adding Measurement Components")
 
