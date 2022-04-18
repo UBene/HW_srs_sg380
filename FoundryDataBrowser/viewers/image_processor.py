@@ -207,7 +207,8 @@ class Correlator:
             symbolBrush=pg.mkBrush(255, 255, 255, 30),
             symbolPen=pg.mkPen(None),
         )
-        self.target = pg.TargetItem(movable=False)
+        #self.target = pg.TargetItem(movable=False) #not supported by older versions
+        self.target = pg.ScatterPlotItem()
         self.highlight_data_line = pg.PlotDataItem(
             x=[0, 1, 2, 3, 4],
             y=[0, 2, 1, 3, 2],
@@ -230,8 +231,7 @@ class Correlator:
 
 def spectral_median(spec, wls):
     int_spec = np.cumsum(spec)
-    total_sum = int_spec[-1]
-    return wls[int_spec.searchsorted(0.5 * total_sum)]
+    return wls[int_spec.searchsorted(0.5 * int_spec[-1])]
 
 
 def spectral_median_map(hyperspectral_data, wls):

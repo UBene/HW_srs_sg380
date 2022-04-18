@@ -176,8 +176,8 @@ class HyperSpectralBaseView(DataBrowserView):
     def _new_data_loaded(self):
         self.image_manager.reset()
         self.correlator.reset()
-        self.image_manager.calc_sum_image()
         self.image_manager.calc_media_map()
+        self.image_manager.calc_sum_image()
 
     # gui
     def new_settings_widget(self):
@@ -239,29 +239,33 @@ class HyperSpectralBaseView(DataBrowserView):
             self._new_data_loaded()
             self.databrowser.ui.statusbar.clearMessage()
             self.post_load()
-            self.add_scalebar()
-            self.on_change_display_image()
-            self.on_change_corr_settings()
+            #self.add_scalebar()
+            #self.on_change_display_image()
+            #self.on_change_corr_settings()
             self.update_display()
-        self.on_change_x_axis()
+        #self.on_change_x_axis()
 
-        if self.settings["default_view_on_load"]:
-            self.default_image_view()
+        #if self.settings["default_view_on_load"]:
+        self.default_image_view()
 
     def add_scalebar(self):
         """ not intended to use: Call set_scalebar_params() during load_data()"""
 
         if hasattr(self, "scalebar"):
-            self.imview.getView().removeItem(self.scalebar)
-            del self.scalebar
+            try:
+                self.imview.getView().removeItem(self.scalebar)
+                del self.scalebar
+            except AttributeError:
+                pass
 
-        num_px = self.display_image.shape[1]  # horizontal dimension!
-
+        num_px = self.image_manager.get_current_image().shape[1]  # horizontal dimension!
+        
+        
         if self.scalebar_type == None:
             # matplotlib export
             self.unit_per_px = 1
-            self.map_export_settings["scale_bar_width"] = int(num_px / 4)
-            self.map_export_settings["scale_bar_text"] = "{} pixels".format(
+            self.exporter.settings["scale_bar_width"] = int(num_px / 4)
+            self.exporter.settings["scale_bar_text"] = "{} pixels".format(
                 int(num_px / 4)
             )
 
@@ -291,8 +295,8 @@ class HyperSpectralBaseView(DataBrowserView):
 
             # matplotlib export
             self.unit_per_px = span * conv_fac / num_px
-            self.map_export_settings["scale_bar_width"] = int(w_meter * conv_fac)
-            self.map_export_settings[
+            self.exporter.settings["scale_bar_width"] = int(w_meter * conv_fac)
+            self.exporter.settings[
                 "scale_bar_text"
             ] = f"{int(w_meter * conv_fac)} {(unit)}"
 
