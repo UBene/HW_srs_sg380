@@ -45,15 +45,23 @@ class DiamondMicroscope(BaseMicroscopeApp):
         from confocal_measure.apd_optimizer_cb import APDOptimizerCBMeasurement
         self.add_measurement(APDOptimizerCBMeasurement(self)) 
         
+        from ScopeFoundryHW.picam.picam_hw import PicamHW
+        self.add_hardware(PicamHW(self))
+        from ScopeFoundryHW.picam import PicamReadoutMeasure
+        self.add_measurement(PicamReadoutMeasure(self))
+
         from ScopeFoundryHW.pi_xyz_stage.pi_xyz_stage_hw import PIXYZStageHW
-        self.add_hardware(PIXYZStageHW)
+        self.add_hardware(PIXYZStageHW(self))
         
-        from ScopeFoundryHW.pi_spec import PISpectrometerHW
-        self.add_hardware(PISpectrometerHW(self))
-        #from ScopeFoundryHW.picam.picam_hw import PicamHW
-        #self.add_hardware(PicamHW(self))
-        #from ScopeFoundryHW.picam import PicamReadoutMeasure
-        #self.add_measurement(PicamReadoutMeasure(self))
+        from confocal_measure.pi_xyz_scans.pi_xyz_2d_apd_slow_scan import PIXYZ2DAPD2DSlowScan
+        self.add_measurement(PIXYZ2DAPD2DSlowScan(self))  
+        
+        from confocal_measure.pi_xyz_scans.pi_xyz_2d_picam_slow_scan import PIXYZ2DPICAM2DSlowScan
+        self.add_measurement(PIXYZ2DPICAM2DSlowScan(self))
+
+
+        self.connect_scan_params('pi_xyz_2d_apd_slow_scan', 
+                                 ['pi_xyz_2d_picam_slow_scan'])
 
         print("Adding Measurement Components")
 
@@ -63,8 +71,8 @@ class DiamondMicroscope(BaseMicroscopeApp):
         # from ScopeFoundryHW.picoquant.hydraharp_hist_measure import HydraHarpHistogramMeasure
         # self.add_measurement(HydraHarpHistogramMeasure(self))
 
-        from confocal_measure.power_scan import PowerScanMeasure
-        self.add_measurement(PowerScanMeasure(self))
+        # from confocal_measure.power_scan import PowerScanMeasure
+        # self.add_measurement(PowerScanMeasure(self))
 
         from ScopeFoundryHW.thorlabs_powermeter import PowerMeterOptimizerMeasure
         self.add_measurement(PowerMeterOptimizerMeasure(self))
@@ -99,6 +107,9 @@ class DiamondMicroscope(BaseMicroscopeApp):
         # servos = self.add_hardware(DynamixelXServosHW(self, devices=dict(power_wheel=10,)))
         # self.add_hardware(DynamixelServoHW(self, name='power_wheel'))        
 
+
+
+
     def connect_scan_params(self, parent_scan_name='apd_asi',
                             children_scan_names=['hyperspec_asi', 'asi_trpl_2d_scan']):
         lq_names = ['h0', 'h1', 'v0', 'v1', 'Nh', 'Nv']
@@ -111,6 +122,7 @@ class DiamondMicroscope(BaseMicroscopeApp):
                 child_scan.settings.get_lq(lq_name).connect_to_lq(master_scan_lq)
         
     def setup_ui(self):
+        return
 
         rainbow = '''qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(255, 0, 0, 100), 
                         stop:0.166 rgba(255, 255, 0, 100), stop:0.333 rgba(0, 255, 0, 100), stop:0.5 rgba(0, 255, 255, 100), 
@@ -158,6 +170,6 @@ class DiamondMicroscope(BaseMicroscopeApp):
 if __name__ == '__main__':
     import sys
     app = DiamondMicroscope(sys.argv)
-    # app.settings_load_ini('near_field_microscope_defaults.ini')
+    app.settings_load_ini('defaults.ini')
     # app.load_window_positions_json(r'E:\Natalie\natalie_window_positions.json')
     sys.exit(app.exec_())
