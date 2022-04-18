@@ -3,7 +3,7 @@ import time
 
 class PIXYZ2DAPD2DSlowScan(PIXYZ2DSlowScan):
     
-    name = 'pi_xyz_2d_apd_slow_scan'
+    name = 'apd_2d_map'
 
     def __init__(self, app):
         PIXYZ2DSlowScan.__init__(self, app)        
