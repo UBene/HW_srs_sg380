@@ -64,7 +64,7 @@ class PicamReadoutMeasure(Measurement):
         S = self.settings
         cam = self.cam_hw.cam
 
-        print("rois|-->", cam.read_rois())
+        #print("rois|-->", cam.read_rois())
 
         cam.commit_parameters()
         
@@ -98,7 +98,7 @@ class PicamReadoutMeasure(Measurement):
             
             self.wls_mean = self.wls.mean()
 
-            S['count_rate'] = self.spectrum.sum() / (self.cam_hw.settings['ExposureTime']/1000.0)
+            S['count_rate'] = 1.0 * self.spectrum.sum() / (self.cam_hw.settings['ExposureTime'] / 1000.0)
 
             if not S['continuous']:
                 break

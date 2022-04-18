@@ -15,6 +15,16 @@ class PIXYZ2DPICAM2DSlowScan(PIXYZ2DSlowScan):
 
         self.target_range = 0.050e-3  # um
         self.slow_move_timeout = 10.  # sec
+        
+        self.picam = self.app.hardware['picam']
+        self.ui.device_details_layout.addWidget(self.picam.settings.New_UI(include=['connected',
+                                                                             'ExposureTime']))
+        self.ui.device_details_GroupBox.setTitle('picam')
+        
+    def pre_run(self):
+        self.app.measurements["picam_readout"].settings['save_h5'] = False
+        self.cont0 = self.app.measurements["picam_readout"].settings['continuous']
+        self.app.measurements["picam_readout"].settings['continuous'] = False
 
     def collect_pixel(self, pixel_num, k, j, i):
         
@@ -38,3 +48,7 @@ class PIXYZ2DPICAM2DSlowScan(PIXYZ2DSlowScan):
         self.display_image_map[k, j, i] = np.sum(spec)
         if self.settings['save_h5']:
             self.spec_map_h5[k, j, i] = spec
+
+    def post_run(self):
+        self.app.measurements["picam_readout"].settings['save_h5'] = True
+        self.app.measurements["picam_readout"].settings['continuous'] = self.cont0
