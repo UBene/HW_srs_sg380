@@ -47,6 +47,9 @@ class PIXYZStageHW(HardwareComponent):
         self.h_axis = S.New("h_axis", initial="X", **lq_params)
         self.v_axis = S.New("v_axis", initial="Y", **lq_params)
         
+        
+        S.New('controller_name', str, initial='E-727')
+        
         # ##Is this working?
         self.PI_AXIS_ID = dict(X=1, Y=2, Z=3)
         self.xyz_axis_map = S.New('xyz_axis_map', dtype=str, initial='123')
@@ -104,9 +107,16 @@ class PIXYZStageHW(HardwareComponent):
         
     def connect(self):
         if self.debug_mode.val: print("connecting", self.name)
+
+
+        S = self.settings
         
         # Open connection to hardware
-        self.nanopositioner = PINanopositioner(debug=self.debug_mode.val)
+        
+        deviceaxes = [x for x in S['xyz_axis_map']]
+        self.nanopositioner = PINanopositioner(debug=S['debug_mode'], 
+                                               CONTROLLERNAME=S['controller_name'], 
+                                               deviceaxes=deviceaxes)
         
         # connect logged quantities
         self.x_target.hardware_set_func = \
@@ -119,7 +129,7 @@ class PIXYZStageHW(HardwareComponent):
                 lambda z: self.nanopositioner.set_pos_ax_slow(z, self.PI_AXIS_ID["Z"])
         else:
             self.z_target.change_readonly(True)
-
+        
         self.x_position.hardware_read_func = \
             lambda: self.nanopositioner.get_pos_ax(int(self.PI_AXIS_ID["X"]))
         self.y_position.hardware_read_func = \
@@ -127,7 +137,7 @@ class PIXYZStageHW(HardwareComponent):
         if self.nanopositioner.num_axes > 2:
             self.z_position.hardware_read_func = \
                 lambda: self.nanopositioner.get_pos_ax(self.PI_AXIS_ID["Z"])
-            
+        
         self.x_max.hardware_read_func = lambda: self.nanopositioner.cal[self.PI_AXIS_ID["X"]]
         self.y_max.hardware_read_func = lambda: self.nanopositioner.cal[self.PI_AXIS_ID["Y"]]
         if self.nanopositioner.num_axes > 2:

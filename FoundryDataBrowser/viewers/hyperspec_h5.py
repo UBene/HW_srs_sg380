@@ -11,28 +11,33 @@ class HyperSpecH5View(HyperSpectralBaseView):
 
     name = 'hyperspec_h5'
 
-    supported_measurements = ['m4_hyperspectral_2d_scan',
-                              'andor_hyperspec_scan',
-                              'hyperspectral_2d_scan',
-                              'fiber_winspec_scan',
-                              'hyperspec_picam_mcl',
-                              'asi_hyperspec_scan',
-                              'asi_OO_hyperspec_scan',
-                              'oo_asi_hyperspec_scan',
-                              'andor_asi_hyperspec_scan',]
-
     def scan_specific_setup(self):
         pass
 
     def setup(self):
         self.settings.New('sample', dtype=str, initial='')
         HyperSpectralBaseView.setup(self)
-        self.plot_n_fit.add_fitter(PeakUtilsFitter())
+        try:
+            import peakutils
+            self.plot_n_fit.add_fitter(PeakUtilsFitter())
+        except (ModuleNotFoundError, ImportError):
+            pass
 
     def is_file_supported(self, fname):
+        self.supported_measurements = ['m4_hyperspectral_2d_scan',
+                                       'andor_hyperspec_scan',
+                                       'hyperspectral_2d_scan',
+                                       'fiber_winspec_scan',
+                                       'hyperspec_picam_mcl',
+                                       'asi_hyperspec_scan',
+                                       'asi_OO_hyperspec_scan',
+                                       'oo_asi_hyperspec_scan',
+                                       'andor_asi_hyperspec_scan',
+                                       'pi_xyz_2d_picam_slow_scan',
+                                       'picam_2d_map']
+
         return np.any([(meas_name in fname)
                        for meas_name in self.supported_measurements])
-
 
     def reset(self):
         HyperSpectralBaseView.reset(self)
@@ -48,14 +53,14 @@ class HyperSpecH5View(HyperSpectralBaseView):
                 self.M = self.dat['measurement'][meas_name]
 
         self.spec_map = None
-        for map_name in ['hyperspectral_map', 'spec_map']:
+        for map_name in ['hyperspectral_map', 'spec_map', ]:
             if map_name in self.M:
                 self.spec_map = np.array(self.M[map_name])
                 if 'h_span' in self.M['settings'].attrs:
                     h_span = float(self.M['settings'].attrs['h_span'])
                     units = self.M['settings/units'].attrs['h0']
                     self.set_scalebar_params(h_span, units)
-                    
+
                 if len(self.spec_map.shape) == 4:
                     self.spec_map = self.spec_map[0, :, :, :]
                 if 'dark_indices' in list(self.M.keys()):
@@ -63,7 +68,7 @@ class HyperSpecH5View(HyperSpectralBaseView):
                                               self.M['dark_indices'],
                                               -1)
         if self.spec_map is None:
-            self.spec_map = np.zeros((10,10,10))
+            self.spec_map = np.zeros((10, 10, 10))
             raise ValueError("Specmap not found")
         self.hyperspec_data = self.spec_map
         self.display_image = self.hyperspec_data.sum(axis=-1)
@@ -77,12 +82,10 @@ class HyperSpecH5View(HyperSpectralBaseView):
                     x_array = np.delete(x_array,
                                         np.array(self.M['dark_indices']),
                                         0)
-                self.add_spec_x_array(x_axis_name, x_array)
-                self.x_axis.update_value(x_axis_name)
-                
+                self.x_arrays[x_axis_name] = x_array
+
         sample = self.dat['app/settings'].attrs['sample']
         self.settings.sample.update_value(sample)
-
 
 
 def matplotlib_colormap_to_pg_colormap(colormap_name, n_ticks=16):
@@ -101,7 +104,8 @@ def matplotlib_colormap_to_pg_colormap(colormap_name, n_ticks=16):
                     https://github.com/pyqtgraph/pyqtgraph/issues/561
     '''
     from matplotlib import cm
-    pos, rgba_colors = zip(*cmapToColormap(getattr(cm, colormap_name)), n_ticks)
+    pos, rgba_colors = zip(
+        *cmapToColormap(getattr(cm, colormap_name)), n_ticks)
     pgColormap = pg.ColorMap(pos, rgba_colors)
     return pgColormap
 
@@ -120,16 +124,19 @@ def cmapToColormap(cmap, nTicks=16):
     """
     import collections
     # Case #1: a dictionary with 'red'/'green'/'blue' values as list of ranges (e.g. 'jet')
-    # The parameter 'cmap' is a 'matplotlib.colors.LinearSegmentedColormap' instance ...
+    # The parameter 'cmap' is a 'matplotlib.colors.LinearSegmentedColormap'
+    # instance ...
     if hasattr(cmap, '_segmentdata'):
         colordata = getattr(cmap, '_segmentdata')
         if ('red' in colordata) and isinstance(colordata['red'], collections.Sequence):
 
-            # collect the color ranges from all channels into one dict to get unique indices
+            # collect the color ranges from all channels into one dict to get
+            # unique indices
             posDict = {}
             for idx, channel in enumerate(('red', 'green', 'blue')):
                 for colorRange in colordata[channel]:
-                    posDict.setdefault(colorRange[0], [-1, -1, -1])[idx] = colorRange[2]
+                    posDict.setdefault(
+                        colorRange[0], [-1, -1, -1])[idx] = colorRange[2]
 
             indexList = list(posDict.keys())
             indexList.sort()
@@ -144,7 +151,8 @@ def cmapToColormap(cmap, nTicks=16):
                         for eIdx in emptyIdx:
                             rPos = (eIdx - startIdx) / (curIdx - startIdx)
                             vStart = posDict[startIdx][channel]
-                            vRange = (posDict[curIdx][channel] - posDict[startIdx][channel])
+                            vRange = (posDict[curIdx][channel] -
+                                      posDict[startIdx][channel])
                             posDict[eIdx][channel] = rPos * vRange + vStart
                         startIdx = curIdx
                         del emptyIdx[:]
@@ -154,26 +162,30 @@ def cmapToColormap(cmap, nTicks=16):
 
             rgb_list = [[i, posDict[i]] for i in indexList]
 
-        # Case #2: a dictionary with 'red'/'green'/'blue' values as functions (e.g. 'gnuplot')
+        # Case #2: a dictionary with 'red'/'green'/'blue' values as functions
+        # (e.g. 'gnuplot')
         elif ('red' in colordata) and isinstance(colordata['red'], collections.Callable):
             indices = np.linspace(0., 1., nTicks)
-            luts = [np.clip(np.array(colordata[rgb](indices), dtype=np.float), 0, 1) * 255 \
+            luts = [np.clip(np.array(colordata[rgb](indices), dtype=np.float), 0, 1) * 255
                     for rgb in ('red', 'green', 'blue')]
             rgb_list = zip(indices, list(zip(*luts)))
 
-    # If the parameter 'cmap' is a 'matplotlib.colors.ListedColormap' instance, with the attributes 'colors' and 'N'
+    # If the parameter 'cmap' is a 'matplotlib.colors.ListedColormap'
+    # instance, with the attributes 'colors' and 'N'
     elif hasattr(cmap, 'colors') and hasattr(cmap, 'N'):
         colordata = getattr(cmap, 'colors')
         # Case #3: a list with RGB values (e.g. 'seismic')
         if len(colordata[0]) == 3:
             indices = np.linspace(0., 1., len(colordata))
-            scaledRgbTuples = [(rgbTuple[0] * 255, rgbTuple[1] * 255, rgbTuple[2] * 255) for rgbTuple in colordata]
+            scaledRgbTuples = [(rgbTuple[0] * 255, rgbTuple[1]
+                                * 255, rgbTuple[2] * 255) for rgbTuple in colordata]
             rgb_list = zip(indices, scaledRgbTuples)
 
         # Case #4: a list of tuples with positions and RGB-values (e.g. 'terrain')
         # -> this section is probably not needed anymore!?
         elif len(colordata[0]) == 2:
-            rgb_list = [(idx, (vals[0] * 255, vals[1] * 255, vals[2] * 255)) for idx, vals in colordata]
+            rgb_list = [(idx, (vals[0] * 255, vals[1] * 255, vals[2] * 255))
+                        for idx, vals in colordata]
 
     # Case #X: unknown format or datatype was the wrong object type
     else:
