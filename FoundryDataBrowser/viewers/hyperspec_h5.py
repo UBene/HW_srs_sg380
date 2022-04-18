@@ -19,8 +19,9 @@ class HyperSpecH5View(HyperSpectralBaseView):
         HyperSpectralBaseView.setup(self)
         try:
             import peakutils
-        except (ModuleNotFoundError, ImportError):
             self.plot_n_fit.add_fitter(PeakUtilsFitter())
+        except (ModuleNotFoundError, ImportError):
+            pass
 
     def is_file_supported(self, fname):
         self.supported_measurements = ['m4_hyperspectral_2d_scan',
