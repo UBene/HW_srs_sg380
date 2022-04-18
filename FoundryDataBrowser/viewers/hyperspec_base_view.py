@@ -355,7 +355,7 @@ class HyperSpectralBaseView(DataBrowserView):
 
     def update_display_image(self):
         image = self.image_manager.get_current_image()
-        self.imview.setImage(image)
+        self.imview.setImage(image.T)
 
     def load_data(self, fname):
         """
