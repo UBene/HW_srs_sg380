@@ -8,6 +8,7 @@ from nidaqmx.constants import Edge, AcquisitionType, TimeUnits, \
     ReadRelativeTo, OverwriteMode
 
 from ScopeFoundry.hardware import HardwareComponent
+from nidaqmx.errors import DaqError
 
 
 class PulseWidthCounters(HardwareComponent):
@@ -65,7 +66,7 @@ class PulseWidthCounters(HardwareComponent):
         self.add_operation('read ref counts', self.read_ref_counts)
         self.add_operation('restart tasks', self.restart)
         self.add_operation('start tasks', self.start_tasks)
-        self.add_operation('end tasks', self.end_tasks)
+        self.add_operation('close tasks', self.close_tasks)
         
         self.tasks = {'sig':None, 'ref':None}
 
@@ -74,10 +75,10 @@ class PulseWidthCounters(HardwareComponent):
         self.start_tasks()
 
     def disconnect(self):
-        self.end_tasks()
+        self.close_tasks()
         
     def restart(self, N=None):
-        self.end_tasks()
+        self.close_tasks()
         self.configure_tasks(N)
         return self.start_tasks()
         
@@ -101,22 +102,30 @@ class PulseWidthCounters(HardwareComponent):
             channel.ci_pulse_width_term = S['gate_' + x]
             channel.ci_ctr_timebase_rate = 1
             channel.ci_ctr_timebase_src = S['count_terminal']
+            
+            
             task.timing.cfg_implicit_timing(sample_mode=AcquisitionType.FINITE,
                                             samps_per_chan=N)
             task.in_stream.relative_to = ReadRelativeTo.CURRENT_READ_POSITION
             task.in_stream.offset = 0
             task.in_stream.over_write = OverwriteMode.DO_NOT_OVERWRITE_UNREAD_SAMPLES
+            
+            # task.timing.cfg_implicit_timing(sample_mode=AcquisitionType.CONTINUOUS,
+            #                                 samps_per_chan=4*N)
+            # task.in_stream.offset = 0
+            # task.in_stream.relative_to = ReadRelativeTo.MOST_RECENT_SAMPLE
+            # task.in_stream.over_write = OverwriteMode.OVERWRITE_UNREAD_SAMPLES
 
     def _read_from_task(self, task, N=None, timeout=10):
         if not N: 
             N = self.settings['N'] 
         try:
             counts = task.read(N, timeout)
-        except Exception as excpt:
+        except DaqError as excpt:
             print(self.name, type(excpt).__name__, ':\n', excpt)
             counts = [-1] * N
         if self.settings['debug_mode']:
-            print(self.name, '_read_from_task', task, counts)
+            self.log.debug(f'read {counts[:4]} from {task}')
         return counts
     
     def read_sig_counts(self, N=None, timeout=10):
@@ -129,10 +138,10 @@ class PulseWidthCounters(HardwareComponent):
         for task in self.tasks.values():
             task.start()
         if self.settings['debug_mode']:
-            print(self.name, 'task started')
-        return self.tasks
+            self.log.debug('tasks started')
+            return self.tasks
         
-    def end_tasks(self):
+    def close_tasks(self):
         if hasattr(self, 'tasks'):
             for task in self.tasks.values():
                 task.close()
