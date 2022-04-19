@@ -34,6 +34,6 @@ channel_settings = [
          description='channel connected to the I (or "in phase") input of the SRS microwave signal generator.',),
     dict(name='Q', initial=5, colors=['#A020F0'],
          description='channel connected to the Q (or "in quadrature") input of the SRS microwave signal generator.'),
-    dict(name='sync_out', initial=23, colors=['#FFFF28'],
-         description='channel to synchronize external clocks, such as uW generator. (Not strictly required for most ODMR experiment)'),
+    #dict(name='sync_out', initial=23, colors=['#FFFF28'],
+    #     description='channel to synchronize external clocks, such as uW generator. (Not strictly required for most ODMR experiment)'),
 ]
