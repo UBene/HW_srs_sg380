@@ -3,7 +3,7 @@ from ScopeFoundry import BaseMicroscopeApp
 from ScopeFoundry.helper_funcs import sibling_path, load_qt_ui_file
 import logging
 
-logging.basicConfig(level='DEBUG')  # , filename='m3_log.txt')
+logging.basicConfig(level='WARNING')  # , filename='m3_log.txt')
 # logging.getLogger('').setLevel(logging.WARNING)
 logging.getLogger("ipykernel").setLevel(logging.WARNING)
 logging.getLogger('PyQt4').setLevel(logging.WARNING)
@@ -17,9 +17,6 @@ class DiamondMicroscope(BaseMicroscopeApp):
     name = 'diamond_microscope'
 
     def setup(self):
-
-
-
 
         from ScopeFoundryHW.acton_spec import ActonSpectrometerHW
         self.add_hardware(ActonSpectrometerHW(self))
@@ -60,7 +57,7 @@ class DiamondMicroscope(BaseMicroscopeApp):
         from ScopeFoundryHW.picoquant.hydraharp_hist_measure import HydraHarpHistogramMeasure
         self.add_measurement(HydraHarpHistogramMeasure(self))
 
-        # PI stage 
+        # PI stage
         from ScopeFoundryHW.pi_xyz_stage.pi_xyz_stage_hw import PIXYZStageHW
         self.add_hardware(PIXYZStageHW(self))
 
@@ -178,5 +175,5 @@ if __name__ == '__main__':
     import sys
     app = DiamondMicroscope(sys.argv)
     app.settings_load_ini('defaults.ini')
-    # app.load_window_positions_json(r'E:\Natalie\natalie_window_positions.json')
+    app.load_window_positions_json(r'window_positions.json')
     sys.exit(app.exec_())
