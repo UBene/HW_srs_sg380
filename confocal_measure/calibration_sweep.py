@@ -29,8 +29,7 @@ class CalibrationSweep(Measurement):
     def run(self):
         self.spec_readout = self.app.measurements[self.camera_readout_measure_name]
         
-        if 'continuous' in self.camera_readout_measure_name.settings:
-            self.spec_readout.settings['continuous'] = False 
+
         
         self.spec_center_wl = self.app.hardware[self.spectrometer_hw_name].settings.center_wl     
         

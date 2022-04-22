@@ -3,6 +3,7 @@ from ScopeFoundry import BaseMicroscopeApp
 from ScopeFoundry.helper_funcs import sibling_path, load_qt_ui_file
 import logging
 
+
 logging.basicConfig(level='WARNING')  # , filename='m3_log.txt')
 # logging.getLogger('').setLevel(logging.WARNING)
 logging.getLogger("ipykernel").setLevel(logging.WARNING)
@@ -36,43 +37,49 @@ class DiamondMicroscope(BaseMicroscopeApp):
         # from confocal_measure.sequencer import SweepSequencer
         # self.add_measurement(SweepSequencer(self))
 
-        from ScopeFoundryHW.ni_daq.hw.ni_freq_counter_callback import NI_FreqCounterCallBackHW
-        self.add_hardware(NI_FreqCounterCallBackHW(self, name='apd_counter'))
-        from confocal_measure.apd_optimizer_cb import APDOptimizerCBMeasurement
-        self.add_measurement(APDOptimizerCBMeasurement(self))
-
-        from ScopeFoundryHW.picam.picam_hw import PicamHW
-        self.add_hardware(PicamHW(self))
-
-        from ScopeFoundryHW.picam import PicamReadoutMeasure
-        self.add_measurement(PicamReadoutMeasure(self))
-
-        # Hydraharp
-        from ScopeFoundryHW.picoquant.hydraharp_hw import HydraHarpHW
-        self.add_hardware(HydraHarpHW(self))
-
-        from ScopeFoundryHW.picoquant.hydraharp_optimizer import HydraHarpOptimizerMeasure
-        self.add_measurement(HydraHarpOptimizerMeasure(self))
-
-        from ScopeFoundryHW.picoquant.hydraharp_hist_measure import HydraHarpHistogramMeasure
-        self.add_measurement(HydraHarpHistogramMeasure(self))
-
         # PI stage
         from ScopeFoundryHW.pi_xyz_stage.pi_xyz_stage_hw import PIXYZStageHW
         self.add_hardware(PIXYZStageHW(self))
 
-        from confocal_measure.pi_xyz_scans.pi_xyz_2d_apd_slow_scan import PIXYZ2DAPD2DSlowScan
-        self.add_measurement(PIXYZ2DAPD2DSlowScan(self))
+        v_limits = h_limits = (0, 100)
+        h_unit = v_unit = 'um'
+        stage_inits = dict(h_limits=h_limits, v_limits=v_limits,
+                           h_unit=h_unit, v_unit=v_unit)
 
-        from confocal_measure.pi_xyz_scans.pi_xyz_2d_picam_slow_scan import PIXYZ2DPICAM2DSlowScan
-        self.add_measurement(PIXYZ2DPICAM2DSlowScan(self))
+        # APD
+        from ScopeFoundryHW.ni_daq.hw.ni_freq_counter_callback import NI_FreqCounterCallBackHW
+        self.add_hardware(NI_FreqCounterCallBackHW(self, name='apd_counter'))
+        from confocal_measure.apd_optimizer_cb import APDOptimizerCBMeasurement
+        self.add_measurement(APDOptimizerCBMeasurement(self))
+        from confocal_measure.pi_xyz_scans.pi_xyz_2d_apd_slow_scan import PIXYZ2DAPDSlowScan
+        self.add_measurement(PIXYZ2DAPDSlowScan(self, **stage_inits))
 
-        from confocal_measure.pi_xyz_scans.pi_xyz_2d_hydraharp_histogram_slow_scan import PIXYZ2DHydraharpHistogramSlowScan
-        self.add_measurement(PIXYZ2DHydraharpHistogramSlowScan(self))
+        # picam
+        from ScopeFoundryHW.picam.picam_hw import PicamHW
+        self.add_hardware(PicamHW(self))
+        from ScopeFoundryHW.picam import PicamReadoutMeasure
+        self.add_measurement(PicamReadoutMeasure(self))
+        from confocal_measure.pi_xyz_scans.pi_xyz_2d_picam_slow_scan import PIXYZ2DPICAMSlowScan
+        self.add_measurement(PIXYZ2DPICAMSlowScan(self, **stage_inits))
+
+        # Timharp
+        from ScopeFoundryHW.picoquant.timeharp_260_hw import TimeHarp260HW
+        from ScopeFoundryHW.picoquant.timeharp_optimizer import TimeHarpOptimizerMeasure
+        from ScopeFoundryHW.picoquant.timeharp_260_hist_measure import TimeHarpHistogramMeasure
+
+        self.add_hardware(TimeHarp260HW(self))
+        self.add_measurement(TimeHarpOptimizerMeasure(self))
+        self.add_measurement(TimeHarpHistogramMeasure(self))
+
+        from confocal_measure.pi_xyz_scans.pi_xyz_2d_histogram_slow_scan import PIXYZ2DHistogramSlowScan
+        self.add_measurement(PIXYZ2DHistogramSlowScan(self, **stage_inits))
 
         self.connect_scan_params('apd_2d_map',
                                  ['picam_2d_map',
-                                  'hydraharp_histogram_2d_map'])
+                                  'histogram_2d_map'])
+
+        from confocal_measure.calibration_sweep import CalibrationSweep
+        self.add_measurement(CalibrationSweep(self))
 
         # from confocal_measure.power_scan import PowerScanMeasure
         # self.add_measurement(PowerScanMeasure(self))
@@ -175,5 +182,5 @@ if __name__ == '__main__':
     import sys
     app = DiamondMicroscope(sys.argv)
     app.settings_load_ini('defaults.ini')
-    app.load_window_positions_json(r'window_positions.json')
+    # app.load_window_positions_json(r'window_positions.json')
     sys.exit(app.exec_())

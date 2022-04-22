@@ -78,8 +78,8 @@ class PINanopositioner:
             assert 0.0 <= z <= self.cal_Z
             self.pidevice.MOV(["3"], [z])
 
-        pitools.waitontarget(self.pidevice, ["1", "2", "3"])
-        # time.sleep(0.05)
+        #pitools.waitontarget(self.pidevice, ["1", "2", "3"])
+        time.sleep(0.05)
 
         # self.get_pos()
         # self.x_pos = x
