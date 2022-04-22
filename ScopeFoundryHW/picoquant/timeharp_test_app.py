@@ -1,17 +1,18 @@
 '''
-Created on June 7, 2019
+Created on April 20, 2022
 
 @author: Benedikt Ursprung
 '''
 
 from ScopeFoundry.base_app import BaseMicroscopeApp
 from ScopeFoundryHW.picoquant.hydraharp_hw import HydraHarpHW
-from ScopeFoundryHW.picoquant.hydraharp_optimizer import HydraHarpOptimizerMeasure,
-
-    
+from ScopeFoundryHW.picoquant.hydraharp_optimizer import HydraHarpOptimizerMeasure
 from ScopeFoundryHW.picoquant.hydraharp_hist_measure import HydraHarpHistogramMeasure
-from ScopeFoundryHW.picoquant.trpl_2d_scan_base import TRPL2DScan
-from ScopeFoundryHW.picoquant.timeharp260_hw import TimeHarp260HW
+   
+from ScopeFoundryHW.picoquant.timeharp_260_hw import TimeHarp260HW
+from ScopeFoundryHW.picoquant.timeharp_optimizer import TimeHarpOptimizerMeasure
+from ScopeFoundryHW.picoquant.timeharp_260_hist_measure import TimeHarpHistogramMeasure
+from ScopeFoundryHW.picoquant.trpl_2d_scan_base import TRPL2DScanBase
 
 class HydraHarpTestApp(BaseMicroscopeApp):
     
@@ -20,8 +21,11 @@ class HydraHarpTestApp(BaseMicroscopeApp):
     def setup(self):
         
         self.add_hardware(TimeHarp260HW(self))
-        self.add_measurement(TimeHarp260OptimizerMeasure(self))
-        self.add_measurement(HydraHarpHistogramMeasure(self))
+        self.add_measurement(TimeHarpOptimizerMeasure(self))
+        self.add_measurement(TimeHarpHistogramMeasure(self))
+        self.add_measurement(TRPL2DScanBase(self))
+
+        #self.add_measurement(HydraHarpHistogramMeasure(self))
         #self.add_measurement(TRPL2DScan(self))
 
 
