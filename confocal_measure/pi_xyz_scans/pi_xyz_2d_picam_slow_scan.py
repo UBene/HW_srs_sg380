@@ -2,12 +2,9 @@ from .pi_xyz_2d_slow_scan import PIXYZ2DSlowScan
 import numpy as np
 
 
-class PIXYZ2DPICAM2DSlowScan(PIXYZ2DSlowScan):
+class PIXYZ2DPICAMSlowScan(PIXYZ2DSlowScan):
     
-    name = 'picam_2d_map'
-
-    def __init__(self, app):
-        PIXYZ2DSlowScan.__init__(self, app)        
+    name = 'picam_2d_map'    
         
     def setup(self):
         PIXYZ2DSlowScan.setup(self)
