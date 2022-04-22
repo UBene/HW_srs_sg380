@@ -100,10 +100,9 @@ class TimeHarpHistogramMeasure(Measurement):
         if self.settings['save_h5']:
             self.h5_file = h5_io.h5_base_file(self.app, measurement=self)
             self.h5_file.attrs['time_id'] = self.t0
-
             H = self.h5_meas_group = h5_io.h5_create_measurement_group(
                 self, self.h5_file)
-            for k, v in self.data:
+            for k, v in self.data.items():
                 H[k] = v
             self.h5_file.close()
 

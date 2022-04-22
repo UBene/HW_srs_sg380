@@ -11,11 +11,11 @@ from ScopeFoundry.helper_funcs import sibling_path, load_qt_ui_file
 from qtpy import QtWidgets
 
 
-class TimeHarp260OptimizerMeasure(Measurement):
+class TimeHarpOptimizerMeasure(Measurement):
 
-    name = "timeharp260_channel_optimizer"
+    name = "timeharp_channel_optimizer"
 
-    hardware_requirements = ['timeharp260']
+    hardware_requirements = ['timeharp_260']
 
     def setup(self):
 
@@ -35,7 +35,7 @@ class TimeHarp260OptimizerMeasure(Measurement):
         self.on_new_history_len()
         self.settings.history_len.add_listener(self.on_new_history_len)
 
-        self.hydraharp_hw = self.app.hardware['hydraharp']
+        self.hydraharp_hw = self.app.hardware['timeharp_260']
 
     def setup_figure(self):
         hh_hw = self.hydraharp_hw
