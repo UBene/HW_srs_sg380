@@ -12,6 +12,7 @@ from qtpy.QtWidgets import (
     QHBoxLayout,
     QVBoxLayout,
     QWidget,
+    QLabel,
 )
 import pyqtgraph as pg
 from pyqtgraph.dockarea.DockArea import DockArea
@@ -33,10 +34,12 @@ class Rabi(Measurement):
     def setup(self):
 
         S = self.settings
-
+        
+        
         self.range = S.New_Range(
             "pulse_duration", initials=[0, 200, 2], unit="ns", si=True
         )
+
 
         S.New("N_samples", int, initial=1000)
         S.New("N_sweeps", int, initial=1)
@@ -71,7 +74,12 @@ class Rabi(Measurement):
         settings_layout.addWidget(self.range.New_UI(True))
         settings_layout.addWidget(self.settings.New_UI(include=["contrast_mode", "N_samples",
                                                                 "N_sweeps", "randomize", "save_h5"], style='form'))
-        settings_layout.addWidget(self.settings.activation.new_pushButton())
+        start_layout = QVBoxLayout()
+        SRS = self.app.hardware["srs_control"]
+        start_layout.addWidget(QLabel('<b>SRS control</b>'))
+        start_layout.addWidget(SRS.settings.New_UI(['connected', 'amplitude', 'frequency']))
+        start_layout.addWidget(self.settings.activation.new_pushButton())
+        settings_layout.addLayout(start_layout)
         self.layout.addLayout(settings_layout)
 
         # Signal/reference Plots
@@ -165,7 +173,8 @@ class Rabi(Measurement):
                     # Update data arrays
                     jj = self.indices[j]
                     DAQ.restart(N_DAQ_readouts)
-                    #time.sleep(N_DAQ_readouts * self.pulse_generator.pulse_program_duration/1e9)
+                    #t_aquisition = N_DAQ_readouts * self.pulse_generator.pulse_program_duration/1e9
+                    #time.sleep(t_aquisition)
                     self.data["signal_raw"][i_sweep][jj] = np.mean(
                         DAQ.read_sig_counts(N_DAQ_readouts))
                     self.data["reference_raw"][i_sweep][jj] = np.mean(
