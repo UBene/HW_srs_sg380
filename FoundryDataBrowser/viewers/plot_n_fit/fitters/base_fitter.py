@@ -17,13 +17,13 @@ class BaseFitter:
                      ['ParamName1', (initial1, lower_bound1, upper_bound1)]
                      ...'
                      ] 
-                        
+
         *name*       any string 
-        
+
         Implement `fit_xy(x,y)`
-        
+
         <LeastSquaresBaseFitter> might be easier to use.
-        
+
         other useful function to override:
             process_results
             add_derived_result_quantities
@@ -66,9 +66,11 @@ class BaseFitter:
         self.ui.add_collection_widget(self.settings, "settings")
         self.ui.add_collection_widget(self.initials, "initials")
         self.ui.add_collection_widget(self.vary, "vary")
-        self.ui.add_enableable_collection_widget(self.bounds, "bounds", self.use_bounds)
+        self.ui.add_enableable_collection_widget(
+            self.bounds, "bounds", self.use_bounds)
 
-        self.ui.add_button("initials from results", self.set_initials_from_results)
+        self.ui.add_button("initials from results",
+                           self.set_initials_from_results)
 
         self.result_message = self.name + ": result_message message not set yet"
 
@@ -78,14 +80,14 @@ class BaseFitter:
         """ 
         has to return an array with the fit of len(y)
         recommended properties/functions to use:
-            
+
             self.initials_array
             self.bounds_array
-            
+
             self.update_fit_results(fit_results, additional_msg) 
                 [recommended if the number of fit_params is fixed]
                 otherwise pass a string to self.set_result_message(message)
-                
+
             return fit #this 
         """
         raise NotImplementedError()
@@ -98,7 +100,7 @@ class BaseFitter:
         same as the order the parameters were defined.        
         Note: this function calls self.process_results
         before updating the results table.
-                    
+
         alternatively pass a string to set_result_message(message)
         """
         processed_fit_results = self.process_results(fit_results)
@@ -143,9 +145,11 @@ class BaseFitter:
     def bounds_array(self):
         """returns least_square style bounds array"""
         if self.settings["use_bounds"]:
-            f = filter(lambda lq: lq.name.endswith("lower"), self.bounds.as_list())
+            f = filter(lambda lq: lq.name.endswith(
+                "lower"), self.bounds.as_list())
             lower_bounds = [lq.val for lq in f]
-            f = filter(lambda lq: lq.name.endswith("upper"), self.bounds.as_list())
+            f = filter(lambda lq: lq.name.endswith(
+                "upper"), self.bounds.as_list())
             upper_bounds = [lq.val for lq in f]
         else:
             N_bound_pairs = len(self.initials.as_list())
@@ -190,7 +194,8 @@ class BaseFitter:
         Convention: this function should fit along *axis* and should 
                     return the params along the 0th axis! 
         """
-        raise NotImplementedError(self.name + "_fit_hyperspec() not implemented")
+        raise NotImplementedError(
+            self.name + "_fit_hyperspec() not implemented")
 
     def get_result_table(self, decimals=3, include=None):
         res_table = []
@@ -224,3 +229,24 @@ class BaseFitter:
 
     def state_description(self):
         return ""
+
+    def get_params_dict(self):
+        params = {name: lq.value for name,
+                  lq in self.settings.as_dict().items()}
+        params['initials'] = {name: lq.value for name,
+                              lq in self.initials.as_dict().items()}
+        params['bounds'] = {name: lq.value for name,
+                            lq in self.bounds.as_dict().items()}
+        params['vary'] = {name: lq.value for name,
+                          lq in self.vary.as_dict().items()}
+        return params
+
+    def set_params_dict(self, params):
+        for name, lq in self.settings.as_dict().items():
+            lq.update_value(params.get(name, lq.value))
+        for name, lq in self.initials.as_dict().items():
+            lq.update_value(params['initials'].get(name, lq.value))
+        for name, lq in self.bounds.as_dict().items():
+            lq.update_value(params['bounds'].get(name, lq.value))
+        for name, lq in self.vary.as_dict().items():
+            lq.update_value(params['vary'].get(name, lq.value))

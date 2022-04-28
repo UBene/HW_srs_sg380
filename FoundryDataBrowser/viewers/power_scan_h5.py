@@ -10,6 +10,9 @@ from FoundryDataBrowser.viewers.plot_n_fit import (
     PlotNFit,
     NonLinearityFitter,
 )
+import glob
+import json
+import os
 
 
 class PowerScanUI(dockarea.DockArea):
@@ -22,7 +25,8 @@ class PowerScanUI(dockarea.DockArea):
         self.plot_n_fit.ui.plot.setLogMode(True, True)
 
         self.data_select_widget = QtWidgets.QWidget()
-        self.data_select_layout = QtWidgets.QHBoxLayout(self.data_select_widget)
+        self.data_select_layout = QtWidgets.QHBoxLayout(
+            self.data_select_widget)
         self.data_select_dock = self.addDock(
             name="data select", widget=self.data_select_widget,
         )
@@ -43,7 +47,8 @@ class PowerScanUI(dockarea.DockArea):
             relativeTo=self.fit_graph_dock,
             widget=self.graph_layout,
         )
-        self.spec_line = self.spec_plot.plot([1, 2, 3, 4], [1, 3, 2, 4], pen="r")
+        self.spec_line = self.spec_plot.plot(
+            [1, 2, 3, 4], [1, 3, 2, 4], pen="r")
 
         plot_n_fit.ui.settings_dock.setStretch(1, 2)
         self.fit_settings_dock = self.addDock(
@@ -80,6 +85,52 @@ class PowerScanH5View(DataBrowserView):
     def is_file_supported(self, fname):
         return ("power_scan" in fname) and (".h5" in fname)
 
+    @property
+    def json_file(self):
+        return os.path.dirname(self.fname) + '/power_scans.json'
+
+    @property
+    def base_fname(self):
+        return os.path.basename(self.fname)
+
+    def load_params_from_json(self):
+        if not len(glob.glob(self.json_file)):
+            return {}
+        with open(self.json_file, 'r') as f:
+            params_collection = json.load(f)
+            return params_collection
+
+    def commit_params(self):
+        params_collection = self.load_params_from_json()
+        params_collection[self.base_fname] = self.get_params_dict()
+        print(params_collection)
+        with open(self.json_file, 'w') as outfile:
+            json.dump(params_collection, outfile, indent=4)
+
+    def get_params_dict(self) -> {}:
+        params = {k: lq.value for k,
+                  lq in self.settings.as_dict().items()}
+        params['bg_selector'] = self.bg_selector.get_params_dict()
+        params['signal_selector'] = self.signal_selector.get_params_dict()
+        params['plot_n_fit'] = self.plot_n_fit.get_params_dict()
+        return params
+
+    def update_params_from_json(self):
+        params_collection = self.load_params_from_json()
+        if self.base_fname in params_collection:
+            self.set_params_dict(params_collection[self.base_fname])
+            self.update_fit()
+        else:
+            print('no entry')
+
+    def set_params_dict(self, params: {}):
+        self.bg_selector.set_params_dict(params['bg_selector'])
+        self.signal_selector.set_params_dict(params['signal_selector'])
+        self.plot_n_fit.set_params_dict(params['plot_n_fit'])
+        #self.plot_n_fit.data_selector.set_params_dict(params['data_selector'])
+        for name, lq in self.settings.as_dict().items():
+            lq.update_value(params.get(name, lq.value))
+
     def setup(self):
 
         # data format
@@ -94,11 +145,7 @@ class PowerScanH5View(DataBrowserView):
         # settings
         self.settings.New("spec_index", dtype=int, initial=0)
         self.settings.New("channel", dtype=int, initial=0)
-        self.power_x_axis_choices = (
-            "pm_powers",
-            "pm_powers_after",
-            "power_wheel_position",
-        )
+        self.power_x_axis_choices = list(self.power_arrays.keys())
         self.settings.New(
             "power_x_axis",
             dtype=str,
@@ -107,6 +154,8 @@ class PowerScanH5View(DataBrowserView):
         )
         self.settings.New("power_binning", int, initial=1, vmin=1)
         self.settings.New("conversion_factor", float, initial=1.0)
+        self.settings.New("ignore", bool, initial=False,
+                          description='for subsequent analysis only: a flag in power_scans.json file')
 
         # data selectors
         self.signal_selector = DataSelector(name="signal select")
@@ -114,7 +163,7 @@ class PowerScanH5View(DataBrowserView):
 
         # listeners
         self.settings.spec_index.add_listener(self.update_spec_plot)
-        self.settings.power_x_axis.add_listener(self.update_spec_plot)
+        # self.settings.power_x_axis.add_listener(self.update_fit)
         self.signal_selector.add_listener(self.update_fit)
         self.bg_selector.add_listener(self.update_fit)
         for key in self.settings.keys():
@@ -140,6 +189,18 @@ class PowerScanH5View(DataBrowserView):
         self.ui.add_to_select_layout(self.signal_selector.New_UI())
         self.signal_selector.set_plot_data_item(self.ui.spec_line)
         self.bg_selector.set_plot_data_item(self.ui.spec_line)
+        
+        
+        # 
+        commit_widget = QtWidgets.QWidget()
+        commit_layout = QtWidgets.QVBoxLayout(commit_widget)
+        pb = QtWidgets.QPushButton('commit_params')
+        pb.clicked.connect(self.commit_params)
+        commit_layout.addWidget(pb)
+        pb = QtWidgets.QPushButton('load params')
+        pb.clicked.connect(self.update_params_from_json)
+        commit_layout.addWidget(pb)
+        self.ui.add_to_select_layout(commit_widget)
 
     def update_hyperspec(self):
         self.wls = np.arange(512)
@@ -155,7 +216,8 @@ class PowerScanH5View(DataBrowserView):
 
     def get_dependence_data(self):
         S = self.settings
-        data = self.signal_selector.select(self.spectra[:, S["channel"], :], -1)
+        data = self.signal_selector.select(
+            self.spectra[:, S["channel"], :], -1)
         binning = S["power_binning"]
         if binning > 1:
             Np, ns = data.shape
@@ -169,7 +231,8 @@ class PowerScanH5View(DataBrowserView):
         x = self.power_arrays[self.settings["power_x_axis"]]
         binning = self.settings["power_binning"]
         if binning > 1:
-            x = x[: (len(x) // binning) * binning].reshape(-1, binning).mean(-1)
+            x = x[: (len(x) // binning) *
+                  binning].reshape(-1, binning).mean(-1)
 
         x = x * self.settings["conversion_factor"]
 
@@ -180,7 +243,7 @@ class PowerScanH5View(DataBrowserView):
     def update_spec_plot(self):
         S = self.settings
         y = self.spectra[S["spec_index"], S["channel"], :]
-        self.ui.spec_line.setData(self.wls, y)
+        self.ui.spec_line.setData(y=y)
 
     def update_fit(self):
         x, y = self.get_dependence_data()
@@ -196,6 +259,8 @@ class PowerScanH5View(DataBrowserView):
         self.ui.set_target(x[ii], y[ii], text)
 
     def on_change_data_filename(self, fname=None):
+        self.fname = fname
+
         try:
             self.h5file = h5py.File(fname, "r")
 
@@ -269,17 +334,21 @@ class PowerScanH5View(DataBrowserView):
                     pass
 
             if Np != len(H["pm_powers"][:]):
-                self.aquisition_type = "[INTERRUPTED Scan] " + self.aquisition_type
+                self.aquisition_type = "[INTERRUPTED Scan] " + \
+                    self.aquisition_type
 
             self.h5file.close()
 
-            self.databrowser.ui.statusbar.showMessage("loaded:{}\n".format(fname))
+            self.databrowser.ui.statusbar.showMessage(
+                "loaded:{}\n".format(fname))
 
             self.update_settings_min_max()
 
             self.ui.spec_plot.setTitle(self.aquisition_type)
 
             self.update_fit()
+
+            self.update_params_from_json()
 
         except Exception as err:
             self.databrowser.ui.statusbar.showMessage(

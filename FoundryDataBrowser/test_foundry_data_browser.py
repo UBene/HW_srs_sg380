@@ -25,6 +25,11 @@ try:
     app.load_view(HyperSpectralBaseView(app))
 except Exception as err: _on_load_err(err)
 
+try:
+    from FoundryDataBrowser.viewers.power_scan_h5 import PowerScanH5View
+    app.load_view(PowerScanH5View(app))
+except Exception as err: _on_load_err(err)
+
 app.settings['browse_dir'] = r'C:\Users\bened\OneDrive\PHD\data_analysis'
 sys.exit(app.exec_())    
 
