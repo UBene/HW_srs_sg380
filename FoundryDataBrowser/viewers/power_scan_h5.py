@@ -55,10 +55,11 @@ class PowerScanUI(dockarea.DockArea):
             plot_n_fit.ui.settings_dock, "right", self.spec_dock
         )
 
-        #self.target = pg.TargetItem(pen="r")
-        self.target = pg.ScatterPlotItem(pen="r")
+        # self.target = pg.TargetItem(pen="r")
+        # self.target = pg.ScatterPlotItem(pen="r", symbol='o', size=12)
+        # self.plot_n_fit.ui.plot.addItem(self.target)
+        self.target = self.plot_n_fit.ui.plot.plot(pen="r", symbol='o')
         self.target_label = pg.TextItem(color="r")
-        self.plot_n_fit.ui.plot.addItem(self.target)
         self.plot_n_fit.ui.plot.addItem(self.target_label)
 
     def add_to_select_layout(self, widget):
@@ -72,8 +73,9 @@ class PowerScanUI(dockarea.DockArea):
         return (x, y)
 
     def set_target(self, x, y, text=""):
+        self.target.setData(x=[x], y=[y])
         x, y = self.view_position(x, y)
-        self.target.setPos(x, y)
+        #self.target.setPos(x, y)
         self.target_label.setPos(x, y)
         self.target_label.setText(text)
 
@@ -257,19 +259,22 @@ class PowerScanH5View(DataBrowserView):
         S = self.settings
         y = self.spectra[S["spec_index"], S["channel"], :]
         self.ui.spec_line.setData(y=y)
+        self.update_target()
+
+    def update_target(self):
+        S = self.settings
+        ii = int(S["spec_index"] / S["power_binning"])
+        x, y = self.get_dependence_data()
+        pos = self.power_arrays["power_wheel_position"][ii]
+        power = self.power_arrays["pm_powers"][ii]
+        text = f"wheel {pos}\n power {power}\n counts {y[ii]}"
+        self.ui.set_target(x[ii], y[ii], text)
 
     def update_fit(self):
         x, y = self.get_dependence_data()
         self.plot_n_fit.set_data(x, y, 0, False)
         self.plot_n_fit.update()
-
-        # set target label
-        S = self.settings
-        ii = int(S["spec_index"] / S["power_binning"])
-        pos = self.power_arrays["power_wheel_position"][ii]
-        power = self.power_arrays["pm_powers"][ii]
-        text = f"wheel {pos}\n power {power}\n counts {y[ii]}"
-        self.ui.set_target(x[ii], y[ii], text)
+        self.update_target()
 
     def on_change_data_filename(self, fname=None):
         self.fname = fname
@@ -278,7 +283,7 @@ class PowerScanH5View(DataBrowserView):
             self.spectra, self.power_arrays, self.aquisition_type, self.sample = load_file(
                 fname, self.power_x_axis_choices)
 
-            if self.spectra.shape[-1] <= 1: # no spectral dimension
+            if self.spectra.shape[-1] <= 1:  # no spectral dimension
                 self.signal_selector.settings["activated"] = False
                 self.bg_selector.settings["activated"] = False
 
