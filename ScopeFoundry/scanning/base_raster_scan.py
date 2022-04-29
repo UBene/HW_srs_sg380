@@ -405,6 +405,8 @@ class BaseRaster2DScan(Measurement):
 
     def show_hide_previous_scans(self, show):
         print("show_hide_previous_scans", show)
+        if not hasattr(self, 'img_items'):
+            return
         if len(self.img_items) < 2:
             return
         for img_item in self.img_items[:-1]:
