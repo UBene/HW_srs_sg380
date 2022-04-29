@@ -209,7 +209,7 @@ class PowerScanH5View(DataBrowserView):
         pb.clicked.connect(self.update_params_from_json)
         commit_layout.addWidget(pb)
         pb = QtWidgets.QPushButton('new notebook')
-        pb.clicked.connect(self.new_analysis)
+        pb.clicked.connect(self.new_notebook)
         commit_layout.addWidget(pb)
         # pb = QtWidgets.QPushButton('launch notebook')
         # pb.clicked.connect(self.launch_lab)
@@ -278,8 +278,9 @@ class PowerScanH5View(DataBrowserView):
             self.spectra, self.power_arrays, self.aquisition_type, self.sample = load_file(
                 fname, self.power_x_axis_choices)
 
-            self.databrowser.ui.statusbar.showMessage(
-                "loaded:{}\n".format(fname))
+            if self.spectra.shape[-1] <= 1: # no spectral dimension
+                self.signal_selector.settings["activated"] = False
+                self.bg_selector.settings["activated"] = False
 
             self.update_settings_min_max()
 
@@ -288,6 +289,9 @@ class PowerScanH5View(DataBrowserView):
             self.update_fit()
 
             self.update_params_from_json()
+
+            self.databrowser.ui.statusbar.showMessage(
+                "loaded:{}\n".format(fname))
 
         except Exception as err:
             self.databrowser.ui.statusbar.showMessage(
@@ -302,14 +306,13 @@ class PowerScanH5View(DataBrowserView):
         S.power_binning.change_min_max(1, Np)
         if N_wls == 1:
             self.bg_selector.activated.update_value(False)
-            
-    def new_analysis(self):
+
+    def new_notebook(self):
         import shutil
-        import os
-        original =  fr'{os.getcwd()}\viewers\power_scans.ipynb'
-        target = fr'{self.dir_fname}\power_scans.ipynb'         
-        shutil.copyfile(original, target)        
-        
+        original = fr'{os.getcwd()}\viewers\power_scans.ipynb'
+        target = fr'{self.dir_fname}\power_scans.ipynb'
+        shutil.copyfile(original, target)
+
     # def launch_lab(self):
     #     import os
     #     directory = os.path.dirname(self.fname)
@@ -322,21 +325,6 @@ class PowerScanH5View(DataBrowserView):
     #         os.system(f'jupyter lab --notebook-dir {directory}')
     #     else:
     #         print('select a file first')
-
-    def optional_ui_adjustments(self, fname):
-        with h5py.File(fname, "r") as h5file:
-            if "measurement/power_scan_df" in h5file:
-                H = h5file["measurement/power_scan_df"]
-            else:
-                H = h5file["measurement/power_scan"]
-
-            if "apd_count_rates" in H:
-                self.signal_selector.settings["activated"] = False
-                self.bg_selector.settings["activated"] = False
-
-            if "thorlabs_powermeter_2_powers" in H:
-                self.signal_selector.settings["activated"] = False
-                self.bg_selector.settings["activated"] = False
 
 
 def load_file(fname, power_x_axis_choices=("pm_powers", "pm_powers_after", "power_wheel_position")):
