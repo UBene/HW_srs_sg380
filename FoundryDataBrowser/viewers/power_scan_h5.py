@@ -16,6 +16,7 @@ import os
 
 
 class PowerScanUI(dockarea.DockArea):
+
     def __init__(
         self, plot_n_fit,
     ):
@@ -75,7 +76,7 @@ class PowerScanUI(dockarea.DockArea):
     def set_target(self, x, y, text=""):
         self.target.setData(x=[x], y=[y])
         x, y = self.view_position(x, y)
-        #self.target.setPos(x, y)
+        # self.target.setPos(x, y)
         self.target_label.setPos(x, y)
         self.target_label.setText(text)
 
@@ -149,7 +150,7 @@ class PowerScanH5View(DataBrowserView):
 
         # settings
         self.settings.New("spec_index", dtype=int, initial=0)
-        self.settings.New("power_binning", dtype=int, initial=0)
+        self.settings.New("power_binning", dtype=int, initial=1)
         self.power_x_axis_choices = list(self.power_arrays.keys())
         self.settings.New(
             "power_x_axis",
@@ -225,19 +226,19 @@ class PowerScanH5View(DataBrowserView):
     def get_bg(self):
         S = self.settings
         if self.bg_selector.activated.val:
-            return self.bg_selector.select(self.spectra[:, S["channel"], :], -1).mean()
+            return self.bg_selector.select(self.spectra[:, S["channel"],:], -1).mean()
         else:
             return 0
 
     def get_dependence_data(self):
         S = self.settings
         data = self.signal_selector.select(
-            self.spectra[:, S["channel"], :], -1)
+            self.spectra[:, S["channel"],:], -1)
         binning = S["power_binning"]
         if binning > 1:
             Np, ns = data.shape
             data = (
-                data[: (Np // binning) * binning, :]
+                data[: (Np // binning) * binning,:]
                 .reshape(-1, binning, ns)
                 .mean(axis=1)
             )
@@ -246,7 +247,7 @@ class PowerScanH5View(DataBrowserView):
         x = self.power_arrays[self.settings["power_x_axis"]]
         binning = self.settings["power_binning"]
         if binning > 1:
-            x = x[: (len(x) // binning) *
+            x = x[: (len(x) // binning) * 
                   binning].reshape(-1, binning).mean(-1)
 
         x = x * self.settings["conversion_factor"]
@@ -257,8 +258,8 @@ class PowerScanH5View(DataBrowserView):
 
     def update_spec_plot(self):
         S = self.settings
-        y = self.spectra[S["spec_index"], S["channel"], :]
-        self.ui.spec_line.setData(y=y)
+        y = self.spectra[S["spec_index"], S["channel"],:]
+        self.ui.spec_line.setData(x=self.wls, y=y)
         self.update_target()
 
     def update_target(self):
@@ -280,7 +281,7 @@ class PowerScanH5View(DataBrowserView):
         self.fname = fname
 
         try:
-            self.spectra, self.power_arrays, self.aquisition_type, self.sample = load_file(
+            self.spectra, self.power_arrays, self.aquisition_type, self.sample, self.wls = load_file(
                 fname, self.power_x_axis_choices)
 
             if self.spectra.shape[-1] <= 1:  # no spectral dimension
@@ -378,11 +379,13 @@ def load_file(fname, power_x_axis_choices=("pm_powers", "pm_powers_after", "powe
             apd_count_rates = H["apd_count_rates"][:]
             spectra = apd_count_rates.reshape((-1, 1, 1))
             aquisition_type = "APD"
+            wls = np.arange(spectra.shape[-1])
 
         if "thorlabs_powermeter_2_powers" in H:
             powers_y = H["thorlabs_powermeter_2_powers"][:]
             spectra = powers_y.reshape((-1, 1, 1))
             aquisition_type = "power_meter_2"
+            wls = np.arange(spectra.shape[-1])
 
         Np = spectra.shape[0]
         if np.any(acq_times_array == None):
@@ -402,5 +405,5 @@ def load_file(fname, power_x_axis_choices=("pm_powers", "pm_powers_after", "powe
         if Np != len(H["pm_powers"][:]):
             aquisition_type = "[INTERRUPTED Scan] " + \
                 aquisition_type
-
-    return spectra, power_arrays, aquisition_type, sample
+                
+    return spectra, power_arrays, aquisition_type, sample, wls
