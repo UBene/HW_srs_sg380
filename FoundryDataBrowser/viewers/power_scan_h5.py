@@ -86,6 +86,10 @@ class PowerScanH5View(DataBrowserView):
         return ("power_scan" in fname) and (".h5" in fname)
 
     @property
+    def dir_fname(self):
+        return os.path.dirname(self.fname)
+
+    @property
     def json_file(self):
         return os.path.dirname(self.fname) + '/power_scans.json'
 
@@ -103,7 +107,6 @@ class PowerScanH5View(DataBrowserView):
     def commit_params(self):
         params_collection = self.load_params_from_json()
         params_collection[self.base_fname] = self.get_params_dict()
-        print(params_collection)
         with open(self.json_file, 'w') as outfile:
             json.dump(params_collection, outfile, indent=4)
 
@@ -127,7 +130,7 @@ class PowerScanH5View(DataBrowserView):
         self.bg_selector.set_params_dict(params['bg_selector'])
         self.signal_selector.set_params_dict(params['signal_selector'])
         self.plot_n_fit.set_params_dict(params['plot_n_fit'])
-        #self.plot_n_fit.data_selector.set_params_dict(params['data_selector'])
+        # self.plot_n_fit.data_selector.set_params_dict(params['data_selector'])
         for name, lq in self.settings.as_dict().items():
             lq.update_value(params.get(name, lq.value))
 
@@ -144,7 +147,7 @@ class PowerScanH5View(DataBrowserView):
 
         # settings
         self.settings.New("spec_index", dtype=int, initial=0)
-        self.settings.New("channel", dtype=int, initial=0)
+        self.settings.New("power_binning", dtype=int, initial=0)
         self.power_x_axis_choices = list(self.power_arrays.keys())
         self.settings.New(
             "power_x_axis",
@@ -152,10 +155,12 @@ class PowerScanH5View(DataBrowserView):
             initial="pm_powers",
             choices=self.power_x_axis_choices,
         )
-        self.settings.New("power_binning", int, initial=1, vmin=1)
+        self.settings.New("channel", int, initial=0, vmin=0)
         self.settings.New("conversion_factor", float, initial=1.0)
         self.settings.New("ignore", bool, initial=False,
                           description='for subsequent analysis only: a flag in power_scans.json file')
+        self.settings.New('info', str, initial='',
+                          description='for subsequent analysis only: additional information string')
 
         # data selectors
         self.signal_selector = DataSelector(name="signal select")
@@ -166,7 +171,7 @@ class PowerScanH5View(DataBrowserView):
         # self.settings.power_x_axis.add_listener(self.update_fit)
         self.signal_selector.add_listener(self.update_fit)
         self.bg_selector.add_listener(self.update_fit)
-        for key in self.settings.keys():
+        for key in ['conversion_factor', 'power_binning', 'power_x_axis', "channel"]:
             self.settings.get_lq(key).add_listener(self.update_fit)
 
         self.update_settings_min_max()
@@ -184,23 +189,31 @@ class PowerScanH5View(DataBrowserView):
 
         # UI
         self.ui = PowerScanUI(self.plot_n_fit)
-        self.ui.add_to_select_layout(self.settings.New_UI())
+        self.ui.add_to_select_layout(
+            self.settings.New_UI(exclude=('info', 'ignore')))
         self.ui.add_to_select_layout(self.bg_selector.New_UI())
         self.ui.add_to_select_layout(self.signal_selector.New_UI())
         self.signal_selector.set_plot_data_item(self.ui.spec_line)
         self.bg_selector.set_plot_data_item(self.ui.spec_line)
-        
-        
-        # 
+
+        #
         commit_widget = QtWidgets.QWidget()
         commit_layout = QtWidgets.QVBoxLayout(commit_widget)
+        self.ui.add_to_select_layout(commit_widget)
+        commit_layout.addWidget(
+            self.settings.New_UI(include=('info', 'ignore')))
         pb = QtWidgets.QPushButton('commit_params')
         pb.clicked.connect(self.commit_params)
         commit_layout.addWidget(pb)
         pb = QtWidgets.QPushButton('load params')
         pb.clicked.connect(self.update_params_from_json)
         commit_layout.addWidget(pb)
-        self.ui.add_to_select_layout(commit_widget)
+        pb = QtWidgets.QPushButton('new notebook')
+        pb.clicked.connect(self.new_analysis)
+        commit_layout.addWidget(pb)
+        # pb = QtWidgets.QPushButton('launch notebook')
+        # pb.clicked.connect(self.launch_lab)
+        # commit_layout.addWidget(pb)
 
     def update_hyperspec(self):
         self.wls = np.arange(512)
@@ -262,82 +275,8 @@ class PowerScanH5View(DataBrowserView):
         self.fname = fname
 
         try:
-            self.h5file = h5py.File(fname, "r")
-
-            self.sample = "-"
-            if "sample" in self.h5file["app/settings"].attrs.keys():
-                self.sample = self.h5file["app/settings"].attrs["sample"]
-            if "measurement/power_scan_df" in self.h5file:
-                H = self.h5file["measurement/power_scan_df"]
-            else:
-                H = self.h5file["measurement/power_scan"]
-
-            # # Provide self.wls and self.spectra
-            # self.wls has shape (N_wls,) [dim=1]
-            # self.spectra has shape (Np, N_channels, N_wls).
-            #    E.g. with Np=21 and N_wls=512:
-            self.wls = np.arange(512)
-            self.spectra = 0.5 * np.arange(512 * 21 * 1).reshape((21, 1, 512))
-            # If present override acq_times_array which will be used
-            # to normalize to counts per second:
-            acq_times_array = [None]
-
-            self.aquisition_type = (
-                "No data found"  # some info text that will be shown in the title
-            )
-
-            if "integrated_spectra" in H:
-                for k in H.keys():
-                    if "acq_times_array" in k:
-                        acq_times_array = H[k][:]
-                self.wls = H["wls"][:]
-                self.spectra = H["spectra"][:].reshape(-1, 1, len(self.wls))
-                self.aquisition_type = "Spectrum"
-
-            for harp in ["picoharp", "hydraharp"]:
-                if "{}_histograms".format(harp) in H:
-                    histograms = H["{}_histograms".format(harp)][:]
-                    acq_times_array = H["{}_elapsed_time".format(harp)][:]
-                    self.wls = H["{}_time_array".format(harp)][:]
-                    if np.ndim(histograms) == 2:
-                        histograms = histograms.reshape(-1, 1, len(self.wls))
-                    self.spectra = histograms
-                    self.aquisition_type = harp
-
-            if "apd_count_rates" in H:
-                self.signal_selector.settings["activated"] = False
-                self.bg_selector.settings["activated"] = False
-                apd_count_rates = H["apd_count_rates"][:]
-                self.spectra = apd_count_rates.reshape((-1, 1, 1))
-                self.aquisition_type = "APD"
-
-            if "thorlabs_powermeter_2_powers" in H:
-                self.signal_selector.settings["activated"] = False
-                self.bg_selector.settings["activated"] = False
-                powers_y = H["thorlabs_powermeter_2_powers"][:]
-                self.spectra = powers_y.reshape((-1, 1, 1))
-                self.aquisition_type = "power_meter_2"
-
-            Np = self.spectra.shape[0]
-            if np.any(acq_times_array == None):
-                self.spectra = (1.0 * self.spectra.T / acq_times_array).T
-            else:
-                self.spectra = 1.0 * self.spectra  # ensure floats
-
-            # if scan was no completed the power arrays will be chopped
-            # get power arrays
-            self.power_arrays = {}
-            for key in self.power_x_axis_choices:
-                try:
-                    self.power_arrays.update({key: H[key][:Np]})
-                except:
-                    pass
-
-            if Np != len(H["pm_powers"][:]):
-                self.aquisition_type = "[INTERRUPTED Scan] " + \
-                    self.aquisition_type
-
-            self.h5file.close()
+            self.spectra, self.power_arrays, self.aquisition_type, self.sample = load_file(
+                fname, self.power_x_axis_choices)
 
             self.databrowser.ui.statusbar.showMessage(
                 "loaded:{}\n".format(fname))
@@ -363,3 +302,112 @@ class PowerScanH5View(DataBrowserView):
         S.power_binning.change_min_max(1, Np)
         if N_wls == 1:
             self.bg_selector.activated.update_value(False)
+            
+    def new_analysis(self):
+        import shutil
+        import os
+        original =  fr'{os.getcwd()}\viewers\power_scans.ipynb'
+        target = fr'{self.dir_fname}\power_scans.ipynb'         
+        shutil.copyfile(original, target)        
+        
+    # def launch_lab(self):
+    #     import os
+    #     directory = os.path.dirname(self.fname)
+    #     if directory != "":
+    #         #import subprocess
+    #         #from subprocess import Popen, PIPE
+    #         #process = Popen(['cmd', f'jupyter lab --notebook-dir {directory}'], stdout=PIPE, stderr=PIPE)
+    #         #stdout, stderr = process.communicate()
+    #         #subprocess.call(['cmd', f'jupyter lab --notebook-dir {directory}'])
+    #         os.system(f'jupyter lab --notebook-dir {directory}')
+    #     else:
+    #         print('select a file first')
+
+    def optional_ui_adjustments(self, fname):
+        with h5py.File(fname, "r") as h5file:
+            if "measurement/power_scan_df" in h5file:
+                H = h5file["measurement/power_scan_df"]
+            else:
+                H = h5file["measurement/power_scan"]
+
+            if "apd_count_rates" in H:
+                self.signal_selector.settings["activated"] = False
+                self.bg_selector.settings["activated"] = False
+
+            if "thorlabs_powermeter_2_powers" in H:
+                self.signal_selector.settings["activated"] = False
+                self.bg_selector.settings["activated"] = False
+
+
+def load_file(fname, power_x_axis_choices=("pm_powers", "pm_powers_after", "power_wheel_position")):
+    import h5py
+    with h5py.File(fname, "r") as h5file:
+        if "sample" in h5file["app/settings"].attrs.keys():
+            sample = h5file["app/settings"].attrs["sample"]
+        if "measurement/power_scan_df" in h5file:
+            H = h5file["measurement/power_scan_df"]
+        else:
+            H = h5file["measurement/power_scan"]
+
+        # # Provide wls and spectra
+        # wls has shape (N_wls,) [dim=1]
+        # spectra has shape (Np, N_channels, N_wls).
+        #    E.g. with Np=21 and N_wls=512:
+        wls = np.arange(512)
+        spectra = 0.5 * np.arange(512 * 21 * 1).reshape((21, 1, 512))
+        # If present override acq_times_array which will be used
+        # to normalize to counts per second:
+        acq_times_array = [None]
+
+        aquisition_type = (
+            "No data found"  # some info text that will be shown in the title
+        )
+
+        if "integrated_spectra" in H:
+            for k in H.keys():
+                if "acq_times_array" in k:
+                    acq_times_array = H[k][:]
+            wls = H["wls"][:]
+            spectra = H["spectra"][:].reshape(-1, 1, len(wls))
+            aquisition_type = "Spectrum"
+
+        for harp in ["picoharp", "hydraharp"]:
+            if "{}_histograms".format(harp) in H:
+                histograms = H["{}_histograms".format(harp)][:]
+                acq_times_array = H["{}_elapsed_time".format(harp)][:]
+                wls = H["{}_time_array".format(harp)][:]
+                if np.ndim(histograms) == 2:
+                    histograms = histograms.reshape(-1, 1, len(wls))
+                spectra = histograms
+                aquisition_type = harp
+
+        if "apd_count_rates" in H:
+            apd_count_rates = H["apd_count_rates"][:]
+            spectra = apd_count_rates.reshape((-1, 1, 1))
+            aquisition_type = "APD"
+
+        if "thorlabs_powermeter_2_powers" in H:
+            powers_y = H["thorlabs_powermeter_2_powers"][:]
+            spectra = powers_y.reshape((-1, 1, 1))
+            aquisition_type = "power_meter_2"
+
+        Np = spectra.shape[0]
+        if np.any(acq_times_array == None):
+            spectra = (1.0 * spectra.T / acq_times_array).T
+        else:
+            spectra = 1.0 * spectra  # ensure floats
+
+        # if scan was no completed the power arrays will be chopped
+        # get power arrays
+        power_arrays = {}
+        for key in power_x_axis_choices:
+            try:
+                power_arrays.update({key: H[key][:Np]})
+            except:
+                pass
+
+        if Np != len(H["pm_powers"][:]):
+            aquisition_type = "[INTERRUPTED Scan] " + \
+                aquisition_type
+
+    return spectra, power_arrays, aquisition_type, sample
