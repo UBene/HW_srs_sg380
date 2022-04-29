@@ -474,7 +474,7 @@ class PowerScanMeasure(Measurement):
                 H['integrated_spectra'] = np.array(self.integrated_spectra)
             
             if self.settings['collect_labspec']:
-                H['wls'] = self.labspec.data['wavelengths']
+                H['wls'] = self.labspec_readout.data['wavelengths']
                 H['spectra'] = np.squeeze(np.array(self.spectra))
                 H['integrated_spectra'] = np.array(self.integrated_spectra)
             
