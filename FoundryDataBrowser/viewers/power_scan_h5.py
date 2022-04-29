@@ -259,7 +259,7 @@ class PowerScanH5View(DataBrowserView):
     def update_spec_plot(self):
         S = self.settings
         y = self.spectra[S["spec_index"], S["channel"],:]
-        self.ui.spec_line.setData(x=self.wls, y=y)
+        self.ui.spec_line.setData(y=y)
         self.update_target()
 
     def update_target(self):
