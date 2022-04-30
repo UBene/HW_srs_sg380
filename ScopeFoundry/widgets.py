@@ -460,7 +460,7 @@ class DataSelector:
         return np.take(array, self.indices, axis)
 
     def mask_array(self, array, axis=-1):
-        indices = np.arange(len(array.shape[axis]))[self.mask]
+        indices = np.arange(array.shape[axis])[self.mask]
         return np.take(array, indices, axis)
 
     def select(self, array, axis=-1):
@@ -525,12 +525,17 @@ class DataSelector:
     def get_params_dict(self):
         params = {name: lq.value for name,
                   lq in self.settings.as_dict().items()}
-        params['mask'] = [bool(x) for x in self.mask]
-        rgn = self.linear_region_item.getRegion()
-        params['region'] = [float(rgn[0]), float(rgn[1])]
+        #params['mask'] = [bool(x) for x in self.mask]
+        if self.plot_data_item.opts['logMode'][0]:
+            params['region'] = [float(10**x) for x in self.linear_region_item.getRegion()]
+        else:
+            params['region'] = [float(x) for x in self.linear_region_item.getRegion()]
         return params
 
     def set_params_dict(self, params: {}):
         for name, lq in self.settings.as_dict().items():
             lq.update_value(params.get(name, lq.value))
-        self.linear_region_item.setRegion(params['region'])
+        if self.plot_data_item.opts['logMode'][0]:
+            self.linear_region_item.setRegion(np.log10(params['region']))
+        else:
+            self.linear_region_item.setRegion(params['region'])

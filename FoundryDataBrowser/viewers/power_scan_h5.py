@@ -94,7 +94,15 @@ class PowerScanH5View(DataBrowserView):
 
     @property
     def json_file(self):
-        return os.path.dirname(self.fname) + '/power_scans.json'
+        return os.path.dirname(self.fname) + '/power_scans_configs.json'
+
+    @property
+    def notebook_file_target(self):
+        return os.path.dirname(self.fname) + '/power_scans_h5_configured_plot.ipynb'
+
+    @property
+    def notebook_file_original(self):
+        return fr'{os.getcwd()}\viewers\power_scans_h5_configured_plot.ipynb'
 
     @property
     def base_fname(self):
@@ -102,10 +110,10 @@ class PowerScanH5View(DataBrowserView):
 
     def load_params_from_json(self):
         if not len(glob.glob(self.json_file)):
+            print('no file file found')
             return {}
         with open(self.json_file, 'r') as f:
-            params_collection = json.load(f)
-            return params_collection
+            return json.load(f)
 
     def commit_params(self):
         params_collection = self.load_params_from_json()
@@ -161,7 +169,7 @@ class PowerScanH5View(DataBrowserView):
         self.settings.New("channel", int, initial=0, vmin=0)
         self.settings.New("conversion_factor", float, initial=1.0)
         self.settings.New("ignore", bool, initial=False,
-                          description='for subsequent analysis only: a flag in power_scans.json file')
+                          description='for subsequent analysis only: a flag in power_scans_configs.json file')
         self.settings.New('info', str, initial='',
                           description='for subsequent analysis only: additional information string')
 
@@ -214,6 +222,11 @@ class PowerScanH5View(DataBrowserView):
         pb = QtWidgets.QPushButton('new notebook')
         pb.clicked.connect(self.new_notebook)
         commit_layout.addWidget(pb)
+        pb = QtWidgets.QPushButton('run with config')
+        pb.clicked.connect(self.plot_config)
+        commit_layout.addWidget(pb)
+
+
         # pb = QtWidgets.QPushButton('launch notebook')
         # pb.clicked.connect(self.launch_lab)
         # commit_layout.addWidget(pb)
@@ -226,19 +239,19 @@ class PowerScanH5View(DataBrowserView):
     def get_bg(self):
         S = self.settings
         if self.bg_selector.activated.val:
-            return self.bg_selector.select(self.spectra[:, S["channel"],:], -1).mean()
+            return self.bg_selector.select(self.spectra[:, S["channel"], :], -1).mean()
         else:
             return 0
 
     def get_dependence_data(self):
         S = self.settings
         data = self.signal_selector.select(
-            self.spectra[:, S["channel"],:], -1)
+            self.spectra[:, S["channel"], :], -1)
         binning = S["power_binning"]
         if binning > 1:
             Np, ns = data.shape
             data = (
-                data[: (Np // binning) * binning,:]
+                data[: (Np // binning) * binning, :]
                 .reshape(-1, binning, ns)
                 .mean(axis=1)
             )
@@ -247,7 +260,7 @@ class PowerScanH5View(DataBrowserView):
         x = self.power_arrays[self.settings["power_x_axis"]]
         binning = self.settings["power_binning"]
         if binning > 1:
-            x = x[: (len(x) // binning) * 
+            x = x[: (len(x) // binning) *
                   binning].reshape(-1, binning).mean(-1)
 
         x = x * self.settings["conversion_factor"]
@@ -258,8 +271,10 @@ class PowerScanH5View(DataBrowserView):
 
     def update_spec_plot(self):
         S = self.settings
-        y = self.spectra[S["spec_index"], S["channel"],:]
-        self.ui.spec_line.setData(y=y)
+        y = self.spectra[S["spec_index"], S["channel"], :]
+        self.ui.spec_line.setData(x=self.wls, y=y)
+
+        print(self.wls)
         self.update_target()
 
     def update_target(self):
@@ -315,9 +330,12 @@ class PowerScanH5View(DataBrowserView):
 
     def new_notebook(self):
         import shutil
-        original = fr'{os.getcwd()}\viewers\power_scans.ipynb'
-        target = fr'{self.dir_fname}\power_scans.ipynb'
-        shutil.copyfile(original, target)
+        shutil.copyfile(self.notebook_file_original, self.notebook_file_target)
+
+    def plot_config(self):
+        from .power_scans_h5_configured_plot import run
+        run(self.json_file, self.dir_fname)
+
 
     # def launch_lab(self):
     #     import os
@@ -405,5 +423,5 @@ def load_file(fname, power_x_axis_choices=("pm_powers", "pm_powers_after", "powe
         if Np != len(H["pm_powers"][:]):
             aquisition_type = "[INTERRUPTED Scan] " + \
                 aquisition_type
-                
+
     return spectra, power_arrays, aquisition_type, sample, wls
