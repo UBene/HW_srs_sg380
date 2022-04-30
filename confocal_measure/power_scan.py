@@ -448,8 +448,12 @@ class PowerScanMeasure(Measurement):
 
             if self.settings['collect_picam']:
                 self.picam_readout.settings['continuous'] = False
-                self.start_nested_measure_and_wait(
-                    self.picam_readout, nested_interrupt=False)
+                if self.settings['polling_powers']:
+                    self.start_nested_measure_and_wait(self.picam_readout, nested_interrupt=False,
+                                                       polling_func=self.power_polling, polling_time=0.001)
+                else:
+                    self.start_nested_measure_and_wait(
+                        self.picam_readout, nested_interrupt=False)
                 spec = self.picam_readout.get_spectrum()
                 if not (spec == None).any():
                     self.spectra.append(spec)
@@ -460,9 +464,12 @@ class PowerScanMeasure(Measurement):
                 self.pm2_powers.append(power)
 
             if self.settings['collect_labspec']:
-                #self.labspec_readout.settings['continuous'] = False
-                self.start_nested_measure_and_wait(
-                    self.labspec_readout, nested_interrupt=False)
+                if self.settings['polling_powers']:
+                    self.start_nested_measure_and_wait(self.labspec_readout, nested_interrupt=False,
+                                                       polling_func=self.power_polling, polling_time=0.001)
+                else:
+                    self.start_nested_measure_and_wait(
+                        self.labspec_readout, nested_interrupt=False)
                 spec = self.labspec_readout.data['spectrum']
                 if not (spec == None).any():
                     self.spectra.append(spec)
@@ -530,12 +537,10 @@ class PowerScanMeasure(Measurement):
             max_entries = 0
             for powers in self.polling_powers:
                 max_entries = max(len(powers), max_entries)
-
             H['polling_powers'] = np.array(
                 [powers + [0] * (max_entries - len(powers)) for powers in self.polling_powers])
             H['avg_polling_powers'] = np.array(
                 [np.mean(powers) for powers in self.polling_powers])
-
             for hw, Tacq_lq, acq_times_array in self.Tacq_arrays:
                 H[hw + '_acq_times_array'] = acq_times_array
                 print('saving ' + hw + '_acq_times_array')

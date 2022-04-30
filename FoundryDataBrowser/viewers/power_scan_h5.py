@@ -152,6 +152,7 @@ class PowerScanH5View(DataBrowserView):
             "pm_powers": np.arange(21) / 2.1,
             "pm_powers_after": np.arange(21) / 2,
             "power_wheel_position": np.arange(21),
+            "avg_polling_powers": np.arange(21),
         }
 
         # settings
@@ -331,7 +332,7 @@ class PowerScanH5View(DataBrowserView):
 
 
 
-def load_file(fname, power_x_axis_choices=("pm_powers", "pm_powers_after", "power_wheel_position")):
+def load_file(fname, power_x_axis_choices=("pm_powers", "pm_powers_after", "power_wheel_position", "avg_polling_powers")):
     import h5py
     with h5py.File(fname, "r") as h5file:
         if "sample" in h5file["app/settings"].attrs.keys():
