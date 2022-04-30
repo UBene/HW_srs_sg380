@@ -522,20 +522,20 @@ class DataSelector:
         for key in include:
             self.settings.get_lq(key).add_listener(func, argtype, **kwargs)
 
-    def get_params_dict(self):
-        params = {name: lq.value for name,
+    def get_configs(self):
+        configs = {name: lq.value for name,
                   lq in self.settings.as_dict().items()}
-        #params['mask'] = [bool(x) for x in self.mask]
+        #configs['mask'] = [bool(x) for x in self.mask]
         if self.plot_data_item.opts['logMode'][0]:
-            params['region'] = [float(10**x) for x in self.linear_region_item.getRegion()]
+            configs['region'] = [float(10**x) for x in self.linear_region_item.getRegion()]
         else:
-            params['region'] = [float(x) for x in self.linear_region_item.getRegion()]
-        return params
+            configs['region'] = [float(x) for x in self.linear_region_item.getRegion()]
+        return configs
 
-    def set_params_dict(self, params: {}):
+    def set_configs(self, configs: {}):
         for name, lq in self.settings.as_dict().items():
-            lq.update_value(params.get(name, lq.value))
+            lq.update_value(configs.get(name, lq.value))
         if self.plot_data_item.opts['logMode'][0]:
-            self.linear_region_item.setRegion(np.log10(params['region']))
+            self.linear_region_item.setRegion(np.log10(configs['region']))
         else:
-            self.linear_region_item.setRegion(params['region'])
+            self.linear_region_item.setRegion(configs['region'])

@@ -230,23 +230,23 @@ class BaseFitter:
     def state_description(self):
         return ""
 
-    def get_params_dict(self):
-        params = {name: lq.value for name,
+    def get_configs(self):
+        configs = {name: lq.value for name,
                   lq in self.settings.as_dict().items()}
-        params['initials'] = {name: lq.value for name,
+        configs['initials'] = {name: lq.value for name,
                               lq in self.initials.as_dict().items()}
-        params['bounds'] = {name: lq.value for name,
+        configs['bounds'] = {name: lq.value for name,
                             lq in self.bounds.as_dict().items()}
-        params['vary'] = {name: lq.value for name,
+        configs['vary'] = {name: lq.value for name,
                           lq in self.vary.as_dict().items()}
-        return params
+        return configs
 
-    def set_params_dict(self, params):
+    def set_configs(self, configs):
         for name, lq in self.settings.as_dict().items():
-            lq.update_value(params.get(name, lq.value))
+            lq.update_value(configs.get(name, lq.value))
         for name, lq in self.initials.as_dict().items():
-            lq.update_value(params['initials'].get(name, lq.value))
+            lq.update_value(configs['initials'].get(name, lq.value))
         for name, lq in self.bounds.as_dict().items():
-            lq.update_value(params['bounds'].get(name, lq.value))
+            lq.update_value(configs['bounds'].get(name, lq.value))
         for name, lq in self.vary.as_dict().items():
-            lq.update_value(params['vary'].get(name, lq.value))
+            lq.update_value(configs['vary'].get(name, lq.value))

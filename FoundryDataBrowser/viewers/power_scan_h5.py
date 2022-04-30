@@ -1,18 +1,16 @@
+import glob
+import json
+import os
 import numpy as np
-import h5py
 from qtpy import QtWidgets
 import pyqtgraph as pg
 import pyqtgraph.dockarea as dockarea
-
 from ScopeFoundry.widgets import DataSelector
 from ScopeFoundry.data_browser import DataBrowserView
 from FoundryDataBrowser.viewers.plot_n_fit import (
     PlotNFit,
     NonLinearityFitter,
 )
-import glob
-import json
-import os
 
 
 class PowerScanUI(dockarea.DockArea):
@@ -108,42 +106,42 @@ class PowerScanH5View(DataBrowserView):
     def base_fname(self):
         return os.path.basename(self.fname)
 
-    def load_params_from_json(self):
+    def load_configs_from_json(self):
         if not len(glob.glob(self.json_file)):
             print('no file file found')
             return {}
         with open(self.json_file, 'r') as f:
             return json.load(f)
 
-    def commit_params(self):
-        params_collection = self.load_params_from_json()
-        params_collection[self.base_fname] = self.get_params_dict()
+    def commit_configs(self):
+        configs_collection = self.load_configs_from_json()
+        configs_collection[self.base_fname] = self.get_configs()
         with open(self.json_file, 'w') as outfile:
-            json.dump(params_collection, outfile, indent=4)
+            json.dump(configs_collection, outfile, indent=4)
 
-    def get_params_dict(self) -> {}:
-        params = {k: lq.value for k,
-                  lq in self.settings.as_dict().items()}
-        params['bg_selector'] = self.bg_selector.get_params_dict()
-        params['signal_selector'] = self.signal_selector.get_params_dict()
-        params['plot_n_fit'] = self.plot_n_fit.get_params_dict()
-        return params
+    def get_configs(self) -> {}:
+        configs = {k: lq.value for k,
+                   lq in self.settings.as_dict().items()}
+        configs['bg_selector'] = self.bg_selector.get_configs()
+        configs['signal_selector'] = self.signal_selector.get_configs()
+        configs['plot_n_fit'] = self.plot_n_fit.get_configs()
+        return configs
 
-    def update_params_from_json(self):
-        params_collection = self.load_params_from_json()
-        if self.base_fname in params_collection:
-            self.set_params_dict(params_collection[self.base_fname])
+    def update_configs_from_json(self):
+        configs = self.load_configs_from_json()
+        if self.base_fname in configs:
+            self.set_configs(configs[self.base_fname])
             self.update_fit()
         else:
             print('no entry')
 
-    def set_params_dict(self, params: {}):
-        self.bg_selector.set_params_dict(params['bg_selector'])
-        self.signal_selector.set_params_dict(params['signal_selector'])
-        self.plot_n_fit.set_params_dict(params['plot_n_fit'])
-        # self.plot_n_fit.data_selector.set_params_dict(params['data_selector'])
+    def set_configs(self, configs: {}):
+        self.bg_selector.set_configs(configs['bg_selector'])
+        self.signal_selector.set_configs(configs['signal_selector'])
+        self.plot_n_fit.set_configs(configs['plot_n_fit'])
+        # self.plot_n_fit.data_selector.set_configs(configs['data_selector'])
         for name, lq in self.settings.as_dict().items():
-            lq.update_value(params.get(name, lq.value))
+            lq.update_value(configs.get(name, lq.value))
 
     def setup(self):
 
@@ -213,23 +211,18 @@ class PowerScanH5View(DataBrowserView):
         self.ui.add_to_select_layout(commit_widget)
         commit_layout.addWidget(
             self.settings.New_UI(include=('info', 'ignore')))
-        pb = QtWidgets.QPushButton('commit_params')
-        pb.clicked.connect(self.commit_params)
+        pb = QtWidgets.QPushButton('commit configs')
+        pb.clicked.connect(self.commit_configs)
         commit_layout.addWidget(pb)
-        pb = QtWidgets.QPushButton('load params')
-        pb.clicked.connect(self.update_params_from_json)
+        pb = QtWidgets.QPushButton('load configs')
+        pb.clicked.connect(self.update_configs_from_json)
         commit_layout.addWidget(pb)
         pb = QtWidgets.QPushButton('new notebook')
         pb.clicked.connect(self.new_notebook)
         commit_layout.addWidget(pb)
-        pb = QtWidgets.QPushButton('run with config')
-        pb.clicked.connect(self.plot_config)
+        pb = QtWidgets.QPushButton('new configured plot')
+        pb.clicked.connect(self.new_configured_plot)
         commit_layout.addWidget(pb)
-
-
-        # pb = QtWidgets.QPushButton('launch notebook')
-        # pb.clicked.connect(self.launch_lab)
-        # commit_layout.addWidget(pb)
 
     def update_hyperspec(self):
         self.wls = np.arange(512)
@@ -309,7 +302,7 @@ class PowerScanH5View(DataBrowserView):
 
             self.update_fit()
 
-            self.update_params_from_json()
+            self.update_configs_from_json()
 
             self.databrowser.ui.statusbar.showMessage(
                 "loaded:{}\n".format(fname))
@@ -332,23 +325,10 @@ class PowerScanH5View(DataBrowserView):
         import shutil
         shutil.copyfile(self.notebook_file_original, self.notebook_file_target)
 
-    def plot_config(self):
-        from .power_scans_h5_configured_plot import run
-        run(self.json_file, self.dir_fname)
+    def new_configured_plot(self):
+        from .power_scans_h5_configured_plot import configured_plot
+        configured_plot(self.json_file, self.dir_fname)
 
-
-    # def launch_lab(self):
-    #     import os
-    #     directory = os.path.dirname(self.fname)
-    #     if directory != "":
-    #         #import subprocess
-    #         #from subprocess import Popen, PIPE
-    #         #process = Popen(['cmd', f'jupyter lab --notebook-dir {directory}'], stdout=PIPE, stderr=PIPE)
-    #         #stdout, stderr = process.communicate()
-    #         #subprocess.call(['cmd', f'jupyter lab --notebook-dir {directory}'])
-    #         os.system(f'jupyter lab --notebook-dir {directory}')
-    #     else:
-    #         print('select a file first')
 
 
 def load_file(fname, power_x_axis_choices=("pm_powers", "pm_powers_after", "power_wheel_position")):

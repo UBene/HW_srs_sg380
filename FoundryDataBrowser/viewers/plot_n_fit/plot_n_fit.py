@@ -62,7 +62,7 @@ class PlotNFit:
         self.plot_masker = DataSelector(
             self.ui.data_lines[0], name="plot_masker"
             )
-        #self.ui.add_to_settings_layout(self.plot_masker.New_UI())
+        self.ui.add_to_settings_layout(self.plot_masker.New_UI())
         
 
         self.data_selector = DataSelector(
@@ -168,19 +168,19 @@ class PlotNFit:
 
         self.ui.set_clipboard_text(text)
 
-    def get_params_dict(self):
-        params = {name: lq.value for name,
+    def get_configs(self):
+        configs = {name: lq.value for name,
                   lq in self.settings.as_dict().items()}
         for k, v in self.fitters.items():
-            params[k] = v.get_params_dict()
-        params['data_selector'] = self.data_selector.get_params_dict()
-        params['plot_masker'] = self.plot_masker.get_params_dict()
-        return params
+            configs[k] = v.get_configs()
+        configs['data_selector'] = self.data_selector.get_configs()
+        configs['plot_masker'] = self.plot_masker.get_configs()
+        return configs
 
-    def set_params_dict(self, params):
+    def set_configs(self, configs):
         for name, lq in self.settings.as_dict().items():
-            lq.update_value(params.get(name, lq.value))
+            lq.update_value(configs.get(name, lq.value))
         for k, v in self.fitters.items():
-            v.set_params_dict(params[k])
-        self.data_selector.set_params_dict(params['data_selector'])
-        self.plot_masker.set_params_dict(params['plot_masker'])
+            v.set_configs(configs[k])
+        self.data_selector.set_configs(configs['data_selector'])
+        self.plot_masker.set_configs(configs['plot_masker'])
