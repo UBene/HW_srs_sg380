@@ -599,11 +599,11 @@ class HyperSpectralBaseView(DataBrowserView):
         self.rect_roi_slice = roi_slice
 
         x, y = self.get_xy(self.rect_roi_slice, apply_use_x_slice=False)
-        self.plot_n_fit.update_data(x, y, 0, False)
+        self.plot_n_fit.set_data(x, y, 0, False)
 
         try:
             x, y = self.get_xy(self.rect_roi_slice, apply_use_x_slice=True)
-            self.plot_n_fit.update_data_to_fit(x, y)
+            self.plot_n_fit.set_data_to_fit(x, y)
             text = self.plot_n_fit.result_message
             title = self.plot_n_fit.state_info + " rect"
             self.x_slicer.set_label(text, title, color=self.line_colors[0])
@@ -633,7 +633,7 @@ class HyperSpectralBaseView(DataBrowserView):
         self.circ_roi_slice = np.s_[j : j + 1, i : i + 1]
 
         x, y = self.get_xy(self.circ_roi_slice, apply_use_x_slice=False)
-        self.plot_n_fit.update_data(x, y, 1, False)
+        self.plot_n_fit.set_data(x, y, 1, False)
 
         x_fit_data, y_fit_data = self.get_xy(
             self.circ_roi_slice, apply_use_x_slice=True
