@@ -23,7 +23,7 @@ class HyperSpecH5View(HyperSpectralBaseView):
         except (ModuleNotFoundError, ImportError):
             pass
 
-    def is_file_supported(self, fname):
+    def is_file_supported(self, fname: str):
         self.supported_measurements = ['m4_hyperspectral_2d_scan',
                                        'andor_hyperspec_scan',
                                        'hyperspectral_2d_scan',
@@ -36,56 +36,50 @@ class HyperSpecH5View(HyperSpectralBaseView):
                                        'pi_xyz_2d_picam_slow_scan',
                                        'picam_2d_map']
 
-        return np.any([(meas_name in fname)
+        return np.any([((meas_name in fname) and fname.endswith('h5'))
                        for meas_name in self.supported_measurements])
-
-    def reset(self):
-        HyperSpectralBaseView.reset(self)
-        if hasattr(self, 'dat'):
-            self.dat.close()
-            del self.dat
 
     def load_data(self, fname):
         print(self.name, 'loading', fname)
-        self.dat = h5py.File(fname)
-        for meas_name in self.supported_measurements:
-            if meas_name in self.dat['measurement']:
-                self.M = self.dat['measurement'][meas_name]
+        with h5py.File(fname, 'r') as H:
+            for meas_name in self.supported_measurements:
+                if meas_name in H['measurement']:
+                    self.M = H['measurement'][meas_name]
 
-        self.spec_map = None
-        for map_name in ['hyperspectral_map', 'spec_map', ]:
-            if map_name in self.M:
-                self.spec_map = np.array(self.M[map_name])
-                if 'h_span' in self.M['settings'].attrs:
-                    h_span = float(self.M['settings'].attrs['h_span'])
-                    units = self.M['settings/units'].attrs['h0']
-                    self.set_scalebar_params(h_span, units)
+            self.spec_map = None
+            for map_name in ['hyperspectral_map', 'spec_map', ]:
+                if map_name in self.M:
+                    self.spec_map = np.array(self.M[map_name])
+                    if 'h_span' in self.M['settings'].attrs:
+                        h_span = float(self.M['settings'].attrs['h_span'])
+                        units = self.M['settings/units'].attrs['h0']
+                        self.set_scalebar_params(h_span, units)
 
-                if len(self.spec_map.shape) == 4:
-                    self.spec_map = self.spec_map[0, :, :, :]
-                if 'dark_indices' in list(self.M.keys()):
-                    self.spec_map = np.delete(self.spec_map,
-                                              self.M['dark_indices'],
-                                              -1)
-        if self.spec_map is None:
-            self.spec_map = np.zeros((10, 10, 10))
-            raise ValueError("Specmap not found")
-        self.hyperspec_data = self.spec_map
-        self.display_image = self.hyperspec_data.sum(axis=-1)
-        self.spec_x_array = np.arange(self.hyperspec_data.shape[-1])
+                    if len(self.spec_map.shape) == 4:
+                        self.spec_map = self.spec_map[0, :, :, :]
+                    if 'dark_indices' in list(self.M.keys()):
+                        self.spec_map = np.delete(self.spec_map,
+                                                  self.M['dark_indices'],
+                                                  -1)
+            if self.spec_map is None:
+                self.spec_map = np.zeros((10, 10, 10))
+                raise ValueError("Specmap not found")
+            self.hyperspec_data = self.spec_map
+            self.display_image = self.hyperspec_data.sum(axis=-1)
+            self.spec_x_array = np.arange(self.hyperspec_data.shape[-1])
 
-        for x_axis_name in ['wavelength', 'wls', 'wave_numbers',
-                            'raman_shifts']:
-            if x_axis_name in self.M:
-                x_array = np.array(self.M[x_axis_name])
-                if 'dark_indices' in list(self.M.keys()):
-                    x_array = np.delete(x_array,
-                                        np.array(self.M['dark_indices']),
-                                        0)
-                self.x_arrays[x_axis_name] = x_array
+            for x_axis_name in ['wavelength', 'wls', 'wave_numbers',
+                                'raman_shifts']:
+                if x_axis_name in self.M:
+                    x_array = np.array(self.M[x_axis_name])
+                    if 'dark_indices' in list(self.M.keys()):
+                        x_array = np.delete(x_array,
+                                            np.array(self.M['dark_indices']),
+                                            0)
+                    self.x_arrays[x_axis_name] = x_array
 
-        sample = self.dat['app/settings'].attrs['sample']
-        self.settings.sample.update_value(sample)
+            sample = H['app/settings'].attrs['sample']
+            self.settings.sample.update_value(sample)
 
 
 def matplotlib_colormap_to_pg_colormap(colormap_name, n_ticks=16):
