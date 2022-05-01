@@ -18,9 +18,9 @@ class PicamReadout(DataBrowserView):
 
     def on_change_data_filename(self, fname):
 
-        dat = self.dat = h5py.File(fname)
-        self.M = dat["measurement/picam_readout"]
-        self.spec = self.M["spectrum"][:]
-        self.wls = self.M["wavelengths"][:]
+        with h5py.File(fname, 'r') as H:
+            M = H['measurement/andor_ccd_readout']
+            spec = M['spectrum'][:]
+            wls = M['wls'][:]
 
-        self.plot_n_fit.set_data(self.wls, self.spec, is_data_to_fit=True)
+        self.plot_n_fit.set_data(wls, spec, is_data_to_fit=True)
