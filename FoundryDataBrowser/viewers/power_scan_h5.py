@@ -91,7 +91,7 @@ class PowerScanH5View(DataBrowserView):
         return os.path.dirname(self.fname)
 
     @property
-    def json_file(self):
+    def config_file(self):
         return os.path.dirname(self.fname) + '/power_scans_configs.json'
 
     @property
@@ -107,16 +107,16 @@ class PowerScanH5View(DataBrowserView):
         return os.path.basename(self.fname)
 
     def load_configs_from_json(self):
-        if not len(glob.glob(self.json_file)):
+        if not len(glob.glob(self.config_file)):
             print('no file file found')
             return {}
-        with open(self.json_file, 'r') as f:
+        with open(self.config_file, 'r') as f:
             return json.load(f)
 
     def commit_configs(self):
         configs_collection = self.load_configs_from_json()
         configs_collection[self.base_fname] = self.get_configs()
-        with open(self.json_file, 'w') as outfile:
+        with open(self.config_file, 'w') as outfile:
             json.dump(configs_collection, outfile, indent=4)
 
     def get_configs(self) -> {}:
@@ -328,7 +328,7 @@ class PowerScanH5View(DataBrowserView):
 
     def new_configured_plot(self):
         from .power_scans_h5_configured_plot import configured_plot
-        configured_plot(self.json_file, self.dir_fname)
+        configured_plot(self.config_file, self.dir_fname)
 
 
 
