@@ -423,10 +423,11 @@ class DataSelector:
         self.plot.addItem(self.linear_region_item)
 
     def on_region_changed(self):
-        mn, mx = self.linear_region_item.getRegion()
         x, _ = self.get_data_item_values()
-        self.settings["start"] = np.argmin((x - mn) ** 2)
-        self.settings["stop"] = np.argmin((x - mx) ** 2) + 1
+        indices = [np.argmin((x - y) ** 2) for y in self.linear_region_item.getRegion()]
+        self.settings["start"] = min(indices)
+        self.settings["stop"] = max(indices)
+        print(indices)
 
     def on_change_start_stop(self):
         try:
@@ -526,10 +527,11 @@ class DataSelector:
         configs = {name: lq.value for name,
                   lq in self.settings.as_dict().items()}
         #configs['mask'] = [bool(x) for x in self.mask]
+        rgn = [min(self.linear_region_item.getRegion()), max(self.linear_region_item.getRegion())]        
         if self.plot_data_item.opts['logMode'][0]:
-            configs['region'] = [float(10**x) for x in self.linear_region_item.getRegion()]
+            configs['region'] = [float(10**x) for x in rgn]
         else:
-            configs['region'] = [float(x) for x in self.linear_region_item.getRegion()]
+            configs['region'] = [float(x) for x in rgn]
         return configs
 
     def set_configs(self, configs: {}):
