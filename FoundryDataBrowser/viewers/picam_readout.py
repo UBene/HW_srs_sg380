@@ -23,4 +23,4 @@ class PicamReadout(DataBrowserView):
         self.spec = self.M["spectrum"][:]
         self.wls = self.M["wavelengths"][:]
 
-        self.plot_n_fit.update_data(self.wls, self.spec)
+        self.plot_n_fit.set_data(self.wls, self.spec, is_data_to_fit=True)

@@ -8,7 +8,7 @@ from ScopeFoundry.scanning.base_raster_slow_scan import BaseRaster2DSlowScan
 
 class PIXYZ2DSlowScan(BaseRaster2DSlowScan):
     
-    name = "pi_xyz_2d_slow_scan"
+    name = "2d_slow_scan"
     
     def __init__(self, app, use_external_range_sync=False, circ_roi_size=0.001, h_limits=(0, 75), v_limits=(0, 75), h_unit="um", v_unit="um"):
         BaseRaster2DSlowScan.__init__(self, app, h_limits=h_limits, v_limits=v_limits, h_unit=h_unit, v_unit=v_unit,

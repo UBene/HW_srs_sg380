@@ -52,11 +52,11 @@ class PINanopositioner:
         # pitools.waitontarget(self.pidevice, axes=referencedaxes)
 
         self.cal = list(self.pidevice.qTMX().values())
-        print("self.cal", self.cal)
+        self.debug: print("self.cal", self.cal)
         self.cal_X = self.cal[0]
         self.cal_Y = self.cal[1]
         self.cal_Z = self.cal[2]
-        print(self.cal_X, self.cal_Y, self.cal_Z)
+        self.debug: print(self.cal_X, self.cal_Y, self.cal_Z)
         #################################################
 
     def set_pos_slow(self, x=None, y=None, z=None):

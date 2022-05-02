@@ -18,64 +18,67 @@ class DiamondMicroscope(BaseMicroscopeApp):
 
     def setup(self):
 
-        print("Adding Hardware Components")
 
-        from ScopeFoundryHW.picoquant.hydraharp_hw import HydraHarpHW
-        self.add_hardware(HydraHarpHW(self))
+
 
         from ScopeFoundryHW.acton_spec import ActonSpectrometerHW
         self.add_hardware(ActonSpectrometerHW(self))
 
-        
         from ScopeFoundryHW.thorlabs_powermeter import ThorlabsPowerMeterHW
         self.add_hardware_component(ThorlabsPowerMeterHW(self))
-        
+
         # from ScopeFoundryHW.thorlabs_powermeter.thorlabs_powermeter_analog_readout import ThorlabsPowerMeterAnalogReadOut
         # self.add_hardware(ThorlabsPowerMeterAnalogReadOut(self))
-                
-                
+
         from ScopeFoundryHW.thorlabs_integrated_stepper.thorlabs_integrated_stepper_motor_hw import ThorlabsIntegratedStepperMottorHW
         self.add_hardware_component(ThorlabsIntegratedStepperMottorHW(self))
 
-        from confocal_measure.sequencer import SweepSequencer
-        self.add_measurement(SweepSequencer(self))
-        
+        from ScopeFoundryHW.thorlabs_powermeter import PowerMeterOptimizerMeasure
+        self.add_measurement(PowerMeterOptimizerMeasure(self))
+
+        # from confocal_measure.sequencer import SweepSequencer
+        # self.add_measurement(SweepSequencer(self))
+
         from ScopeFoundryHW.ni_daq.hw.ni_freq_counter_callback import NI_FreqCounterCallBackHW
         self.add_hardware(NI_FreqCounterCallBackHW(self, name='apd_counter'))
         from confocal_measure.apd_optimizer_cb import APDOptimizerCBMeasurement
-        self.add_measurement(APDOptimizerCBMeasurement(self)) 
-        
+        self.add_measurement(APDOptimizerCBMeasurement(self))
+
         from ScopeFoundryHW.picam.picam_hw import PicamHW
         self.add_hardware(PicamHW(self))
+
         from ScopeFoundryHW.picam import PicamReadoutMeasure
         self.add_measurement(PicamReadoutMeasure(self))
 
+        # Hydraharp
+        from ScopeFoundryHW.picoquant.hydraharp_hw import HydraHarpHW
+        self.add_hardware(HydraHarpHW(self))
+
+        from ScopeFoundryHW.picoquant.hydraharp_optimizer import HydraHarpOptimizerMeasure
+        self.add_measurement(HydraHarpOptimizerMeasure(self))
+
+        from ScopeFoundryHW.picoquant.hydraharp_hist_measure import HydraHarpHistogramMeasure
+        self.add_measurement(HydraHarpHistogramMeasure(self))
+
+        # PI stage 
         from ScopeFoundryHW.pi_xyz_stage.pi_xyz_stage_hw import PIXYZStageHW
         self.add_hardware(PIXYZStageHW(self))
-        
+
         from confocal_measure.pi_xyz_scans.pi_xyz_2d_apd_slow_scan import PIXYZ2DAPD2DSlowScan
-        self.add_measurement(PIXYZ2DAPD2DSlowScan(self))  
-        
+        self.add_measurement(PIXYZ2DAPD2DSlowScan(self))
+
         from confocal_measure.pi_xyz_scans.pi_xyz_2d_picam_slow_scan import PIXYZ2DPICAM2DSlowScan
         self.add_measurement(PIXYZ2DPICAM2DSlowScan(self))
 
+        from confocal_measure.pi_xyz_scans.pi_xyz_2d_hydraharp_histogram_slow_scan import PIXYZ2DHydraharpHistogramSlowScan
+        self.add_measurement(PIXYZ2DHydraharpHistogramSlowScan(self))
 
-        self.connect_scan_params('pi_xyz_2d_apd_slow_scan', 
-                                 ['pi_xyz_2d_picam_slow_scan'])
-
-        print("Adding Measurement Components")
-
-        # from ScopeFoundryHW.picoquant.hydraharp_optimizer import HydraHarpOptimizerMeasure
-        # self.add_measurement(HydraHarpOptimizerMeasure(self))
-        
-        # from ScopeFoundryHW.picoquant.hydraharp_hist_measure import HydraHarpHistogramMeasure
-        # self.add_measurement(HydraHarpHistogramMeasure(self))
+        self.connect_scan_params('apd_2d_map',
+                                 ['picam_2d_map',
+                                  'hydraharp_histogram_2d_map'])
 
         # from confocal_measure.power_scan import PowerScanMeasure
         # self.add_measurement(PowerScanMeasure(self))
-
-        from ScopeFoundryHW.thorlabs_powermeter import PowerMeterOptimizerMeasure
-        self.add_measurement(PowerMeterOptimizerMeasure(self))
 
         # from measurements.laser_line_writer import LaserLineWriter
         # self.add_measurement(LaserLineWriter(self))
@@ -93,22 +96,19 @@ class DiamondMicroscope(BaseMicroscopeApp):
 
         # from confocal_measure.toupcam_spot_optimizer import ToupCamSpotOptimizer
         # self.add_measurement(ToupCamSpotOptimizer(self))
-        
+
         # from confocal_measure.sequencer import Sequencer
         # self.add_measurement(Sequencer(self))
-        
+
         # from ScopeFoundryHW.ni_daq.hw.ni_freq_counter_callback import NI_FreqCounterCallBackHW
         # self.add_hardware(NI_FreqCounterCallBackHW(self, name='apd_counter'))
         # from confocal_measure.apd_optimizer_cb import APDOptimizerCBMeasurement
-        # self.add_measurement_component(APDOptimizerCBMeasurement(self))  
+        # self.add_measurement_component(APDOptimizerCBMeasurement(self))
 
         # from ScopeFoundryHW.dynamixel_servo.dynamixel_x_servo_hw import DynamixelXServosHW
         # from ScopeFoundryHW.dynamixel_servo.dynamixel_single_hw import DynamixelServoHW
         # servos = self.add_hardware(DynamixelXServosHW(self, devices=dict(power_wheel=10,)))
-        # self.add_hardware(DynamixelServoHW(self, name='power_wheel'))        
-
-
-
+        # self.add_hardware(DynamixelServoHW(self, name='power_wheel'))
 
     def connect_scan_params(self, parent_scan_name='apd_asi',
                             children_scan_names=['hyperspec_asi', 'asi_trpl_2d_scan']):
@@ -119,17 +119,19 @@ class DiamondMicroscope(BaseMicroscopeApp):
             child_scan = self.measurements[scan]
             for lq_name in lq_names:
                 master_scan_lq = parent_scan.settings.get_lq(lq_name)
-                child_scan.settings.get_lq(lq_name).connect_to_lq(master_scan_lq)
-        
+                child_scan.settings.get_lq(
+                    lq_name).connect_to_lq(master_scan_lq)
+
     def setup_ui(self):
         return
 
         rainbow = '''qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(255, 0, 0, 100), 
                         stop:0.166 rgba(255, 255, 0, 100), stop:0.333 rgba(0, 255, 0, 100), stop:0.5 rgba(0, 255, 255, 100), 
                         stop:0.666 rgba(0, 0, 255, 100), stop:0.833 rgba(255, 0, 255, 100), stop:1 rgba(255, 0, 0, 100))'''
-        
-        Q = self.add_quickbar(load_qt_ui_file(sibling_path(__file__, 'quickbar.ui')))
-        
+
+        Q = self.add_quickbar(load_qt_ui_file(
+            sibling_path(__file__, 'quickbar.ui')))
+
         # Power wheel
         if hasattr(self.hardware, 'power_wheel'):
             PW = self.hardware.power_wheel
@@ -138,28 +140,33 @@ class DiamondMicroscope(BaseMicroscopeApp):
             def go_to(pos, PWS=PWS):
                 PWS['target_position'] = pos
 
-            Q.power_wheel_0_pushButton.clicked.connect(lambda x:go_to(0))
-            Q.power_wheel_90_pushButton.clicked.connect(lambda x:go_to(90))
-            Q.power_wheel_180_pushButton.clicked.connect(lambda x:go_to(180))
-            Q.power_wheel_270_pushButton.clicked.connect(lambda x:go_to(270))
-            Q.power_wheel_jog_forward_pushButton.clicked.connect(lambda x:PW.jog_forward)
+            Q.power_wheel_0_pushButton.clicked.connect(lambda x: go_to(0))
+            Q.power_wheel_90_pushButton.clicked.connect(lambda x: go_to(90))
+            Q.power_wheel_180_pushButton.clicked.connect(lambda x: go_to(180))
+            Q.power_wheel_270_pushButton.clicked.connect(lambda x: go_to(270))
+            Q.power_wheel_jog_forward_pushButton.clicked.connect(
+                lambda x: PW.jog_forward)
             PWS.jog.connect_to_widget(Q.power_wheel_jog_doubleSpinBox)
-            Q.power_wheel_jog_backward_pushButton.clicked.connect(lambda x:PW.jog_backward)
+            Q.power_wheel_jog_backward_pushButton.clicked.connect(
+                lambda x: PW.jog_backward)
             PWS.position.connect_to_widget(Q.power_wheel_position_label)
-            PWS.target_position.connect_to_widget(Q.power_wheel_target_position_doubleSpinBox)
+            PWS.target_position.connect_to_widget(
+                Q.power_wheel_target_position_doubleSpinBox)
         else:
             Q.power_wheel_groupBox.setVisible(False)
-        
+
         # Power meter
         if hasattr(self.hardware, 'thorlabs_powermeter'):
             PM = self.hardware.thorlabs_powermeter
             PMS = self.hardware.thorlabs_powermeter.settings
             PMS.connected.connect_to_widget(Q.power_meter_connected_checkBox)
-            PMS.wavelength.connect_to_widget(Q.power_meter_wavelength_doubleSpinBox)        
+            PMS.wavelength.connect_to_widget(
+                Q.power_meter_wavelength_doubleSpinBox)
             # PMS.power.connect_to_widget(Q.power_meter_power_label)
             from ScopeFoundry.helper_funcs import replace_widget_in_layout
             import pyqtgraph as pg
-            W = replace_widget_in_layout(Q.power_meter_power_label, pg.widgets.SpinBox.SpinBox())
+            W = replace_widget_in_layout(
+                Q.power_meter_power_label, pg.widgets.SpinBox.SpinBox())
             PMS.power.connect_to_widget(W)
             M = self.measurements.powermeter_optimizer
             Q.power_meter_show_ui_pushButton.clicked.connect(M.show_ui)

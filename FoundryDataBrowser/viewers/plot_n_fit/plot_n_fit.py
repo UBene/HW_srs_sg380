@@ -105,11 +105,14 @@ class PlotNFit:
 
         if enabled:
             active_fitter = self.fitters[choice]
-            self.fit = active_fitter.fit_xy(self.data_to_fit_x, self.data_to_fit_y)
-            self.ui.update_fit_line(self.data_to_fit_x, self.fit)
-            self.result_message = active_fitter.result_message
-            self.ui.highlight_x_values(np.atleast_1d(active_fitter.highlight_x_vals))
-            self.data_selector.set_label(active_fitter.get_resuts_html())
+            try:
+                self.fit = active_fitter.fit_xy(self.data_to_fit_x, self.data_to_fit_y)
+                self.ui.update_fit_line(self.data_to_fit_x, self.fit)
+                self.result_message = active_fitter.result_message
+                self.ui.highlight_x_values(np.atleast_1d(active_fitter.highlight_x_vals))
+                self.data_selector.set_label(active_fitter.get_resuts_html())
+            except (ZeroDivisionError,):
+                pass
         else:
             self.ui.clear()
 

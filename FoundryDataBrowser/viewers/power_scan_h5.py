@@ -50,7 +50,8 @@ class PowerScanUI(dockarea.DockArea):
             plot_n_fit.ui.settings_dock, "right", self.spec_dock
         )
 
-        self.target = pg.TargetItem(pen="r")
+        #self.target = pg.TargetItem(pen="r")
+        self.target = pg.ScatterPlotItem(pen="r")
         self.target_label = pg.TextItem(color="r")
         self.plot_n_fit.ui.plot.addItem(self.target)
         self.plot_n_fit.ui.plot.addItem(self.target_label)
