@@ -27,8 +27,8 @@ class RabiPulseProgramGenerator(PulseProgramGenerator):
 
         start_delay = 0  # t_min * round(1 * us / t_min) + t_readout_delay
         # t_startTrig = t_min * round(300 * ns / t_min)
-        t_readout = S['t_gate'] * 1e3  # t_min * round(300 * ns / t_min)
-        t_uW_to_AOM_delay = S['t_uW_to_AOM_delay']
+        t_readout = S['t_gate'] * us  # t_min * round(300 * ns / t_min)
+        t_uW_to_AOM_delay = S['t_uW_to_AOM_delay'] * us
 
         t_half = S['program_duration'] * us / 2
         if S['t_uW'] <= 5 * t_min and S['t_uW'] > 0:
