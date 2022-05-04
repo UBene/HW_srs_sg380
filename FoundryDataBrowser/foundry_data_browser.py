@@ -29,6 +29,13 @@ try:
 except Exception as err:
     _on_load_err(err)
 
+# try:
+#     from FoundryDataBrowser.viewers.gauss2d_fit_img import Gauss2DFitImgView, Gauss2DFitAPD_MCL_2dSlowScanView, \
+#         Gauss2DFit_FiberAPD_View
+#     app.load_view(Gauss2DFitImgView(app))
+#     app.load_view(Gauss2DFitAPD_MCL_2dSlowScanView(app))
+#     app.load_view(Gauss2DFit_FiberAPD_View(app))
+# except Exception as err: _on_load_err(err)
 try:
     from FoundryDataBrowser.viewers.images import ScipyImreadView
     app.load_view(ScipyImreadView(app))

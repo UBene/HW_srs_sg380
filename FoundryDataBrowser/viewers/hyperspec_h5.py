@@ -23,7 +23,7 @@ class HyperSpecH5View(HyperSpectralBaseView):
         except (ModuleNotFoundError, ImportError):
             pass
 
-    def is_file_supported(self, fname):
+    def is_file_supported(self, fname: str):
         self.supported_measurements = ['m4_hyperspectral_2d_scan',
                                        'andor_hyperspec_scan',
                                        'hyperspectral_2d_scan',
@@ -36,7 +36,7 @@ class HyperSpecH5View(HyperSpectralBaseView):
                                        'pi_xyz_2d_picam_slow_scan',
                                        'picam_2d_map']
 
-        return np.any([(meas_name in fname)
+        return np.any([((meas_name in fname) and fname.endswith('h5'))
                        for meas_name in self.supported_measurements])
 
     def reset(self):
@@ -47,7 +47,7 @@ class HyperSpecH5View(HyperSpectralBaseView):
 
     def load_data(self, fname):
         print(self.name, 'loading', fname)
-        self.dat = h5py.File(fname)
+        self.dat = h5py.File(fname, 'r')
         for meas_name in self.supported_measurements:
             if meas_name in self.dat['measurement']:
                 self.M = self.dat['measurement'][meas_name]

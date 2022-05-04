@@ -230,7 +230,7 @@ class FileInfoView(DataBrowserView):
 
         _, ext = os.path.splitext(fname)
 
-        if ext in (".py", ".ini", ".txt"):
+        if ext in (".py", ".ini", ".txt", ".json"):
             with open(fname, "r") as f:
                 self.ui.setText(f.read())
         else:

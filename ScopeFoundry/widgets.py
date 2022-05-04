@@ -42,8 +42,10 @@ class MinMaxQSlider(QtWidgets.QWidget):
         self.max_double_spinbox = QtWidgets.QDoubleSpinBox()
         self.max_double_spinbox.setRange(-1e12, 1e12)
 
-        self.min_double_spinbox.valueChanged[float].connect(self.update_slider_minimum)
-        self.max_double_spinbox.valueChanged[float].connect(self.update_slider_maximum)
+        self.min_double_spinbox.valueChanged[float].connect(
+            self.update_slider_minimum)
+        self.max_double_spinbox.valueChanged[float].connect(
+            self.update_slider_maximum)
 
         self.setDecimals(spinbox_decimals)
 
@@ -55,7 +57,8 @@ class MinMaxQSlider(QtWidgets.QWidget):
         self.layout_.addWidget(
             self.min_double_spinbox, 0, 0, alignment=QtCore.Qt.AlignLeft
         )
-        self.layout_.addWidget(self.title_label, 0, 1, alignment=QtCore.Qt.AlignHCenter)
+        self.layout_.addWidget(self.title_label, 0, 1,
+                               alignment=QtCore.Qt.AlignHCenter)
         self.layout_.addWidget(
             self.max_double_spinbox, 0, 2, alignment=QtCore.Qt.AlignRight
         )
@@ -152,16 +155,16 @@ class MinMaxQSlider(QtWidgets.QWidget):
 class RegionSlicer(QtWidgets.QWidget):
     """
     **Bases:** :class: `QWidget <pyqt.QtWidgets.QWidget>`
-    
+
     Adds a movable <pyqtgraph.LinearRegionItem> to a plot.
     Provides a numpy slice and mask that would slices the x_array according to the region.
-    
+
     ===============================  =============================================================================
     **Signals:**
     region_changed_signal()          Emitted when region is changed or activated by user
     ===============================  =============================================================================
-    
-    
+
+
     ===============================  =============================================================================
     **Properties:**
     slice:                           numpy.slice[start:stop]
@@ -190,7 +193,7 @@ class RegionSlicer(QtWidgets.QWidget):
         activated=False,
     ):
         """Create a new LinearRegionItem on plot_item.
-        
+
         ====================== ==============================================================
         **Arguments:**
         plot_item              <pyqtgraph.PlotDataItem> (recommended) 
@@ -228,13 +231,15 @@ class RegionSlicer(QtWidgets.QWidget):
         self.start = self.settings.New("start", int, initial=start, vmin=0)
         self.stop = self.settings.New("stop", int, initial=stop, vmin=0)
         self.step = self.settings.New("step", int, initial=step)
-        self.activated = self.settings.New("activated", bool, initial=activated)
+        self.activated = self.settings.New(
+            "activated", bool, initial=activated)
 
         self.s_return_on_deactivated = s_return_on_deactivated
 
         if type(plot_item) == pg.PlotDataItem:
             self.plot_data_item = plot_item
-            self.plot_data_item.sigPlotChanged.connect(self.set_x_array_from_data_item)
+            self.plot_data_item.sigPlotChanged.connect(
+                self.set_x_array_from_data_item)
             self.parent_plot_item = plot_item.parentItem()
         elif type(plot_item) == pg.PlotItem:
             self.plot_data_item = None
@@ -261,7 +266,8 @@ class RegionSlicer(QtWidgets.QWidget):
         self.start.add_listener(self.on_change_start_stop)
         self.stop.add_listener(self.on_change_start_stop)
         self.activated.add_listener(self.on_change_activated)
-        self.linear_region_item.sigRegionChangeFinished.connect(self.on_change_region)
+        self.linear_region_item.sigRegionChangeFinished.connect(
+            self.on_change_region)
 
     @QtCore.Slot(object)
     def set_x_array_from_data_item(self):
@@ -282,14 +288,15 @@ class RegionSlicer(QtWidgets.QWidget):
     def apply_new_x_array(self, x_array):
         mn, mx = self.linear_region_item.getRegion()
         self.x_array = x_array
-        self.linear_region_item.setBounds([self.x_array.min(), self.x_array.max()])
+        self.linear_region_item.setBounds(
+            [self.x_array.min(), self.x_array.max()])
         self.settings["start"] = np.argmin((x_array - mn) ** 2)
         self.settings["stop"] = np.argmin((x_array - mx) ** 2)
 
     @property
     def slice(self):
         S = self.settings
-        return np.s_[S["start"] : S["stop"] : S["step"]]
+        return np.s_[S["start"]: S["stop"]: S["step"]]
 
     @property
     def s_(self):
@@ -393,7 +400,8 @@ class DataSelector:
         )
 
         self.linear_region_item = pg.LinearRegionItem()
-        self.linear_region_item.sigRegionChangeFinished.connect(self.on_region_changed)
+        self.linear_region_item.sigRegionChangeFinished.connect(
+            self.on_region_changed)
         self.label = pg.InfLineLabel(
             self.linear_region_item.lines[0],
             self.name,
@@ -415,10 +423,11 @@ class DataSelector:
         self.plot.addItem(self.linear_region_item)
 
     def on_region_changed(self):
-        mn, mx = self.linear_region_item.getRegion()
         x, _ = self.get_data_item_values()
-        self.settings["start"] = np.argmin((x - mn) ** 2)
-        self.settings["stop"] = np.argmin((x - mx) ** 2) + 1
+        indices = [np.argmin((x - y) ** 2) for y in self.linear_region_item.getRegion()]
+        self.settings["start"] = min(indices)
+        self.settings["stop"] = max(indices)
+        print(indices)
 
     def on_change_start_stop(self):
         try:
@@ -452,7 +461,7 @@ class DataSelector:
         return np.take(array, self.indices, axis)
 
     def mask_array(self, array, axis=-1):
-        indices = np.arange(len(array.shape[axis]))[self.mask]
+        indices = np.arange(array.shape[axis])[self.mask]
         return np.take(array, indices, axis)
 
     def select(self, array, axis=-1):
@@ -478,11 +487,12 @@ class DataSelector:
     @property
     def slice(self):
         S = self.settings
-        return np.s_[S["start"] : S["stop"] : S["step"]]
+        return np.s_[S["start"]: S["stop"]: S["step"]]
 
     def New_UI(self, include=None, exclude=[]):
         ui_widget = self.settings.New_UI(include, exclude)
-        ui_widget.layout().insertRow(0, QtWidgets.QLabel(f"<b>{self.name}</b>"))
+        ui_widget.layout().insertRow(
+            0, QtWidgets.QLabel(f"<b>{self.name}</b>"))
         return ui_widget
 
     def New_Dock(self):
@@ -500,11 +510,34 @@ class DataSelector:
             v = self.activated.val
         self.label.setVisible(v)
         self.linear_region_item.setVisible(v)
+        # self.update_region_bounds()
+
+    def update_region_bounds(self):
         if hasattr(self, "plot_data_item"):
-            self.linear_region_item.setBounds(self.plot_data_item.dataBounds(0))
+            self.linear_region_item.setBounds(
+                self.plot_data_item.dataBounds(0))
 
     def add_listener(
         self, func, include=["start", "stop", "step", "activated"], argtype=(), **kwargs
     ):
         for key in include:
             self.settings.get_lq(key).add_listener(func, argtype, **kwargs)
+
+    def get_configs(self):
+        configs = {name: lq.value for name,
+                  lq in self.settings.as_dict().items()}
+        #configs['mask'] = [bool(x) for x in self.mask]
+        rgn = [min(self.linear_region_item.getRegion()), max(self.linear_region_item.getRegion())]        
+        if self.plot_data_item.opts['logMode'][0]:
+            configs['region'] = [float(10**x) for x in rgn]
+        else:
+            configs['region'] = [float(x) for x in rgn]
+        return configs
+
+    def set_configs(self, configs: {}):
+        for name, lq in self.settings.as_dict().items():
+            lq.update_value(configs.get(name, lq.value))
+        if self.plot_data_item.opts['logMode'][0]:
+            self.linear_region_item.setRegion(np.log10(configs['region']))
+        else:
+            self.linear_region_item.setRegion(configs['region'])
