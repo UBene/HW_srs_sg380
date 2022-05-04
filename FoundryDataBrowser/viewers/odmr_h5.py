@@ -65,7 +65,6 @@ class ODMRH5(DataBrowserView):
 
         for name in SUPPORTED_YARRAYS:
             lq = self.settings.New(name, bool, initial=False)
-            lq.add_listener(self.show_lines)
 
         self.settings['signal'] = True
         self.settings['reference'] = True
@@ -84,9 +83,15 @@ class ODMRH5(DataBrowserView):
         self.plot = self.graph_layout.addPlot(title=self.name)
         self.data = {y: np.arange(10) for y in SUPPORTED_YARRAYS}
         self.plot_lines = {}
+
+        pens = ['g', 'r'] + ['w'] * len(SUPPORTED_YARRAYS)
         for i, name in enumerate(SUPPORTED_YARRAYS):
             self.plot_lines[name] = self.plot.plot(
-                self.data[name], symbol="o", name=name
+                self.data[name],
+                name=name,
+                pen=pens[i],
+                symbolBrush=pens[i], 
+                symbol="o",
             )
 
         self.plot.addLegend()
@@ -96,11 +101,15 @@ class ODMRH5(DataBrowserView):
 
         self.ui.addDock(name='settings', widget=self.settings.New_UI())
 
+        for name in SUPPORTED_YARRAYS:
+            self.settings.get_lq(name).add_listener(self.show_lines)
+
     def is_file_supported(self, fname):
         for exp in SUPPORTED_MEASUREMENTS:
             if exp in fname:
                 self.exp = exp
                 return True
+            
         return False
 
     def show_lines(self):
@@ -125,7 +134,8 @@ class ODMRH5(DataBrowserView):
 
             self.show_lines()
             self.plot.setTitle(self.exp)
-            channels = ['STARTtrig', 'AOM', 'DAQ', 'DAQ_sig', 'DAQ_ref']
+            
+            channels = [d['name'] for d in channel_settings]
             pulse_plot_arrays = {p: M[p][:] for p in channels if p in M}
 
         self.pulse_plot.update_pulse_plot(pulse_plot_arrays)
