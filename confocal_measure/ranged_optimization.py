@@ -91,8 +91,8 @@ class RangedOptimization(Measurement):
         self.z_original, self.z0_coarse, self.z0_fine = 0, 0, 0
         
         self.post_processor_manager = PostProcessorManager()
-        choices = self.post_processor_manager.processors.keys()
-        self.settings.New('post_processor', str, initial='gauss', choices=choices,
+        choices = list(self.post_processor_manager.processors.keys())
+        self.settings.New('post_processor', str, initial='gauss_mean', choices=choices,
                           description='e.g. fit gaussian to data and use the derived mean as optimized value')
         self.settings.New('take_post_process_value', bool, initial=False)
         self.add_operation('post process', self.post_process)
@@ -137,8 +137,8 @@ class RangedOptimization(Measurement):
         )
         
         # third settings widget
-        w3 = S.New_UI(["z_offset", 
-                       "use_fine_optimization", 
+        w3 = S.New_UI(["z_offset",
+                       "use_fine_optimization",
                        "post_processor"])
         settings_layout.addWidget(w3)
         post_process_pushButton = QtWidgets.QPushButton('post_process')
