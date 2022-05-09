@@ -1,35 +1,30 @@
 '''
-Created on Mar 26, 2022
+Created on Apr 20, 2022
 
 @author: Benedikt Ursprung
 '''
-from ScopeFoundry.scanning.base_raster_slow_scan import BaseRaster2DSlowScan
+from ScopeFoundryHW.picoquant.trpl_2d_scan_base import TRPL2DScanBase
 
 
-class PIXYZ2DSlowScan(BaseRaster2DSlowScan):
+class PIXYZ2DHistogramSlowScan(TRPL2DScanBase):
 
-    name = "2d_slow_scan"
+    name = 'histogram_2d_map'
 
     def setup(self):
-        BaseRaster2DSlowScan.setup(self)
+        TRPL2DScanBase.setup(self)
 
         # Hardware
         self.stage = self.app.hardware['PI_xyz_stage']
-        self.slow_move_timeout = 10.  # sec
-
         self.settings.New("h_axis", initial="x", dtype=str,
                           choices=("x", "y", "z"))
         self.settings.New("v_axis", initial="y", dtype=str,
                           choices=("x", "y", "z"))
 
-    def collect_pixel(self, pixel_num, k, j, i):
-        raise NotImplementedError
-        pass
-
     def move_position_start(self, h, v):
         self.move_position_slow(h, v, 0, 0, timeout=30)
 
     def move_position_slow(self, h, v, dh, dv, timeout=10):
+        # update target position
         S = self.settings
         self.stage.settings[S['h_axis'] + "_target"] = h
         self.stage.settings[S['v_axis'] + "_target"] = v

@@ -18,9 +18,8 @@ from pyqtgraph.dockarea.DockArea import DockArea
 
 from ScopeFoundry import Measurement
 from ScopeFoundry import h5_io
-from ScopeFoundryHW.spincore import PulseProgramGenerator, PulseBlasterChannel
+from ScopeFoundryHW.spincore import PulseProgramGenerator, PulseBlasterChannel, us, ns
 from odmr_measurements.helper_functions import ContrastModes, calculateContrast
-from spinapi.spinapi import us
 
 
 class RabiPulseProgramGenerator(PulseProgramGenerator):
@@ -151,7 +150,7 @@ class Rabi(Measurement):
         
     def set_pulse_duration(self, duration):
         self.pulse_generator.settings['t_uW'] = duration
-        self.pulse_generator.program_hw()
+        self.pulse_generator.program_pulse_blaster_and_start()
 
     def run(self):
         self.data_ready = False
@@ -198,7 +197,6 @@ class Rabi(Measurement):
                     if self.interrupt_measurement_called:
                         break
                     
-                    # SRS.settings["frequency"] = pulse_durations[i_scanPoint]
                     self.set_pulse_duration(pulse_duration)
                     
                     time.sleep(0.01)
@@ -207,12 +205,6 @@ class Rabi(Measurement):
                     ref = np.sum(cts[1::2] - cts[0::2])
                     sig = np.sum(cts[2::2] - cts[1:-2:2]) + cts[0]                 
                     
-                    # print(cts[0::4].mean(), cts[1::4].mean(), cts[2::4].mean(), cts[3::4].mean(),)
-                    # print(cts[:8])
-                    # sig = cts[1::4] - cts[0::4]
-                    # ref = cts[3::4] - cts[2::4]
-                    
-                    print(sig.sum(), ref.sum())
                     ii = index[i_scanPoint]
                     signal[ii][i_sweep] = sig
                     reference[ii][i_sweep] = ref
