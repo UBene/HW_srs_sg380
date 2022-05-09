@@ -47,7 +47,7 @@ class PulseProgramGenerator:
         self.settings.New('sync_out', float, unit='MHz', initial=-10.0,
                           description='to deactivate set negative')
         self.setup_additional_settings()
-        self.settings.New('update_pulse_plot', bool, initial=True,
+        self.settings.New('enable_pulse_plot_update', bool, initial=True,
                           description='disable for performance')
         self.pg_settings = [x for x in self.settings._logged_quantities.values(
         ) if not x.name in self.non_pg_setting_names]
@@ -63,6 +63,7 @@ class PulseProgramGenerator:
                   setting. You can set a value here
 
         self.settings['sync_out'] = 3.3333  # in MHz
+        self.settings['program_duration'] = 10  # in us
         '''
         ...
 
@@ -75,7 +76,7 @@ class PulseProgramGenerator:
             f'Overide make_pulse_channels() of {self.name} not Implemented')
 
     def update_pulse_plot(self) -> None:
-        if self.settings['update_pulse_plot']:
+        if self.settings['enable_pulse_plot_update']:
             plot = self.plot
             plot.clear()
             pulse_plot_arrays = self.get_pulse_plot_arrays()

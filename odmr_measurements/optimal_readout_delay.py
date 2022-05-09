@@ -5,72 +5,62 @@ Created on Apr 4, 2022
 '''
 
 import numpy as np
-from random import shuffle
 
 from qtpy.QtWidgets import (
     QHBoxLayout,
     QVBoxLayout,
     QWidget,
-    QLabel,
+    QLabel
 )
 import pyqtgraph as pg
 from pyqtgraph.dockarea.DockArea import DockArea
 
 from ScopeFoundry import Measurement
 from ScopeFoundry import h5_io
-from ScopeFoundryHW.spincore import PulseProgramGenerator, PulseBlasterChannel, us, ns
-from odmr_measurements.helper_functions import ContrastModes, calculateContrast
-import time
+from ScopeFoundryHW.spincore import PulseProgramGenerator, PulseBlasterChannel
+
+from spinapi.spinapi import us
+from odmr_measurements.helper_functions import calculateContrast, ContrastModes
+from random import shuffle
 
 
-class ESRPulseProgramGenerator(PulseProgramGenerator):
+class ORDPulseProgramGenerator(PulseProgramGenerator):
 
     def setup_additional_settings(self) -> None:
-        self.settings.New('t_readout', unit='us', initial=10.0)
-        self.settings.New('t_gate', unit='us', initial=50.0)
+        self.settings.New('t_readout_delay', unit='us',
+                          initial=2.3, spinbox_decimals=4)
+        self.settings.New('t_AOM', unit='us', initial=5)
+        self.settings['program_duration'] = 15  # us
+        self.settings.New('t_gate', unit='us', initial=5.0)
 
     def make_pulse_channels(self) -> [PulseBlasterChannel]:
-        S = self.settings
+        t_gate = self.settings['t_gate'] * us
+        t_AOM = self.settings['t_AOM'] * us
+        t_readout_delay = self.settings['t_readout_delay'] * us
 
-        # all times must be in ns.
-        t_duration = S['program_duration'] * us
-        t_readout = S['t_readout'] * us
-        t_gate = S['t_gate'] * us
-
-        AOM = self.new_channel('AOM', [0], [t_duration])
-        uW = self.new_channel('uW', [0], [t_duration / 2])
-
-        # DAQ
-        _readout = t_readout + t_gate
-        DAQ_sig = self.new_channel(
-            'DAQ_sig', [0.5 * t_duration - _readout], [t_gate])
-        DAQ_ref = self.new_channel(
-            'DAQ_ref', [t_duration - _readout], [t_gate])
-
-        return [uW, AOM,
-                # I, Q,
-                DAQ_sig, DAQ_ref]
+        return [self.new_channel('AOM', [0], [t_AOM]),
+                self.new_channel('DAQ_sig', [t_AOM + t_readout_delay], [t_gate])]
 
 
 def norm(x):
     return 1.0 * x / x.max()
 
 
-class ESR(Measurement):
+class OptimalReadoutDelay(Measurement):
 
-    name = "esr"
+    name = "optimal_readout_delay"
 
     def setup(self):
 
         S = self.settings
 
         self.range = S.New_Range(
-            "frequency", initials=[2.7e9, 3e9, 3e6], unit="Hz", si=True
+            "t_readout_delays", initials=[10, 10e3, 100], unit="ns", si=True
         )
         S.New("N_samples", int, initial=1000)
         S.New("N_sweeps", int, initial=1)
         S.New("randomize", bool, initial=False,
-              description='probe frequencies in a random order.')
+              description='probe t_readout_delays in a random order.')
         S.New("shotByShotNormalization", bool, initial=False)
         S.New(
             "contrast_mode",
@@ -81,14 +71,13 @@ class ESR(Measurement):
         S.New("save_h5", bool, initial=True)
 
         self.data = {
-            "frequencies": np.arange(10) * 1e9,
+            "t_readout_delays": np.arange(10) * 1e9,
             # emulates N_sweeps=2
             "signal_raw": np.random.rand(20).reshape(2, -1),
-            "reference_raw": np.random.rand(20).reshape(2, -1),
         }
         self.i_sweep = 0
 
-        self.pulse_generator = ESRPulseProgramGenerator(self)
+        self.pulse_generator = ORDPulseProgramGenerator(self)
 
     def setup_figure(self):
         self.ui = DockArea()
@@ -107,7 +96,8 @@ class ESR(Measurement):
         start_layout = QVBoxLayout()
         SRS = self.app.hardware["srs_control"]
         start_layout.addWidget(QLabel('<b>SRS control</b>'))
-        start_layout.addWidget(SRS.settings.New_UI(['connected', 'amplitude']))
+        start_layout.addWidget(SRS.settings.New_UI(
+            ['connected', 'amplitude', 'frequency']))
         start_layout.addWidget(self.settings.activation.new_pushButton())
         settings_layout.addLayout(start_layout)
 
@@ -120,31 +110,16 @@ class ESR(Measurement):
         self.plot_lines = {}
         self.plot_lines["signal"] = self.plot.plot(
             pen="g", symbol="o", symbolBrush="g")
-        self.plot_lines["reference"] = self.plot.plot(
-            pen="r", symbol="o", symbolBrush="r")
-
-        # contrast Plots
-        self.contrast_plot = self.graph_layout.addPlot(
-            title='contrast', row=1, col=0)
-        self.plot_lines['contrast'] = self.contrast_plot.plot(
-            name=self.data["signal_raw"], pen='w')
 
         self.ui.addDock(
             dock=self.pulse_generator.New_dock_UI(), position='left')
         self.update_display()
 
     def update_display(self):
-        x = self.data["frequencies"]
-
+        x = self.data["t_readout_delays"]
         signal = self.data["signal_raw"][0:self.i_sweep + 1, :].mean(0)
-        reference = self.data["reference_raw"][0:self.i_sweep + 1, :].mean(0)
-
         self.plot_lines["signal"].setData(x, signal)
-        self.plot_lines["reference"].setData(x, reference)
-
-        S = self.settings
-        contrast = calculateContrast(S["contrast_mode"], signal, reference)
-        self.plot_lines['contrast'].setData(x, contrast)
+        self.plot.setLabel('bottom', 't_readout_delay')
 
     def pre_run(self):
         self.pulse_generator.update_pulse_plot()
@@ -160,16 +135,15 @@ class ESR(Measurement):
         PB = self.app.hardware["pulse_blaster"]
         DAQ = self.app.hardware['pulse_width_counters']
 
-        self.data['frequencies'] = frequencies = self.range.sweep_array
+        self.data['t_readout_delays'] = t_readout_delays = self.range.sweep_array
 
-        N = len(frequencies)
+        N = len(t_readout_delays)
         N_sweeps = S["N_sweeps"]
         N_DAQ_readouts = S['N_samples']
 
         try:
             SRS.connect()
             SRS.settings["modulation"] = False
-            SRS.settings["frequency"] = frequencies[0]
             SRS.settings["output"] = True
 
             PB.connect()
@@ -179,7 +153,6 @@ class ESR(Measurement):
 
             # data arrays
             self.data["signal_raw"] = np.zeros((N_sweeps, N))
-            self.data["reference_raw"] = np.zeros_like(self.data["signal_raw"])
 
             # Run experiment
             for i_sweep in range(N_sweeps):
@@ -189,17 +162,17 @@ class ESR(Measurement):
                 self.log.info(f"sweep {i_sweep + 1} of {N_sweeps}")
                 if S["randomize"]:
                     if i_sweep > 0:
-                        shuffle(frequencies)
-                self.indices = np.argsort(frequencies)
+                        shuffle(t_readout_delays)
+                self.indices = np.argsort(t_readout_delays)
 
-                t0 = time.perf_counter()
-                for j, frequency in enumerate(frequencies):
+                for j, t_readout_delay in enumerate(t_readout_delays):
                     if self.interrupt_measurement_called:
                         break
                     pct = 100 * (i_sweep * N + j) / (N_sweeps * N)
                     self.set_progress(pct)
 
-                    SRS.settings["frequency"] = frequency
+                    self.pulse_generator.settings['t_readout_delay'] = t_readout_delay
+                    self.pulse_generator.program_pulse_blaster_and_start()
 
                     # Update data arrays
                     jj = self.indices[j]
@@ -207,10 +180,6 @@ class ESR(Measurement):
                     #time.sleep(N_DAQ_readouts * self.pulse_generator.pulse_program_duration/1e9)
                     self.data["signal_raw"][i_sweep][jj] = np.mean(
                         DAQ.read_sig_counts(N_DAQ_readouts))
-                    self.data["reference_raw"][i_sweep][jj] = np.mean(
-                        DAQ.read_ref_counts(N_DAQ_readouts))
-
-                print('delta time', time.perf_counter() - t0)
 
         finally:
             SRS.settings["output"] = False
@@ -227,13 +196,8 @@ class ESR(Measurement):
         self.h5_file = h5_io.h5_base_file(app=self.app, measurement=self)
         self.h5_meas_group = h5_io.h5_create_measurement_group(
             self, self.h5_file)
-        reference = self.data['reference_raw'].mean(0)
         signal = self.data['signal_raw'].mean(0)
-        self.h5_meas_group['reference'] = reference
         self.h5_meas_group['signal'] = signal
-        self.h5_meas_group['frequencies'] = self.data['frequencies']
-        for cm in ContrastModes:
-            self.h5_meas_group[cm] = calculateContrast(cm, signal, reference)
         for k, v in self.data.items():
             self.h5_meas_group[k] = v
         self.pulse_generator.save_to_h5(self.h5_meas_group)
