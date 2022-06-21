@@ -117,3 +117,4 @@ class PlotNFitPGDockArea(dockarea.DockArea):
         exporter = exp.SVGExporter(self.plot)
         exporter.parameters()["scaling stroke"] = False
         exporter.export(copy=True)
+
