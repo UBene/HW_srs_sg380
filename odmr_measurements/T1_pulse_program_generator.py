@@ -11,7 +11,7 @@ class T1PulseProgramGenerator(PulseProgramGenerator):
     def setup_additional_settings(self) -> None:
         self.settings.New('t_readout', unit='us', initial=10.0)
         self.settings.New('t_gate', unit='us', initial=50.0)
-
+        self.settings.New('program_duration', float, unit='us', initial=160.0)
         # self.settings.New('t_delay', unit='us', initial=50.0)
         self.settings.New('t_AOM', unit='us', initial=5.0)
         self.settings.New('t_readout_delay', unit='us', initial=2.3)

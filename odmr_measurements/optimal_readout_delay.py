@@ -30,8 +30,9 @@ class ORDPulseProgramGenerator(PulseProgramGenerator):
         self.settings.New('t_readout_delay', unit='us',
                           initial=2.3, spinbox_decimals=4)
         self.settings.New('t_AOM', unit='us', initial=5)
-        self.settings['program_duration'] = 15  # us
         self.settings.New('t_gate', unit='us', initial=5.0)
+        #self.settings.New('program_duration', float, unit='us', initial=160.0)
+        #self.settings['program_duration'] = 15  # us
 
     def make_pulse_channels(self) -> [PulseBlasterChannel]:
         t_gate = self.settings['t_gate'] * us

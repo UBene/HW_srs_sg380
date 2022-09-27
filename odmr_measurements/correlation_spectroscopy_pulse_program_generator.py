@@ -12,6 +12,7 @@ class CSPulseProgramGenerator(PulseProgramGenerator):
     def setup_additional_settings(self) -> None:
         self.settings.New('t_readout', unit='us', initial=10.0)
         self.settings.New('t_gate', unit='us', initial=5.0)
+        self.settings.New('program_duration', float, unit='us', initial=160.0)
         self.settings['program_duration'] = 27
         self.settings.New('t_delay', unit='us', initial=1.0)
         self.settings.New('t_AOM', unit='us', initial=5.0)
