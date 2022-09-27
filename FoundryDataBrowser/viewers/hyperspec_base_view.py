@@ -34,15 +34,18 @@ class HyperSpectralBaseView(DataBrowserView):
 
     def setup(self):
 
+
+        self.circ_roi_ji = (0,0)
         self.data_loaded = False
 
         self.plot_n_fit = PlotNFit(Ndata_lines=2)
         self.bg_selector = DataSelector(name="background", initials=[0, 10, 1])
         self.signal_selector = self.plot_n_fit.data_selector
 
-        self.data_manager = HyperSpecDataManager(self.signal_selector, self.bg_selector)
+        self.data_manager = HyperSpecDataManager(
+            self.signal_selector, self.bg_selector)
 
-        self.image_manager = ImageManager(self.data_manager)
+        self.image_manager = ImageManager(self.data_manager, self.plot_n_fit)
 
         self.correlator = Correlator(self.image_manager)
         self.exporter = MapExporter(self.image_manager)
@@ -77,7 +80,7 @@ class HyperSpectralBaseView(DataBrowserView):
         self.rect_roi = pg.RectROI([20, 20], [20, 20], pen="w")
         self.rect_roi.addTranslateHandle((0.5, 0.5))
         self.imview.getView().addItem(self.rect_roi)
-        self.rect_roi.sigRegionChanged[object].connect(self.on_change_rect_roi)
+        self.rect_roi.sigRegionChanged.connect(self.on_change_rect_roi)
 
         # Point ROI
         self.circ_roi = pg.CircleROI((0, 0), (2, 2), movable=True, pen="r")
@@ -89,7 +92,7 @@ class HyperSpectralBaseView(DataBrowserView):
         self.circ_roi.removeHandle(0)
         self.circ_roi_plotline = pg.PlotCurveItem([0], pen="r")
         self.imview.getView().addItem(self.circ_roi_plotline)
-        self.circ_roi.sigRegionChanged[object].connect(self.on_update_circ_roi)
+        self.circ_roi.sigRegionChanged.connect(self.on_update_circ_roi)
 
         # Spec plot
         self.spec_plot = self.plot_n_fit.ui.plot
@@ -128,7 +131,8 @@ class HyperSpectralBaseView(DataBrowserView):
         self.save_state_pushButton.clicked.connect(self.save_state)
 
         # finalize settings widgets
-        self.scan_specific_setup()  # there could more settings_widgets generated here (part 2/2)
+        # there could more settings_widgets generated here (part 2/2)
+        self.scan_specific_setup()
 
         hide_settings = [
             "norm_data",
@@ -170,7 +174,6 @@ class HyperSpectralBaseView(DataBrowserView):
 
         self.correlator.add_listener(self.on_change_corr_settings)
 
-
         self.circ_roi_ji = (0, 0)
 
     def _new_data_loaded(self):
@@ -181,9 +184,11 @@ class HyperSpectralBaseView(DataBrowserView):
 
     # gui
     def new_settings_widget(self):
-        self.update_display_pushButton = QtWidgets.QPushButton(text="update display")
+        self.update_display_pushButton = QtWidgets.QPushButton(
+            text="update display")
         self.update_display_pushButton.clicked.connect(self.update_display)
-        self.default_view_pushButton = QtWidgets.QPushButton(text="default img view")
+        self.default_view_pushButton = QtWidgets.QPushButton(
+            text="default img view")
         self.default_view_pushButton.clicked.connect(self.default_image_view)
 
         widget = QtWidgets.QWidget()
@@ -198,19 +203,20 @@ class HyperSpectralBaseView(DataBrowserView):
     def get_spec_average(self, ji_slice: (slice, slice), select_spec: bool = True):
         """
         returns processed hyperspec_data averaged over a given spatial slice.
-        
+
         *ji_slice:      spatial slice
         *full_spec:     True: do not apply data selectors 
-                
+
         """
         x = self.data_manager.get_x(select_spec)
         y = self.data_manager.get_data(select_spec)[ji_slice].mean(axis=(0, 1))
         if self.settings["norm_data"]:
             y = norm(y)
-        return (x, y)
+        return x, y
 
     def scan_specific_setup(self):
-        # add settings and export_settings. Append widgets to self.settings_widgets and self.export_widgets
+        # add settings and export_settings. Append widgets to
+        # self.settings_widgets and self.export_widgets
         pass
 
     def is_file_supported(self, fname):
@@ -239,13 +245,13 @@ class HyperSpectralBaseView(DataBrowserView):
             self._new_data_loaded()
             self.databrowser.ui.statusbar.clearMessage()
             self.post_load()
-            #self.add_scalebar()
-            #self.on_change_display_image()
-            #self.on_change_corr_settings()
+            # self.add_scalebar()
+            # self.on_change_display_image()
+            # self.on_change_corr_settings()
             self.update_display()
-        #self.on_change_x_axis()
+        # self.on_change_x_axis()
 
-        #if self.settings["default_view_on_load"]:
+        # if self.settings["default_view_on_load"]:
         self.default_image_view()
 
     def add_scalebar(self):
@@ -259,15 +265,12 @@ class HyperSpectralBaseView(DataBrowserView):
                 pass
 
         num_px = self.image_manager.get_current_image().shape[1]  # horizontal dimension!
-        
-        
+
         if self.scalebar_type == None:
             # matplotlib export
             self.unit_per_px = 1
             self.exporter.settings["scale_bar_width"] = int(num_px / 4)
-            self.exporter.settings["scale_bar_text"] = "{} pixels".format(
-                int(num_px / 4)
-            )
+            self.exporter.settings["scale_bar_text"] = f"{int(num_px / 4)} pixels"
 
         if self.scalebar_type != None:
             kwargs = self.scalebar_kwargs
@@ -347,7 +350,6 @@ class HyperSpectralBaseView(DataBrowserView):
             "offset": offset,
         }
 
-    @QtCore.Slot()
     def update_display(self):
         self.update_display_image()
         self.on_change_rect_roi()
@@ -360,7 +362,7 @@ class HyperSpectralBaseView(DataBrowserView):
     def load_data(self, fname):
         """
         override to set hyperspec_data and x_arrays such as wavelengths
-        
+
         self.hyperspec_data = data 
             where data is of shape Ny, Nx, Nspec
         self.x_arrays = dict('wls'=np.ndarray(Nspec))     
@@ -381,9 +383,9 @@ class HyperSpectralBaseView(DataBrowserView):
         self.update_display()
         self.default_image_view()
 
-    @QtCore.Slot(object)
     def on_change_rect_roi(self, roi=None):
-        # pyqtgraph axes are (x,y), but hyperspec is in (y,x,spec) hence axes=(1,0)
+        # pyqtgraph axes are (x,y), but hyperspec is in (y,x,spec) hence
+        # axes=(1,0)
         roi_slice, roi_tr = self.rect_roi.getArraySlice(
             self.data_manager._data, self.imview.getImageItem(), axes=(1, 0)
         )
@@ -392,7 +394,6 @@ class HyperSpectralBaseView(DataBrowserView):
         self.plot_n_fit.set_data(x, y, 0, True)
         self.on_change_corr_settings()
 
-    @QtCore.Slot(object)
     def on_update_circ_roi(self, roi=None):
         if roi is None:
             roi = self.circ_roi
@@ -409,13 +410,20 @@ class HyperSpectralBaseView(DataBrowserView):
 
         self.circ_roi_plotline.setData([xc, i + 0.5], [yc, j + 0.5])
 
-        self.circ_roi_ji = (j, i)
-        self.circ_roi_slice = np.s_[j : j + 1, i : i + 1]
 
-        x, y = self.get_spec_average(self.circ_roi_slice, True)
-        self.plot_n_fit.set_data(x, y, 1, False)
-        self.plot_n_fit.update()
-        self.on_change_corr_settings()
+        if (j, i) != self.circ_roi_ji:
+            self.circ_roi_ji = (j, i)
+
+
+            x, y = self.get_spec_average(np.s_[j: j + 1, i: i + 1], True)
+            
+            print('on_update_circ_roi', x.shape, y.shape)
+            self.plot_n_fit.set_data(x, y, 1, False)
+            self.plot_n_fit.update()
+            self.on_change_corr_settings()
+            print('updated', self.circ_roi_ji)
+           
+
 
     def default_image_view(self):
         "sets rect_roi congruent to imageItem and optimizes size of imageItem to fit the ViewBox"
@@ -487,23 +495,27 @@ class HyperSpectralBaseView(DataBrowserView):
             for k, v in self.spec_x_arrays.items():
                 h5_group_spec_x_array.create_dataset(k, data=v)
             h5_group_settings_group = h5_file.create_group("settings")
-            h5_io.h5_save_lqcoll_to_attrs(self.settings, h5_group_settings_group)
+            h5_io.h5_save_lqcoll_to_attrs(
+                self.settings, h5_group_settings_group)
             h5_group_settings_group = h5_file.create_group("x_slicer_settings")
             h5_io.h5_save_lqcoll_to_attrs(
                 self.signal_selector.settings, h5_group_settings_group
             )
-            h5_group_settings_group = h5_file.create_group("bg_slicer_settings")
+            h5_group_settings_group = h5_file.create_group(
+                "bg_slicer_settings")
             h5_io.h5_save_lqcoll_to_attrs(
                 self.bg_selector.settings, h5_group_settings_group
             )
             h5_group_settings_group = h5_file.create_group("export_settings")
-            h5_io.h5_save_lqcoll_to_attrs(self.export_settings, h5_group_settings_group)
+            h5_io.h5_save_lqcoll_to_attrs(
+                self.export_settings, h5_group_settings_group)
             self.view_specific_save_state_func(h5_file)
             h5_file.close()
 
     def load_state(self, fname_idx=-1):
 
-        # does not work properly, maybe because the order the settings are set matters?
+        # does not work properly, maybe because the order the settings are set
+        # matters?
         path = sibling_path(self.databrowser.settings["data_filename"], "")
         pre_state_fname = (
             self.databrowser.settings["data_filename"].strip(path).strip(".h5")

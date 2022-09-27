@@ -1,4 +1,3 @@
-from __future__ import division, print_function
 from ScopeFoundry import BaseMicroscopeApp
 from ScopeFoundry.helper_funcs import sibling_path, load_qt_ui_file
 import logging
@@ -28,6 +27,9 @@ class Microscope(BaseMicroscopeApp):
         from confocal_measure.generic_sweep import GenericSweeper
         self.add_measurement(GenericSweeper(self))
                              
+                             
+        from confocal_measure.ranged_optimization import RangedOptimization
+        self.add_measurement(RangedOptimization(self))
                     
     def setup_ui(self):
         '''sets up a quickbar'''

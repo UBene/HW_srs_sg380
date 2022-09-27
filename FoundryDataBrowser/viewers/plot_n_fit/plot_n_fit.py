@@ -6,9 +6,9 @@ Created on Aug 3, 2019
 
 import numpy as np
 from ScopeFoundry.logged_quantity import LQCollection
+from ScopeFoundry.widgets import DataSelector
 from FoundryDataBrowser.viewers.plot_n_fit.pgwidget import PlotNFitPGDockArea
 from .fitters.base_fitter import BaseFitter
-from ScopeFoundry.widgets import DataSelector
 
 
 class PlotNFit:
@@ -58,18 +58,13 @@ class PlotNFit:
         for lq in self.settings.as_list():
             lq.add_listener(self.on_change_fit_options)
 
-
-        self.plot_masker = DataSelector(
-            self.ui.data_lines[0], name="plot_masker"
-            )
+        self.plot_masker = DataSelector(self.ui.data_lines[0], name="plot_masker")
         self.ui.add_to_settings_layout(self.plot_masker.New_UI())
-        
 
-        self.data_selector = DataSelector(
-            self.ui.data_lines[0], name="selector")
+        self.data_selector = DataSelector(self.ui.data_lines[0], name="selector")
         self.data_selector.add_listener(self.update)
         self.ui.add_to_settings_layout(self.data_selector.New_UI())
-                
+
         self.active_line = 0
         self.on_change_fit_options()
         self.ready = True
@@ -96,7 +91,7 @@ class PlotNFit:
         if is_data_to_fit:
             self.update_fit()
         self.plot_masker.on_change_start_stop()
-        
+
     def set_data_to_fit(self, x, y):
         self.data_to_fit_x = x
         self.data_to_fit_y = y
@@ -111,20 +106,19 @@ class PlotNFit:
         self.ui.fit_line.setVisible(enabled)
         self.ui.update_select_line(self.data_to_fit_x, self.data_to_fit_y)
 
-        if enabled:
-            active_fitter = self.fitters[choice]
-            try:
-                self.fit = active_fitter.fit_xy(
-                    self.data_to_fit_x, self.data_to_fit_y)
-                self.ui.update_fit_line(self.data_to_fit_x, self.fit)
-                self.result_message = active_fitter.result_message
-                self.ui.highlight_x_values(
-                    np.atleast_1d(active_fitter.highlight_x_vals))
-                self.data_selector.set_label(active_fitter.get_resuts_html())
-            except (ZeroDivisionError,):
-                pass
-        else:
+        if not enabled:
             self.ui.clear()
+            return
+
+        active_fitter = self.fitters[choice]
+        try:
+            self.fit = active_fitter.fit_xy(self.data_to_fit_x, self.data_to_fit_y)
+            self.ui.update_fit_line(self.data_to_fit_x, self.fit)
+            self.result_message = active_fitter.result_message
+            self.ui.highlight_x_values(np.atleast_1d(active_fitter.highlight_x_vals))
+            self.data_selector.set_label(active_fitter.get_resuts_html())
+        except (ZeroDivisionError,):
+            pass
 
     def fit_hyperspec(self, x, _hyperspec, axis=-1):
         choice = self.fit_options.val
@@ -169,12 +163,11 @@ class PlotNFit:
         self.ui.set_clipboard_text(text)
 
     def get_configs(self):
-        configs = {name: lq.value for name,
-                  lq in self.settings.as_dict().items()}
+        configs = {name: lq.value for name, lq in self.settings.as_dict().items()}
         for k, v in self.fitters.items():
             configs[k] = v.get_configs()
-        configs['data_selector'] = self.data_selector.get_configs()
-        configs['plot_masker'] = self.plot_masker.get_configs()
+        configs["data_selector"] = self.data_selector.get_configs()
+        configs["plot_masker"] = self.plot_masker.get_configs()
         return configs
 
     def set_configs(self, configs):
@@ -182,5 +175,6 @@ class PlotNFit:
             lq.update_value(configs.get(name, lq.value))
         for k, v in self.fitters.items():
             v.set_configs(configs[k])
-        self.data_selector.set_configs(configs['data_selector'])
-        self.plot_masker.set_configs(configs['plot_masker'])
+        self.data_selector.set_configs(configs["data_selector"])
+        self.plot_masker.set_configs(configs["plot_masker"])
+
