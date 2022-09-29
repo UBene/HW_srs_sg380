@@ -26,7 +26,7 @@ class PulseBlasterChannel:
         self.pulse_lengths = pulse_lengths
 
     def __str__(self):
-        return f"""Channel: {int(np.log2(self.flags))} 
+        return f"""Channel Nummer: {int(np.log2(self.flags))} 
 					flags: {self.flags:024b} 
 					#Pulses: {len(self.pulse_lengths)}"""
 
@@ -131,7 +131,7 @@ class PulseProgramGenerator:
 
     def get_pulse_plot_arrays(self) -> PlotLines:
         pb_insts = pulse_program_pb_insts(*self.get_pb_program_and_duration())
-        self.pulse_plot_arrays = make_plot_lines(pb_insts, self.hw.flags_lookup)
+        self.pulse_plot_arrays = make_plot_lines(pb_insts, self.hw.rev_channels_lookup)
         return self.pulse_plot_arrays
 
 
