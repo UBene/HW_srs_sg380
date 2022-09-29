@@ -8,7 +8,10 @@ from .pulse_blaster_hw import PulseBlasterHW
 from .pulse_program_ploting import PlotLines, make_plot_lines
 from .spinapi import Inst
 
-PBInstruction = tuple[int, int, int, float]
+from typing import List, Tuple, Union
+
+
+PBInstruction = Tuple[int, int, int, float]
 
 
 class PulseBlasterChannel:
@@ -16,7 +19,7 @@ class PulseBlasterChannel:
     __slots__ = ["flags", "start_times", "pulse_lengths"]
 
     def __init__(
-        self, flags: int, start_times: list[float], pulse_lengths: list[float]
+        self, flags: int, start_times: List[float], pulse_lengths: List[float]
     ):
         self.flags = flags
         self.start_times = start_times
@@ -83,7 +86,7 @@ class PulseProgramGenerator:
         """
         ...
 
-    def make_pulse_channels(self) -> list[PulseBlasterChannel]:
+    def make_pulse_channels(self) -> List[PulseBlasterChannel]:
         """Override this!!!
         should return a list of Channels
         Channels can be generated using self.new_channel
@@ -128,46 +131,16 @@ class PulseProgramGenerator:
 
     def get_pulse_plot_arrays(self) -> PlotLines:
         pb_insts = pulse_program_pb_insts(*self.get_pb_program_and_duration())
-        self.pulse_plot_arrays = make_plot_lines(pb_insts, self.hw.rev_flags_lookup)
+        self.pulse_plot_arrays = make_plot_lines(pb_insts, self.hw.flags_lookup)
         return self.pulse_plot_arrays
 
-        # pulse_plot_arrays = {}
-        # for c in channels:
-        #     if c.flags in lu:
-        #         channel_name = lu[c.flags]
-        #         den = 1
-        #     else:
-        #         channel_name = str(int(c.flags / ONE_PERIOD)) + ' period'
-        #         den = ONE_PERIOD
-        #     pulse_plot_arrays[channel_name] = [[0], [0]]
-        #     for start, dt in zip(c.start_times, c.pulse_lengths):
-        #         if start == 0:
-        #             pulse_plot_arrays[channel_name][0].pop(0)
-        #             pulse_plot_arrays[channel_name][1].pop(0)
-        #         else:
-        #             pulse_plot_arrays[channel_name][0] += [start]
-        #             pulse_plot_arrays[channel_name][1] += [0]
-
-        #         pulse_plot_arrays[channel_name][0] += [start, start + dt / den]
-        #         pulse_plot_arrays[channel_name][1] += [1, 1]
-
-        #         if start + dt / den != program_duration:
-        #             pulse_plot_arrays[channel_name][0] += [start + dt / den]
-        #             pulse_plot_arrays[channel_name][1] += [0]
-
-        # for v in pulse_plot_arrays.values():
-        #     v[0] += [program_duration]
-        #     v[1] += [v[1][-1]]
-
-        # self.pulse_plot_arrays = pulse_plot_arrays
-        # return pulse_plot_arrays
 
     def save_to_h5(self, h5_meas_group) -> None:
         for k, v in self.pulse_plot_arrays.items():
             h5_meas_group[k] = np.array(v)
 
     def _new_channel(
-        self, flags: int, start_times: list[float], pulse_lengths: list[float]
+        self, flags: int, start_times: List[float], pulse_lengths: List[float]
     ) -> PulseBlasterChannel:
         t_min = self.t_min
         return PulseBlasterChannel(
@@ -177,14 +150,14 @@ class PulseProgramGenerator:
         )
 
     def new_channel(
-        self, channel: str, start_times: list[float], pulse_lengths: list[float]
+        self, channel: str, start_times: List[float], pulse_lengths: List[float]
     ) -> PulseBlasterChannel:
         """all times and lengths in ns"""
         flags = self.hw.get_flags(channel)
         return self._new_channel(flags, start_times, pulse_lengths)
 
     def new_one_period_channel(
-        self, multiple: int, start_times: list[float], lengths: list[float]
+        self, multiple: int, start_times: List[float], lengths: List[float]
     ) -> PulseBlasterChannel:
         return self._new_channel(int(multiple) * ONE_PERIOD, start_times, lengths)
 
@@ -194,8 +167,8 @@ class PulseProgramGenerator:
         return 1e3 / self.hw.settings["clock_frequency"]
 
     def program_pulse_blaster_and_start(
-        self, pulse_blaster_hw: PulseBlasterHW | None = None
-    ) -> list[PBInstruction]:
+        self, pulse_blaster_hw: Union[PulseBlasterHW, None] = None
+    ) -> List[PBInstruction]:
         if not pulse_blaster_hw:
             pulse_blaster_hw = self.hw
         pb_insts = continuous_pulse_program_pb_insts(
@@ -210,7 +183,7 @@ class PulseProgramGenerator:
     def sync_out_period_ns(self):
         return abs(1 / self.settings["sync_out"] * 1e3)
 
-    def get_pb_program_and_duration(self) -> tuple[list[PulseBlasterChannel], float]:
+    def get_pb_program_and_duration(self) -> Tuple[List[PulseBlasterChannel], float]:
         pb_channels = self.make_pulse_channels()
         max_t = 0
         for c in pb_channels:
@@ -241,8 +214,8 @@ class PulseProgramGenerator:
 
 
 def pulse_blaster_flags_length_lists(
-    channels: list[PulseBlasterChannel], program_duration: float
-) -> tuple[list[int], list[float]]:
+    channels: List[PulseBlasterChannel], program_duration: float
+) -> Tuple[List[int], List[float]]:
     """
     Convenience function used to generate a Pulse Blaster PULSE_PROGRAM
 
@@ -298,8 +271,8 @@ def pulse_blaster_flags_length_lists(
 
 
 def pulse_program_pb_insts(
-    channels: list[PulseBlasterChannel], program_duration: float
-) -> list[PBInstruction]:
+    channels: List[PulseBlasterChannel], program_duration: float
+) -> List[PBInstruction]:
     flags_list, lengths = pulse_blaster_flags_length_lists(channels, program_duration)
     pb_insts = []
     for flags, duration in zip(flags_list, lengths):
@@ -307,17 +280,17 @@ def pulse_program_pb_insts(
     return pb_insts
 
 
-def make_continueous(pb_insts: list[PBInstruction], offset=0) -> list[PBInstruction]:
+def make_continueous(pb_insts: List[PBInstruction], offset=0) -> List[PBInstruction]:
     # change the last instruction to 'branch' back
     # to the instruction 'offset'. (pb_insts are zero-indexed)
-    pb_insts[-1][1] = Inst.BRANCH
-    pb_insts[-1][2] = int(offset)
+    n = pb_insts.pop(-1)
+    pb_insts.append((n[0], Inst.BRANCH, int(offset), n[3]))
     return pb_insts
 
 
 def continuous_pulse_program_pb_insts(
-    channels: list[PulseBlasterChannel], program_duration: float
-) -> list[PBInstruction]:
+    channels: List[PulseBlasterChannel], program_duration: float
+) -> List[PBInstruction]:
     return make_continueous(pulse_program_pb_insts(channels, program_duration))
 
 
@@ -327,7 +300,7 @@ def print_flags_lengths(flags_list, lengths) -> None:
         print(f"{flags:024b}", length)
 
 
-def print_pb_insts(pb_insts: list[PBInstruction]) -> None:
+def print_pb_insts(pb_insts: List[PBInstruction]) -> None:
     print("{:<7} {:<24} inst ns".format("", "flags"))
     for flags, inst, inst_data, length in pb_insts:
         print(f"{flags:>7} {flags:024b} {inst}, {inst_data} {length:0.1f}")
