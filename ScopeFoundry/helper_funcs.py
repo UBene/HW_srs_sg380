@@ -233,7 +233,7 @@ def print_signals_and_slots(obj):
         elif m.methodType() == QtCore.QMetaMethod.MethodType.Slot:
             print("SLOT: sig=", m.signature())
             
-def get_logger_from_class(obj):
+def get_logger_from_class(obj)->logging.Logger:
     """ returns a named Logger from the logging package using the
     full name of the class of the object (obj) as the log name
     """ 

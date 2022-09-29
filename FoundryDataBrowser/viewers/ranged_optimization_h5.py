@@ -82,12 +82,12 @@ class RangedOptimizationH5View(DataBrowserView):
 
             self.plot.setTitle(self.measure_type)
             self.line_coarse.setData(M['f_coarse'][:], M['z_coarse'][:])
-            self.line_z0_fine.setPos(M['z0_coarse'].value)
-            self.line_z_original.setPos(M['z_original'].value)
+            self.line_z0_fine.setPos(M['z0_coarse'][()])
+            self.line_z_original.setPos(M['z_original'][()])
 
             has_fine = bool(M['settings'].attrs['use_fine_optimization'])
             self.line_z0_fine.setVisible(has_fine)
             self.line_fine.setVisible(has_fine)
             if has_fine:
                 self.line_fine.setData(M['f_fine'][:], M['z_fine'][:])
-                self.line_z0_fine.setPos(M['z0_fine'].value)
+                self.line_z0_fine.setPos(M['z0_fine'][()])
