@@ -174,6 +174,25 @@ class Microscope(BaseMicroscopeApp):
         from odmr_measurements.correlation_spectroscopy import CorrelationSpectroscopy
         self.add_measurement(CorrelationSpectroscopy(self))
 
+        from odmr_measurements.test_sig_ref_readout import SigRefReadout
+        self.add_measurement(SigRefReadout(self))
+
+        from confocal_measure.power_scan import PowerScanMeasure
+        self.add_measurement(PowerScanMeasure(self))
+
+        from ScopeFoundryHW.dynamixel_servo.dynamixel_x_servo_hw import DynamixelXServosHW
+        from ScopeFoundryHW.dynamixel_servo.dynamixel_single_hw import DynamixelServoHW
+        self.add_hardware(DynamixelXServosHW(self, devices=dict(focus_knob=50,
+                                                                power_wheel=51)))
+        self.add_hardware(DynamixelServoHW(self, name='focus_knob',
+                                           lq_kwargs={'spinbox_decimals':3,
+                                                      'unit':'um'}))       
+        self.add_hardware(DynamixelServoHW(self, name='power_wheel'))   
+        
+        from odmr_measurements.iq_pulse_sweep import IQPulseSweep
+        self.add_measurement(IQPulseSweep)
+
+
     def setup_ui(self):
         pass
         '''sets up a quickbar'''
