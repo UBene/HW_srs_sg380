@@ -1,7 +1,7 @@
 """
 Created on Mar 21, 2022
 
-@author: bened
+@author: Benedikt Ursprung
 """
 from ScopeFoundry.hardware import HardwareComponent
 
@@ -134,19 +134,14 @@ class PulseBlasterHW(HardwareComponent):
         self.catch_error(pb_close())
 
     def get_flags(self, channel: str) -> int:
-        '''
-        flags is an integer representing the output state of the pulse blaster.
-
-        E.g: flags=5 represents that physical channels 0 and 2 are high and the others low 
-            as the binary representation of 5 is 000000000000000000000101
-
-        Note:
-        - To create the flags to turn on the channels 'A' and 'B' (and all other channels off) use:
-            flags_AB = self.get_flags('A') ^ self.get_flags('B')
-
-        - To turn channel 'B' low (w/o changing low)
-            flags_A = flags_AB ^ self.get_flags('B')
-        '''
+        # Note:
+        # - To create the flags to turn on the channels 'A' and 'B' (and all other channels off) use:
+        #     self.get_flags('A') ^ self.get_flags('B')
+        #
+        # - from an old_flags with channel 'A' on use 
+        #     old_flags ^ self.get_flags('A')
+        #     To turn channel 'A' off again.
+        # '''
         return 2 ** self.settings[channel]
 
 

@@ -1,10 +1,10 @@
 import matplotlib.pylab as plt
 import numpy as np
 from typing import List, Union
-from .typing import ChannelsLookUp, PlotLines, PBInstruction
+from .typing import ChannelsLookUp, PlotLines, PBInstructions
 
 def make_plot_lines(
-    pb_insts: List[PBInstruction],
+    pb_insts: PBInstructions,
     channel_look_up: Union[None, ChannelsLookUp] = None,
     low: int = 0,
     high: int = 1,

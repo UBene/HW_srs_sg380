@@ -1,19 +1,23 @@
 from typing import List, Tuple, Union
 
-
 import numpy as np
 import pyqtgraph as pg
 from pyqtgraph.dockarea.Dock import Dock
 from qtpy.QtWidgets import QPushButton
+
 from ScopeFoundry.measurement import Measurement
 
 from .pulse_blaster_hw import PulseBlasterHW
 from .pulse_program_ploting import PlotLines, make_plot_lines
 from .spinapi import Inst
-from .typing import PBInstructions
+from .typing import PBInstructions, Flags
 
 
 class PulseBlasterChannel:
+    """
+    flags: 	here, an int that represents the selected channel to be on (see also Flags in typing file)
+    length: the duration the channel is high after star_time
+    """
 
     __slots__ = ["flags", "start_times", "pulse_lengths"]
 
@@ -87,8 +91,8 @@ class PulseProgramGenerator:
 
     def make_pulse_channels(self) -> List[PulseBlasterChannel]:
         """Override this!!!
-        should return a list of Channels
-        Channels can be generated using self.new_channel
+        should return a list of PulseBlasterChannel
+        PulseBlasterChannel can be generated using self.new_channel
         """
         raise NotImplementedError(
             f"Overide make_pulse_channels() of {self.name} not Implemented"
@@ -128,14 +132,14 @@ class PulseProgramGenerator:
         self.update_pulse_plot()
         return dock
 
-    def get_pulse_plot_arrays(self) -> PlotLines:
-        pb_insts = pulse_program_pb_insts(*self.get_pb_program_and_duration())
-        self.pulse_plot_arrays = make_plot_lines(pb_insts, self.hw.channels_lookup)
-        return self.pulse_plot_arrays
+    def get_pb_insts(self) -> PBInstructions:
+        return continuous_pulse_program_pb_insts(*self.get_pb_program_and_duration())
 
+    def get_pulse_plot_arrays(self) -> PlotLines:
+        return make_plot_lines(self.get_pb_insts(), self.hw.channels_lookup)
 
     def save_to_h5(self, h5_meas_group) -> None:
-        for k, v in self.pulse_plot_arrays.items():
+        for k, v in self.get_pulse_plot_arrays().items():
             h5_meas_group[k] = np.array(v)
 
     def _new_channel(
@@ -170,9 +174,7 @@ class PulseProgramGenerator:
     ) -> PBInstructions:
         if not pulse_blaster_hw:
             pulse_blaster_hw = self.hw
-        pb_insts = continuous_pulse_program_pb_insts(
-            *self.get_pb_program_and_duration()
-        )
+        pb_insts = self.get_pb_insts()
         # print_pb_insts(pb_insts)
         pulse_blaster_hw.write_pulse_program_and_start(pb_insts)
         self.measurement.log.info("programmed pulse blaster and start")
@@ -212,76 +214,65 @@ class PulseProgramGenerator:
         return pb_channels, pulse_program_duration
 
 
-def pulse_blaster_flags_length_lists(
+def ordered_durations_and_flags(
     channels: List[PulseBlasterChannel], program_duration: float
-) -> Tuple[List[int], List[float]]:
-    """
-    Convenience function used to generate a Pulse Blaster PULSE_PROGRAM
-
-    returns ([flags], [length])
-            flags: 	flags is an int that contains a the desired output state of the PULSE BLASTER
-                            output. In its binary representation, the i-th least significant bit,
-                            tells the i-th channel to turn high or low.
-            length: the duration the state lasts
-    """
-
-    # To ensure the first duration is counted from t=0
-    # we add first elements.
-    _times = [0.0]
-    _flags_list = [0]
-
+) -> Tuple[np.ndarray, np.ndarray]:
+    # To ensure the first duration is counted from t=0 we add a zero.
+    # Also, 0^flags = flags, so we can add a zero to update_flags without effect
+    # and maintaining the correct shape.
+    update_times = [0.0]
+    unordered_update_flags = [0]
     for c in channels:
-        for start_time, length in zip(c.start_times, c.pulse_lengths):
-            _times.append(start_time)
-            _flags_list.append(c.flags)
-            _times.append(start_time + length)
-            _flags_list.append(c.flags)
-    _times.append(program_duration)
+        for start_time, duration in zip(c.start_times, c.pulse_lengths):
+            update_times.append(start_time)
+            unordered_update_flags.append(c.flags)
+            update_times.append(start_time + duration)
+            unordered_update_flags.append(c.flags)
+    update_times.append(program_duration)
 
-    # sort event w.r.t. times
-    _times = np.array(_times)
-    indices = np.argsort(_times)
-    _flags_list = np.array(_flags_list)[indices[:-1]]
+    # sort event w.r.t. times, ie. put them in chronological order
+    update_times = np.array(update_times)
+    indices = np.argsort(update_times)
+    ordered_update_flags = np.array(unordered_update_flags)[indices[:-1]]
 
-    # duration between events
-    _lengths = np.diff(_times[indices])
-    # note that some elements in _lengths are zero,
+    ordered_durations = np.diff(update_times[indices])
+    return ordered_durations, ordered_update_flags
+
+
+def create_pb_insts(
+    ordered_durations: np.ndarray, ordered_update_flags: np.ndarray
+) -> PBInstructions:
+    # note that some durations are zero and we do not register them, but rather
     # e.g. when we turn two channels high at same time
-
-    flags_list = []
-    lengths = []
-    # current_time = _times[0]
-    flags = _flags_list[0]  # initialize: (everything is low)
-    for length, update_flags in zip(_lengths, _flags_list):
-        if length == 0:
-            # we will not move in time and hence
-            # we just evaluate the change on the flags
-            flags = flags ^ update_flags
-        else:
-            # register states that last >0
-            flags_list.append(flags ^ update_flags)
-            flags = flags_list[-1]
-            lengths.append(length)
-
-        # current_time += length
-        # print(f'{flags:024b}', current_time)
-
-    return flags_list, lengths
+    pb_insts = []
+    new_flags = 0  # initialize: all channels are low.
+    for duration, update_flags in zip(ordered_durations, ordered_update_flags):
+        new_flags = new_flags ^ update_flags
+        if duration == 0:
+            # we will not move in time and hence we do not register a flags 
+            # in the final pb instr. 
+            continue
+        pb_insts.append((new_flags, Inst.CONTINUE, 0, duration))
+        
+    print_pb_insts(pb_insts)
+    return pb_insts
 
 
 def pulse_program_pb_insts(
     channels: List[PulseBlasterChannel], program_duration: float
 ) -> PBInstructions:
-    flags_list, lengths = pulse_blaster_flags_length_lists(channels, program_duration)
-    pb_insts = []
-    for flags, duration in zip(flags_list, lengths):
-        pb_insts.append(tuple([flags, Inst.CONTINUE, 0, duration]))
-    return pb_insts
+    """
+    Convenience function used to generate instructions for a Pulse Blaster PULSE_PROGRAM
+    from a list of PulseBasterChanne
+    """
+    return create_pb_insts(*ordered_durations_and_flags(channels, program_duration))
 
 
 def make_continueous(pb_insts: PBInstructions, offset=0) -> PBInstructions:
-    # change the last instruction to 'branch' back
-    # to the instruction 'offset'. (pb_insts are zero-indexed)
+    """
+    change the last instruction to 'branch' 
+    to the instruction with number 'offset'. (pb_insts are zero-indexed)
+    """
     n = pb_insts.pop(-1)
     pb_insts.append((n[0], Inst.BRANCH, int(offset), n[3]))
     return pb_insts
