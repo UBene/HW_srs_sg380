@@ -38,8 +38,7 @@ class PulseBlasterHW(HardwareComponent):
         if self.channel_settings is None:
             self.channel_settings = [{'name': f'channel_name_{i}', 'initial':i,
                                       'description': f'physical output channel {i}'} for i in range(24)]
-        self.channel_settings.append({'name': 'sync_out', 
-                                      'description': 'a synclock'})
+
         for channel in self.channel_settings:
             S.New(dtype=int, **channel)
 

@@ -43,7 +43,7 @@ class PulseProgramGenerator:
 
         self.non_pg_setting_names = [
             x.name for x in self.settings._logged_quantities.values()]
-        self.settings.New('program_duration', float, unit='us', initial=160.0)
+        #self.settings.New('program_duration', float, unit='us', initial=160.0)
         self.settings.New('sync_out', float, unit='MHz', initial=-10.0,
                           description='to deactivate set negative')
         self.setup_additional_settings()
@@ -188,7 +188,7 @@ class PulseProgramGenerator:
         max_t = 0
         for c in pb_channels:
             for start_time, length in zip(c.start_times, c.pulse_lengths):
-                max_t = max(max_t, start_time, start_time + length)
+                max_t = max(max_t, start_time + length)
 
         if self.settings['sync_out'] <= 0:
             self.pulse_program_duration = max_t
