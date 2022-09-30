@@ -1,14 +1,11 @@
 import matplotlib.pylab as plt
 import numpy as np
-from typing import Dict, List, Tuple, Union
-
-PlotLines = Dict[str, Tuple[List[float], List[int]]]  # {channel_name: (x,y)}
-ChannelLookUp = Dict[int, str]  # {channel_number: channel_name}
-
+from typing import List, Union
+from .typing import ChannelsLookUp, PlotLines, PBInstruction
 
 def make_plot_lines(
-    pb_insts: List[Tuple[int, int, int, float]],
-    channel_look_up: Union[None, ChannelLookUp] = None,
+    pb_insts: List[PBInstruction],
+    channel_look_up: Union[None, ChannelsLookUp] = None,
     low: int = 0,
     high: int = 1,
 ) -> PlotLines:

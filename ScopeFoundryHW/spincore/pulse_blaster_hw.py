@@ -5,7 +5,11 @@ Created on Mar 21, 2022
 """
 from ScopeFoundry.hardware import HardwareComponent
 
-# Note: this is not
+
+
+from .typing import ChannelsLookUp, PBInstructions
+
+# Note: this is not the spinapi as pip installed
 from .spinapi import (
     pb_core_clock,
     pb_set_debug,
@@ -49,7 +53,6 @@ class PulseBlasterHW(HardwareComponent):
         self.add_operation('configure', self.configure)
         self.add_operation('write close', self.write_close)
 
-        print(self.channel_settings)
 
         self.pens = {k.get('name', f'channel_name_{i}'): k.get('colors', ['w'])[
             0] for i, k in enumerate(self.channel_settings)}
@@ -102,7 +105,7 @@ class PulseBlasterHW(HardwareComponent):
         self.write_init()
         self.settings.clock_frequency.write_to_hardware()
 
-    def write_pulse_program_and_start(self, pb_insts):
+    def write_pulse_program_and_start(self, pb_insts:PBInstructions):
         self.configure()
         self.start_programming(PULSE_PROGRAM)
         if self.settings['debug_mode']:
@@ -146,18 +149,10 @@ class PulseBlasterHW(HardwareComponent):
         '''
         return 2 ** self.settings[channel]
 
-    @property
-    def flags_lookup(self):
-        return {2 ** self.settings[i]: i for i in self.channels_list}
+
+
 
     @property
-    def rev_flags_lookup(self):
-        return {2 ** self.settings[i]: i for i in self.channels_list}
+    def channels_lookup(self) -> ChannelsLookUp:
+        return {self.settings[i]:i  for i in self.channels_list}
 
-    @property
-    def channels_lookup(self):
-        return {i: self.settings[i] for i in self.channels_list}
-
-    @property
-    def rev_channels_lookup(self):
-        return {self.settings[i]: i for i in self.channels_list}

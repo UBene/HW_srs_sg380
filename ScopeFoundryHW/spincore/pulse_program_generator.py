@@ -1,3 +1,6 @@
+from typing import List, Tuple, Union
+
+
 import numpy as np
 import pyqtgraph as pg
 from pyqtgraph.dockarea.Dock import Dock
@@ -7,11 +10,7 @@ from ScopeFoundry.measurement import Measurement
 from .pulse_blaster_hw import PulseBlasterHW
 from .pulse_program_ploting import PlotLines, make_plot_lines
 from .spinapi import Inst
-
-from typing import List, Tuple, Union
-
-
-PBInstruction = Tuple[int, int, int, float]
+from .typing import PBInstructions
 
 
 class PulseBlasterChannel:
@@ -131,7 +130,7 @@ class PulseProgramGenerator:
 
     def get_pulse_plot_arrays(self) -> PlotLines:
         pb_insts = pulse_program_pb_insts(*self.get_pb_program_and_duration())
-        self.pulse_plot_arrays = make_plot_lines(pb_insts, self.hw.rev_channels_lookup)
+        self.pulse_plot_arrays = make_plot_lines(pb_insts, self.hw.channels_lookup)
         return self.pulse_plot_arrays
 
 
@@ -168,7 +167,7 @@ class PulseProgramGenerator:
 
     def program_pulse_blaster_and_start(
         self, pulse_blaster_hw: Union[PulseBlasterHW, None] = None
-    ) -> List[PBInstruction]:
+    ) -> PBInstructions:
         if not pulse_blaster_hw:
             pulse_blaster_hw = self.hw
         pb_insts = continuous_pulse_program_pb_insts(
@@ -272,7 +271,7 @@ def pulse_blaster_flags_length_lists(
 
 def pulse_program_pb_insts(
     channels: List[PulseBlasterChannel], program_duration: float
-) -> List[PBInstruction]:
+) -> PBInstructions:
     flags_list, lengths = pulse_blaster_flags_length_lists(channels, program_duration)
     pb_insts = []
     for flags, duration in zip(flags_list, lengths):
@@ -280,7 +279,7 @@ def pulse_program_pb_insts(
     return pb_insts
 
 
-def make_continueous(pb_insts: List[PBInstruction], offset=0) -> List[PBInstruction]:
+def make_continueous(pb_insts: PBInstructions, offset=0) -> PBInstructions:
     # change the last instruction to 'branch' back
     # to the instruction 'offset'. (pb_insts are zero-indexed)
     n = pb_insts.pop(-1)
@@ -290,7 +289,7 @@ def make_continueous(pb_insts: List[PBInstruction], offset=0) -> List[PBInstruct
 
 def continuous_pulse_program_pb_insts(
     channels: List[PulseBlasterChannel], program_duration: float
-) -> List[PBInstruction]:
+) -> PBInstructions:
     return make_continueous(pulse_program_pb_insts(channels, program_duration))
 
 
@@ -300,7 +299,7 @@ def print_flags_lengths(flags_list, lengths) -> None:
         print(f"{flags:024b}", length)
 
 
-def print_pb_insts(pb_insts: List[PBInstruction]) -> None:
+def print_pb_insts(pb_insts: PBInstructions) -> None:
     print("{:<7} {:<24} inst ns".format("", "flags"))
     for flags, inst, inst_data, length in pb_insts:
         print(f"{flags:>7} {flags:024b} {inst}, {inst_data} {length:0.1f}")
