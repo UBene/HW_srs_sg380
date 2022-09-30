@@ -9,7 +9,7 @@ from datetime import datetime
 import h5py
 from scipy.stats import spearmanr
 import numpy as np
-from qtpy import QtCore, QtWidgets
+from qtpy import QtWidgets
 import pyqtgraph as pg
 import pyqtgraph.dockarea as dockarea
 import traceback
@@ -417,11 +417,11 @@ class HyperSpectralBaseView(DataBrowserView):
 
             x, y = self.get_spec_average(np.s_[j: j + 1, i: i + 1], True)
             
-            print('on_update_circ_roi', x.shape, y.shape)
+            #print('on_update_circ_roi', x.shape, y.shape)
             self.plot_n_fit.set_data(x, y, 1, False)
             self.plot_n_fit.update()
             self.on_change_corr_settings()
-            print('updated', self.circ_roi_ji)
+            #print('updated', self.circ_roi_ji)
            
 
 
@@ -461,11 +461,12 @@ class HyperSpectralBaseView(DataBrowserView):
             xname = self.correlator.settings["X"]
             yname = self.correlator.settings["Y"]
             self.correlator.plot.setLabels(**{"bottom": xname, "left": yname})
-            sm = spearmanr(cor_x, cor_y)
-            text = "Pearson's corr: {:.3f}<br>Spearman's: corr={:.3f}, pvalue={:.3f}".format(
-                np.corrcoef(cor_x, cor_y)[0, 1], sm.correlation, sm.pvalue
-            )
-            self.correlator.plot.setTitle(text)
+            if cor_x.size == cor_y.size and cor_x.size > 1: 
+                sm = spearmanr(cor_x, cor_y)
+                text = "Pearson's corr: {:.3f}<br>Spearman's: corr={:.3f}, pvalue={:.3f}".format(
+                    np.corrcoef(cor_x, cor_y)[0, 1], sm.correlation, sm.pvalue
+                )
+                self.correlator.plot.setTitle(text)
 
         except Exception as err:
             print(

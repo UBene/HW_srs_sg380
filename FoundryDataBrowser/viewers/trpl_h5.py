@@ -88,9 +88,9 @@ class TRPLH5View(HyperSpectralBaseView):
             S.chan.change_min_max(0, 0)
             self.hyperspec_data = self.time_trace_map[S['frame'],:]
         
-        print(shape)
-        print(self.hyperspec_data.shape)
-        
+        # print(shape)
+        # print(self.hyperspec_data.shape)
+
         
         if S['roll_offset']:
             self.hyperspec_data = np.roll(self.hyperspec_data, S['roll_offset'], -1)

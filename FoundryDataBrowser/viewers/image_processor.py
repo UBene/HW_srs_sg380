@@ -30,6 +30,7 @@ class HyperSpecDataManager:
         self.settings.New("x_axis", str, choices=("pixels",), initial="pixels")
 
         dummy_data = 0.5 * np.random.random(512 * 21 * 21).reshape((21, 21, 512))
+        dummy_data += dummy_data.min()*1.1
         self.set_data(dummy_data)
 
     def add_x_axis_array(self, name: str, x: np.ndarray):

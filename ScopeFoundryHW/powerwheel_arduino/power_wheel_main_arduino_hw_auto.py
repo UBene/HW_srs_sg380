@@ -22,10 +22,10 @@ class PowerWheelMainArduinoHW(HardwareComponent): #object-->HardwareComponent
         self.debug = True
 
         # logged quantity        
-        self.encoder_pos = self.add_logged_quantity('encoder_pos', dtype=int, unit='steps', ro=True)
-        self.move_steps  = self.add_logged_quantity('move_steps',  dtype=int, unit='steps', vmin=1, vmax=3200, initial=10, ro=False)
-        self.ser_port = self.add_logged_quantity('ser_port', dtype=str, initial='COM4')
-        self.powermeter_type= self.add_logged_quantity("Si", dtype=str, ro=False, 
+        self.encoder_pos = self.settings.New('encoder_pos', dtype=int, unit='steps', ro=True)
+        self.move_steps  = self.settings.New('move_steps',  dtype=int, unit='steps', vmin=1, vmax=3200, initial=10, ro=False)
+        self.ser_port = self.settings.New('ser_port', dtype=str, initial='COM4')
+        self.powermeter_type= self.settings.New("Si", dtype=str, ro=False, 
                                             choices = [("Si","Si"), ("Ge","Ge")]
                                                     )
         #  operations
