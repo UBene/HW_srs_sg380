@@ -1,20 +1,17 @@
 import matplotlib.pylab as plt
 import numpy as np
-
-PlotLines = dict[str, tuple[list[float], list[int]]]  # {channel_name: (x,y)}
-ChannelLookUp = dict[int, str]  # {channel_number: channel_name}
-
+from typing import List, Union
+from .typing import ChannelsLookUp, PlotLines, PBInstructions
 
 def make_plot_lines(
-    pb_insts: list[tuple[int, int, int, float]],
-    channel_look_up: None | ChannelLookUp = None,
+    pb_insts: PBInstructions,
+    channel_look_up: Union[None, ChannelsLookUp] = None,
     low: int = 0,
     high: int = 1,
 ) -> PlotLines:
     if channel_look_up is None:
         # assuming there are 24 channels named output_i
         channel_look_up = {i: f"output_{i}" for i in range(24)}
-    print(channel_look_up.keys())
 
     # lines = {channel_name: (x-coordinates, y-coordinates)}
     # all lines start at (0,0)
@@ -73,8 +70,8 @@ def test():
         0b000000000000000000100101,  # 10
         0b000000000000000000101100,  # 11
     ]
-    lengths = list(np.ones(len(states)))
-    plot_lines = make_plot_lines(lengths, states)
+    bp_insts = [(s,0,0,i) for i,s in enumerate(states)]
+    plot_lines = make_plot_lines(bp_insts)
     matplotlib_plot(plot_lines)
 
 

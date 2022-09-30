@@ -12,11 +12,13 @@ class APP(BaseMicroscopeApp):
 
     def setup(self):
         channel_settings = [
-        dict(name='channel_1', initial=23, colors=[(255, 255, 255, 40)],
+        dict(name='channel_name_1', initial=1, colors=(255, 255, 255, 40),
                  description='a pysical output channel'),
+        dict(name='channel_name_2', initial=2, colors=(255, 255, 255, 40),
+                 description='another pysical output channel'),
         ]
         from ScopeFoundryHW.spincore.pulse_blaster_hw import PulseBlasterHW
-        self.add_hardware(PulseBlasterHW(self))
+        self.add_hardware(PulseBlasterHW(self, channel_settings=channel_settings))
         from ScopeFoundryHW.spincore.pulse_program_measure import PulseProgramMeasure
         self.add_measurement(PulseProgramMeasure(self))
 
