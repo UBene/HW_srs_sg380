@@ -1,11 +1,15 @@
 """
 Created on Mar 21, 2022
 
-@author: bened
+@author: Benedikt Ursprung
 """
 from ScopeFoundry.hardware import HardwareComponent
 
-# Note: this is not
+
+
+from .typing import ChannelsLookUp, PBInstructions
+
+# Note: this is not the spinapi as pip installed
 from .spinapi import (
     pb_core_clock,
     pb_set_debug,
@@ -48,7 +52,6 @@ class PulseBlasterHW(HardwareComponent):
         self.add_operation('configure', self.configure)
         self.add_operation('write close', self.write_close)
 
-        print(self.channel_settings)
 
         self.pens = {k.get('name', f'channel_name_{i}'): k.get('colors', ['w'])[
             0] for i, k in enumerate(self.channel_settings)}
@@ -101,7 +104,7 @@ class PulseBlasterHW(HardwareComponent):
         self.write_init()
         self.settings.clock_frequency.write_to_hardware()
 
-    def write_pulse_program_and_start(self, pb_insts):
+    def write_pulse_program_and_start(self, pb_insts:PBInstructions):
         self.configure()
         self.start_programming(PULSE_PROGRAM)
         if self.settings['debug_mode']:
@@ -130,33 +133,20 @@ class PulseBlasterHW(HardwareComponent):
         self.catch_error(pb_close())
 
     def get_flags(self, channel: str) -> int:
-        '''
-        flags is an integer representing the output state of the pulse blaster.
-
-        E.g: flags=5 represents that physical channels 0 and 2 are high and the others low 
-            as the binary representation of 5 is 000000000000000000000101
-
-        Note:
-        - To create the flags to turn on the channels 'A' and 'B' (and all other channels off) use:
-            flags_AB = self.get_flags('A') ^ self.get_flags('B')
-
-        - To turn channel 'B' low (w/o changing low)
-            flags_A = flags_AB ^ self.get_flags('B')
-        '''
+        # Note:
+        # - To create the flags to turn on the channels 'A' and 'B' (and all other channels off) use:
+        #     self.get_flags('A') ^ self.get_flags('B')
+        #
+        # - from an old_flags with channel 'A' on use 
+        #     old_flags ^ self.get_flags('A')
+        #     To turn channel 'A' off again.
+        # '''
         return 2 ** self.settings[channel]
 
-    @property
-    def flags_lookup(self):
-        return {2 ** self.settings[i]: i for i in self.channels_list}
+
+
 
     @property
-    def rev_flags_lookup(self):
-        return {2 ** self.settings[i]: i for i in self.channels_list}
+    def channels_lookup(self) -> ChannelsLookUp:
+        return {self.settings[i]:i  for i in self.channels_list}
 
-    @property
-    def channels_lookup(self):
-        return {i: self.settings[i] for i in self.channels_list}
-
-    @property
-    def rev_channels_lookup(self):
-        return {self.settings[i]: i for i in self.channels_list}

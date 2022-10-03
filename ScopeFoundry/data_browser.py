@@ -124,7 +124,6 @@ class DataBrowser(BaseApp):
     def on_change_data_filename(self):
         fname = self.settings["data_filename"]
         if fname == "0":
-            print("initial file 0")
             return
         else:
             print("file", fname)
