@@ -31,13 +31,12 @@ class SinglePulse(HardwareComponent):
         S.New('pulse_width', float, unit='s', si=True, initial=100e-3,
               description='sets width of the pulse')
         
-        S.New('rate', initial=80e6, unit='Hz', si=True)
+        S.New('rate', initial=80e6, unit='Hz', si=True, ro=True)
         S.New('voltage', initial=4.9, vmax=5, vmin=-5, unit='V')
 
 
-        self.add_operation('write_voltages', self.write_voltage_program)
-        self.add_operation('start', self.start_task)
-        
+        self.add_operation('send_pulse', self.send_pulse)
+       
 
     def connect(self):
         pass
@@ -45,18 +44,17 @@ class SinglePulse(HardwareComponent):
     def disconnect(self):
         pass
 
-    def write_voltage_program(self):
+
+
+
+    def send_pulse(self):
         S = self.settings
 
         
         
         rate = 1/S['pulse_width']
         voltages = [S['voltage'], 0]
-        # rate = S['rate']
-        # width = S['pulse_width']
-        # voltage = S['voltage']
-        # N = int(width/rate)        
-
+        S['rate'] = rate
 
         self.task = task = nidaqmx.Task()                
         task.ao_channels.add_ao_voltage_chan(S[f'channel_0'],
@@ -69,18 +67,10 @@ class SinglePulse(HardwareComponent):
                                         sample_mode=AcquisitionType.FINITE,
                                         samps_per_chan=len(voltages))
         task.write(voltages, auto_start=False, timeout=10.0)
+        task.start()
+        task.wait_until_done(timeout=10.0)
+        task.close()        
         
         if self.debug_mode.val:
             print(self.name, 'wrote', voltages, 'with rate',  rate)
         
-    def start_task(self):
-        if not hasattr(self, 'task'):
-            print(self.name, 'write voltage program first')
-            return
-            
-        if self.debug_mode.val:
-            print(self.name, 'start task')
-        task = self.task
-        task.start()
-        task.wait_until_done(timeout=10.0)
-        task.close()
