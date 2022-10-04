@@ -53,7 +53,6 @@ class PulseProgramGenerator:
         self.non_pg_setting_names = [
             x.name for x in self.settings._logged_quantities.values()
         ]
-        self.settings.New("program_duration", float, unit="us", initial=160.0)
         self.settings.New(
             "sync_out",
             float,
@@ -133,14 +132,19 @@ class PulseProgramGenerator:
         return dock
 
     def get_pb_insts(self) -> PBInstructions:
-        return continuous_pulse_program_pb_insts(*self.get_pb_program_and_duration())
+        pb_insts = continuous_pulse_program_pb_insts(*self.get_pb_program_and_duration())
+        #print(self.t_min)
+        #check_minimum_inst_length(pb_insts, minimum_inst_length=10)
+        return pb_insts
 
     def get_pulse_plot_arrays(self) -> PlotLines:
         return make_plot_lines(self.get_pb_insts(), self.hw.channels_lookup)
 
     def save_to_h5(self, h5_meas_group) -> None:
+        sub_group = h5_meas_group.create_group('pulse_plot_lines')
         for k, v in self.get_pulse_plot_arrays().items():
-            h5_meas_group[k] = np.array(v)
+            print(k,v)
+            sub_group[k] = np.array(v)
 
     def _new_channel(
         self, flags: int, start_times: List[float], pulse_lengths: List[float]
@@ -175,7 +179,7 @@ class PulseProgramGenerator:
         if not pulse_blaster_hw:
             pulse_blaster_hw = self.hw
         pb_insts = self.get_pb_insts()
-        # print_pb_insts(pb_insts)
+        print_pb_insts(pb_insts)
         pulse_blaster_hw.write_pulse_program_and_start(pb_insts)
         self.measurement.log.info("programmed pulse blaster and start")
         return pb_insts
@@ -254,7 +258,7 @@ def create_pb_insts(
             continue
         pb_insts.append((new_flags, Inst.CONTINUE, 0, duration))
         
-    print_pb_insts(pb_insts)
+    #print_pb_insts(pb_insts)
     return pb_insts
 
 
@@ -273,8 +277,10 @@ def make_continueous(pb_insts: PBInstructions, offset=0) -> PBInstructions:
     change the last instruction to 'branch' 
     to the instruction with number 'offset'. (pb_insts are zero-indexed)
     """
+    print(pb_insts)
     n = pb_insts.pop(-1)
     pb_insts.append((n[0], Inst.BRANCH, int(offset), n[3]))
+    print(pb_insts)
     return pb_insts
 
 
@@ -285,10 +291,19 @@ def continuous_pulse_program_pb_insts(
 
 
 def print_flags_lengths(flags_list, lengths) -> None:
+    
     print("{:<24} ns".format("flags"))
     for flags, length in zip(flags_list, lengths):
         print(f"{flags:024b}", length)
 
+
+def check_minimum_inst_length(pb_insts: PBInstructions, minimum_inst_length=10):
+    insts = np.array(pb_insts)
+    print(insts.shape, insts[:,-1].min())   
+    # for ii, (flags, inst, inst_data, length) in enumerate(pb_insts):
+    #     if length <= 40:
+    #         print(f'inst {ii} is too short')
+        #print(f"{flags:>7} {flags:024b} {inst}, {inst_data} {length:0.1f}")    
 
 def print_pb_insts(pb_insts: PBInstructions) -> None:
     print("{:<7} {:<24} inst ns".format("", "flags"))
