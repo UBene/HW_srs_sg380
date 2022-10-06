@@ -4,25 +4,27 @@ Created on Apr 4, 2022
 @author: Benedikt Ursprung
 '''
 
-import numpy as np
 from typing import List
+
+import numpy as np
 from pyqtgraph.dockarea.DockArea import DockArea
 
 from ScopeFoundry import Measurement, h5_io
-from ScopeFoundryHW.spincore import PulseProgramGenerator, PulseBlasterChannel, us, ns
+from ScopeFoundryHW.spincore import (PulseBlasterChannel,
+                                     PulseProgramGenerator, ns, us)
 
 
-class TestPulseProgramGenerator(PulseProgramGenerator):
+class ExamplePulseProgramGenerator(PulseProgramGenerator):
 
     def setup_additional_settings(self) -> None:
-        self.settings.New('my_param_1', unit='us', initial=1.0)
-        self.settings.New('my_param_2', unit='ns', initial=500.0)
+        self.settings.New('some_time', unit='us', initial=1.0)
+        self.settings.New('some_duration', unit='ns', initial=500.0)
 
     def make_pulse_channels(self) -> List[PulseBlasterChannel]:
         S = self.settings
 
-        start_times = np.arange(2) * (S['my_param_1'] * us * 1.2)
-        lengths = np.ones(2) * S['my_param_2'] * ns
+        start_times = np.arange(2) * (S['some_time'] * us * 1.2)
+        lengths = np.ones(2) * S['some_duration'] * ns
 
         # assuming there is PB channel named 'channel_name_2'
         chan_2 = self.new_channel('channel_name_2', start_times, lengths)
@@ -30,12 +32,12 @@ class TestPulseProgramGenerator(PulseProgramGenerator):
         return [chan_2]
 
 
-class PulseProgramMeasure(Measurement):
+class ExampleProgramMeasure(Measurement):
 
     name = "pulse_program_measure"
 
     def setup(self):
-        self.pulse_generator = TestPulseProgramGenerator(self)
+        self.pulse_generator = ExamplePulseProgramGenerator(self)
 
     def setup_figure(self):
         self.ui = DockArea()

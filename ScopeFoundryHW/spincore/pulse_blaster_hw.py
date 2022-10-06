@@ -3,22 +3,15 @@ Created on Mar 21, 2022
 
 @author: Benedikt Ursprung
 """
+from typing import Dict, List, Union
+
 from ScopeFoundry.hardware import HardwareComponent
 
-
-
-from .typing import ChannelsLookUp, PBInstructions
-
-# Note: this is not the spinapi as pip installed
-from .spinapi import (
-    pb_core_clock,
-    pb_set_debug,
-    pb_init,
-    pb_get_error,
-    pb_close,
-    pb_inst_pbonly, pb_start_programming, PULSE_PROGRAM, pb_stop_programming,
-    pb_start, Inst, pb_get_version
-)
+from .utils.pb_typing import ChannelsLookUp, PBInstructions
+from .utils.spinapi import (PULSE_PROGRAM, Inst, pb_close, pb_core_clock,
+                            pb_get_error, pb_get_version, pb_init,
+                            pb_inst_pbonly, pb_set_debug, pb_start,
+                            pb_start_programming, pb_stop_programming)
 
 
 class PulseBlasterHW(HardwareComponent):
@@ -26,22 +19,32 @@ class PulseBlasterHW(HardwareComponent):
     name = "pulse_blaster"
 
     def __init__(self, app, debug=False, name=None,
-                 channel_settings: [{}]=None):
+                 channel_settings: Union[List[Dict], None] = None,
+                 clock_frequency_Hz: int = 500_000_000,
+                 short_pulse_bit_num: int = 21
+                 ):
+        '''
+        clock_frequency_Hz: see manual of your board 
+        short_pulse_bit_num: Typically is equal to the number of physical output channels, see manual of the board.
+                             Only required for shortpulses <= 5*clock_period_ns
+        '''
         self.channel_settings = channel_settings
+        self.clock_frequency = clock_frequency_Hz
+        self.clock_period_ns = int(1e9 / clock_frequency_Hz)
+        self.short_pulse_bit_num = short_pulse_bit_num
         HardwareComponent.__init__(self, app, debug, name)
 
     def setup(self):
         S = self.settings
         S.New("debug", int, initial=1, choices=(('ON', 1), ('OFF', 0)),
-              description='Enable debug log. When enabled, spinapi will generate a file called log.txt, which contains some debugging information')
-        S.New("clock_frequency", initial=500, unit="MHz",
-              description='inherit to specific board - see manual')
+              description='''Enable debug log. When enabled, spinapi will generate a file called log.txt, 
+                                which contains some debugging information''')
         S.New('last_error', str, ro=True)
         S.New('version', str, ro=True)
 
         if self.channel_settings is None:
-            self.channel_settings = [{'name': f'channel_name_{i}', 'initial':i,
-                                      'description': f'physical output channel {i}'} for i in range(24)]
+            self.channel_settings = [{'name': f'channel_name_{i}', 'initial': i,
+                                      'description': f'physical output channel {i}'} for i in range(self.short_pulse_bit_num)]
 
         for channel in self.channel_settings:
             S.New(dtype=int, **channel)
@@ -51,7 +54,6 @@ class PulseBlasterHW(HardwareComponent):
 
         self.add_operation('configure', self.configure)
         self.add_operation('write close', self.write_close)
-
 
         self.pens = {k.get('name', f'channel_name_{i}'): k.get('colors', ['w'])[
             0] for i, k in enumerate(self.channel_settings)}
@@ -68,19 +70,16 @@ class PulseBlasterHW(HardwareComponent):
 
     def connect(self):
         S = self.settings
-        S.clock_frequency.connect_to_hardware(write_func=self.write_core_clock)
         S.debug.connect_to_hardware(write_func=self.write_debug)
         S.version.connect_to_hardware(pb_get_version)
-
         S.debug.write_to_hardware()
         self.write_init()
-        S.clock_frequency.write_to_hardware()
 
     def disconnect(self):
         self.write_close()
 
-    def write_core_clock(self, freq):
-        pb_core_clock(freq)  # does not return a status integer
+    def write_core_clock(self, freq_in_MHz):
+        pb_core_clock(freq_in_MHz)  # does not return a status integer
 
     def write_debug(self, debug):
         pb_set_debug(debug)  # does not return a status integer
@@ -91,6 +90,7 @@ class PulseBlasterHW(HardwareComponent):
         If you have multiple boards installed in your system, pb_select_board() 
         may be called first to select which board to initialize.'''
         self.catch_error(pb_init())
+        self.write_core_clock(freq_in_MHz=self.clock_frequency/1e6)
 
     def write_pb_inst_pbonly(self, flags, inst, inst_data, length):
         self.catch_error(pb_inst_pbonly(int(flags),  # np.int32 can not be directly converted?
@@ -102,9 +102,13 @@ class PulseBlasterHW(HardwareComponent):
         self.write_close()
         self.settings.debug.write_to_hardware()
         self.write_init()
-        self.settings.clock_frequency.write_to_hardware()
 
-    def write_pulse_program_and_start(self, pb_insts:PBInstructions):
+    def write_pulse_program_and_start(self, pb_insts: PBInstructions):
+        self.write_pulse_program(pb_insts)
+        self.write_start()
+        self.write_close()
+
+    def write_pulse_program(self, pb_insts: PBInstructions):
         self.configure()
         self.start_programming(PULSE_PROGRAM)
         if self.settings['debug_mode']:
@@ -113,8 +117,6 @@ class PulseBlasterHW(HardwareComponent):
         for pb_inst in pb_insts:
             self.write_pb_inst_pbonly(*pb_inst)
         self.stop_programming()
-        self.write_start()
-        self.write_close()
 
     def start_programming(self, target):
         self.catch_error(pb_start_programming(target))
@@ -137,16 +139,12 @@ class PulseBlasterHW(HardwareComponent):
         # - To create the flags to turn on the channels 'A' and 'B' (and all other channels off) use:
         #     self.get_flags('A') ^ self.get_flags('B')
         #
-        # - from an old_flags with channel 'A' on use 
+        # - from an old_flags with channel 'A' on use
         #     old_flags ^ self.get_flags('A')
         #     To turn channel 'A' off again.
         # '''
         return 2 ** self.settings[channel]
 
-
-
-
     @property
     def channels_lookup(self) -> ChannelsLookUp:
-        return {self.settings[i]:i  for i in self.channels_list}
-
+        return {self.settings[i]: i for i in self.channels_list}
