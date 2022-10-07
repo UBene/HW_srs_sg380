@@ -4,7 +4,7 @@ Created on Mar 21, 2022
 @author: Benedikt Ursprung
 '''
 
-from typing import List, Tuple, Union
+from typing import List, Union
 
 import numpy as np
 import pyqtgraph as pg
@@ -12,12 +12,13 @@ from pyqtgraph.dockarea.Dock import Dock
 from qtpy.QtWidgets import QPushButton
 
 from ScopeFoundry.measurement import Measurement
+from ScopeFoundryHW.spincore.utils.pb_instructions import \
+    calc_pulse_program_duration
 
 from .pulse_blaster_hw import PulseBlasterHW
-from .utils.pb_instructions import continuous_pulse_program_pb_insts
+from .utils.pb_instructions import create_pb_insts
 from .utils.pb_typing import PBInstructions
 from .utils.plotting import PlotLines, make_plot_lines
-from .utils.printing import print_pb_insts
 from .utils.pulse_blaster_channel import (PulseBlasterChannel,
                                           new_pulse_blaster_channel)
 from .utils.short_pulse_feature import has_short_pulses, short_pulse_feature
@@ -129,12 +130,13 @@ class PulseProgramGenerator:
 
     def get_pb_insts(self) -> PBInstructions:
         '''also sets the pulse_prgram_duration'''
-        pb_channels, self.pulse_program_duration = self.get_pb_channels_and_program_duration()
-        pb_insts = continuous_pulse_program_pb_insts(pb_channels, self.pulse_program_duration)
+        pb_channels = self.get_pb_channels()
+        pb_insts = create_pb_insts(pb_channels, all_off_padding=100, continuous=True, branch_to=0)
         if has_short_pulses(pb_insts):
             pb_insts = short_pulse_feature(
                 pb_insts, self.hw.clock_period_ns, self.hw.short_pulse_bit_num)
-            print('WARNING, applied short_pulse_feature')
+            print('WARNING, applied short_pulse_feature. sync_out might be broken. FIXME!')
+        self.pulse_program_duration = calc_pulse_program_duration(pb_insts)
         return pb_insts
 
     def get_pulse_plot_arrays(self) -> PlotLines:
@@ -159,7 +161,6 @@ class PulseProgramGenerator:
         if not pulse_blaster_hw:
             pulse_blaster_hw = self.hw
         pb_insts = self.get_pb_insts()
-        #print_pb_insts(pb_insts)
         pulse_blaster_hw.write_pulse_program_and_start(pb_insts)
         self.measurement.log.info("programmed pulse blaster and start")
         return pb_insts
@@ -168,7 +169,7 @@ class PulseProgramGenerator:
     def sync_out_period_ns(self):
         return abs(1 / self.settings["sync_out"] * 1e3)
 
-    def get_pb_channels_and_program_duration(self) -> Tuple[List[PulseBlasterChannel], int]:
+    def get_pb_channels(self) -> List[PulseBlasterChannel]:
         pb_channels = self.make_pulse_channels()
         pulse_program_duration = 0
         for c in pb_channels:
@@ -176,7 +177,7 @@ class PulseProgramGenerator:
                 pulse_program_duration = max(pulse_program_duration, start_time + length)
 
         if self.settings["sync_out"] <= 0:
-            return pb_channels, pulse_program_duration
+            return pb_channels
 
         # adjust pulse_program_duration to be integer multiple of of 'sync_out' period
         p = self.sync_out_period_ns
@@ -192,4 +193,4 @@ class PulseProgramGenerator:
             "sync_out", np.arange(N) * p, np.ones(N) * 0.5 * p
         )  # 50% duty cycle
         pb_channels.extend([sync_out])
-        return pb_channels, adjusted_program_duration
+        return pb_channels

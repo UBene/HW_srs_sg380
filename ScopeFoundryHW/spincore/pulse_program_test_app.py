@@ -14,9 +14,9 @@ class TestApp(BaseMicroscopeApp):
 
     def setup(self):
         channel_settings = [
-            dict(name='channel_name_1', initial=1, colors=(255, 255, 255, 40),
+            dict(name='channel_name_1', initial=1, colors=(255, 255, 255, 200),
                  description='a pysical output channel'),
-            dict(name='channel_name_2', initial=2, colors=(255, 255, 255, 40),
+            dict(name='channel_name_2', initial=2, colors=(255, 0, 0, 200),
                  description='another pysical output channel'),
         ]
         from ScopeFoundryHW.spincore.pulse_blaster_hw import PulseBlasterHW

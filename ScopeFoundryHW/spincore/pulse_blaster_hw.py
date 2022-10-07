@@ -57,11 +57,12 @@ class PulseBlasterHW(HardwareComponent):
         self.add_operation('configure', self.configure)
         self.add_operation('write close', self.write_close)
 
-        self.pens = {k.get('name', f'channel_name_{i}'): k.get('colors', ['w'])[
-            0] for i, k in enumerate(self.channel_settings)}
+        self.pens = {k.get('name'): k.get(
+            'colors', ["w"]) for i, k in enumerate(self.channel_settings)}
 
     def catch_error(self, status):
         if status == -91:
+            self.settings['last_error'] = 'pulse_blaster not initialize: Connect pulse_blaster'
             print('pulse_blaster not initialize: Connect pulse_blaster')
         if status < 0:
             error = pb_get_error()

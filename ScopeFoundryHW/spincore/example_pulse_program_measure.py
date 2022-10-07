@@ -23,13 +23,13 @@ class ExamplePulseProgramGenerator(PulseProgramGenerator):
     def make_pulse_channels(self) -> List[PulseBlasterChannel]:
         S = self.settings
 
-        start_times = np.arange(2) * (S['some_time'] * us * 1.2)
-        lengths = np.ones(2) * S['some_duration'] * ns
+        start_times = np.arange(2) * (S['some_time'] * us)
+        lengths = [S['some_duration'] * ns] * 2
+        # assuming there are channels called 'channel_name_1' and 'channel_name_2'
+        chan_1 = self.new_channel('channel_name_1', start_times, lengths)
+        chan_2 = self.new_channel('channel_name_2', [1000, 2000, 3000],  [S['some_duration'] * ns] * 3)
 
-        # assuming there is PB channel named 'channel_name_2'
-        chan_2 = self.new_channel('channel_name_2', start_times, lengths)
-
-        return [chan_2]
+        return [chan_1, chan_2]
 
 
 class ExampleProgramMeasure(Measurement):
@@ -54,4 +54,4 @@ class ExampleProgramMeasure(Measurement):
 
     def run(self):
         self.pulse_generator.program_pulse_blaster_and_start()
-        print(self.name, 'programmed')
+        print(self.name, 'program_pulse_blaster_and_start')
