@@ -19,16 +19,13 @@ Flags = int
 # (2**12) ^ (2**15) -> a flags that represents channels 12 and 15 on.
 # (2**12) ^ (2**15) ^ (2**12) -> a flags that represents channels 15 on only.
 # Note that (2**15) is equal to (1<<15)
-
-Duration = int  # a multiple of PERIOD = 1/500 MHz
-Inst = int  # see enum in spincore.py
-InstArgument = int
-
-PBInstruction = Tuple[Flags, Inst, InstArgument, Duration]
+Inst = int  # see enum in .spincore.py
+InstData = int
+Length = int #the length of the instruction is at least 5*clock_period_ns, Use short_pulse_feature for shorter pulses
+PBInstruction = Tuple[Flags, Inst, InstData, Length]
 PBInstructions = List[PBInstruction]
 
 
 # PLOTTING
-# {channel_name: (x-coordinates,y-coordinates)}
-PlotLines = Dict[str, Tuple[List[float], List[int]]]
+PlotLines = Dict[str, Tuple[List[float], List[int]]] # {channel_name: (times, high/low values)}
 ChannelsLookUp = Dict[int, str]  # {channel_number: channel_name}

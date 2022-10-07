@@ -128,8 +128,9 @@ class PulseProgramGenerator:
         return dock
 
     def get_pb_insts(self) -> PBInstructions:
-        pb_insts = continuous_pulse_program_pb_insts(
-            *self.get_pb_program_and_duration())
+        '''also sets the pulse_prgram_duration'''
+        pb_channels, self.pulse_program_duration = self.get_pb_channels_and_program_duration()
+        pb_insts = continuous_pulse_program_pb_insts(pb_channels, self.pulse_program_duration)
         if has_short_pulses(pb_insts):
             pb_insts = short_pulse_feature(
                 pb_insts, self.hw.clock_period_ns, self.hw.short_pulse_bit_num)
@@ -158,8 +159,7 @@ class PulseProgramGenerator:
         if not pulse_blaster_hw:
             pulse_blaster_hw = self.hw
         pb_insts = self.get_pb_insts()
-        print_pb_insts(pb_insts)
-
+        #print_pb_insts(pb_insts)
         pulse_blaster_hw.write_pulse_program_and_start(pb_insts)
         self.measurement.log.info("programmed pulse blaster and start")
         return pb_insts
@@ -168,31 +168,28 @@ class PulseProgramGenerator:
     def sync_out_period_ns(self):
         return abs(1 / self.settings["sync_out"] * 1e3)
 
-    def get_pb_program_and_duration(self) -> Tuple[List[PulseBlasterChannel], int]:
+    def get_pb_channels_and_program_duration(self) -> Tuple[List[PulseBlasterChannel], int]:
         pb_channels = self.make_pulse_channels()
-        max_t = 0
+        pulse_program_duration = 0
         for c in pb_channels:
             for start_time, length in zip(c.start_times, c.pulse_lengths):
-                max_t = max(max_t, start_time + length)
+                pulse_program_duration = max(pulse_program_duration, start_time + length)
 
         if self.settings["sync_out"] <= 0:
-            self.pulse_program_duration = max_t
-            return pb_channels, max_t
+            return pb_channels, pulse_program_duration
 
-        # enforce program length to be integer multiple of of 'sync_out' period
-        period = self.sync_out_period_ns
-        N = int(abs(np.ceil(max_t / period)))
-        pulse_program_duration = N * period
+        # adjust pulse_program_duration to be integer multiple of of 'sync_out' period
+        p = self.sync_out_period_ns
+        N = int(abs(np.ceil(pulse_program_duration / p)))
+        adjusted_program_duration = N * p
         for c in pb_channels:
             for ii, (start_time, length) in enumerate(
                 zip(c.start_times, c.pulse_lengths)
             ):
-                if start_time + length == max_t:
-                    c.pulse_lengths[ii] = pulse_program_duration - start_time
+                if start_time + length == pulse_program_duration:
+                    c.pulse_lengths[ii] = adjusted_program_duration - start_time
         sync_out = self.new_channel(
-            "sync_out", np.arange(N) * period, np.ones(N) * 0.5 * period
+            "sync_out", np.arange(N) * p, np.ones(N) * 0.5 * p
         )  # 50% duty cycle
         pb_channels.extend([sync_out])
-
-        self.pulse_program_duration = pulse_program_duration
-        return pb_channels, pulse_program_duration
+        return pb_channels, adjusted_program_duration

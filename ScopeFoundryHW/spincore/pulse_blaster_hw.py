@@ -8,7 +8,7 @@ from typing import Dict, List, Union
 from ScopeFoundry.hardware import HardwareComponent
 
 from .utils.pb_typing import ChannelsLookUp, PBInstructions
-from .utils.spinapi import (PULSE_PROGRAM, Inst, pb_close, pb_core_clock,
+from .utils.spinapi import (PULSE_PROGRAM, pb_close, pb_core_clock,
                             pb_get_error, pb_get_version, pb_init,
                             pb_inst_pbonly, pb_set_debug, pb_start,
                             pb_start_programming, pb_stop_programming)
@@ -26,7 +26,9 @@ class PulseBlasterHW(HardwareComponent):
         '''
         clock_frequency_Hz: see manual of your board 
         short_pulse_bit_num: Typically is equal to the number of physical output channels, see manual of the board.
-                             Only required for shortpulses <= 5*clock_period_ns
+                             Only required for "short pulses".
+                             Short pulses are are pulses that are short than the max. instructions length,
+                             which is 5*clock_period_ns)
         '''
         self.channel_settings = channel_settings
         self.clock_frequency = clock_frequency_Hz

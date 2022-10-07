@@ -13,11 +13,11 @@ def has_short_pulses(pb_insts: PBInstructions, minimum_inst_length=10):
 
 def short_pulse_feature(pb_insts: PBInstructions, clock_period: int = 2, short_pulse_bit_num=21) -> PBInstructions:
     '''
-    the pulse blaster can only process an instruction every 5 clock_period, however can
-    output pulses with single period lengths.
-    Hence, if an instruction length is smaller than 5*clock_period, 
-    that instruction is replaced with a new instruction that:
-        - instruction length = 5*clock_period
+    Note that the pulse blaster can only process an instruction every 5 clock_period and hence
+        min_inst_length = 5*clock_period
+    However, the pb can output pulses with duration that are any multiple of the clock_period (subjected to caviats)
+    This function replaces instructions with a instruction that:
+        - has inst_length = 5*clock_period
         - flags contain the short pulse featture: 
             Channels with bit high are high for the orignal instruction length and low
             until 5*clock_period has passed.
@@ -40,16 +40,16 @@ def short_pulse_feature(pb_insts: PBInstructions, clock_period: int = 2, short_p
     Short Pulse.
     '''
 
-    min_insts_length = 5*clock_period
+    min_inst_length = 5*clock_period
     new_insts = []
     for flags, a, b, inst_length in pb_insts:
-        if inst_length <= min_insts_length:
+        if inst_length <= min_inst_length:
             # print_flags(flags)
             # generate a flag with desired property
             flags = int(
                 inst_length//clock_period) << short_pulse_bit_num | flags
             # print_flags(flags)
-            inst_length = min_insts_length
+            inst_length = min_inst_length
         new_insts.append((flags, a, b, inst_length))
     return new_insts
 

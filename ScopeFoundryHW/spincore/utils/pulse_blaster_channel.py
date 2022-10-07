@@ -5,14 +5,16 @@ import numpy as np
 
 class PulseBlasterChannel:
     """
-    flags: 	here, an int that represents the selected channel to be on (see also Flags in typing file)
-    length: the duration the channel is high after star_time
+    represents a pb channel
+    flags: here, an int that represents the channel in question to be on (see also Flags in typing file).
+    start_time: when channel is high.
+    pulse_length: the duration the channel is high after start_time.
     """
 
     __slots__ = ["flags", "start_times", "pulse_lengths"]
 
     def __init__(
-        self, flags: int, start_times: List[int], pulse_lengths: List[int]
+        self, flags: int, start_times: np.ndarray, pulse_lengths: np.ndarray
     ):
         self.flags = flags
         self.start_times = start_times
@@ -24,6 +26,10 @@ class PulseBlasterChannel:
 					#Pulses: {len(self.pulse_lengths)}"""
 
 
+def _round(x: List, res: int) -> np.ndarray:
+    return (res * np.round(np.array(x) / res)).astype(int)
+
+
 def new_pulse_blaster_channel(flags: int, start_times: List[float], pulse_lengths: List[float], clock_period: int = 2) -> PulseBlasterChannel:
     '''
     flags: 	here, an int that represents the selected channel to be on (see also Flags in typing file)
@@ -31,8 +37,4 @@ def new_pulse_blaster_channel(flags: int, start_times: List[float], pulse_length
     pulse_lengths: in ns 
     clock_period: period of the pulse blaster clock in ns
     '''
-    return PulseBlasterChannel(
-        flags,
-        [clock_period * round(x / clock_period) for x in start_times],
-        [clock_period * round(x / clock_period) for x in pulse_lengths],
-    )
+    return PulseBlasterChannel(flags, _round(start_times, clock_period), _round(pulse_lengths, clock_period))
