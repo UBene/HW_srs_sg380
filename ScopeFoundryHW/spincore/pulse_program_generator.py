@@ -1,8 +1,8 @@
-'''
+"""
 Created on Mar 21, 2022
 
 @author: Benedikt Ursprung
-'''
+"""
 
 from typing import List, Union
 
@@ -12,22 +12,18 @@ from pyqtgraph.dockarea.Dock import Dock
 from qtpy.QtWidgets import QPushButton
 
 from ScopeFoundry.measurement import Measurement
-from ScopeFoundryHW.spincore.utils.pb_instructions import \
-    calc_pulse_program_duration
 
 from .pulse_blaster_hw import PulseBlasterHW
-from .utils.pb_instructions import create_pb_insts
+from .utils.pb_instructions import create_pb_insts, calc_pulse_program_duration
 from .utils.pb_typing import PBInstructions
 from .utils.plotting import PlotLines, make_plot_lines
-from .utils.pulse_blaster_channel import (PulseBlasterChannel,
-                                          new_pulse_blaster_channel)
-from .utils.short_pulse_feature import has_short_pulses, short_pulse_feature
+from .utils.pulse_blaster_channel import PulseBlasterChannel, new_pulse_blaster_channel
 
 
 class PulseProgramGenerator:
-    '''
-    Interface between a scope foundry Measurement and Scope_foundry hardware 
-    '''
+    """
+    Interface between a scope foundry Measurement and Scope_foundry hardware
+    """
 
     name = "pulse_generator"
 
@@ -55,21 +51,29 @@ class PulseProgramGenerator:
         )
         self.setup_additional_settings()
         self.settings.New(
+            "all_off_padding",
+            int,
+            initial=0,
+            unit="ns",
+            description="trailing off time at the end of the pulse program",
+        )
+        self.settings.New(
             "enable_pulse_plot_update",
             bool,
             initial=True,
             description="disable for performance",
         )
-
+        # settings generated to by generator, non the less part of
+        # partent measurement.
         self.generator_settings = [
             x
             for x in self.settings._logged_quantities.values()
             if not x.name in self.measure_setting_names
         ]
-        
+
     @property
     def t_min(self):
-        print('t_min is deprecated: use clock_period_ns instead.')
+        print("t_min is deprecated: use clock_period_ns instead.")
         return self.clock_period_ns
 
     def setup_additional_settings(self) -> None:
@@ -129,13 +133,16 @@ class PulseProgramGenerator:
         return dock
 
     def get_pb_insts(self) -> PBInstructions:
-        '''also sets the pulse_prgram_duration'''
+        """also sets the pulse_prgram_duration"""
         pb_channels = self.get_pb_channels()
-        pb_insts = create_pb_insts(pb_channels, all_off_padding=100, continuous=True, branch_to=0)
-        if has_short_pulses(pb_insts):
-            pb_insts = short_pulse_feature(
-                pb_insts, self.hw.clock_period_ns, self.hw.short_pulse_bit_num)
-            print('WARNING, applied short_pulse_feature. sync_out might be broken. FIXME!')
+        pb_insts = create_pb_insts(
+            pb_channels,
+            all_off_padding=self.settings["all_off_padding"],
+            continuous=True,
+            branch_to=0,
+            clock_period_ns=self.hw.clock_period_ns,
+            short_pulse_bit_num=self.hw.short_pulse_bit_num,
+        )
         self.pulse_program_duration = calc_pulse_program_duration(pb_insts)
         return pb_insts
 
@@ -143,7 +150,7 @@ class PulseProgramGenerator:
         return make_plot_lines(self.get_pb_insts(), self.hw.channels_lookup)
 
     def save_to_h5(self, h5_meas_group) -> None:
-        sub_group = h5_meas_group.create_group('pulse_plot_lines')
+        sub_group = h5_meas_group.create_group("pulse_plot_lines")
         for k, v in self.get_pulse_plot_arrays().items():
             print(k, v)
             sub_group[k] = np.array(v)
@@ -153,7 +160,9 @@ class PulseProgramGenerator:
     ) -> PulseBlasterChannel:
         """all times and lengths in ns"""
         flags = self.hw.get_flags(channel)
-        return new_pulse_blaster_channel(flags, start_times, pulse_lengths, self.hw.clock_period_ns)
+        return new_pulse_blaster_channel(
+            flags, start_times, pulse_lengths, self.hw.clock_period_ns
+        )
 
     def program_pulse_blaster_and_start(
         self, pulse_blaster_hw: Union[PulseBlasterHW, None] = None
@@ -174,7 +183,9 @@ class PulseProgramGenerator:
         pulse_program_duration = 0
         for c in pb_channels:
             for start_time, length in zip(c.start_times, c.pulse_lengths):
-                pulse_program_duration = max(pulse_program_duration, start_time + length)
+                pulse_program_duration = max(
+                    pulse_program_duration, start_time + length
+                )
 
         if self.settings["sync_out"] <= 0:
             return pb_channels
