@@ -43,9 +43,7 @@ def create_pb_insts(
 def _create_insts_lengths(
     channels: List[PulseBlasterChannel], all_off_padding: int = 0
 ) -> Tuple[np.ndarray, np.ndarray]:
-    """
-    this function is subtle see docs/_create_insts_lengths_explained.pdf
-    """
+    # this function is subtle see docs/_create_insts_lengths_explained.pdf
     # To ensure the first instruction length is counted from t=0 we add a zero.
     # Also, 0^flags = flags, so we can add a zero to swiych without effect
     # and maintaining the correct shape for sorting.
@@ -65,7 +63,7 @@ def _create_insts_lengths(
     # the last switch_flags is used to switch off a final pulse
     # it can be dropped for programs with no additional padding at the end
     inst_length = np.ones_like(switch_flags) * all_off_padding
-    inst_length[:1] = np.diff(unsorted_times[indices])
+    inst_length[:-1] = np.diff(unsorted_times[indices])
     return inst_length, switch_flags
 
 

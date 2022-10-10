@@ -2,8 +2,6 @@ import matplotlib.pylab as plt
 import numpy as np
 
 from .pb_typing import PBInstructions
-from .plotting import make_plot_lines, make_test_pb_insts, matplotlib_plot
-from .printing import print_flags, print_pb_insts
 
 
 def has_short_pulses(pb_insts: PBInstructions, minimum_inst_length=10):
@@ -54,40 +52,3 @@ def short_pulse_feature(
             inst_length = min_inst_length
         new_insts.append((flags, a, b, inst_length))
     return new_insts
-
-
-def make_test_pb_insts_2() -> PBInstructions:
-    return [
-        (0b000000000000001000000001, 0, 0, 8),  # 0
-        (0b000000000000001000000010, 0, 0, 10),  # 1
-        (0b000000000000001000000011, 0, 0, 4),  # 2
-        (0b000000000000001000000001, 0, 0, 2),  # 3
-        (0b000000000000001000000001, 0, 0, 4),  # 4
-        (0b000000000000001000000001, 0, 0, 6),  # 5
-        (0b000000000000001000000001, 0, 0, 8),  # 6
-        # (0b000000000000000000000000, 0, 0, 10),     # 7
-        # (0b000000000000000000100111, 0, 0, 2),      # 8
-        # (0b000000000000000001100111, 0, 0, 2),      # 9
-        # (0b000000000000000001100101, 0, 0, 2),      # 10
-        # (0b000000000000000001100001, 0, 0, 2),      # 11
-        # (0b000000000000000001100101, 0, 0, 2),      # 12
-        # (0b000000000000000000100101, 0, 0, 2),      # 13
-        # (0b000000000000000000100101, 0, 0, 2),      # 14
-        # (0b000000000000000000101101, 0, 0, 2),      # 15
-    ]
-
-
-def test_short_pulse_feature():
-
-    print(has_short_pulses(make_test_pb_insts()))
-
-    initial_insts = make_test_pb_insts_2()
-    print(has_short_pulses(initial_insts))
-
-    matplotlib_plot(make_plot_lines(initial_insts))
-    print_pb_insts(initial_insts)
-
-    final_insts = short_pulse_feature(initial_insts)
-    print_pb_insts(final_insts)
-    matplotlib_plot(make_plot_lines(final_insts), ax=None)
-    plt.show()

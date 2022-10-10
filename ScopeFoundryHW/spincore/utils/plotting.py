@@ -4,7 +4,6 @@ import matplotlib.pylab as plt
 import numpy as np
 
 from .pb_typing import ChannelsLookUp, PBInstructions, PlotLines, Union
-from .printing import print_pb_insts
 
 
 def _append_lowering_shape(xs: List[int], ys: List[int], time: int, low: int, high: int) -> None:
@@ -94,28 +93,3 @@ def matplotlib_plot(plot_lines: PlotLines, ax=None):
         ax.plot(x, np.array(y) * 0.5 + i, '-o', label=channel_name)
     plt.yticks(range(len(plot_lines)), list(plot_lines.keys()))
     return ax
-
-
-def make_test_pb_insts() -> PBInstructions:
-    states = [
-        0b000000000000000001101000,  # 0
-        0b000000000000000001100000,  # 1
-        0b000000000000000000100000,  # 2
-        0b000000000000000000100100,  # 3
-        0b000000000000000000100110,  # 4
-        0b000000000000000001100110,  # 5
-        0b000000000000000001100100,  # 6
-        0b000000000000000001100000,  # 7
-        0b000000000000000001100100,  # 8
-        0b000000000000000000100100,  # 9
-        0b000000000000000000100101,  # 10
-        0b000000000000000000101100,  # 11
-    ]
-    inst_lengths = np.ones(len(states))*20
-    return [(s, 0, 0, l) for s, l in zip(states, inst_lengths)]
-
-
-def test_plotting():
-    plot_lines = make_plot_lines(make_test_pb_insts())
-    matplotlib_plot(plot_lines)
-    plt.show()

@@ -4,7 +4,7 @@ Created on Mar 21, 2022
 @author: Benedikt Ursprung
 """
 
-from typing import List, Union
+from typing import List
 
 import numpy as np
 import pyqtgraph as pg
@@ -22,7 +22,7 @@ from .utils.pulse_blaster_channel import PulseBlasterChannel, new_pulse_blaster_
 
 class PulseProgramGenerator:
     """
-    Interface between a scope foundry Measurement and Scope_foundry hardware
+    Interface between a scope foundry Measurement and Scope_foundry PulseBlasterHW
     """
 
     name = "pulse_generator"
@@ -34,14 +34,15 @@ class PulseProgramGenerator:
         self.settings = measurement.settings
         self.name = measurement.name
         self.measurement = measurement
-        self.clock_period_ns = self.hw.clock_period_ns
+        self.__pb_channels: List[PulseBlasterChannel] = list()
+        self._setup_settings()
 
+    def _setup_settings(self):
         # will add to the measurement settings.
         # to keep track which settings where create by the measurement
         self.measure_setting_names = [
             x.name for x in self.settings._logged_quantities.values()
         ]
-
         self.settings.New(
             "sync_out",
             float,
@@ -55,6 +56,8 @@ class PulseProgramGenerator:
             int,
             initial=0,
             unit="ns",
+            vmin=0,
+            spinbox_step=self.hw.clock_period_ns,
             description="trailing off time at the end of the pulse program",
         )
         self.settings.New(
@@ -71,11 +74,6 @@ class PulseProgramGenerator:
             if not x.name in self.measure_setting_names
         ]
 
-    @property
-    def t_min(self):
-        print("t_min is deprecated: use clock_period_ns instead.")
-        return self.clock_period_ns
-
     def setup_additional_settings(self) -> None:
         """Override this to add settings, e.g:
 
@@ -83,20 +81,21 @@ class PulseProgramGenerator:
         """
         ...
 
-    def make_pulse_channels(self) -> List[PulseBlasterChannel]:
+    def make_pulse_channels(self):
         """Override this!!!
-        should return a list of PulseBlasterChannel
-        PulseBlasterChannel can be generated using self.new_channel. E.g:
-
-        chan1 =  self.new_channel('pulse_blaster_hw_channel_name',
-            start_times=[0,10],
-            pulse_lengths=[13, 12]) #all times in ns
-
-        return [chan1]
+        add pulse pulse channel using self.new_channel. E.g:
+        self.new_channel('pulse_blaster_hw_channel_name',
+                         start_times=[0, 10],
+                         pulse_lengths=[13, 12])  # all times in ns
+        creates a channel with 2 pulses.
         """
         raise NotImplementedError(
             f"Overide make_pulse_channels() of {self.name} not Implemented"
         )
+
+    @property
+    def t_min(self):
+        return self.hw.clock_period_ns
 
     def update_pulse_plot(self) -> None:
         if self.settings["enable_pulse_plot_update"]:
@@ -152,7 +151,6 @@ class PulseProgramGenerator:
     def save_to_h5(self, h5_meas_group) -> None:
         sub_group = h5_meas_group.create_group("pulse_plot_lines")
         for k, v in self.get_pulse_plot_arrays().items():
-            print(k, v)
             sub_group[k] = np.array(v)
 
     def new_channel(
@@ -160,41 +158,42 @@ class PulseProgramGenerator:
     ) -> PulseBlasterChannel:
         """all times and lengths in ns"""
         flags = self.hw.get_flags(channel)
-        return new_pulse_blaster_channel(
+        chan = new_pulse_blaster_channel(
             flags, start_times, pulse_lengths, self.hw.clock_period_ns
         )
+        self.__pb_channels.append(chan)
+        return chan
 
-    def program_pulse_blaster_and_start(
-        self, pulse_blaster_hw: Union[PulseBlasterHW, None] = None
-    ) -> PBInstructions:
-        if not pulse_blaster_hw:
-            pulse_blaster_hw = self.hw
-        pb_insts = self.get_pb_insts()
-        pulse_blaster_hw.write_pulse_program_and_start(pb_insts)
+    def program_pulse_blaster_and_start(self):
+        self.hw.write_pulse_program_and_start(self.get_pb_insts())
         self.measurement.log.info("programmed pulse blaster and start")
-        return pb_insts
+
+    def get_pb_channels(self) -> List[PulseBlasterChannel]:
+        self.__pb_channels.clear()
+        self.make_pulse_channels()
+        self._add_sync_out_channel()
+        return self.__pb_channels
 
     @property
     def sync_out_period_ns(self):
         return abs(1 / self.settings["sync_out"] * 1e3)
 
-    def get_pb_channels(self) -> List[PulseBlasterChannel]:
-        pb_channels = self.make_pulse_channels()
+    def _add_sync_out_channel(self):
+        if self.settings["sync_out"] <= 0:
+            return
+
         pulse_program_duration = 0
-        for c in pb_channels:
+        for c in self.__pb_channels:
             for start_time, length in zip(c.start_times, c.pulse_lengths):
                 pulse_program_duration = max(
                     pulse_program_duration, start_time + length
                 )
 
-        if self.settings["sync_out"] <= 0:
-            return pb_channels
-
         # adjust pulse_program_duration to be integer multiple of of 'sync_out' period
         p = self.sync_out_period_ns
         N = int(abs(np.ceil(pulse_program_duration / p)))
         adjusted_program_duration = N * p
-        for c in pb_channels:
+        for c in self.__pb_channels:
             for ii, (start_time, length) in enumerate(
                 zip(c.start_times, c.pulse_lengths)
             ):
@@ -203,5 +202,5 @@ class PulseProgramGenerator:
         sync_out = self.new_channel(
             "sync_out", np.arange(N) * p, np.ones(N) * 0.5 * p
         )  # 50% duty cycle
-        pb_channels.extend([sync_out])
-        return pb_channels
+        self.__pb_channels.append(sync_out)
+        return self.__pb_channels
