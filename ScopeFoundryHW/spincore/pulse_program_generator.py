@@ -29,7 +29,7 @@ class PulseProgramGenerator:
 
     def __init__(
         self, measurement: Measurement, pulse_blaser_hw_name: str = "pulse_blaster"
-    ):
+    ) -> None:
         self.hw: PulseBlasterHW = measurement.app.hardware[pulse_blaser_hw_name]
         self.settings = measurement.settings
         self.name = measurement.name
@@ -37,7 +37,7 @@ class PulseProgramGenerator:
         self.__pb_channels: List[PulseBlasterChannel] = list()
         self._setup_settings()
 
-    def _setup_settings(self):
+    def _setup_settings(self)  -> None:
         # will add to the measurement settings.
         # to keep track which settings where create by the measurement
         self.measure_setting_names = [
@@ -81,7 +81,7 @@ class PulseProgramGenerator:
         """
         ...
 
-    def make_pulse_channels(self):
+    def make_pulse_channels(self) -> None:
         """Override this!!!
         add pulse pulse channel using self.new_channel. E.g:
         self.new_channel('pulse_blaster_hw_channel_name',
@@ -94,7 +94,7 @@ class PulseProgramGenerator:
         )
 
     @property
-    def t_min(self):
+    def t_min(self) -> int
         return self.hw.clock_period_ns
 
     def update_pulse_plot(self) -> None:
@@ -164,7 +164,7 @@ class PulseProgramGenerator:
         self.__pb_channels.append(chan)
         return chan
 
-    def program_pulse_blaster_and_start(self):
+    def program_pulse_blaster_and_start(self) -> None:
         self.hw.write_pulse_program_and_start(self.get_pb_insts())
         self.measurement.log.info("programmed pulse blaster and start")
 
@@ -175,10 +175,10 @@ class PulseProgramGenerator:
         return self.__pb_channels
 
     @property
-    def sync_out_period_ns(self):
+    def sync_out_period_ns(self) -> float:
         return abs(1 / self.settings["sync_out"] * 1e3)
 
-    def _add_sync_out_channel(self):
+    def _add_sync_out_channel(self) -> None:
         if self.settings["sync_out"] <= 0:
             return
 

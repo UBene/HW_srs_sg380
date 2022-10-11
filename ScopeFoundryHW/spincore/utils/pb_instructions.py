@@ -31,7 +31,7 @@ def create_pb_insts(
         *_create_insts_lengths(channels, all_off_padding))
     if continuous:
         pb_insts = _make_continueous(pb_insts, branch_to)
-    if has_short_pulses(pb_insts):
+    if has_short_pulses(pb_insts, clock_period_ns):
         print(
             "WARNING, applied short_pulse_feature. This might affects pulse program duration."
         )

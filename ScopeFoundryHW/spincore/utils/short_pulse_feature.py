@@ -1,12 +1,11 @@
-import matplotlib.pylab as plt
 import numpy as np
 
 from .pb_typing import PBInstructions
 
 
-def has_short_pulses(pb_insts: PBInstructions, minimum_inst_length=10):
+def has_short_pulses(pb_insts: PBInstructions, clock_period_ns: int):
     """checks if any instruction length is lower than the minimum instruction length"""
-    return np.any(np.array(pb_insts)[:, -1] <= minimum_inst_length)
+    return np.any(np.array(pb_insts)[:, -1] <= 5 * clock_period_ns)
 
 
 def short_pulse_feature(
@@ -42,13 +41,20 @@ def short_pulse_feature(
 
     min_inst_length = 5 * clock_period_ns
     new_insts = []
-    for flags, a, b, inst_length in pb_insts:
+    for ii, (flags, a, b, inst_length) in enumerate(pb_insts):
+        # Special case: if current is all low and previous was a short pulse we can combine
+        if ii > 0 and flags == 0:
+            pflags, pa, pb, plength = new_insts[-1]
+            p_orginal_inst_length = (
+                pflags >> short_pulse_bit_num) * clock_period_ns
+            if p_orginal_inst_length:
+                comb_time = inst_length + p_orginal_inst_length
+                inst_length = comb_time if comb_time > min_inst_length else min_inst_length
+                new_insts[-1] = (pflags, pa, pb, inst_length)
+                continue
         if inst_length <= min_inst_length:
-            # print_flags(flags)
-            # generate a flag with desired property
             flags = int(inst_length //
                         clock_period_ns) << short_pulse_bit_num | flags
-            # print_flags(flags)
             inst_length = min_inst_length
         new_insts.append((flags, a, b, inst_length))
     return new_insts

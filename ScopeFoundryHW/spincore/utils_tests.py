@@ -55,10 +55,10 @@ def make_test_pb_insts_2() -> PBInstructions:
 
 def test_short_pulse_feature():
 
-    print(has_short_pulses(make_test_pb_insts()))
+    print(has_short_pulses(make_test_pb_insts(), 2))
 
     initial_insts = make_test_pb_insts_2()
-    print(has_short_pulses(initial_insts))
+    print(has_short_pulses(initial_insts, 2))
 
     matplotlib_plot(make_plot_lines(initial_insts))
     print_pb_insts(initial_insts)

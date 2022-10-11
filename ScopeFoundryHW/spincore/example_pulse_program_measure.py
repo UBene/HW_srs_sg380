@@ -10,8 +10,7 @@ import numpy as np
 from pyqtgraph.dockarea.DockArea import DockArea
 
 from ScopeFoundry import Measurement, h5_io
-from ScopeFoundryHW.spincore import (PulseBlasterChannel,
-                                     PulseProgramGenerator, ns, us)
+from ScopeFoundryHW.spincore import (PulseProgramGenerator, ns, us)
 
 
 class ExamplePulseProgramGenerator(PulseProgramGenerator):
@@ -20,16 +19,13 @@ class ExamplePulseProgramGenerator(PulseProgramGenerator):
         self.settings.New('some_time', unit='us', initial=1.0)
         self.settings.New('some_duration', unit='ns', initial=500.0)
 
-    def make_pulse_channels(self) -> List[PulseBlasterChannel]:
+    def make_pulse_channels(self) -> None:
         S = self.settings
-
         start_times = np.arange(2) * (S['some_time'] * us)
         lengths = [S['some_duration'] * ns] * 2
         # assuming there are channels called 'channel_name_1' and 'channel_name_2'
-        chan_1 = self.new_channel('channel_name_1', start_times, lengths)
-        chan_2 = self.new_channel('channel_name_2', [1000, 2000, 3000],  [S['some_duration'] * ns] * 3)
-
-        return [chan_1, chan_2]
+        self.new_channel('channel_name_1', start_times, lengths)
+        self.new_channel('channel_name_2', [1000, 2000, 3000],  [S['some_duration'] * ns] * 3)
 
 
 class ExampleProgramMeasure(Measurement):
