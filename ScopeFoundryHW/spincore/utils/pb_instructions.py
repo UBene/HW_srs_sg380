@@ -32,11 +32,10 @@ def create_pb_insts(
     if continuous:
         pb_insts = _make_continueous(pb_insts, branch_to)
     if has_short_pulses(pb_insts):
-        print(
-            "WARNING, applied short_pulse_feature. This might affects pulse program duration."
-        )
         pb_insts = short_pulse_feature(
             pb_insts, clock_period_ns, short_pulse_bit_num)
+        print("WARNING: Applied short_pulse_feature. This might affect pulse program duration.")
+
     return pb_insts
 
 
