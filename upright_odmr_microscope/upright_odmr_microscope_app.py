@@ -142,7 +142,10 @@ class Microscope(BaseMicroscopeApp):
         from odmr_measurements.helper_functions import channel_settings
         from ScopeFoundryHW.spincore.pulse_blaster_hw import PulseBlasterHW
         self.add_hardware(PulseBlasterHW(
-            self, channel_settings=channel_settings))
+            app=self, 
+            channel_settings=channel_settings,
+            clock_frequency_Hz = 500_000_000,
+            short_pulse_bit_num = 21))
 
         #from ScopeFoundryHW.nidaqmx.buffered_edge_smpl_clk_counter_hw import BufferedEdgeSmplClkCounterHW
         # self.add_hardware(BufferedEdgeSmplClkCounterHW(self))
@@ -192,7 +195,14 @@ class Microscope(BaseMicroscopeApp):
         from odmr_measurements.iq_pulse_sweep import IQPulseSweep
         self.add_measurement(IQPulseSweep)
 
+        from odmr_measurements.i_pulse_sweep import IPulseSweep
+        self.add_measurement(IPulseSweep)
+        
+        from odmr_measurements.q_pulse_sweep import QPulseSweep
+        self.add_measurement(QPulseSweep)
 
+        from odmr_measurements.esr_sweep_ref_readout import ESRSweepRef
+        self.add_measurement(ESRSweepRef(self))
     def setup_ui(self):
         pass
         '''sets up a quickbar'''

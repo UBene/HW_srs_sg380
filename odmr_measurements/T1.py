@@ -138,7 +138,7 @@ class T1(Measurement):
             SRS.settings["output"] = True
 
             PB.connect()
-            self.pulse_generator.program_pulse_blaster_and_start(PB)
+            self.pulse_generator.program_pulse_blaster_and_start()
 
             DAQ.restart(S['N_samples'])
 

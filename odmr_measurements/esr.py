@@ -26,27 +26,36 @@ import time
 class ESRPulseProgramGenerator(PulseProgramGenerator):
 
     def setup_additional_settings(self) -> None:
-        self.settings.New('t_readout', unit='us', initial=10.0)
-        self.settings.New('t_gate', unit='us', initial=50.0)
-        self.settings.New('program_duration', float, unit='us', initial=160.0)
+     
+        self.settings.New('t_gate', unit='us', vmin=0, initial=1.0)
+        self.settings.New('program_duration', float, unit='us', initial=200.0)
+        
+        max_readout_sig_ref = (self.settings['program_duration'] / 2) - self.settings['t_gate']  
+        self.settings.New('t_readout_sig', unit='us', vmin=0, initial=0.1)
+        self.settings.New('t_readout_ref', unit='us', vmin=0, initial=0.1)
 
     def make_pulse_channels(self) -> [PulseBlasterChannel]:
         S = self.settings
 
         # all times must be in ns.
         t_duration = S['program_duration'] * us
-        t_readout = S['t_readout'] * us
+        t_readout_sig = S['t_readout_sig'] * us
+        t_readout_ref = S['t_readout_ref'] * us
+
         t_gate = S['t_gate'] * us
 
         AOM = self.new_channel('AOM', [0], [t_duration])
         uW = self.new_channel('uW', [0], [t_duration / 2])
 
         # DAQ
-        _readout = t_readout + t_gate
+        #_readout_sig = t_readout_sig + t_gate
+        #_readout_ref = t_readout_ref + t_gate
         DAQ_sig = self.new_channel(
-            'DAQ_sig', [0.5 * t_duration - _readout], [t_gate])
+            'DAQ_sig', [t_readout_sig], [t_gate])
+            #'DAQ_sig', [0.5 * t_duration - _readout_sig], [t_gate])
         DAQ_ref = self.new_channel(
-            'DAQ_ref', [t_duration - _readout], [t_gate])
+            'DAQ_ref', [(t_duration/2) + t_readout_ref], [t_gate])
+            #'DAQ_ref', [t_duration - _readout_ref], [t_gate])
 
         return [uW, AOM,
                 # I, Q,
@@ -76,7 +85,7 @@ class ESR(Measurement):
         S.New(
             "contrast_mode",
             str,
-            initial="signalOverReference",
+            initial="fractionaldifferenceOverReference",
             choices=ContrastModes,
         )
         S.New("save_h5", bool, initial=True)
@@ -174,7 +183,7 @@ class ESR(Measurement):
             SRS.settings["output"] = True
 
             PB.connect()
-            self.pulse_generator.program_pulse_blaster_and_start(PB)
+            self.pulse_generator.program_pulse_blaster_and_start()
 
             DAQ.restart(N_DAQ_readouts)
 
