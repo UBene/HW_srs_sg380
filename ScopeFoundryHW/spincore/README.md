@@ -10,7 +10,7 @@ more info on [ScopeFoundry here](https://www.scopefoundry.org/).
 
 The code assumes that [SpinAPI: SpinCore API and Driver Suite](http://www.spincore.com/support/spinapi/) is installed on the computer or (at least the driver and dll)
 
-tested with python 3.7.11 and 3.10.6. 
+tested with python 3.7.11 and 3.10.4. 
 
 # Datatypes and info
 Datatypes some further explanations can be found in `utils\pb_typing.py`.
@@ -19,7 +19,7 @@ Datatypes some further explanations can be found in `utils\pb_typing.py`.
 
 # Using PulseProgramGenerator
 
-Inherit PulseProgramGenerator and override the following two functions:
+Inherit `PulseProgramGenerator` and override the following two functions:
 
 ```python
 class ExamplePulseProgramGenerator(PulseProgramGenerator):
@@ -27,7 +27,7 @@ class ExamplePulseProgramGenerator(PulseProgramGenerator):
     def setup_additional_settings(self) -> None:
         self.settings.New('some_time', unit='us', initial=1.0)
         self.settings.New('some_duration', unit='ns', initial=500.0)
-        self.settings['all_off_padding'] = 100 #in ns, or latter in GUI.
+        self.settings['all_off_padding'] = 100 
 
     def make_pulse_channels(self) -> None:
         S = self.settings
@@ -42,7 +42,7 @@ class ExamplePulseProgramGenerator(PulseProgramGenerator):
 
 
 
-1. Each pulse program now has  `all_off_padding` 
+1. Each pulse program now has  `all_off_padding`, that can be defined here or later.
 2. Define pulse programs in `make_pulse_channels(self)` using `new_channel` for each channel everything.
 3. When you see in the console:
    `WARNING: Applied short_pulse_feature. This might affect pulse program duration.`

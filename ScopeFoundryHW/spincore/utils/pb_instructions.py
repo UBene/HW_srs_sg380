@@ -5,8 +5,8 @@ import numpy as np
 from .pb_typing import PBInstructions
 from .printing import print_pb_insts
 from .pulse_blaster_channel import PulseBlasterChannel
-from .spinapi import Inst
 from .short_pulse_feature import has_short_pulses, short_pulse_feature
+from .spinapi import Inst
 
 
 def create_pb_insts(
@@ -29,14 +29,17 @@ def create_pb_insts(
     """
     pb_insts = _create_pb_insts(
         *_create_insts_lengths(channels, all_off_padding))
-    if continuous:
-        pb_insts = _make_continueous(pb_insts, branch_to)
-    if has_short_pulses(pb_insts, clock_period_ns):
-        print(
-            "WARNING, applied short_pulse_feature. This might affects pulse program duration."
-        )
-        pb_insts = short_pulse_feature(
-            pb_insts, clock_period_ns, short_pulse_bit_num)
+
+    print(len(pb_insts))
+    if pb_insts:
+        if continuous:
+            pb_insts = _make_continueous(pb_insts, branch_to)
+        if has_short_pulses(pb_insts, clock_period_ns):
+            print(
+                "WARNING, applied short_pulse_feature. This might affects pulse program duration."
+            )
+            pb_insts = short_pulse_feature(
+                pb_insts, clock_period_ns, short_pulse_bit_num)
     return pb_insts
 
 
@@ -78,6 +81,7 @@ def _create_pb_insts(
     new_flags = 0  # initialize: all channels are low
     for inst_length, u_flags in zip(inst_legnths, switch_flags):
         new_flags = new_flags ^ u_flags
+        print(bin(new_flags), bin(u_flags), inst_length)
         if inst_length == 0:
             # we will not move in time and hence we do not register a flags
             # in the final pb instruction list.

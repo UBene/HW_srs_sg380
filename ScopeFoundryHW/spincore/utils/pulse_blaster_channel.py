@@ -30,7 +30,7 @@ def _round(x: List, res: int) -> np.ndarray:
     return (res * np.round(np.array(x) / res)).astype(int)
 
 
-def new_pulse_blaster_channel(flags: int, start_times: List[float], pulse_lengths: List[float], clock_period: int = 2) -> PulseBlasterChannel:
+def new_pb_channel(flags: int, start_times: List[float], pulse_lengths: List[float], clock_period: int = 2) -> PulseBlasterChannel:
     '''
     flags: 	here, an int that represents the selected channel to be on (see also Flags in typing file)
     start_times: in ns 

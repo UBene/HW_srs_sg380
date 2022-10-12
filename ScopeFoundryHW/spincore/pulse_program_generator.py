@@ -14,10 +14,10 @@ from qtpy.QtWidgets import QPushButton
 from ScopeFoundry.measurement import Measurement
 
 from .pulse_blaster_hw import PulseBlasterHW
-from .utils.pb_instructions import create_pb_insts, calc_pulse_program_duration
+from .utils.pb_instructions import calc_pulse_program_duration, create_pb_insts
 from .utils.pb_typing import PBInstructions
 from .utils.plotting import PlotLines, make_plot_lines
-from .utils.pulse_blaster_channel import PulseBlasterChannel, new_pulse_blaster_channel
+from .utils.pulse_blaster_channel import PulseBlasterChannel, new_pb_channel
 
 
 class PulseProgramGenerator:
@@ -37,9 +37,9 @@ class PulseProgramGenerator:
         self.__pb_channels: List[PulseBlasterChannel] = list()
         self._setup_settings()
 
-    def _setup_settings(self)  -> None:
-        # will add to the measurement settings.
-        # to keep track which settings where create by the measurement
+    def _setup_settings(self) -> None:
+        # will settings add to the measurement settings.
+        # keeps track which settings where created by PulseProgramGenerator
         self.measure_setting_names = [
             x.name for x in self.settings._logged_quantities.values()
         ]
@@ -94,7 +94,7 @@ class PulseProgramGenerator:
         )
 
     @property
-    def t_min(self) -> int
+    def t_min(self) -> int:
         return self.hw.clock_period_ns
 
     def update_pulse_plot(self) -> None:
@@ -158,9 +158,8 @@ class PulseProgramGenerator:
     ) -> PulseBlasterChannel:
         """all times and lengths in ns"""
         flags = self.hw.get_flags(channel)
-        chan = new_pulse_blaster_channel(
-            flags, start_times, pulse_lengths, self.hw.clock_period_ns
-        )
+        chan = new_pb_channel(flags, start_times,
+                              pulse_lengths, self.hw.clock_period_ns)
         self.__pb_channels.append(chan)
         return chan
 

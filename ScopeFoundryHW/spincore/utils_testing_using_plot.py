@@ -1,10 +1,9 @@
-import numpy as np
 import matplotlib.pylab as plt
-
-from utils.printing import print_pb_insts, print_flags
-from utils.short_pulse_feature import has_short_pulses, short_pulse_feature
+import numpy as np
 from utils.pb_typing import PBInstructions
 from utils.plotting import make_plot_lines, matplotlib_plot
+from utils.printing import print_flags, print_pb_insts
+from utils.short_pulse_feature import has_short_pulses, short_pulse_feature
 
 
 def make_test_pb_insts() -> PBInstructions:
