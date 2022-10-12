@@ -20,6 +20,7 @@ from ScopeFoundry import h5_io
 
 from odmr_measurements.T2_pulse_program_generator import T2PulseProgramGenerator
 from odmr_measurements.helper_functions import ContrastModes, calculateContrast
+import time
 
 
 class T2(Measurement):
@@ -31,7 +32,7 @@ class T2(Measurement):
         S = self.settings
 
         self.range = S.New_Range(
-            "taus", initials=[100, 10000, 300], unit="ns", si=False
+            "taus", initials=[0.1, 10, 0.1], unit="us", si=False
         )
         S.New("N_samples", int, initial=1000)
         S.New("N_sweeps", int, initial=1)
@@ -41,7 +42,7 @@ class T2(Measurement):
         S.New(
             "contrast_mode",
             str,
-            initial="signalOverReference",
+            initial="differenceOverSum",
             choices=ContrastModes,
         )
         S.New("save_h5", bool, initial=True)
@@ -142,7 +143,7 @@ class T2(Measurement):
             SRS.settings["output"] = True
 
             PB.connect()
-            self.pulse_generator.program_pulse_blaster_and_start(PB)
+            self.pulse_generator.program_pulse_blaster_and_start()
 
             DAQ.restart(N_DAQ_readouts)
 
@@ -167,8 +168,10 @@ class T2(Measurement):
                     pct = 100 * (i_sweep * N + j) / (N_sweeps * N)
                     self.set_progress(pct)
 
-                    self.pulse_generator.settings['t_pi'] = tau
+                    self.pulse_generator.settings['tau'] = tau
                     self.pulse_generator.program_pulse_blaster_and_start()
+
+                    time.sleep(1)
 
                     # Update data arrays
                     jj = self.indices[j]
@@ -202,6 +205,9 @@ class T2(Measurement):
         for cm in ContrastModes:
             self.h5_meas_group[cm] = calculateContrast(cm, signal, reference)
         for k, v in self.data.items():
-            self.h5_meas_group[k] = v
+            try:
+                self.h5_meas_group[k] = v
+            except RuntimeError:
+                pass
         self.pulse_generator.save_to_h5(self.h5_meas_group)
         self.h5_file.close()

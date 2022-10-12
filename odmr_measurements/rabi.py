@@ -202,6 +202,10 @@ class Rabi(Measurement):
         for cm in ContrastModes:
             self.h5_meas_group[cm] = calculateContrast(cm, signal, reference)
         for k, v in self.data.items():
-            self.h5_meas_group[k] = v
+            print(k, v)
+            try:
+                self.h5_meas_group[k] = np.array(v)
+            except RuntimeError:
+                pass
         self.pulse_generator.save_to_h5(self.h5_meas_group)
         self.h5_file.close()

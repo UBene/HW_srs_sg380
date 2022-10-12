@@ -114,7 +114,7 @@ class PulseBlasterHW(HardwareComponent):
         self.configure()
         self.start_programming(PULSE_PROGRAM)
         if self.settings['debug_mode']:
-            from .pulse_program_generator import print_pb_insts
+            from .utils.printing import print_pb_insts
             print_pb_insts(pb_insts)
         for pb_inst in pb_insts:
             self.write_pb_inst_pbonly(*pb_inst)
