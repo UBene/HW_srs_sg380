@@ -24,11 +24,17 @@ def make_test_pb_insts() -> PBInstructions:
     inst_lengths = np.ones(len(states))*20
     return [(s, 0, 0, l) for s, l in zip(states, inst_lengths)]
 
+def make_5chan_on_pb_insts() -> PBInstructions:
+    states = [
+        0b000000000000000000000001,  # 0
+        0b000000000000000000000011,  # 1
+        0b000000000000000000000111,  # 1
+        0b000000000000000000001111,  # 1
+        0b000000000000000000011111,  # 1
+    ]
+    inst_lengths = np.ones(len(states))*20
+    return [(s, 0, 0, l) for s, l in zip(states, inst_lengths)]
 
-def test_plotting():
-    plot_lines = make_plot_lines(make_test_pb_insts())
-    matplotlib_plot(plot_lines)
-    plt.show()
 
 
 def make_test_pb_insts_2() -> PBInstructions:
@@ -67,9 +73,14 @@ def test_short_pulse_feature():
     matplotlib_plot(make_plot_lines(final_insts), ax=None)
     plt.show()
 
+def test_plotting():
+    plot_lines = make_plot_lines(make_5chan_on_pb_insts())
+    matplotlib_plot(plot_lines)
+    plt.show()
+
 
 if __name__ == "__main__":
     print_flags(2**13 ^ 2**15)
     print_flags(1 << 13 ^ 1 << 15)
-    # test_plotting()
+    test_plotting()
     test_short_pulse_feature()

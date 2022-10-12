@@ -3,7 +3,7 @@ Created on Sep 29, 2022
 
 @author: Benedikt Ursprung
 '''
-from typing import Dict, List, Tuple, Union
+from typing import Dict, List, Tuple
 
 # PULSE PROGRAM INSTRUCTIONS
 Flags = int
@@ -20,12 +20,18 @@ Flags = int
 # (2**12) ^ (2**15) ^ (2**12) -> a flags that represents channels 15 on only.
 # Note that (2**15) is equal to (1<<15)
 Inst = int  # see enum in .spincore.py
-InstData = int
-Length = int #the length of the instruction is at least 5*clock_period_ns, Use short_pulse_feature for shorter pulses
-PBInstruction = Tuple[Flags, Inst, InstData, Length]
+InstData = int  # non zero if Inst needs params
+InstLength = int  # the length of the instruction in ns,
+PBInstruction = Tuple[Flags, Inst, InstData, InstLength]
 PBInstructions = List[PBInstruction]
+# Short Pulse Feature
+# the pulse blaster is capable of putting out pulse with resolution 
+# clock_period_ns = 1e9 / clock_period_Hz
+# however it can only handle an instruction every 5*clock_period_ns
+# for pulses < 5*clock_period_ns the Flags integer is altered (see )
 
 
 # PLOTTING
-PlotLines = Dict[str, Tuple[List[float], List[int]]] # {channel_name: (times, high/low values)}
+# {channel_name: (times, high/low values)}
+PlotLines = Dict[str, Tuple[List[float], List[int]]]
 ChannelsLookUp = Dict[int, str]  # {channel_number: channel_name}

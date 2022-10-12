@@ -27,6 +27,8 @@ class TestApp(BaseMicroscopeApp):
         from ScopeFoundryHW.spincore.example_pulse_program_measure import \
             ExampleProgramMeasure
         self.add_measurement(ExampleProgramMeasure(self))
+        from ScopeFoundryHW.spincore.pwm import PMW
+        self.add_measurement(PMW(self))
 
 
 if __name__ == '__main__':

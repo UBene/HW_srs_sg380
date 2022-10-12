@@ -4,7 +4,7 @@ Created on Mar 21, 2022
 @author: Benedikt Ursprung
 """
 
-from typing import List
+from typing import List, Union
 
 import numpy as np
 import pyqtgraph as pg
@@ -154,11 +154,16 @@ class PulseProgramGenerator:
             sub_group[k] = np.array(v)
 
     def new_channel(
-        self, channel: str, start_times: List[float], pulse_lengths: List[float]
+        self, channel: Union[str, int], start_times: List[float], pulse_lengths: List[float]
     ) -> PulseBlasterChannel:
-        """all times and lengths in ns"""
-        flags = self.hw.get_flags(channel)
-        chan = new_pb_channel(flags, start_times,
+        """channel can be a 
+                - channel number (int) a physical output of the pulse blaster
+                - channel name str as defined in the pulse blaster HW
+        start_times: in ns 
+        pulse_lengths: in ns"""
+        if type(channel) == str:
+            channel = self.hw.settings[channel]
+        chan = new_pb_channel(channel, start_times,
                               pulse_lengths, self.hw.clock_period_ns)
         self.__pb_channels.append(chan)
         return chan

@@ -1,3 +1,4 @@
+from functools import reduce
 from typing import List, Tuple
 
 import numpy as np
@@ -29,8 +30,6 @@ def create_pb_insts(
     """
     pb_insts = _create_pb_insts(
         *_create_insts_lengths(channels, all_off_padding))
-
-    print(len(pb_insts))
     if pb_insts:
         if continuous:
             pb_insts = _make_continueous(pb_insts, branch_to)
@@ -81,7 +80,6 @@ def _create_pb_insts(
     new_flags = 0  # initialize: all channels are low
     for inst_length, u_flags in zip(inst_legnths, switch_flags):
         new_flags = new_flags ^ u_flags
-        print(bin(new_flags), bin(u_flags), inst_length)
         if inst_length == 0:
             # we will not move in time and hence we do not register a flags
             # in the final pb instruction list.
@@ -103,3 +101,10 @@ def _make_continueous(pb_insts: PBInstructions, branch_to: int = 0) -> PBInstruc
 
 def calc_pulse_program_duration(pb_insts: PBInstructions):
     return int(np.sum(np.array(pb_insts)[:, -1]))
+
+
+def extract_used_channels(pb_insts: PBInstructions, short_pulse_bit_num: int = 21) -> List[int]:
+    used_flags = reduce(lambda x, y: x | y, [x[0] for x in pb_insts])
+    channels_used = [cn for cn in range(
+        short_pulse_bit_num) if used_flags & (1 << cn)]
+    return channels_used

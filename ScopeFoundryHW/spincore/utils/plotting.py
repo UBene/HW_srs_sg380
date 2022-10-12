@@ -1,9 +1,8 @@
-from typing import List
-
 import matplotlib.pylab as plt
 import numpy as np
 
-from .pb_typing import ChannelsLookUp, PBInstructions, PlotLines, Union
+from .pb_instructions import extract_used_channels
+from .pb_typing import ChannelsLookUp, List, PBInstructions, PlotLines, Union
 
 
 def _append_lowering_shape(xs: List[int], ys: List[int], time: int, low: int, high: int) -> None:
@@ -42,46 +41,44 @@ def make_plot_lines(
     clock_period: int = 2,
     short_pulse_bit_num: int = 21,
 ) -> PlotLines:
-    if channel_look_up is None:
-        # assuming there are 21 channels named output_i and number i for i = 0,...20
-        channel_look_up = {
-            i: f"output_{i}" for i in range(short_pulse_bit_num)}
 
-    # lines = {channel_name: (x-coordinates, y-coordinates)}
+    lu = {i: f"chan_{i}" for i in extract_used_channels(
+        pb_insts, short_pulse_bit_num)}
+    if channel_look_up:
+        lu.update(channel_look_up)
+
+    # lines = {channel_name: (time-coordinates, y-coordinates)}
     # all lines start at (0,0)
     time = 0
-    lines = {channel_name: ([time], [low])
-             for channel_name in channel_look_up.values()}
+    lines = {name: ([time], [low]) for name in lu.values()}
 
     for state, _, _, length in pb_insts:
+        # n_clock_periods is non-zero if short pulse feature was used
         n_clock_periods = state >> short_pulse_bit_num
-        for channel_number, channel_name in channel_look_up.items():
-            xs, ys = lines[channel_name]
-            now_high = 1 << channel_number & state
-            prev_high = ys[-1] == high
+        for num, name in lu.items():
+            xs, ys = lines[name]
+            is_high = 1 << num & state
+            was_high = ys[-1] == high
             if n_clock_periods:
-                if now_high and prev_high:
+                if is_high and was_high:
                     _append_short_pulse_from_high(
                         xs, ys, time, n_clock_periods, clock_period, low, high)
-                elif now_high and not prev_high:
+                elif is_high and not was_high:
                     _append_short_pulse_from_low(
                         xs, ys, time, n_clock_periods, clock_period, low, high)
             else:
-                if now_high and not prev_high:
+                if is_high and not was_high:
                     _append_rising_shape(xs, ys, time, low, high)
-                elif not now_high and prev_high:
+                elif not is_high and was_high:
                     _append_lowering_shape(xs, ys, time, low, high)
         time += length
 
-    for channel_name, (xs, ys) in lines.copy().items():
-        if len(xs) < 2:
-            lines.pop(channel_name)
-            continue
-
-        # draw a line to the end of pulse instructions
+    # draw a line to the end of pulse instructions
+    for name, (xs, ys) in lines.items():
         if xs[-1] != time:
             xs.append(time)
             ys.append(ys[-1])
+
     return lines
 
 

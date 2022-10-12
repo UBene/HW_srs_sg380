@@ -5,7 +5,6 @@ from .pb_typing import PBInstructions
 
 def has_short_pulses(pb_insts: PBInstructions, clock_period_ns: int) -> bool:
     """checks if any instruction length is lower than the minimum instruction length"""
-    print(np.array(pb_insts).shape)
     return np.any(np.array(pb_insts)[:, -1] <= 5 * clock_period_ns)
 
 
@@ -45,14 +44,12 @@ def short_pulse_feature(
     for ii, (flags, a, b, inst_length) in enumerate(pb_insts):
         # Special case: if current is all low and previous was a short pulse we can combine
         if ii > 0 and flags == 0:
-            pflags, pa, pb, plength = new_insts[-1]
-            p_orginal_inst_length = (
-                pflags >> short_pulse_bit_num) * clock_period_ns
-            if p_orginal_inst_length:
-                comb_time = inst_length + p_orginal_inst_length
+            pflags, pa, pb, plength = new_insts[-1] #'p' short for 'previous'
+            ppulse_length = (pflags >> short_pulse_bit_num) * clock_period_ns
+            if ppulse_length:
+                comb_time = inst_length + ppulse_length
                 inst_length = comb_time if comb_time > min_inst_length else min_inst_length
                 new_insts[-1] = (pflags, pa, pb, inst_length)
-                print('very special case')
                 continue
         if inst_length <= min_inst_length:
             flags = int(inst_length //
