@@ -1,8 +1,8 @@
 import matplotlib.pylab as plt
 import numpy as np
 
-from .pb_instructions import extract_used_channels
-from .pb_typing import ChannelsLookUp, List, PBInstructions, PlotLines, Union
+from .pb_instructions import extract_channels_used
+from .pb_typing import ChannelNameLU, List, PBInstructions, PlotLines, Union
 
 
 def _append_lowering_shape(xs: List[int], ys: List[int], time: int, low: int, high: int) -> None:
@@ -35,17 +35,17 @@ def _append_short_pulse_from_low(xs: List[int], ys: List[int], time: int, n_cloc
 
 def make_plot_lines(
     pb_insts: PBInstructions,
-    channel_look_up: Union[None, ChannelsLookUp] = None,
+    channel_name_lu: Union[None, ChannelNameLU] = None,
     low: int = 0,
     high: int = 1,
     clock_period: int = 2,
     short_pulse_bit_num: int = 21,
 ) -> PlotLines:
 
-    lu = {i: f"chan_{i}" for i in extract_used_channels(
-        pb_insts, short_pulse_bit_num)}
-    if channel_look_up:
-        lu.update(channel_look_up)
+    # construct a name look up for only channels being used in the pb_insts
+    used_channels = extract_channels_used(pb_insts, short_pulse_bit_num)
+    channel_name_lu = channel_name_lu if channel_name_lu else {}
+    lu = {i: channel_name_lu.get(i, f"chan_{i}") for i in used_channels}
 
     # lines = {channel_name: (time-coordinates, y-coordinates)}
     # all lines start at (0,0)
@@ -73,7 +73,7 @@ def make_plot_lines(
                     _append_lowering_shape(xs, ys, time, low, high)
         time += length
 
-    # draw a line to the end of pulse instructions
+    # make sure all lines end at the end of pulse program
     for name, (xs, ys) in lines.items():
         if xs[-1] != time:
             xs.append(time)

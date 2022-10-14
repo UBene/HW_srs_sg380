@@ -8,6 +8,7 @@ from typing import List, Union
 
 import numpy as np
 import pyqtgraph as pg
+from h5py import Group
 from pyqtgraph.dockarea.Dock import Dock
 from qtpy.QtWidgets import QPushButton
 
@@ -98,14 +99,15 @@ class PulseProgramGenerator:
         return self.hw.clock_period_ns
 
     def update_pulse_plot(self) -> None:
-        if self.settings["enable_pulse_plot_update"]:
-            plot = self.plot
-            plot.clear()
-            pulse_plot_arrays = self.get_pulse_plot_arrays()
-            for ii, (name, (t, y)) in enumerate(pulse_plot_arrays.items()):
-                y = np.array(y) - 2 * ii
-                t = np.array(t) / 1e9
-                plot.plot(t, y, name=name, pen=self.hw.pens.get(name, "w"))
+        if not self.settings["enable_pulse_plot_update"]:
+            return
+        self.plot.clear()
+        pulse_plot_arrays = self.create_pulse_plot_lines()
+        for ii, (name, (t, y)) in enumerate(pulse_plot_arrays.items()):
+            y = np.array(y) - 2 * ii
+            t = np.array(t) / 1e9
+            self.plot.plot(t, y, name=name,
+                           pen=self.hw.colors_lu.get(name, "w"))
 
     def New_dock_UI(self) -> Dock:
         dock = Dock(
@@ -145,13 +147,14 @@ class PulseProgramGenerator:
         self.pulse_program_duration = calc_pulse_program_duration(pb_insts)
         return pb_insts
 
-    def get_pulse_plot_arrays(self) -> PlotLines:
-        return make_plot_lines(self.get_pb_insts(), self.hw.channels_lookup)
+    def create_pulse_plot_lines(self) -> PlotLines:
+        return make_plot_lines(self.get_pb_insts(), self.hw.channel_name_lu)
 
-    def save_to_h5(self, h5_meas_group) -> None:
+    def save_to_h5(self, h5_meas_group: Group) -> None:
         sub_group = h5_meas_group.create_group("pulse_plot_lines")
-        for k, v in self.get_pulse_plot_arrays().items():
+        for k, v in self.create_pulse_plot_lines().items():
             sub_group[k] = np.array(v)
+            sub_group.attrs[k] = self.hw.colors_lu[k]
 
     def new_channel(
         self, channel: Union[str, int], start_times: List[float], pulse_lengths: List[float]
@@ -162,7 +165,7 @@ class PulseProgramGenerator:
         start_times: in ns 
         pulse_lengths: in ns"""
         if type(channel) == str:
-            channel = self.hw.settings[channel]
+            channel = self.hw.get_channel_number(channel)
         chan = new_pb_channel(channel, start_times,
                               pulse_lengths, self.hw.clock_period_ns)
         self.__pb_channels.append(chan)

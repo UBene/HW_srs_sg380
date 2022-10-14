@@ -6,12 +6,15 @@ Created on Mar 21, 2022
 from typing import Dict, List, Union
 
 from ScopeFoundry.hardware import HardwareComponent
+from ScopeFoundryHW.spincore.utils.colors import get_colors
 
-from .utils.pb_typing import ChannelsLookUp, PBInstructions
+from .utils.pb_typing import ChannelNameLU, PBInstructions
 from .utils.spinapi import (PULSE_PROGRAM, pb_close, pb_core_clock,
                             pb_get_error, pb_get_version, pb_init,
                             pb_inst_pbonly, pb_set_debug, pb_start,
                             pb_start_programming, pb_stop_programming)
+
+NamedChannelsKwargs = List[Dict]
 
 
 class PulseBlasterHW(HardwareComponent):
@@ -19,18 +22,20 @@ class PulseBlasterHW(HardwareComponent):
     name = "pulse_blaster"
 
     def __init__(self, app, debug=False, name=None,
-                 channel_settings: Union[List[Dict], None] = None,
+                 named_channels_kwargs: Union[NamedChannelsKwargs,
+                                              None] = None,
                  clock_frequency_Hz: int = 500_000_000,
                  short_pulse_bit_num: int = 21
                  ):
         '''
+        named_channels_kwargs: [{'name': '<MyName>'}, {'name': '<MyName2>'}]
         clock_frequency_Hz: see manual of your board 
         short_pulse_bit_num: Typically is equal to the number of physical output channels, see manual of the board.
                              Only required for "short pulses".
                              Short pulses are are pulses that are short than the max. instructions length,
                              which is 5*clock_period_ns)
         '''
-        self.channel_settings = channel_settings
+        self.named_channel_kwargs = named_channels_kwargs
         self.clock_frequency = clock_frequency_Hz
         self.clock_period_ns = int(1e9 / clock_frequency_Hz)
         self.short_pulse_bit_num = short_pulse_bit_num
@@ -44,21 +49,22 @@ class PulseBlasterHW(HardwareComponent):
         S.New('last_error', str, ro=True)
         S.New('version', str, ro=True)
 
-        if self.channel_settings is None:
-            self.channel_settings = [{'name': f'channel_name_{i}', 'initial': i,
-                                      'description': f'physical output channel {i}'} for i in range(self.short_pulse_bit_num)]
-
-        for channel in self.channel_settings:
-            S.New(dtype=int, **channel)
-
-        self.channels_list = [
-            k.get('name', f'channel_{i}') for i, k in enumerate(self.channel_settings)]
+        # if self.named_settings is None:
+        #     self.named_settings = [{'name': f'chan_{i}', 'initial': i, 'ro': False,
+        #                             'description': f'physical output channel {i}'} for i in range(self.short_pulse_bit_num)]
 
         self.add_operation('configure', self.configure)
         self.add_operation('write close', self.write_close)
 
-        self.pens = {k.get('name', f'channel_name_{i}'): k.get('colors', ['w'])[
-            0] for i, k in enumerate(self.channel_settings)}
+        self.colors_lu = {f'chan_{i}': c for i, c in enumerate(get_colors())}
+        self.named_channels = []
+        if not self.named_channel_kwargs:
+            return
+        for ii, channel in enumerate(self.named_channel_kwargs):
+            print(ii, channel)
+            S.New(dtype=int, **channel)
+            self.colors_lu.update({channel['name']: channel['colors'][0]})
+            self.named_channels.append(channel['name'])
 
     def catch_error(self, status):
         if status == -91:
@@ -136,17 +142,20 @@ class PulseBlasterHW(HardwareComponent):
         time of calling this function will continue to run indefinitely.'''
         self.catch_error(pb_close())
 
-    def get_flags(self, channel: str) -> int:
+    def get_flags(self, chan_name: str) -> int:
         # Note:
-        # - To create the flags to turn on the channels 'A' and 'B' (and all other channels off) use:
+        # - To create the flags to turn on the chan_name 'A' and 'B' (and all other channels off) use:
         #     self.get_flags('A') ^ self.get_flags('B')
         #
-        # - from an old_flags with channel 'A' on use
+        # - from an old_flags with chan_name 'A' on use
         #     old_flags ^ self.get_flags('A')
         #     To turn channel 'A' off again.
         # '''
-        return 2 ** self.settings[channel]
+        return 2 ** self.settings[chan_name]
+
+    def get_channel_number(self, chan_name: str) -> int:
+        return self.settings[chan_name]
 
     @property
-    def channels_lookup(self) -> ChannelsLookUp:
-        return {self.settings[i]: i for i in self.channels_list}
+    def channel_name_lu(self) -> ChannelNameLU:
+        return {self.settings[i]: i for i in self.named_channels}

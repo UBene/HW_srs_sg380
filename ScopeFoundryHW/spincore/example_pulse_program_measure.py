@@ -24,6 +24,7 @@ class ExamplePulseProgramGenerator(PulseProgramGenerator):
         self.new_channel('channel_name_1', start_times, lengths)
         self.new_channel('channel_name_2', [1000, 2000, 3000],  [
                          S['some_duration'] * ns] * 3)
+        self.new_channel(3, start_times, lengths)
 
 
 class ExampleProgramMeasure(Measurement):

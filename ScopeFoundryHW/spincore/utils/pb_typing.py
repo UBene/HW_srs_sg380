@@ -3,7 +3,7 @@ Created on Sep 29, 2022
 
 @author: Benedikt Ursprung
 '''
-from typing import Dict, List, Tuple
+from typing import Dict, List, Tuple, Union
 
 # PULSE PROGRAM INSTRUCTIONS
 Flags = int
@@ -25,7 +25,7 @@ InstLength = int  # the length of the instruction in ns,
 PBInstruction = Tuple[Flags, Inst, InstData, InstLength]
 PBInstructions = List[PBInstruction]
 # Short Pulse Feature
-# the pulse blaster is capable of putting out pulse with resolution 
+# the pulse blaster is capable of putting out pulse with resolution
 # clock_period_ns = 1e9 / clock_period_Hz
 # however it can only handle an instruction every 5*clock_period_ns
 # for pulses < 5*clock_period_ns the Flags integer is altered (see )
@@ -34,4 +34,4 @@ PBInstructions = List[PBInstruction]
 # PLOTTING
 # {channel_name: (times, high/low values)}
 PlotLines = Dict[str, Tuple[List[float], List[int]]]
-ChannelsLookUp = Dict[int, str]  # {channel_number: channel_name}
+ChannelNameLU = Dict[int, str]  # {channel_number: channel_name}

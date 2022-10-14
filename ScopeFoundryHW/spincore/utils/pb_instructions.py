@@ -103,7 +103,7 @@ def calc_pulse_program_duration(pb_insts: PBInstructions):
     return int(np.sum(np.array(pb_insts)[:, -1]))
 
 
-def extract_used_channels(pb_insts: PBInstructions, short_pulse_bit_num: int = 21) -> List[int]:
+def extract_channels_used(pb_insts: PBInstructions, short_pulse_bit_num: int = 21) -> List[int]:
     used_flags = reduce(lambda x, y: x | y, [x[0] for x in pb_insts])
     channels_used = [cn for cn in range(
         short_pulse_bit_num) if used_flags & (1 << cn)]
