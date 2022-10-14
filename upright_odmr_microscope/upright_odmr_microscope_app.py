@@ -159,8 +159,7 @@ class Microscope(BaseMicroscopeApp):
         ]
 
         from ScopeFoundryHW.spincore.pulse_blaster_hw import PulseBlasterHW
-        self.add_hardware(PulseBlasterHW(
-            self, named_channels_kwargs, 500_000_000, 21))
+        self.add_hardware(PulseBlasterHW(self, False, None, named_channels_kwargs, 500_000_000, 21))
 
         #from ScopeFoundryHW.nidaqmx.buffered_edge_smpl_clk_counter_hw import BufferedEdgeSmplClkCounterHW
         # self.add_hardware(BufferedEdgeSmplClkCounterHW(self))

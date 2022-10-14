@@ -201,7 +201,6 @@ class Rabi(Measurement):
         for cm in ContrastModes:
             self.h5_meas_group[cm] = calculate_contrast(cm, signal, reference)
         for k, v in self.data.items():
-            print(k, v)
             try:
                 self.h5_meas_group[k] = np.array(v)
             except RuntimeError:
