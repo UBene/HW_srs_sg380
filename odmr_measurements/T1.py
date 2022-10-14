@@ -18,7 +18,7 @@ from pyqtgraph.dockarea.DockArea import DockArea
 from ScopeFoundry import Measurement
 from ScopeFoundry import h5_io
 from odmr_measurements.T1_pulse_program_generator import T1PulseProgramGenerator
-from odmr_measurements.helper_functions import ContrastModes, calculateContrast
+from odmr_measurements.contrast import ContrastModes, calculate_contrast
 
 
 class T1(Measurement):
@@ -110,7 +110,7 @@ class T1(Measurement):
         self.plot_lines["reference"].setData(x, reference)
 
         S = self.settings
-        contrast = calculateContrast(S["contrast_mode"], signal, reference)
+        contrast = calculate_contrast(S["contrast_mode"], signal, reference)
         self.plot_lines['contrast'].setData(x, contrast)
 
     def pre_run(self):
@@ -196,7 +196,7 @@ class T1(Measurement):
         self.h5_meas_group['signal'] = signal
         self.h5_meas_group['t_pi_pulses'] = self.data['t_pi_pulses']
         for cm in ContrastModes:
-            self.h5_meas_group[cm] = calculateContrast(cm, signal, reference)
+            self.h5_meas_group[cm] = calculate_contrast(cm, signal, reference)
         for k, v in self.data.items():
             self.h5_meas_group[k] = v
         self.pulse_generator.save_to_h5(self.h5_meas_group)

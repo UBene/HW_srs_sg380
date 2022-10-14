@@ -19,7 +19,7 @@ from ScopeFoundry import Measurement
 from ScopeFoundry import h5_io
 
 from odmr_measurements.T2_pulse_program_generator import T2PulseProgramGenerator
-from odmr_measurements.helper_functions import ContrastModes, calculateContrast
+from odmr_measurements.contrast import ContrastModes, calculate_contrast
 import time
 
 
@@ -112,7 +112,7 @@ class T2(Measurement):
         self.plot_lines["reference"].setData(x, reference)
 
         S = self.settings
-        contrast = calculateContrast(S["contrast_mode"], signal, reference)
+        contrast = calculate_contrast(S["contrast_mode"], signal, reference)
         self.plot_lines['contrast'].setData(x, contrast)
 
     def pre_run(self):
@@ -139,7 +139,7 @@ class T2(Measurement):
             SRS.connect()
             SRS.settings['modulation'] = True
             SRS.settings['modulation_type'] = 6
-            SRS.settings['QFNC'] = 5 # External
+            SRS.settings['QFNC'] = 5  # External
             SRS.settings["output"] = True
 
             PB.connect()
@@ -203,7 +203,7 @@ class T2(Measurement):
         self.h5_meas_group['signal'] = signal
         self.h5_meas_group['taus'] = self.data['taus']
         for cm in ContrastModes:
-            self.h5_meas_group[cm] = calculateContrast(cm, signal, reference)
+            self.h5_meas_group[cm] = calculate_contrast(cm, signal, reference)
         for k, v in self.data.items():
             try:
                 self.h5_meas_group[k] = v

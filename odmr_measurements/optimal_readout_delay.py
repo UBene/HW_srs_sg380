@@ -20,7 +20,7 @@ from ScopeFoundry import h5_io
 from ScopeFoundryHW.spincore import PulseProgramGenerator, PulseBlasterChannel
 
 from spinapi.spinapi import us
-from odmr_measurements.helper_functions import calculateContrast, ContrastModes
+from odmr_measurements.contrast import calculate_contrast, ContrastModes
 from random import shuffle
 
 
@@ -32,7 +32,7 @@ class ORDPulseProgramGenerator(PulseProgramGenerator):
         self.settings.New('t_AOM', unit='us', initial=10)
         self.settings.New('AOM_on_off_delay', unit='us', initial=10)
         #self.settings.New('program_duration', float, unit='us', initial=160.0)
-        #self.settings['program_duration'] = 15  # us
+        # self.settings['program_duration'] = 15  # us
         self.settings.New('t_gate', unit='us', initial=1.0)
 
     def make_pulse_channels(self) -> [PulseBlasterChannel]:
@@ -41,7 +41,8 @@ class ORDPulseProgramGenerator(PulseProgramGenerator):
         t_readout_delay = self.settings['t_readout_delay'] * us
         AOM_on_off_delay = self.settings['AOM_on_off_delay'] * us
         return [self.new_channel('AOM', [AOM_on_off_delay], [t_AOM]),
-                self.new_channel('DAQ_sig', [AOM_on_off_delay + t_readout_delay], [t_gate]),
+                self.new_channel(
+                    'DAQ_sig', [AOM_on_off_delay + t_readout_delay], [t_gate]),
                 self.new_channel('dummy_channel', [AOM_on_off_delay + t_AOM], [AOM_on_off_delay])]
 
 
@@ -99,8 +100,8 @@ class OptimalReadoutDelay(Measurement):
         start_layout = QVBoxLayout()
         #SRS = self.app.hardware["srs_control"]
         #start_layout.addWidget(QLabel('<b>SRS control</b>'))
-        #start_layout.addWidget(SRS.settings.New_UI(
-            #['connected', 'amplitude', 'frequency']))
+        # start_layout.addWidget(SRS.settings.New_UI(
+        # ['connected', 'amplitude', 'frequency']))
         start_layout.addWidget(self.settings.activation.new_pushButton())
         settings_layout.addLayout(start_layout)
 
@@ -132,9 +133,9 @@ class OptimalReadoutDelay(Measurement):
         S = self.settings
 
         #SRS = self.app.hardware["srs_control"]
-        #if not SRS.settings['connected']:
-            #pass
-            # raise RuntimeError('SRS_control hardware not connected')
+        # if not SRS.settings['connected']:
+        # pass
+        # raise RuntimeError('SRS_control hardware not connected')
         PB = self.app.hardware["pulse_blaster"]
         DAQ = self.app.hardware['pulse_width_counters']
 
@@ -145,7 +146,7 @@ class OptimalReadoutDelay(Measurement):
         N_DAQ_readouts = S['N_samples']
 
         try:
-            #SRS.connect()
+            # SRS.connect()
             #SRS.settings["modulation"] = False
             #SRS.settings["output"] = True
 
@@ -174,7 +175,8 @@ class OptimalReadoutDelay(Measurement):
                     pct = 100 * (i_sweep * N + j) / (N_sweeps * N)
                     self.set_progress(pct)
 
-                    self.pulse_generator.settings['t_readout_delay'] = t_readout_delay #* us
+                    # * us
+                    self.pulse_generator.settings['t_readout_delay'] = t_readout_delay
                     self.pulse_generator.program_pulse_blaster_and_start()
 
                     # Update data arrays

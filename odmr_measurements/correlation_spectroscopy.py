@@ -17,7 +17,7 @@ from pyqtgraph.dockarea.DockArea import DockArea
 
 from ScopeFoundry import Measurement
 from ScopeFoundry import h5_io
-from odmr_measurements.helper_functions import ContrastModes, calculateContrast
+from odmr_measurements.contrast import ContrastModes, calculate_contrast
 from odmr_measurements.correlation_spectroscopy_pulse_program_generator import CSPulseProgramGenerator
 
 
@@ -28,7 +28,7 @@ class CorrelationSpectroscopy(Measurement):
     def setup(self):
 
         S = self.settings
-        
+
         self.range = S.New_Range(
             "t_correlations", initials=[0, 40000, 200], unit="ns", si=False
         )
@@ -109,7 +109,7 @@ class CorrelationSpectroscopy(Measurement):
         self.plot_lines["reference"].setData(x, reference)
 
         S = self.settings
-        contrast = calculateContrast(S["contrast_mode"], signal, reference)
+        contrast = calculate_contrast(S["contrast_mode"], signal, reference)
         self.plot_lines['contrast'].setData(x, contrast)
 
     def pre_run(self):
@@ -198,7 +198,7 @@ class CorrelationSpectroscopy(Measurement):
         self.h5_meas_group['signal'] = signal
         self.h5_meas_group['t_correlations'] = self.data['t_correlations']
         for cm in ContrastModes:
-            self.h5_meas_group[cm] = calculateContrast(cm, signal, reference)
+            self.h5_meas_group[cm] = calculate_contrast(cm, signal, reference)
         for k, v in self.data.items():
             self.h5_meas_group[k] = v
         self.pulse_generator.save_to_h5(self.h5_meas_group)

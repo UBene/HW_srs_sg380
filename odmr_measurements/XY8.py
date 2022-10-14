@@ -15,7 +15,7 @@ import pyqtgraph as pg
 from pyqtgraph.dockarea.DockArea import DockArea
 
 from ScopeFoundry import Measurement, h5_io
-from odmr_measurements.helper_functions import ContrastModes, calculateContrast
+from odmr_measurements.contrast import ContrastModes, calculate_contrast
 from odmr_measurements.XY8_pulse_program_generator import XY8PulseProgramGenerator
 
 
@@ -107,7 +107,7 @@ class XY8(Measurement):
         self.plot_lines["reference"].setData(x, reference)
 
         S = self.settings
-        contrast = calculateContrast(S["contrast_mode"], signal, reference)
+        contrast = calculate_contrast(S["contrast_mode"], signal, reference)
         self.plot_lines['contrast'].setData(x, contrast)
 
     def pre_run(self):
@@ -134,7 +134,7 @@ class XY8(Measurement):
             SRS.connect()
             SRS.settings['modulation'] = True
             SRS.settings['modulation_type'] = 6
-            SRS.settings['QFNC'] = 5 # External
+            SRS.settings['QFNC'] = 5  # External
             SRS.settings["output"] = True
 
             PB.connect()
@@ -195,7 +195,7 @@ class XY8(Measurement):
         self.h5_meas_group['reference'] = reference
         self.h5_meas_group['signal'] = signal
         for cm in ContrastModes:
-            self.h5_meas_group[cm] = calculateContrast(cm, signal, reference)
+            self.h5_meas_group[cm] = calculate_contrast(cm, signal, reference)
         for k, v in self.data.items():
             self.h5_meas_group[k] = v
         self.pulse_generator.save_to_h5(self.h5_meas_group)

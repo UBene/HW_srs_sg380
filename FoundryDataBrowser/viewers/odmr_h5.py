@@ -6,7 +6,7 @@ from pyqtgraph.dockarea.DockArea import DockArea
 from qtpy.QtWidgets import QVBoxLayout, QWidget
 
 from pyqtgraph.dockarea.Dock import Dock
-from odmr_measurements.helper_functions import channel_settings
+from odmr_measurements.contrast import channel_settings
 
 
 class PulseProgramPlot:
