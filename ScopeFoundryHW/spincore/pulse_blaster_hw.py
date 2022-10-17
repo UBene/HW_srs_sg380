@@ -48,7 +48,8 @@ class PulseBlasterHW(HardwareComponent):
                                 which contains some debugging information''')
         S.New('last_error', str, ro=True)
         S.New('version', str, ro=True)
-        S.New('clock_frequency', int, initial=self._clock_frequency, unit='Hz', si=True)
+        S.New('clock_frequency', int,
+              initial=self._clock_frequency, unit='Hz', si=True)
 
         # if self.named_settings is None:
         #     self.named_settings = [{'name': f'chan_{i}', 'initial': i, 'ro': False,
@@ -65,7 +66,7 @@ class PulseBlasterHW(HardwareComponent):
             S.New(dtype=int, **channel)
             self.colors_lu.update({channel['name']: channel['colors'][0]})
             self.named_channels.append(channel['name'])
-            
+
     @property
     def clock_period_ns(self)-> int:
         return int(1e9 / self.settings['clock_frequency'])
@@ -94,7 +95,7 @@ class PulseBlasterHW(HardwareComponent):
         for pb_inst in pb_insts:
             self._write_pb_inst_pbonly(*pb_inst)
         self._stop_programming()
-        
+
     def write_start(self):
         self._catch_error(pb_start())
 
@@ -122,9 +123,8 @@ class PulseBlasterHW(HardwareComponent):
     @property
     def channel_name_lu(self) -> ChannelNameLU:
         return {self.settings[i]: i for i in self.named_channels}
-    
-    
-    # privat methods
+
+    # private methods
     def _catch_error(self, status):
         if status == -91:
             print('pulse_blaster not initialize: Connect pulse_blaster')
@@ -147,13 +147,14 @@ class PulseBlasterHW(HardwareComponent):
         If you have multiple boards installed in your system, pb_select_board() 
         may be called first to select which board to initialize.'''
         self._catch_error(pb_init())
-        self._write_core_clock(freq_in_MHz=self.settings['clock_frequency']/1e6)
+        self._write_core_clock(
+            freq_in_MHz=self.settings['clock_frequency'] / 1e6)
 
     def _write_pb_inst_pbonly(self, flags, inst, inst_data, length):
         self._catch_error(pb_inst_pbonly(int(flags),  # np.int32 can not be directly converted?
-                                        int(inst),
-                                        int(inst_data),
-                                        float(length)))
+                                         int(inst),
+                                         int(inst_data),
+                                         float(length)))
 
     def _configure(self):
         self.write_close()

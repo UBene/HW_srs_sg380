@@ -94,6 +94,21 @@ class PulseProgramGenerator:
             f"Overide make_pulse_channels() of {self.name} not Implemented"
         )
 
+    def new_channel(
+        self, channel: Union[str, int], start_times: List[float], pulse_lengths: List[float]
+    ) -> PulseBlasterChannel:
+        """channel can be a 
+                - channel number (int) a physical output of the pulse blaster
+                - channel name str as defined in the pulse blaster HW
+        start_times: in ns 
+        pulse_lengths: in ns"""
+        if type(channel) == str:
+            channel = self.hw.get_channel_number(channel)
+        chan = new_pb_channel(channel, start_times,
+                              pulse_lengths, self.hw.clock_period_ns)
+        self.__pb_channels.append(chan)
+        return chan
+    
     @property
     def t_min(self) -> int:
         return self.hw.clock_period_ns
@@ -147,29 +162,14 @@ class PulseProgramGenerator:
         self.pulse_program_duration = calc_pulse_program_duration(pb_insts)
         return pb_insts
 
-    def create_pulse_plot_lines(self) -> PlotLines:
-        return make_plot_lines(self.get_pb_insts(), self.hw.channel_name_lu)
-
     def save_to_h5(self, h5_meas_group: Group) -> None:
         sub_group = h5_meas_group.create_group("pulse_plot_lines")
         for k, v in self.create_pulse_plot_lines().items():
             sub_group[k] = np.array(v)
             sub_group.attrs[k] = self.hw.colors_lu[k]
 
-    def new_channel(
-        self, channel: Union[str, int], start_times: List[float], pulse_lengths: List[float]
-    ) -> PulseBlasterChannel:
-        """channel can be a 
-                - channel number (int) a physical output of the pulse blaster
-                - channel name str as defined in the pulse blaster HW
-        start_times: in ns 
-        pulse_lengths: in ns"""
-        if type(channel) == str:
-            channel = self.hw.get_channel_number(channel)
-        chan = new_pb_channel(channel, start_times,
-                              pulse_lengths, self.hw.clock_period_ns)
-        self.__pb_channels.append(chan)
-        return chan
+    def create_pulse_plot_lines(self) -> PlotLines:
+        return make_plot_lines(self.get_pb_insts(), self.hw.channel_name_lu)
 
     def program_pulse_blaster_and_start(self) -> None:
         self.hw.write_pulse_program_and_start(self.get_pb_insts())
