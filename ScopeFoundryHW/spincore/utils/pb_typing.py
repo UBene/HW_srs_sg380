@@ -33,5 +33,5 @@ PBInstructions = List[PBInstruction]
 
 # PLOTTING
 # {channel_name: (times, high/low values)}
-PlotLines = Dict[str, Tuple[List[float], List[int]]]
+PlotLines = Dict[str, Tuple[List[int], List[int]]]
 ChannelNameLU = Dict[int, str]  # {channel_number: channel_name}
