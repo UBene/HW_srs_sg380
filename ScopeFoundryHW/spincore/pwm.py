@@ -20,11 +20,6 @@ class PWMProgramGenerator(PulseProgramGenerator):
         up_ns = (self.settings['duty_cycle'] / 100) * period_ns
         self.settings['all_off_padding'] = period_ns - up_ns
         self.new_channel(0, [0], [up_ns])
-        self.new_channel(1, [0], [up_ns])
-        self.new_channel(2, [0], [up_ns])
-        self.new_channel(3, [0], [up_ns])
-        self.new_channel(4, [0], [up_ns])
-        self.new_channel(5, [0], [up_ns])
 
 
 class PMW(Measurement):

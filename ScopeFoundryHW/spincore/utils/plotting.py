@@ -14,6 +14,7 @@ class _Constants:
     low: int
     high: int
     clock_period: int
+    short_pulse_bit_num: int
 
 
 def _append_lowering_shape(xs: List[int], ys: List[int], time: int, c: _Constants) -> None:
@@ -52,26 +53,32 @@ def make_plot_lines(
     clock_period: int = 2,
     short_pulse_bit_num: int = 21,
 ) -> PlotLines:
-
-    c = _Constants(low, high, clock_period)
-
+    c = _Constants(low, high, clock_period, short_pulse_bit_num)
+    # channel_name_lu may contain names of unused channels
     # construct a name look up for only channels being used in the pb_insts
     used_channels = extract_channels_used(pb_insts, short_pulse_bit_num)
     channel_name_lu = channel_name_lu if channel_name_lu else {}
     lu = {i: channel_name_lu.get(i, f"chan_{i}") for i in used_channels}
 
+    return _create_lu_based_plot_lines(pb_insts, lu, c)
+
+
+def _create_lu_based_plot_lines(pb_insts: PBInstructions, lu: ChannelNameLU, c: _Constants) -> PlotLines:
+    '''
+    creates a plot line for each channel represented in lu.
+    '''
+
     # lines = {channel_name: (time-coordinates, y-coordinates)}
     # all lines start at (0,0)
+    lines = {name: ([0], [c.low]) for name in lu.values()}
     time = 0
-    lines = {name: ([time], [low]) for name in lu.values()}
-
     for state, _, _, length in pb_insts:
         # periods_count is non-zero if short pulse feature was used
-        periods_count = state >> short_pulse_bit_num
+        periods_count = state >> c.short_pulse_bit_num
         for num, name in lu.items():
             xs, ys = lines[name]
             is_high = 1 << num & state
-            was_high = ys[-1] == high
+            was_high = ys[-1] == c.high
             if periods_count:
                 if is_high and was_high:
                     _append_short_pulse_from_high(
@@ -91,7 +98,6 @@ def make_plot_lines(
         if xs[-1] != time:
             xs.append(time)
             ys.append(ys[-1])
-
     return lines
 
 

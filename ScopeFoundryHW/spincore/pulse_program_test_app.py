@@ -12,12 +12,17 @@ class TestApp(BaseMicroscopeApp):
 
     name = 'test_app'
 
-    def setup(self):
-        named_channel_kwargs = [
-            dict(name='my_named_channel', initial=1, colors=['r'],
-                 description='a pysical output channel that can be referenced by its name'),
-        ]
+    def setup(self):        
         from ScopeFoundryHW.spincore.pulse_blaster_hw import PulseBlasterHW
+        named_channel_kwargs = [
+            {
+            "name":'my_named_channel',
+            'initial':1, 
+            'colors':['y'],
+            'description':'a physical output channel that can be referenced by its name'           
+            }
+        ]
+        
         self.add_hardware(PulseBlasterHW(self,
                                          named_channels_kwargs=named_channel_kwargs,
                                          clock_frequency_Hz=500_000_000,

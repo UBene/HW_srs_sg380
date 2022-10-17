@@ -20,11 +20,11 @@ class ExamplePulseProgramGenerator(PulseProgramGenerator):
         S = self.settings
         start_times = np.arange(2) * (S['some_time'] * us)
         lengths = [S['some_duration'] * ns] * 2
-        # assuming there are channels called 'channel_name_1' and 'channel_name_2'
-        self.new_channel('channel_name_1', start_times, lengths)
-        self.new_channel('channel_name_2', [1000, 2000, 3000],  [
-                         S['some_duration'] * ns] * 3)
-        self.new_channel(3, start_times, lengths)
+        # assuming there is a channel named 'my_named_channel'
+        self.new_channel('my_named_channel', start_times, lengths)
+            
+        # using physical channel number 4 (unnamed channel)
+        self.new_channel(4, [1000, 2000, 3000],  [S['some_duration'] * ns] * 3)
 
 
 class ExampleProgramMeasure(Measurement):
