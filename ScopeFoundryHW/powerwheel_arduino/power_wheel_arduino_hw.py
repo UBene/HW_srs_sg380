@@ -21,13 +21,13 @@ class PowerWheelArduinoHW(HardwareComponent):
     
     def setup(self): 
         S = self.settings     
-        self.settings.New('encoder_pos', dtype=int, unit='steps', ro=True)
-        self.settings.New('port', dtype=str, initial='COM4')
-        self.settings.New('position', float, unit='deg', ro=True)
-        self.settings.New('jog', initial=10.0, unit='deg')
-        self.settings.New('target_position', float, unit='deg')
-        self.settings.target_position.add_listener(self.move_to_position)
-        self.settings.New('reverse', bool, initial=False)
+        S.New('encoder_pos', dtype=int, unit='steps', ro=True)
+        S.New('port', dtype=str, initial='COM4')
+        S.New('position', float, unit='deg', ro=True)
+        S.New('jog', initial=10.0, unit='deg')
+        S.New('target_position', float, unit='deg')
+        S.target_position.add_listener(self.move_to_position)
+        S.New('reverse', bool, initial=False)
         #  operations
         self.add_operation("zero_encoder", self.zero_encoder)
         self.add_operation("jog_forward", self.jog_forward)
@@ -52,6 +52,8 @@ class PowerWheelArduinoHW(HardwareComponent):
         if self.settings['debug_mode']: print('disconnected ', self.name)
 
     def move_relative(self, d_steps):
+        if not hasattr(self, 'dev'):
+            return
         if self.settings['debug_mode']:
             print(self.name, 'move relative', d_steps)
         self.dev.write_steps_and_wait(d_steps)
@@ -73,7 +75,6 @@ class PowerWheelArduinoHW(HardwareComponent):
         if S['debug_mode']:
             print(self.name, 'jog_forward', target)
         self.settings['target_position'] = target
-        # self.dev.write_steps_and_wait(self.move_steps.val)
         time.sleep(0.2)
         S.encoder_pos.read_from_hardware()
 
@@ -87,6 +88,8 @@ class PowerWheelArduinoHW(HardwareComponent):
         S.encoder_pos.read_from_hardware()
 
     def zero_encoder(self):
+        if not hasattr(self, 'dev'):
+            return
         self.dev.write_zero_encoder()
         time.sleep(0.1)
         pos = self.settings.encoder_pos.read_from_hardware()
