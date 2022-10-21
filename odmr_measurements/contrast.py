@@ -30,18 +30,18 @@ class ContrastModes(Enum):
     fractional_difference_over_reference = 'fractional_difference_over_reference',
     difference_over_sum = 'difference_over_sum',
     signal_only = 'signal_only'
-contrast_modes = tuple([(x.value, x.value) for x in ContrastModes])
+contrast_modes = [x.name for x in ContrastModes]
+
 
 def calculate_contrast(contrast_mode: str, signal: np.ndarray, background: np.ndarray) -> np.ndarray:
-    if contrast_mode == ContrastModes.signal_over_reference.value:
+    if contrast_mode == ContrastModes.signal_over_reference.name:
         return np.divide(signal, background)
-    if contrast_mode == ContrastModes.fractional_difference_over_reference.value:
+    if contrast_mode == ContrastModes.fractional_difference_over_reference.name:
         return 1.0 - np.divide(
             np.subtract(background, signal), background
         )
-    if contrast_mode == ContrastModes.difference_over_sum.value:
+    if contrast_mode == ContrastModes.difference_over_sum.name:
         return np.divide(
             np.subtract(signal, background), np.add(signal, background)
         )
-    if contrast_mode == ContrastModes.signal_only.value:
-        return signal
+    return signal

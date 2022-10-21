@@ -106,8 +106,7 @@ class T1(Measurement):
 
         S = self.settings
         contrast = calculate_contrast(S["contrast_mode"], signal, reference)
-        if contrast:
-            self.plot_lines['contrast'].setData(x, contrast)
+        self.plot_lines['contrast'].setData(x, contrast)
 
     def pre_run(self):
         self.pulse_generator.update_pulse_plot()

@@ -15,8 +15,7 @@ from pyqtgraph.dockarea.DockArea import DockArea
 from qtpy.QtWidgets import QHBoxLayout, QVBoxLayout, QWidget
 
 from odmr_measurements.esr import ESRPulseProgramGenerator
-from odmr_measurements.pulse_blaster_functions import (ContrastModes,
-                                                       calculateContrast)
+from odmr_measurements.contrast import contrast_modes, calculate_contrast
 from ScopeFoundry import Measurement, h5_io
 
 sequences = ["ESR", "Rabi", "T1", "T2", "XY8", "correlSpecconfig"]
@@ -62,7 +61,7 @@ class ConfigMeasurement(Measurement):
             "contrast_mode",
             str,
             initial="ratio_SignalOverReference",
-            choices=ContrastModes,
+            choices=contrast_modes,
         )
 
         S.New("save_h5", bool, initial=True)
@@ -382,8 +381,8 @@ class ConfigMeasurement(Measurement):
         sig = self.data['signal'].mean(-1)
         self.h5_meas_group['reference'] = ref
         self.h5_meas_group['signal'] = sig
-        for c in ContrastModes:
-            self.h5_meas_group[c] = calculateContrast(c, sig, ref)
+        for c in contrast_modes:
+            self.h5_meas_group[c] = calculate_contrast(c, sig, ref)
         for k, v in self.data.items():
             self.h5_meas_group[k] = v        
         self.pulse_generator.save_to_h5(self.h5_meas_group)
