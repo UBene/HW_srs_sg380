@@ -10,6 +10,7 @@ import operator
 from builtins import getattr
 import time
 import os
+from pathlib import Path
 import json
 import glob
 import numpy as np
@@ -18,6 +19,7 @@ from qtpy.QtWidgets import QListWidget, QListWidgetItem, QCompleter, QComboBox, 
     QWidget, QSpinBox, QLineEdit, QFileDialog, QSpacerItem
 from qtpy.QtCore import Qt
 from PyQt5.Qt import QLabel
+from datetime import datetime
 
 
 class Sequencer(Measurement):
@@ -293,6 +295,19 @@ class Sequencer(Measurement):
         self.pause_spacer = QLabel()
         gb.layout().addWidget(self.pause_spacer)
         
+        ## new_folder
+        gb = self.add_editor('new_dir', self.on_add_new_dir, QHBoxLayout(), 
+                             description = f'{self.name} created sub folder and set as save_dir')
+
+        self.new_dir_name_lineEdit = QLineEdit()
+        gb.layout().addWidget(self.new_dir_name_lineEdit)
+
+        ## save_dir_to_parent
+        gb = self.add_editor('save_dir_to_parent', self.on_add_save_dir_to_parent, QHBoxLayout(), 
+                             description = f'{self.name} save_dir to parent, designed use in conjunction with new_dir')
+        
+
+        
         # key events
         self.listWidget.keyReleaseEvent = self._keyReleaseEvent
         self.editor_widget.keyPressEvent = self._editorKeyPressEvent
@@ -407,7 +422,20 @@ class Sequencer(Measurement):
         print('pause')
         if not ignore_add_listItem:
             self.add_listItem(d)
-        return d         
+        return d
+    
+    def on_add_save_dir_to_parent(self, ignore_add_listItem=False):
+        d = {'type':'save_dir_to_parent', 'info': "click resume to continue"}
+        if not ignore_add_listItem:
+            self.add_listItem(d)
+        return d
+    
+    def on_add_new_dir(self, ignore_add_listItem=False):
+        val = self.new_dir_name_lineEdit.text()
+        d = {'type':'new_dir', 'new_dir_name':val, 'info': "creates new_dir_name sub-folder and sets save_dir"}
+        if not ignore_add_listItem:
+            self.add_listItem(d)
+        return d
     
     def add_listItem(self, d, text=None, row=None):
         if row == None:
@@ -708,6 +736,19 @@ class ListItem(QListWidgetItem):
         if d['type'] == 'pause':
             self.measure.settings['paused'] = True
 
+
+        if d['type'] == 'new_dir':
+            t0 = time.time()
+            name = d['new_dir_name']
+            sub_dir = f"{datetime.fromtimestamp(t0):%y%m%d_%H%M%S}_{name}"
+            new_dir = Path(self.app.settings['save_dir']) / sub_dir
+            new_dir.mkdir()
+            self.app.settings['save_dir'] = new_dir.as_posix()
+
+        if d['type'] == 'save_dir_to_parent':
+            cur = Path(self.app.settings['save_dir'])
+            self.app.settings['save_dir'] = cur.parent.as_posix()
+                       
         time.sleep(0.05)
     
     def reset(self):
