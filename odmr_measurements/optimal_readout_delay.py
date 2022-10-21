@@ -4,24 +4,17 @@ Created on Apr 4, 2022
 @author: Benedikt Ursprung
 '''
 
-import numpy as np
+from random import shuffle
 
-from qtpy.QtWidgets import (
-    QHBoxLayout,
-    QVBoxLayout,
-    QWidget,
-    QLabel
-)
+import numpy as np
 import pyqtgraph as pg
 from pyqtgraph.dockarea.DockArea import DockArea
-
-from ScopeFoundry import Measurement
-from ScopeFoundry import h5_io
-from ScopeFoundryHW.spincore import PulseProgramGenerator, PulseBlasterChannel
-
+from qtpy.QtWidgets import QHBoxLayout, QLabel, QVBoxLayout, QWidget
 from spinapi.spinapi import us
-from odmr_measurements.contrast import calculate_contrast, ContrastModes
-from random import shuffle
+
+from odmr_measurements.contrast import calculate_contrast, contrast_modes
+from ScopeFoundry import Measurement, h5_io
+from ScopeFoundryHW.spincore import PulseBlasterChannel, PulseProgramGenerator
 
 
 class ORDPulseProgramGenerator(PulseProgramGenerator):
@@ -65,12 +58,12 @@ class OptimalReadoutDelay(Measurement):
         S.New("N_sweeps", int, initial=1)
         S.New("randomize", bool, initial=False,
               description='probe t_readout_delays in a random order.')
-        S.New("shotByShotNormalization", bool, initial=False)
+        S.New("shot_by_shot_normalization", bool, initial=False)
         S.New(
             "contrast_mode",
             str,
-            initial="signalOverReference",
-            choices=ContrastModes,
+            initial="signal_over_reference",
+            choices=contrast_modes,
         )
         S.New("save_h5", bool, initial=True)
 

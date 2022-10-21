@@ -3,24 +3,18 @@ Created on Apr 14, 2022
 
 @author: Benedikt Ursprung
 '''
-import numpy as np
+import time
 from random import shuffle
 
-from qtpy.QtWidgets import (
-    QHBoxLayout,
-    QVBoxLayout,
-    QWidget,
-    QLabel,
-)
+import numpy as np
 import pyqtgraph as pg
 from pyqtgraph.dockarea.DockArea import DockArea
+from qtpy.QtWidgets import QHBoxLayout, QLabel, QVBoxLayout, QWidget
 
-from ScopeFoundry import Measurement
-from ScopeFoundry import h5_io
-
-from odmr_measurements.T2_pulse_program_generator import T2PulseProgramGenerator
-from odmr_measurements.contrast import ContrastModes, calculate_contrast
-import time
+from odmr_measurements.contrast import calculate_contrast, contrast_modes
+from odmr_measurements.T2_pulse_program_generator import \
+    T2PulseProgramGenerator
+from ScopeFoundry import Measurement, h5_io
 
 
 class T2(Measurement):
@@ -38,12 +32,12 @@ class T2(Measurement):
         S.New("N_sweeps", int, initial=1)
         S.New("randomize", bool, initial=False,
               description='probe taus in a random order.')
-        S.New("shotByShotNormalization", bool, initial=False)
+        S.New("shot_by_shot_normalization", bool, initial=False)
         S.New(
             "contrast_mode",
             str,
-            initial="differenceOverSum",
-            choices=ContrastModes,
+            initial="difference_over_sum",
+            choices=contrast_modes,
         )
         S.New("save_h5", bool, initial=True)
 
@@ -113,7 +107,8 @@ class T2(Measurement):
 
         S = self.settings
         contrast = calculate_contrast(S["contrast_mode"], signal, reference)
-        self.plot_lines['contrast'].setData(x, contrast)
+        if contrast:
+            self.plot_lines['contrast'].setData(x, contrast)
 
     def pre_run(self):
         self.pulse_generator.update_pulse_plot()
@@ -202,7 +197,7 @@ class T2(Measurement):
         self.h5_meas_group['reference'] = reference
         self.h5_meas_group['signal'] = signal
         self.h5_meas_group['taus'] = self.data['taus']
-        for cm in ContrastModes:
+        for cm in contrast_modes:
             self.h5_meas_group[cm] = calculate_contrast(cm, signal, reference)
         for k, v in self.data.items():
             try:

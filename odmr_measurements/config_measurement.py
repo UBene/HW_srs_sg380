@@ -6,22 +6,18 @@ Created on Mar 21, 2022
 to be retired! use 
 """
 
-import numpy as np
-from random import shuffle
 import time
+from random import shuffle
 
-from qtpy.QtWidgets import (
-    QHBoxLayout,
-    QVBoxLayout,
-    QWidget,
-)
+import numpy as np
 import pyqtgraph as pg
 from pyqtgraph.dockarea.DockArea import DockArea
+from qtpy.QtWidgets import QHBoxLayout, QVBoxLayout, QWidget
 
-from ScopeFoundry import Measurement
-from ScopeFoundry import h5_io
-from odmr_measurements.pulse_blaster_functions import ContrastModes, calculateContrast
 from odmr_measurements.esr import ESRPulseProgramGenerator
+from odmr_measurements.pulse_blaster_functions import (ContrastModes,
+                                                       calculateContrast)
+from ScopeFoundry import Measurement, h5_io
 
 sequences = ["ESR", "Rabi", "T1", "T2", "XY8", "correlSpecconfig"]
 
@@ -61,7 +57,7 @@ class ConfigMeasurement(Measurement):
         S.New("Navg", int, initial=1)
         # S.New("DAQtimeout", float, initial=10)
         S.New("randomize", bool, initial=True)
-        S.New("shotByShotNormalization", bool, initial=False)
+        S.New("shot_by_shot_normalization", bool, initial=False)
         S.New(
             "contrast_mode",
             str,
@@ -172,7 +168,7 @@ class ConfigMeasurement(Measurement):
                 SRS.settings["frequency"] = frequencies[0]
             # Program PB
             self.pulse_generator.program_hw()
-            PB.configure()
+            PB._configure()
             # SRSctl.enableSRS_RFOutput(SRS)
             SRS.settings["output"] = True
 
@@ -266,7 +262,7 @@ class ConfigMeasurement(Measurement):
                     ii = index[i_scanPoint]
                     signal[ii][i_run] = sig
                     reference[ii][i_run] = ref
-                    if S["shotByShotNormalization"]:
+                    if S["shot_by_shot_normalization"]:
                         contrast[ii][i_run] = np.mean(
                             calculateContrast(S["contrastMode"], sig, ref)
                         )

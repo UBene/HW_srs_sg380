@@ -13,7 +13,8 @@ from qtpy.QtWidgets import QHBoxLayout, QLabel, QVBoxLayout, QWidget
 
 from odmr_measurements.tek_scope_getcurve import TekScope
 from ScopeFoundry import Measurement, h5_io
-from ScopeFoundryHW.spincore import PulseBlasterChannel, PulseProgramGenerator, us
+from ScopeFoundryHW.spincore import (PulseBlasterChannel,
+                                     PulseProgramGenerator, us)
 
 
 class IQPulseSweepProgramGenerator(PulseProgramGenerator):
@@ -62,7 +63,7 @@ class IQPulseSweep(Measurement):
         S.New("N_sweeps", int, initial=1)
         S.New("randomize", bool, initial=False,
               description='probe t_readout_delays in a random order.')
-        S.New("shotByShotNormalization", bool, initial=False)
+        S.New("shot_by_shot_normalization", bool, initial=False)
 
         S.New("save_h5", bool, initial=True)
 

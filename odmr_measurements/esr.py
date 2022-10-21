@@ -12,7 +12,7 @@ import pyqtgraph as pg
 from pyqtgraph.dockarea.DockArea import DockArea
 from qtpy.QtWidgets import QHBoxLayout, QLabel, QVBoxLayout, QWidget
 
-from odmr_measurements.contrast import ContrastModes, calculate_contrast
+from odmr_measurements.contrast import calculate_contrast, contrast_modes
 from ScopeFoundry import Measurement, h5_io
 from ScopeFoundryHW.spincore import (PulseBlasterChannel,
                                      PulseProgramGenerator, ns, us)
@@ -73,12 +73,12 @@ class ESR(Measurement):
         S.New("N_sweeps", int, initial=1)
         S.New("randomize", bool, initial=False,
               description='probe frequencies in a random order.')
-        S.New("shotByShotNormalization", bool, initial=False)
+        S.New("shot_by_shot_normalization", bool, initial=False)
         S.New(
             "contrast_mode",
             str,
-            initial="fractionaldifferenceOverReference",
-            choices=ContrastModes,
+            initial="fractional_difference_over_reference",
+            choices=contrast_modes,
         )
         S.New("save_h5", bool, initial=True)
 
@@ -146,7 +146,8 @@ class ESR(Measurement):
 
         S = self.settings
         contrast = calculate_contrast(S["contrast_mode"], signal, reference)
-        self.plot_lines['contrast'].setData(x, contrast)
+        if contrast:
+            self.plot_lines['contrast'].setData(x, contrast)
 
     def pre_run(self):
         self.pulse_generator.update_pulse_plot()
@@ -234,7 +235,7 @@ class ESR(Measurement):
         self.h5_meas_group['reference'] = reference
         self.h5_meas_group['signal'] = signal
         self.h5_meas_group['frequencies'] = self.data['frequencies']
-        for cm in ContrastModes:
+        for cm in contrast_modes:
             self.h5_meas_group[cm] = calculate_contrast(cm, signal, reference)
         for k, v in self.data.items():
             try:
