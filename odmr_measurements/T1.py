@@ -3,22 +3,17 @@ Created on Apr 14, 2022
 
 @author: Benedikt Ursprung
 '''
-import numpy as np
 from random import shuffle
 
-from qtpy.QtWidgets import (
-    QHBoxLayout,
-    QVBoxLayout,
-    QWidget,
-    QLabel,
-)
+import numpy as np
 import pyqtgraph as pg
 from pyqtgraph.dockarea.DockArea import DockArea
+from qtpy.QtWidgets import QHBoxLayout, QLabel, QVBoxLayout, QWidget
 
-from ScopeFoundry import Measurement
-from ScopeFoundry import h5_io
-from odmr_measurements.T1_pulse_program_generator import T1PulseProgramGenerator
-from odmr_measurements.helper_functions import ContrastModes, calculateContrast
+from odmr_measurements.contrast import calculate_contrast, contrast_modes
+from odmr_measurements.T1_pulse_program_generator import \
+    T1PulseProgramGenerator
+from ScopeFoundry import Measurement, h5_io
 
 
 class T1(Measurement):
@@ -36,12 +31,12 @@ class T1(Measurement):
         S.New("N_sweeps", int, initial=1)
         S.New("randomize", bool, initial=False,
               description='probe t_pi_pulses in a random order.')
-        S.New("shotByShotNormalization", bool, initial=False)
+        S.New("shot_by_shot_normalization", bool, initial=False)
         S.New(
             "contrast_mode",
             str,
-            initial="signalOverReference",
-            choices=ContrastModes,
+            initial="signal_over_reference",
+            choices=contrast_modes,
         )
         S.New("save_h5", bool, initial=True)
 
@@ -110,7 +105,7 @@ class T1(Measurement):
         self.plot_lines["reference"].setData(x, reference)
 
         S = self.settings
-        contrast = calculateContrast(S["contrast_mode"], signal, reference)
+        contrast = calculate_contrast(S["contrast_mode"], signal, reference)
         self.plot_lines['contrast'].setData(x, contrast)
 
     def pre_run(self):
@@ -138,7 +133,7 @@ class T1(Measurement):
             SRS.settings["output"] = True
 
             PB.connect()
-            self.pulse_generator.program_pulse_blaster_and_start(PB)
+            self.pulse_generator.program_pulse_blaster_and_start()
 
             DAQ.restart(S['N_samples'])
 
@@ -195,9 +190,12 @@ class T1(Measurement):
         self.h5_meas_group['reference'] = reference
         self.h5_meas_group['signal'] = signal
         self.h5_meas_group['t_pi_pulses'] = self.data['t_pi_pulses']
-        for cm in ContrastModes:
-            self.h5_meas_group[cm] = calculateContrast(cm, signal, reference)
+        for cm in contrast_modes:
+            self.h5_meas_group[cm] = calculate_contrast(cm, signal, reference)
         for k, v in self.data.items():
-            self.h5_meas_group[k] = v
+            try:
+                self.h5_meas_group[k] = v
+            except RuntimeError:
+                pass
         self.pulse_generator.save_to_h5(self.h5_meas_group)
         self.h5_file.close()

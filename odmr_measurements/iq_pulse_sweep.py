@@ -4,44 +4,44 @@ Created on Apr 4, 2022
 @author: Benedikt Ursprung
 '''
 
-import numpy as np
+import time
 
-from qtpy.QtWidgets import (
-    QHBoxLayout,
-    QVBoxLayout,
-    QWidget,
-    QLabel
-)
+import numpy as np
 import pyqtgraph as pg
 from pyqtgraph.dockarea.DockArea import DockArea
+from qtpy.QtWidgets import QHBoxLayout, QLabel, QVBoxLayout, QWidget
 
-from ScopeFoundry import Measurement
-from ScopeFoundry import h5_io
-from ScopeFoundryHW.spincore import PulseProgramGenerator, PulseBlasterChannel
-
-from spinapi.spinapi import us
-import time
+from odmr_measurements.tek_scope_getcurve import TekScope
+from ScopeFoundry import Measurement, h5_io
+from ScopeFoundryHW.spincore import (PulseBlasterChannel,
+                                     PulseProgramGenerator, us)
 
 
 class IQPulseSweepProgramGenerator(PulseProgramGenerator):
 
     def setup_additional_settings(self) -> None:
-        self.settings.New('t_readout_delay', unit='us',
+        self.settings.New('t_I_delay', unit='ns',
                           initial=2.3, spinbox_decimals=4)
-        self.settings.New('t_AOM', unit='us', initial=10)
-        self.settings.New('AOM_on_off_delay', unit='us', initial=10)
+        self.settings.New('t_Q_delay', unit='ns',
+                          initial=2.3, spinbox_decimals=4)
+        self.settings.New('pulse_duration_uW', unit='ns', initial=10)
+        self.settings.New('uW_on_off_delay', unit='ns', initial=10)
         #self.settings.New('program_duration', float, unit='us', initial=160.0)
-        #self.settings['program_duration'] = 15  # us
-        self.settings.New('t_gate', unit='us', initial=1.0)
+        # self.settings['program_duration'] = 15  # us
+        self.settings.New('pulse_duration_IQ', unit='ns', initial=1.0)
 
-    def make_pulse_channels(self) -> [PulseBlasterChannel]:
-        t_gate = self.settings['t_gate'] * us
-        t_AOM = self.settings['t_AOM'] * us
-        t_readout_delay = self.settings['t_readout_delay'] * us
-        AOM_on_off_delay = self.settings['AOM_on_off_delay'] * us
-        return [self.new_channel('AOM', [AOM_on_off_delay], [t_AOM]),
-                self.new_channel('DAQ_sig', [AOM_on_off_delay + t_readout_delay], [t_gate]),
-                self.new_channel('dummy_channel', [AOM_on_off_delay + t_AOM], [AOM_on_off_delay])]
+    def make_pulse_channels(self):
+        t_IQ_duration = self.settings['pulse_duration_IQ']
+        t_uW_duration = self.settings['pulse_duration_uW']
+        t_I_delay = self.settings['t_I_delay']
+        t_Q_delay = self.settings['t_Q_delay']
+        uW_on_off_delay = self.settings['uW_on_off_delay']
+
+        self.new_channel('uW', [uW_on_off_delay], [t_uW_duration]),
+        self.new_channel('I', [uW_on_off_delay + t_I_delay], [t_IQ_duration]),
+        self.new_channel('Q', [uW_on_off_delay + t_I_delay], [t_IQ_duration]),
+        self.new_channel('dummy_channel', [
+                         uW_on_off_delay + t_uW_duration], [uW_on_off_delay])
 
 
 def norm(x):
@@ -63,10 +63,9 @@ class IQPulseSweep(Measurement):
         S.New("N_sweeps", int, initial=1)
         S.New("randomize", bool, initial=False,
               description='probe t_readout_delays in a random order.')
-        S.New("shotByShotNormalization", bool, initial=False)
+        S.New("shot_by_shot_normalization", bool, initial=False)
 
         S.New("save_h5", bool, initial=True)
-
 
         t = np.arange(100)/16
         self.data = {
@@ -96,8 +95,8 @@ class IQPulseSweep(Measurement):
         start_layout = QVBoxLayout()
         #SRS = self.app.hardware["srs_control"]
         #start_layout.addWidget(QLabel('<b>SRS control</b>'))
-        #start_layout.addWidget(SRS.settings.New_UI(
-            #['connected', 'amplitude', 'frequency']))
+        # start_layout.addWidget(SRS.settings.New_UI(
+        # ['connected', 'amplitude', 'frequency']))
         start_layout.addWidget(self.settings.activation.new_pushButton())
         settings_layout.addLayout(start_layout)
 
@@ -128,22 +127,25 @@ class IQPulseSweep(Measurement):
         S = self.settings
 
         SRS = self.app.hardware["srs_control"]
-        #if not SRS.settings['connected']:
-            #pass
-            # raise RuntimeError('SRS_control hardware not connected')
+        # if not SRS.settings['connected']:
+        # pass
+        # raise RuntimeError('SRS_control hardware not connected')
         PB = self.app.hardware["pulse_blaster"]
 
         self.data['t_readout_delays'] = t_readout_delays = self.range.sweep_array
 
-
         try:
             SRS.connect()
-            SRS.settings["modulation"] = False
+            SRS.settings['modulation'] = True
+            SRS.settings['modulation_type'] = 6
+            SRS.settings['QFNC'] = 5  # External
             SRS.settings["output"] = True
 
-            PB.connect()
-            self.pulse_generator.program_pulse_blaster_and_start(PB)
+            scope = TekScope('USB::0x0699::0x0408::C052480::INSTR')
+            self.data['wave_form_t'] = scope.get_curve_and_time_array()[0]
 
+            PB.connect()
+            self.pulse_generator.program_pulse_blaster_and_start()
 
             # data arrays
             self.data["wave_forms"] = []
@@ -151,15 +153,15 @@ class IQPulseSweep(Measurement):
             # Run experiment
             for t_read_out_delay in t_readout_delays:
                 S['t_readout_delay'] = t_read_out_delay
-                self.pulse_generator.program_pulse_blaster_and_start(PB)
+                self.pulse_generator.program_pulse_blaster_and_start()
                 time.sleep(1)
-                self.data["wave_forms"].append(np.sin(self.data['wave_form_t'])*t_read_out_delay)
-
+                waveform = scope.get_curve_and_time_array()[1]
+                self.data["wave_forms"].append(waveform)
 
         finally:
             SRS.settings["output"] = False
             SRS.settings["modulation"] = False
-            #DAQ.close_tasks()
+            # DAQ.close_tasks()
             PB.write_close()
 
     def post_run(self):

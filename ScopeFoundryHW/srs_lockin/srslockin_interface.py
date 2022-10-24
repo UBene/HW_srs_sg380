@@ -4,7 +4,7 @@ from prologix_usb_gpib import prologix_usb_gpib_dev as gpibdev
 
 #import dummy_visa
 #try:
-#    import visa
+#    import pyvisa as visa
 #except ImportError:
 #    try: import gpib_visa as visa
 #    except:

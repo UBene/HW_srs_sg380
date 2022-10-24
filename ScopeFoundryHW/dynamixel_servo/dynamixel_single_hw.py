@@ -62,6 +62,8 @@ class DynamixelServoHW(HardwareComponent):
         
     def set_mode(self):
         # TODO Check if torque is enabled before enable/disable
+        if not hasattr(self, 'servos'):
+            return
         S = self.settings
         self.servos.settings[S['servo_name'] + '_torque'] = False
         self.servos.settings[S['servo_name'] + '_oper_mode'] = S['mode']
@@ -79,6 +81,8 @@ class DynamixelServoHW(HardwareComponent):
         self.settings['jog_steps'] = 1
             
     def zero_position(self):
+        if not hasattr(self, 'servos'):
+            return
         S = self.settings
         S['offset'] = S['steps']
         S['target_position'] = 0

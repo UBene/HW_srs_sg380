@@ -4,24 +4,17 @@ Created on Apr 4, 2022
 @author: Benedikt Ursprung
 '''
 
-import numpy as np
+from random import shuffle
 
-from qtpy.QtWidgets import (
-    QHBoxLayout,
-    QVBoxLayout,
-    QWidget,
-    QLabel
-)
+import numpy as np
 import pyqtgraph as pg
 from pyqtgraph.dockarea.DockArea import DockArea
-
-from ScopeFoundry import Measurement
-from ScopeFoundry import h5_io
-from ScopeFoundryHW.spincore import PulseProgramGenerator, PulseBlasterChannel
-
+from qtpy.QtWidgets import QHBoxLayout, QLabel, QVBoxLayout, QWidget
 from spinapi.spinapi import us
-from odmr_measurements.helper_functions import calculateContrast, ContrastModes
-from random import shuffle
+
+from odmr_measurements.contrast import calculate_contrast, contrast_modes
+from ScopeFoundry import Measurement, h5_io
+from ScopeFoundryHW.spincore import PulseBlasterChannel, PulseProgramGenerator
 
 
 class ORDPulseProgramGenerator(PulseProgramGenerator):
@@ -29,18 +22,21 @@ class ORDPulseProgramGenerator(PulseProgramGenerator):
     def setup_additional_settings(self) -> None:
         self.settings.New('t_readout_delay', unit='us',
                           initial=2.3, spinbox_decimals=4)
-        self.settings.New('t_AOM', unit='us', initial=5)
-        self.settings.New('t_gate', unit='us', initial=5.0)
+        self.settings.New('t_AOM', unit='us', initial=10)
+        self.settings.New('AOM_on_off_delay', unit='us', initial=10)
         #self.settings.New('program_duration', float, unit='us', initial=160.0)
-        #self.settings['program_duration'] = 15  # us
+        # self.settings['program_duration'] = 15  # us
+        self.settings.New('t_gate', unit='us', initial=1.0)
 
     def make_pulse_channels(self) -> [PulseBlasterChannel]:
         t_gate = self.settings['t_gate'] * us
         t_AOM = self.settings['t_AOM'] * us
         t_readout_delay = self.settings['t_readout_delay'] * us
-
-        return [self.new_channel('AOM', [0], [t_AOM]),
-                self.new_channel('DAQ_sig', [t_AOM + t_readout_delay], [t_gate])]
+        AOM_on_off_delay = self.settings['AOM_on_off_delay'] * us
+        return [self.new_channel('AOM', [AOM_on_off_delay], [t_AOM]),
+                self.new_channel(
+                    'DAQ_sig', [AOM_on_off_delay + t_readout_delay], [t_gate]),
+                self.new_channel('dummy_channel', [AOM_on_off_delay + t_AOM], [AOM_on_off_delay])]
 
 
 def norm(x):
@@ -56,18 +52,18 @@ class OptimalReadoutDelay(Measurement):
         S = self.settings
 
         self.range = S.New_Range(
-            "t_readout_delays", initials=[10, 10e3, 100], unit="ns", si=True
+            "t_readout_delays", initials=[-5, 15, 0.05], unit="us", si=True
         )
         S.New("N_samples", int, initial=1000)
         S.New("N_sweeps", int, initial=1)
         S.New("randomize", bool, initial=False,
               description='probe t_readout_delays in a random order.')
-        S.New("shotByShotNormalization", bool, initial=False)
+        S.New("shot_by_shot_normalization", bool, initial=False)
         S.New(
             "contrast_mode",
             str,
-            initial="signalOverReference",
-            choices=ContrastModes,
+            initial="signal_over_reference",
+            choices=contrast_modes,
         )
         S.New("save_h5", bool, initial=True)
 
@@ -95,10 +91,10 @@ class OptimalReadoutDelay(Measurement):
                                   "contrast_mode", "N_samples", "N_sweeps", "randomize", "save_h5"], style='form'))
 
         start_layout = QVBoxLayout()
-        SRS = self.app.hardware["srs_control"]
-        start_layout.addWidget(QLabel('<b>SRS control</b>'))
-        start_layout.addWidget(SRS.settings.New_UI(
-            ['connected', 'amplitude', 'frequency']))
+        #SRS = self.app.hardware["srs_control"]
+        #start_layout.addWidget(QLabel('<b>SRS control</b>'))
+        # start_layout.addWidget(SRS.settings.New_UI(
+        # ['connected', 'amplitude', 'frequency']))
         start_layout.addWidget(self.settings.activation.new_pushButton())
         settings_layout.addLayout(start_layout)
 
@@ -124,15 +120,15 @@ class OptimalReadoutDelay(Measurement):
 
     def pre_run(self):
         self.pulse_generator.update_pulse_plot()
-        self.pulse_generator.settings['enable_pulse_plot_update'] = False
+        self.pulse_generator.settings['enable_pulse_plot_update'] = True
 
     def run(self):
         S = self.settings
 
-        SRS = self.app.hardware["srs_control"]
-        if not SRS.settings['connected']:
-            pass
-            # raise RuntimeError('SRS_control hardware not connected')
+        #SRS = self.app.hardware["srs_control"]
+        # if not SRS.settings['connected']:
+        # pass
+        # raise RuntimeError('SRS_control hardware not connected')
         PB = self.app.hardware["pulse_blaster"]
         DAQ = self.app.hardware['pulse_width_counters']
 
@@ -143,12 +139,12 @@ class OptimalReadoutDelay(Measurement):
         N_DAQ_readouts = S['N_samples']
 
         try:
-            SRS.connect()
-            SRS.settings["modulation"] = False
-            SRS.settings["output"] = True
+            # SRS.connect()
+            #SRS.settings["modulation"] = False
+            #SRS.settings["output"] = True
 
             PB.connect()
-            self.pulse_generator.program_pulse_blaster_and_start(PB)
+            self.pulse_generator.program_pulse_blaster_and_start()
 
             DAQ.restart(N_DAQ_readouts)
 
@@ -172,6 +168,7 @@ class OptimalReadoutDelay(Measurement):
                     pct = 100 * (i_sweep * N + j) / (N_sweeps * N)
                     self.set_progress(pct)
 
+                    # * us
                     self.pulse_generator.settings['t_readout_delay'] = t_readout_delay
                     self.pulse_generator.program_pulse_blaster_and_start()
 
@@ -183,8 +180,8 @@ class OptimalReadoutDelay(Measurement):
                         DAQ.read_sig_counts(N_DAQ_readouts))
 
         finally:
-            SRS.settings["output"] = False
-            SRS.settings["modulation"] = False
+            #SRS.settings["output"] = False
+            #SRS.settings["modulation"] = False
             DAQ.close_tasks()
             PB.write_close()
 
@@ -200,6 +197,9 @@ class OptimalReadoutDelay(Measurement):
         signal = self.data['signal_raw'].mean(0)
         self.h5_meas_group['signal'] = signal
         for k, v in self.data.items():
-            self.h5_meas_group[k] = v
+            try:
+                self.h5_meas_group[k] = v
+            except RuntimeError:
+                pass
         self.pulse_generator.save_to_h5(self.h5_meas_group)
         self.h5_file.close()

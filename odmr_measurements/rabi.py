@@ -4,26 +4,21 @@ Created on Apr 4, 2022
 @author: Benedikt Ursprung
 '''
 
-import numpy as np
-from random import shuffle
 import time
+from random import shuffle
 
-from qtpy.QtWidgets import (
-    QHBoxLayout,
-    QVBoxLayout,
-    QWidget,
-    QLabel,
-)
+import numpy as np
 import pyqtgraph as pg
 from pyqtgraph.dockarea.DockArea import DockArea
+from qtpy.QtWidgets import QHBoxLayout, QLabel, QVBoxLayout, QWidget
 
-from ScopeFoundry import Measurement
-from ScopeFoundry import h5_io
-from odmr_measurements.helper_functions import ContrastModes, calculateContrast
-from odmr_measurements.rabi_pulse_program_generator import RabiPulseProgramGenerator
+from odmr_measurements.contrast import calculate_contrast, contrast_modes
+from odmr_measurements.rabi_pulse_program_generator import \
+    RabiPulseProgramGenerator
+from ScopeFoundry import Measurement, h5_io
 
 
-def norm(x):
+def norm(x:np.ndarray):
     return 1.0 * x / x.max()
 
 
@@ -34,22 +29,20 @@ class Rabi(Measurement):
     def setup(self):
 
         S = self.settings
-        
-        
+
         self.range = S.New_Range(
             "pulse_duration", initials=[0, 200, 2], unit="ns", si=True
         )
 
-
         S.New("N_samples", int, initial=1000)
         S.New("N_sweeps", int, initial=1)
         S.New("randomize", bool, initial=True)
-        S.New("shotByShotNormalization", bool, initial=False)
+        S.New("shot_by_shot_normalization", bool, initial=False)
         S.New(
             "contrast_mode",
             str,
-            initial="signalOverReference",
-            choices=ContrastModes,
+            initial="signal_over_reference",
+            choices=contrast_modes,
         )
         S.New("save_h5", bool, initial=True)
 
@@ -77,7 +70,8 @@ class Rabi(Measurement):
         start_layout = QVBoxLayout()
         SRS = self.app.hardware["srs_control"]
         start_layout.addWidget(QLabel('<b>SRS control</b>'))
-        start_layout.addWidget(SRS.settings.New_UI(['connected', 'amplitude', 'frequency']))
+        start_layout.addWidget(SRS.settings.New_UI(
+            ['connected', 'amplitude', 'frequency']))
         start_layout.addWidget(self.settings.activation.new_pushButton())
         settings_layout.addLayout(start_layout)
         self.layout.addLayout(settings_layout)
@@ -113,8 +107,9 @@ class Rabi(Measurement):
         self.plot_lines["reference"].setData(x, reference)
 
         S = self.settings
-        contrast = calculateContrast(S["contrast_mode"], signal, reference)
+        contrast = calculate_contrast(S["contrast_mode"], signal, reference)
         self.plot_lines['contrast'].setData(x, contrast)
+
 
     def pre_run(self):
         self.pulse_generator.update_pulse_plot()
@@ -174,7 +169,7 @@ class Rabi(Measurement):
                     jj = self.indices[j]
                     DAQ.restart(N_DAQ_readouts)
                     #t_aquisition = N_DAQ_readouts * self.pulse_generator.pulse_program_duration/1e9
-                    #time.sleep(t_aquisition)
+                    # time.sleep(t_aquisition)
                     self.data["signal_raw"][i_sweep][jj] = np.mean(
                         DAQ.read_sig_counts(N_DAQ_readouts))
                     self.data["reference_raw"][i_sweep][jj] = np.mean(
@@ -199,9 +194,12 @@ class Rabi(Measurement):
         self.h5_meas_group['reference'] = reference
         self.h5_meas_group['signal'] = signal
         self.h5_meas_group['pulse_durations'] = self.data['pulse_durations']
-        for cm in ContrastModes:
-            self.h5_meas_group[cm] = calculateContrast(cm, signal, reference)
+        for cm in contrast_modes:
+            self.h5_meas_group[cm] = calculate_contrast(cm, signal, reference)
         for k, v in self.data.items():
-            self.h5_meas_group[k] = v
+            try:
+                self.h5_meas_group[k] = np.array(v)
+            except RuntimeError:
+                pass
         self.pulse_generator.save_to_h5(self.h5_meas_group)
         self.h5_file.close()
