@@ -140,8 +140,8 @@ class PIXYZStageHW(HardwareComponent):
         
         self.x_max.hardware_read_func = lambda: self.nanopositioner.cal[self.PI_AXIS_ID["X"]]
         self.y_max.hardware_read_func = lambda: self.nanopositioner.cal[self.PI_AXIS_ID["Y"]]
-        if self.nanopositioner.num_axes > 2:
-            self.z_max.hardware_read_func = lambda: self.nanopositioner.cal[self.PI_AXIS_ID["Z"]]
+        #if self.nanopositioner.num_axes > 2:
+            # self.z_max.hardware_read_func = lambda: self.nanopositioner.cal[self.PI_AXIS_ID["Z"]]
             # print("self.PI_AXIS_ID["Z"], self.PI_AXIS_ID["Z"])
             # print("self.nanopositioner", self.nanopositioner.cal)
         # self.move_speed.hardware_read_func = self.nanopositioner.get_max_speed
