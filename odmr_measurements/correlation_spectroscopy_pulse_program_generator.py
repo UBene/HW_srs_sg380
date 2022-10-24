@@ -3,7 +3,7 @@ Created on Apr 19, 2022
 
 @author: Benedikt Ursprung
 '''
-from ScopeFoundryHW.spincore import PulseProgramGenerator, PulseBlasterChannel, us, ns
+from ScopeFoundryHW.spincore import PulseProgramGenerator, us, ns
 from .pulses import makeXY8pulses
 
 
@@ -23,7 +23,7 @@ class CSPulseProgramGenerator(PulseProgramGenerator):
         self.settings.New('tau0', unit='ns', initial=1500,
                           description='Delay between pi-pulses in the XY8 pulse sequences')
 
-    def make_pulse_channels(self) -> [PulseBlasterChannel]:
+    def make_pulse_channels(self):
         S = self.settings
 
         t_min = self.t_min
@@ -74,15 +74,13 @@ class CSPulseProgramGenerator(PulseProgramGenerator):
             Qdurations1a + Qdurations1b[:-1]
 
         # Make channels:
-
-        uW = self.new_channel('uW', uWstartTimes, uWdurations)
-        AOM = self.new_channel(
+        self.new_channel('uW', uWstartTimes, uWdurations)
+        self.new_channel(
             'AOM', [AOMstartTime1, AOMstartTime2], [t_AOM, t_AOM])
-        I = self.new_channel('I', IstartTimes, Idurations)
-        Q = self.new_channel('Q', QstartTimes, Qdurations)
-        DAQ_sig = self.new_channel('DAQ_sig', [DAQstartTime1], [t_gate])
-        DAQ_ref = self.new_channel('DAQ_ref', [DAQstartTime2], [t_gate])
+        self.new_channel('I', IstartTimes, Idurations)
+        self.new_channel('Q', QstartTimes, Qdurations)
+        self.new_channel('DAQ_sig', [DAQstartTime1], [t_gate])
+        self.new_channel('DAQ_ref', [DAQstartTime2], [t_gate])
 
         self.settings['program_duration'] = max(
             AOMstartTime2 + t_AOM, DAQstartTime2 + t_gate) / 1e3 + 1
-        return [uW, AOM, I, Q, DAQ_sig, DAQ_ref]

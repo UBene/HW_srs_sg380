@@ -17,9 +17,8 @@ from pyqtgraph.dockarea.DockArea import DockArea
 
 from ScopeFoundry import Measurement
 from ScopeFoundry import h5_io
-from ScopeFoundryHW.spincore import PulseProgramGenerator, PulseBlasterChannel
+from ScopeFoundryHW.spincore import PulseProgramGenerator, us
 
-from spinapi.spinapi import us
 import time
 from odmr_measurements.tek_scope_getcurve import TekScope
 
@@ -39,7 +38,7 @@ class IPulseSweepProgramGenerator(PulseProgramGenerator):
         #self.settings['program_duration'] = 15  # us
         self.settings.New('pulse_duration_IQ', unit='ns', initial=40)
 
-    def make_pulse_channels(self) -> [PulseBlasterChannel]:
+    def make_pulse_channels(self):
         t_IQ_duration = self.settings['pulse_duration_IQ'] 
         t_uW_duration = self.settings['pulse_duration_uW'] 
         t_I_delay = self.settings['t_I_delay'] 
@@ -47,12 +46,14 @@ class IPulseSweepProgramGenerator(PulseProgramGenerator):
 
         uW_on_off_delay = self.settings['uW_on_off_delay'] 
         
-        return [self.new_channel('uW', [uW_on_off_delay], [t_uW_duration]),
-                self.new_channel('I', [uW_on_off_delay + t_I_delay], [t_IQ_duration]),
-                self.new_channel('Q', [uW_on_off_delay + t_Q_delay], [t_IQ_duration]),
-                self.new_channel('AOM', [uW_on_off_delay + t_Q_delay], [t_IQ_duration]),
+        self.new_channel('uW', [uW_on_off_delay], [t_uW_duration])
+        self.new_channel('I', [uW_on_off_delay + t_I_delay], [t_IQ_duration])
+        self.new_channel('Q', [uW_on_off_delay + t_Q_delay], [t_IQ_duration])
+        self.new_channel('AOM', [uW_on_off_delay + t_Q_delay], [t_IQ_duration])
+        self.set_all_off_padding_in_ns(uW_on_off_delay)
+        #self.new_channel('dummy_channel', [uW_on_off_delay + t_uW_duration], [uW_on_off_delay])
 
-                self.new_channel('dummy_channel', [uW_on_off_delay + t_uW_duration], [uW_on_off_delay])]
+
 
 
 def norm(x):
