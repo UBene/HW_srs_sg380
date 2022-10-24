@@ -54,11 +54,11 @@ class PulseProgramGenerator:
         self.setup_additional_settings()
         self.settings.New(
             "all_off_padding",
-            int,
+            float,
             initial=0,
-            unit="ns",
+            unit="s",
             vmin=0,
-            spinbox_step=self.hw.clock_period_ns,
+            si = True,
             description="trailing off time at the end of the pulse program",
         )
         self.settings.New(
@@ -109,6 +109,9 @@ class PulseProgramGenerator:
         self.__pb_channels.append(chan)
         return chan
     
+    def set_all_off_padding_in_ns(self, time_in_ns):
+        self.settings['all_off_padding'] = time_in_ns * 1e9
+    
     @property
     def t_min(self) -> int:
         return self.hw.clock_period_ns
@@ -151,9 +154,10 @@ class PulseProgramGenerator:
     def get_pb_insts(self) -> PBInstructions:
         """also sets the pulse_prgram_duration"""
         pb_channels = self.get_pb_channels()
+        print(self.settings["all_off_padding"] * 1e9)
         pb_insts = create_pb_insts(
             pb_channels,
-            all_off_padding=self.settings["all_off_padding"],
+            all_off_padding=int(self.settings["all_off_padding"] * 1e9),
             continuous=True,
             branch_to=0,
             clock_period_ns=self.hw.clock_period_ns,

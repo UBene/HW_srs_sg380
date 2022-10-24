@@ -21,7 +21,7 @@ from ScopeFoundry import Measurement
 from ScopeFoundry import h5_io
 from odmr_measurements.contrast import contrast_modes, calculate_contrast
 #from odmr_measurements.rabi_pulse_program_generator import RabiPulseProgramGenerator
-from ScopeFoundryHW.spincore import PulseProgramGenerator, PulseBlasterChannel, us, ns
+from ScopeFoundryHW.spincore import PulseProgramGenerator, us, ns
 
 
 class ESRSweepRefPulseProgramGenerator(PulseProgramGenerator):
@@ -35,7 +35,7 @@ class ESRSweepRefPulseProgramGenerator(PulseProgramGenerator):
         self.settings.New('t_readout_sig', unit='us', vmin=0,  initial=0.1)
         self.settings.New('t_readout_ref', unit='us', vmin=0,  initial=0.1)
 
-    def make_pulse_channels(self) -> [PulseBlasterChannel]:
+    def make_pulse_channels(self):
         S = self.settings
 
         # all times must be in ns.
@@ -45,22 +45,17 @@ class ESRSweepRefPulseProgramGenerator(PulseProgramGenerator):
 
         t_gate = S['t_gate'] * us
 
-        AOM = self.new_channel('AOM', [0], [t_duration])
-        uW = self.new_channel('uW', [0], [t_duration / 2])
+        self.new_channel('AOM', [0], [t_duration])
+        self.new_channel('uW', [0], [t_duration / 2])
 
         # DAQ
         #_readout_sig = t_readout_sig + t_gate
         #_readout_ref = t_readout_ref + t_gate
-        DAQ_sig = self.new_channel(
-            'DAQ_sig', [t_readout_sig], [t_gate])
+        self.new_channel('DAQ_sig', [t_readout_sig], [t_gate])
             #'DAQ_sig', [0.5 * t_duration - _readout_sig], [t_gate])
-        DAQ_ref = self.new_channel(
-            'DAQ_ref', [(t_duration/2) + t_readout_ref], [t_gate])
+        self.new_channel('DAQ_ref', [(t_duration/2) + t_readout_ref], [t_gate])
             #'DAQ_ref', [t_duration - _readout_ref], [t_gate])
 
-        return [uW, AOM,
-                # I, Q,
-                DAQ_sig, DAQ_ref]
 
 
 def norm(x):

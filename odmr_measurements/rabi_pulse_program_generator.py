@@ -3,7 +3,7 @@ Created on Apr 19, 2022
 
 @author: Benedikt Ursprung
 '''
-from ScopeFoundryHW.spincore import PulseProgramGenerator, PulseBlasterChannel, us, ns
+from ScopeFoundryHW.spincore import PulseProgramGenerator, us, ns
 
 
 class RabiPulseProgramGenerator(PulseProgramGenerator):
@@ -21,6 +21,7 @@ class RabiPulseProgramGenerator(PulseProgramGenerator):
 
         #self.settings['program_duration'] = 30  # in us
         self.settings.New('t_gate', unit='us', initial=0.5)
+                
     def make_pulse_channels(self):
         S = self.settings
         t_uW = S['t_uW'] * ns
@@ -30,15 +31,12 @@ class RabiPulseProgramGenerator(PulseProgramGenerator):
         start_delay = 0  
         t_readout_duration = S['t_gate'] * us  
         t_uW_to_AOM_delay = S['t_uW_to_AOM_delay'] * us
-
         T_AOM_start = t_uW_to_AOM_delay + t_uW + start_delay
-        print(T_AOM_start)
-
         self.new_channel('uW', [start_delay], [t_uW])
         self.new_channel('AOM', [T_AOM_start], [t_AOM_duration])
         self.new_channel('DAQ_sig', [T_AOM_start + t_sig_readout], [t_readout_duration])
-        self.new_channel('DAQ_ref', [T_AOM_start + t_ref_readout], [t_readout_duration])
-        self.settings['all_off_padding'] = t_uW_to_AOM_delay
+        self.new_channel('DAQ_ref', [T_AOM_start + t_ref_readout], [t_readout_duration])        
+        self.set_all_off_padding_in_ns(t_uW_to_AOM_delay)
         
     def make_pulse_channels_old(self):
         S = self.settings

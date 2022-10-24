@@ -3,7 +3,7 @@ Created on Apr 19, 2022
 
 @author: Benedikt Ursprung
 '''
-from ScopeFoundryHW.spincore import PulseProgramGenerator, PulseBlasterChannel, us, ns
+from ScopeFoundryHW.spincore import PulseProgramGenerator, us, ns
 from .pulses import makeXY8pulses
 
 class XY8PulseProgramGenerator(PulseProgramGenerator):
@@ -21,7 +21,7 @@ class XY8PulseProgramGenerator(PulseProgramGenerator):
         self.settings.New('t_IQ_padding', unit='ns', initial=30.0)
         self.settings.New('N_pi', int, initial=1)
 
-    def make_pulse_channels(self) -> [PulseBlasterChannel]:
+    def make_pulse_channels(self):
         S = self.settings
 
         t_min = self.t_min

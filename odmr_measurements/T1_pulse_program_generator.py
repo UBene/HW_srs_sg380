@@ -3,7 +3,7 @@ Created on Apr 19, 2022
 
 @author: Benedikt Ursprung
 '''
-from ScopeFoundryHW.spincore import PulseProgramGenerator, PulseBlasterChannel, us, ns
+from ScopeFoundryHW.spincore import PulseProgramGenerator, us, ns
 
 
 class T1PulseProgramGenerator(PulseProgramGenerator):
@@ -17,7 +17,7 @@ class T1PulseProgramGenerator(PulseProgramGenerator):
         self.settings.New('t_readout_delay', unit='us', initial=2.3)
         self.settings.New('t_pi_pulse', unit='ns', initial=24.0)
 
-    def make_pulse_channels(self) -> [PulseBlasterChannel]:
+    def make_pulse_channels(self):
         S = self.settings
 
         t_min = self.t_min
@@ -35,17 +35,14 @@ class T1PulseProgramGenerator(PulseProgramGenerator):
         AOMstartTime1 = t_delay
         AOMstartTime2 = t_half + t_delay
 
-        AOM = self.new_channel(
-            'AOM', [AOMstartTime1, AOMstartTime2], [t_AOM, t_AOM])
-        uW = self.new_channel(
+        self.new_channel('AOM', [AOMstartTime1, AOMstartTime2], [t_AOM, t_AOM])
+        self.new_channel(
             'uW', [t_half + t_readout_delay + 1 * us], [t_pi_pulse])
 
         # DAQ
         _readout = t_readout + t_gate
 
-        DAQ_sig = self.new_channel(
+        self.new_channel(
             'DAQ_sig', [AOMstartTime1 + t_readout_delay], [t_gate])
-        DAQ_ref = self.new_channel(
+        self.new_channel(
             'DAQ_ref', [AOMstartTime2 + t_readout_delay], [t_gate])
-
-        return [uW, AOM, DAQ_sig, DAQ_ref]
