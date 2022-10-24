@@ -83,21 +83,22 @@ class NikonMicroscope(BaseMicroscopeApp):
         from confocal_measure.pi_xyz_scans.pi_xyz_2d_picam_slow_scan import PIXYZ2DPICAMSlowScan
         self.add_measurement(PIXYZ2DPICAMSlowScan(self, **stage_inits))
 
-        # Timeharp
-        from ScopeFoundryHW.picoquant.timeharp_260_hw import TimeHarp260HW
-        from ScopeFoundryHW.picoquant.timeharp_optimizer import TimeHarpOptimizerMeasure
-        from ScopeFoundryHW.picoquant.timeharp_260_hist_measure import TimeHarpHistogramMeasure
-
-        self.add_hardware(TimeHarp260HW(self))
-        self.add_measurement(TimeHarpOptimizerMeasure(self))
-        self.add_measurement(TimeHarpHistogramMeasure(self))
+        # # Timeharp
+        # from ScopeFoundryHW.picoquant.timeharp_260_hw import TimeHarp260HW
+        # from ScopeFoundryHW.picoquant.timeharp_optimizer import TimeHarpOptimizerMeasure
+        # from ScopeFoundryHW.picoquant.timeharp_260_hist_measure import TimeHarpHistogramMeasure
+        #
+        # self.add_hardware(TimeHarp260HW(self))
+        # self.add_measurement(TimeHarpOptimizerMeasure(self))
+        # self.add_measurement(TimeHarpHistogramMeasure(self))
                 
         # Hydraharp
-        # from ScopeFoundryHW.picoquant.hydraharp_optimizer import HydraHarpOptimizerMeasure
-        # self.add_measurement(HydraHarpOptimizerMeasure(self))
-        
-        # from ScopeFoundryHW.picoquant.hydraharp_hist_measure import HydraHarpHistogramMeasure
-        # self.add_measurement(HydraHarpHistogramMeasure(self))
+        from ScopeFoundryHW.picoquant.hydraharp_hw import HydraHarpHW
+        self.add_hardware(HydraHarpHW(self))
+        from ScopeFoundryHW.picoquant.hydraharp_optimizer import HydraHarpOptimizerMeasure
+        self.add_measurement(HydraHarpOptimizerMeasure(self))
+        from ScopeFoundryHW.picoquant.hydraharp_hist_measure import HydraHarpHistogramMeasure
+        self.add_measurement(HydraHarpHistogramMeasure(self))
 
         # Picoharp
         # from ScopeFoundryHW.picoquant.hydraharp_optimizer import HydraHarpOptimizerMeasure
