@@ -117,8 +117,8 @@ class Sequencer(Measurement):
         for editor in self.editors.values():
             self.editor_layout.addWidget(editor.ui.group_box)
 
-        self.ui._keyRelaseEvent = self._keyReleaseEvent
-        self.ui._editorKeyPressEvent = self._editorKeyPressEvent
+        self.editor_widget.keyPressEvent = self._editorKeyPressEvent
+        self.items.get_widget().keyReleaseEvent = self._keyReleaseEvent
 
     def register_editor(self, editor_ui: EditorUI):
         self.editors[editor_ui.item_type] = Editor(editor_ui)
@@ -126,31 +126,29 @@ class Sequencer(Measurement):
     def register_interation_editor(self, editor_ui: IterationsEditorUI):
         self.editors[editor_ui.item_type] = InterationsEditor(editor_ui)
 
+    def _editorKeyPressEvent(self, event):
+        if not event.modifiers() & Qt.ControlModifier:
+            return
+        if not event.key() in (Qt.Key_R, Qt.Key_N):
+            return
+        fw = self.editor_widget.focusWidget()
+        # find editor with focused widge
+        for e in self.editors.values():
+            gb = e.ui.group_box
+            if fw in gb.findChildren(type(fw), fw.objectName()):
+                if event.key() == Qt.Key_R:
+                    e.on_replace_func()
+                if event.key() == Qt.Key_N:
+                    e.on_new_func()
+
     def _keyReleaseEvent(self, event):
         if event.key() == Qt.Key_Delete:
-            self.on_remove_item()
+            self.items.remove()
         if event.key() == Qt.Key_Space:
             self.on_run_item_and_proceed()
         if event.key() in (Qt.Key_Enter, Qt.Key_Return):
-            print(event.key())
-            item = self.listWidget.currentItem()
+            item = self.items.get_current_item()
             self.item_double_clicked(item)
-
-    def _editorKeyPressEvent(self, event):
-        # find editor with focused widget
-        if event.modifiers() & Qt.ControlModifier and event.key() in (Qt.Key_R, Qt.Key_N):
-            fw = self.editors.widget.focusWidget()
-            for key, val in self.editors.editors.items():
-                for item in val['groubBox'].children():
-                    if fw == item:
-                        item_type = key
-                        if event.key() == Qt.Key_R:
-                            self.editors[item_type].on_replace_func()
-                        if event.key() == Qt.Key_A:
-                            self.editors[item_type].on_new_func()
-        else:
-            if event.key() in (Qt.Key_F1):
-                self.listWidget.setFocus()
 
     def update_load_file_comboBox(self):
         fnames = glob.glob(glob.os.getcwd() +
@@ -220,7 +218,7 @@ class Sequencer(Measurement):
         self.items.set_current_item(next_item)
 
     def item_double_clicked(self, item: Item):
-        print('on_itemDoubleClicked', item.item_type)
+        print('item_double_clicked', item.item_type)
         self.editors[item.item_type].ui.edit_item(**item.kwargs)
 
     def run(self):
