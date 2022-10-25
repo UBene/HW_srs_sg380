@@ -1,11 +1,11 @@
+import time
 from datetime import datetime
 from pathlib import Path
-from time import time
 
 from qtpy.QtWidgets import QLabel, QLineEdit
 
 from .editors import EditorUI
-from .list_items import Item
+from .item import Item
 
 
 class NewDir(Item):
@@ -20,25 +20,23 @@ class NewDir(Item):
         new_dir.mkdir()
         self.app.settings['save_dir'] = new_dir.as_posix()
 
+
 class NewDirEditorUI(EditorUI):
 
     item_type = 'new_dir'
     description = f'creates sub folder and set as save_dir'
-
 
     def setup_ui(self):
 
         self.new_dir_name_lineEdit = QLineEdit()
         self.group_box.layout().addWidget(self.new_dir_name_lineEdit)
 
-
     def get_kwargs(self):
         val = self.new_dir_name_lineEdit.text()
-        return {'new_dir_name': val,
-             'info': "creates new_dir_name sub-folder and sets save_dir"}
+        return {'new_dir_name': val}
 
-    def on_focus(self, d):
-        self.new_dir_name_lineEdit.setText(d['new_dir_name'])
+    def edit_item(self, **kwargs):
+        self.new_dir_name_lineEdit.setText(kwargs['new_dir_name'])
 
 
 class SaveDirToParent(Item):
@@ -50,7 +48,6 @@ class SaveDirToParent(Item):
         self.app.settings['save_dir'] = cur.parent.as_posix()
 
 
-
 class SaveDirToParentEditorUI(EditorUI):
 
     item_type = 'save_dir_to_parent'
@@ -58,10 +55,10 @@ class SaveDirToParentEditorUI(EditorUI):
 
     def setup_ui(self):
         self.spacer = QLabel()
-        self.group_box.layout().addWidget(self.spacer)
-        
-    def get_kwargs(self):
-        return {'info': "click resume to continue"}
+        self.layout.addWidget(self.spacer)
 
-    def on_focus(self, d):
+    def get_kwargs(self):
+        return {'info': 'save_dir jumps to parent'}
+
+    def edit_item(self, **kwargs):
         self.spacer.setFocus()

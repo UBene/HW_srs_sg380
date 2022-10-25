@@ -4,7 +4,7 @@ from qtpy.QtWidgets import QComboBox, QCompleter, QLineEdit
 from ScopeFoundry.measurement import Measurement
 
 from .editors import EditorUI
-from .list_items import Item
+from .item import Item
 
 
 class UpdateSetting(Item):
@@ -23,51 +23,47 @@ class UpdateSetting(Item):
                 v = self.measure.iter_values[letter]
         self.app.lq_path(self.kwargs['setting']).update_value(v)
 
+
 class UpdateSettingEditorUI(EditorUI):
 
-    type_name = 'update-setting'
-    description = "update a setting with value, a setting, read_from_hardware or __<iteration letter>"
+    item_type = 'update-setting'
+    description = "update a setting with value, a setting or __<iteration letter>"
 
     def __init__(self, measure: Measurement, paths) -> None:
         self.paths = paths
         super().__init__(measure)
 
     def setup_ui(self):
-        # # setting-update
-        gb = self.group_box
-        paths = self.paths
-        self.setting_comboBox = QComboBox()
-        self.setting_comboBox.setEditable(True)
-        self.setting_comboBox.addItems(paths)
-        self.setting_comboBox.setToolTip('setting to update')
-        self.completer = completer = QCompleter(paths)
+        self.setting_cb = QComboBox()
+        self.setting_cb.setEditable(True)
+        self.setting_cb.addItems(self.paths)
+        self.setting_cb.setToolTip('setting to update')
+        self.completer = completer = QCompleter(self.paths)
         completer.setCompletionMode(QCompleter.PopupCompletion)
         completer.setModelSorting(QCompleter.UnsortedModel)
         completer.setFilterMode(Qt.MatchContains)
         completer.setCaseSensitivity(Qt.CaseInsensitive)
-        self.setting_comboBox.setCompleter(completer)
-        gb.layout().addWidget(self.setting_comboBox)
-        self.setting_lineEdit = QLineEdit()
-        _paths = paths + ["read_from_hardware", "True",
-                          "False", "__A", "__B", "__C", "__D"]
+        self.setting_cb.setCompleter(completer)
+        self.group_box.layout().addWidget(self.setting_cb)
+        self.value_le = QLineEdit()
+        _paths = self.paths + ["True", "False", "__A", "__B", "__C", "__D"]
         completer = QCompleter(_paths)
         completer.setCompletionMode(QCompleter.PopupCompletion)
         completer.setModelSorting(QCompleter.UnsortedModel)
         completer.setFilterMode(Qt.MatchContains)
         completer.setCaseSensitivity(Qt.CaseInsensitive)
-        self.setting_lineEdit.setCompleter(completer)
-        self.setting_lineEdit.setToolTip('''value used to update. Can be a value, a setting, 
+        self.value_le.setCompleter(completer)
+        self.value_le.setToolTip('''value used to update. Can be a value, a setting, 
                                             or '__<iteration letter>' ''')
-        gb.layout().addWidget(self.setting_lineEdit)
+        self.group_box.layout().addWidget(self.value_le)
 
     def get_kwargs(self):
-        path = self.setting_comboBox.currentText()
-        val = self.setting_lineEdit.text()
+        path = self.setting_cb.currentText()
+        val = self.value_le.text()
         return {'setting': path, 'value': val}
 
-
-    def on_focus(self, d):
-        self.setting_comboBox.setCurrentText(d['setting'])
-        self.setting_lineEdit.setText(d['value'])
-        self.setting_lineEdit.selectAll()
-        self.setting_lineEdit.setFocus()
+    def edit_item(self, **kwargs):
+        self.setting_cb.setCurrentText(kwargs['setting'])
+        self.value_le.setText(kwargs['value'])
+        self.value_le.selectAll()
+        self.value_le.setFocus()

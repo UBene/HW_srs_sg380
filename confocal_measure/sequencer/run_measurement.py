@@ -7,7 +7,7 @@ from qtpy.QtWidgets import (QCheckBox, QComboBox, QCompleter, QDoubleSpinBox,
                             QWidget)
 
 from .editors import EditorUI
-from .list_items import Item
+from .item import Item
 
 
 class RunMeasurement(Item):
@@ -23,36 +23,37 @@ class RunMeasurement(Item):
             except:
                 print(self.measure, 'delegated', m.name, 'failed')
 
+
 class RunMeasurementEditorUI(EditorUI):
 
-    type_name = 'measurement'
-    description = "run a scopeFoundry Measurement"
+    item_type = 'measurement'
+    description = "run a ScopeFoundry Measurement"
 
     def setup_ui(self):
         # # setting-update
         measure_layout = self.group_box.layout()
         measurements = self.measure.app.measurements.keys()
-        self.measure_comboBox = QComboBox()
-        self.measure_comboBox.setEditable(True)
-        self.measure_comboBox.addItems(measurements)
+        self.measure_cb = QComboBox()
+        self.measure_cb.setEditable(True)
+        self.measure_cb.addItems(measurements)
         self.completer = completer = QCompleter(measurements)
         completer.setCompletionMode(QCompleter.PopupCompletion)
         completer.setModelSorting(QCompleter.UnsortedModel)
         completer.setFilterMode(Qt.MatchContains)
         completer.setCaseSensitivity(Qt.CaseInsensitive)
-        self.measure_comboBox.setCompleter(completer)
-        measure_layout.addWidget(self.measure_comboBox)
-        self.measure_spinBox = QSpinBox()
-        self.measure_spinBox.setValue(1)
-        self.measure_spinBox.setToolTip('number of repeats')
-        measure_layout.addWidget(self.measure_spinBox)
+        self.measure_cb.setCompleter(completer)
+        measure_layout.addWidget(self.measure_cb)
+        self.repetitions_sb = QSpinBox()
+        self.repetitions_sb.setValue(1)
+        self.repetitions_sb.setToolTip('number of repetitions')
+        measure_layout.addWidget(self.repetitions_sb)
 
     def get_kwargs(self):
-        k = self.measure_comboBox.currentText()
-        reps = self.measure_spinBox.value()
+        k = self.measure_cb.currentText()
+        reps = self.repetitions_sb.value()
         return {'measurement': k, 'repetitions': reps}
 
-    def on_focus(self, d):
-        self.measure_comboBox.setCurrentText(d['measurement'])
-        self.measure_spinBox.setValue(d['repetitions'])
-        self.measure_comboBox.setFocus()
+    def edit_item(self, **kwargs):
+        self.measure_cb.setCurrentText(kwargs['measurement'])
+        self.repetitions_sb.setValue(kwargs['repetitions'])
+        self.measure_cb.setFocus()

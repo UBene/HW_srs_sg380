@@ -3,7 +3,7 @@ from qtpy.QtCore import Qt
 from qtpy.QtWidgets import QCompleter, QLineEdit
 
 from .editors import EditorUI
-from .list_items import Item
+from .item import Item
 
 
 class Function(Item):
@@ -15,7 +15,6 @@ class Function(Item):
         if self.kwargs['type'] == 'function':
             s = 'self.app.' + \
                 self.kwargs['function'] + '(' + self.kwargs['args'] + ')'
-            print(s)
             print(eval(s))
 
 
@@ -29,27 +28,25 @@ class ExecFunction(EditorUI):
         super().__init__(measure)
 
     def setup_ui(self):
-
-        function_execute_layout = self.group_box.layout()
-        self.function_lineEdit = QLineEdit()
+        self.function_le = QLineEdit()
         completer = QCompleter(self.all_functions)
         completer.setCompletionMode(QCompleter.PopupCompletion)
         completer.setModelSorting(QCompleter.UnsortedModel)
         completer.setFilterMode(Qt.MatchContains)
         completer.setCaseSensitivity(Qt.CaseInsensitive)
-        self.function_lineEdit.setCompleter(completer)
-        self.function_lineEdit.setToolTip('path to a function')
-        self.function_args_lineEdit = QLineEdit()
-        self.function_args_lineEdit.setToolTip('function arguments')
-        function_execute_layout.addWidget(self.function_lineEdit)
-        function_execute_layout.addWidget(self.function_args_lineEdit)
+        self.function_le.setCompleter(completer)
+        self.function_le.setToolTip('path to a function')
+        self.args_le = QLineEdit()
+        self.args_le.setToolTip('function arguments')
+        self.layout.addWidget(self.function_le)
+        self.layout.addWidget(self.args_le)
 
     def get_kwargs(self):
-        f = self.function_lineEdit.text()
-        args = self.function_args_lineEdit.text()
+        f = self.function_le.text()
+        args = self.args_le.text()
         return {'function': f, 'args': args}
 
-    def on_focus(self, d):
-        self.function_lineEdit.setText(d['function'])
-        self.function_args_lineEdit.setText(d['args'])
-        self.function_args_lineEdit.selectAll()
+    def edit_item(self, **kwargs):
+        self.function_le.setText(kwargs['function'])
+        self.args_le.setText(kwargs['args'])
+        self.args_le.selectAll()

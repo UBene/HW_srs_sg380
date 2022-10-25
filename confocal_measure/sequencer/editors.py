@@ -1,24 +1,18 @@
-from qtpy.QtWidgets import (QCheckBox, QComboBox, QCompleter, QDoubleSpinBox,
-                            QFileDialog, QGroupBox, QHBoxLayout, QLabel,
-                            QLineEdit, QListWidget, QListWidgetItem,
-                            QPushButton, QSpacerItem, QSpinBox, QVBoxLayout,
-                            QWidget)
-
-from ScopeFoundry.measurement import Measurement
+from qtpy.QtWidgets import QGroupBox, QHBoxLayout, QPushButton
 
 from .loader import new_item
 
 
 class EditorUI:
 
-    type_name = ""
+    item_type = ""
     description = ""
 
-    def __init__(self, measure: Measurement) -> None:
+    def __init__(self, measure) -> None:
         self.measure = measure
 
         self.layout = layout = QHBoxLayout()
-        self.group_box = gb = QGroupBox(self.type_name.replace('_', '-'))
+        self.group_box = gb = QGroupBox(self.item_type.replace('_', '-'))
         gb.setToolTip(self.description)
         gb.setLayout(layout)
 
@@ -45,25 +39,24 @@ class EditorUI:
     def get_kwargs(self):
         ...
 
-    def on_focus(self):
+    def edit_item(self, **kwargs):
         ...
 
 
 class Editor:
     def __init__(self, editor_ui: EditorUI) -> None:
         self.ui = editor_ui
-        self.type_name = editor_ui.type_name
+        self.item_type = editor_ui.item_type
         self.description = editor_ui.description
         self.ui = editor_ui
         self.ui.set_on_new_func(self.on_new_func)
         self.ui.set_on_replace_func(self.on_replace_func)
 
     def _new_item(self):
-        print(self.ui.get_kwargs(), self.type_name)
-        return new_item(self.ui.measure, self.type_name, **self.ui.get_kwargs())
+        return new_item(self.ui.measure, self.item_type, **self.ui.get_kwargs())
 
     def on_new_func(self):
-        self.ui.measure.item_list.add(self._new_item())
+        self.ui.measure.items.add(self._new_item())
 
     def on_replace_func(self):
-        self.ui.measure.replace(self._new_item())
+        self.ui.measure.items.replace(self._new_item())

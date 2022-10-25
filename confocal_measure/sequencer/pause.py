@@ -9,7 +9,7 @@ from qtpy.QtWidgets import (QCheckBox, QComboBox, QCompleter, QDoubleSpinBox,
                             QWidget)
 
 from .editors import Editor, EditorUI
-from .list_items import Item
+from .item import Item
 
 
 class Pause(Item):
@@ -36,5 +36,5 @@ class PauseEditorUI(EditorUI):
     def get_kwargs(self):
         return {'info': "click resume to continue"}
 
-    def on_focus(self, d):
+    def edit_item(self, **kwargs):
         self.pause_spacer.setFocus()

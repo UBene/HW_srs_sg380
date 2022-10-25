@@ -6,7 +6,7 @@ def new_item(measure, item_type, **kwargs):
     from .exec_function import Function
     from .interrupt_if import InterruptIf
     from .iterations import EndIteration, StartIteration
-    from .list_items import Item
+    from .item import Item
     from .pause import Pause
     from .read_from_hardware import ReadFromHardWare
     from .run_measurement import RunMeasurement
