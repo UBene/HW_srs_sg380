@@ -5,16 +5,20 @@ Created on Tue Apr  1 09:25:48 2014
 """
 from __future__ import absolute_import, print_function
 
-from qtpy import QtCore, QtWidgets
+import sys
 import threading
 import time
-from .logged_quantity import LQCollection
-from .helper_funcs import load_qt_ui_file
-from collections import OrderedDict
-import pyqtgraph as pg
-from ScopeFoundry.helper_funcs import get_logger_from_class
 import traceback
-import sys
+from collections import OrderedDict
+
+import pyqtgraph as pg
+from qtpy import QtCore, QtWidgets
+
+from ScopeFoundry.helper_funcs import get_logger_from_class
+
+from .helper_funcs import load_qt_ui_file
+from .logged_quantity import LQCollection
+
 
 class MeasurementQThread(QtCore.QThread):
     def __init__(self, measurement, parent=None):
@@ -173,7 +177,7 @@ class Measurement(QtCore.QObject):
         self.acq_thread.start()
         self.run_state.update_value('run_thread_run')
         self.t_start = time.time()
-        self.display_update_timer.start(self.display_update_period*1000)
+        self.display_update_timer.start(int(self.display_update_period*1000))
 
     def pre_run(self):
         """Override this method to enable main-thread initialization prior to measurement thread start"""
@@ -521,7 +525,7 @@ class Measurement(QtCore.QObject):
         #self.tree_item.setFirstColumnSpanned(True)
         self.tree_progressBar = QtWidgets.QProgressBar()
         tree.setItemWidget(self.tree_item, 1, self.tree_progressBar)
-        self.progress.updated_value.connect(self.tree_progressBar.setValue)
+        self.progress.connect_to_widget(self.tree_progressBar)
 
         # Add logged quantities to tree
         self.settings.add_widgets_to_subtree(self.tree_item)
@@ -541,6 +545,7 @@ class Measurement(QtCore.QObject):
 
     def reload_code(self):
         import inspect
+
         import xreload
         mod = inspect.getmodule(self)
         x =  xreload.xreload(mod)
