@@ -220,7 +220,7 @@ class Sequencer(Measurement):
         self.items.set_current_item(next_item)
 
     def item_double_clicked(self, item: Item):
-        print('item_double_clicked', item.item_type)
+        # print('item_double_clicked', item.item_type, item.kwargs)
         self.editors[item.item_type].ui.edit_item(**item.kwargs)
 
     def run(self):

@@ -1,11 +1,10 @@
-from typing import Protocol, TypedDict
+from typing import TypedDict
 
 import numpy as np
 from qtpy.QtCore import Qt
 from qtpy.QtWidgets import QComboBox, QCompleter, QDoubleSpinBox
 
 from confocal_measure.sequencer.items import Items
-from ScopeFoundry.measurement import Measurement
 
 from ..editors import Editor, EditorUI
 from ..item import Item
@@ -22,11 +21,10 @@ class StartIteration(Item):
     item_type = 'start-iteration'
 
     def __init__(self, measure: SMeasure, **kwargs):
-        self.kwargs = kwargs
         self.iter_id = kwargs['iter_id']
         self.values = kwargs['values']
         self.lq = measure.app.lq_path(kwargs['setting'])
-        Item.__init__(self, measure=measure)
+        Item.__init__(self, measure=measure, **kwargs)
         self.reset()
 
     def update_appearance(self, text=None):
@@ -35,8 +33,6 @@ class StartIteration(Item):
 
     def visit(self):
         self.idx += 1
-        print(self.idx)
-        print(self.values)
         if self.idx == len(self.values) - 1:
             # next time end-iteration is visited the loop breaks
             self.end_iteration_item.break_next = True
@@ -71,7 +67,7 @@ class EndIteration(Item):
         self.iter_id = kwargs['iter_id']
         self.values = kwargs['values']
         self.lq = measure.app.lq_path(kwargs['setting'])
-        Item.__init__(self, measure=measure)
+        Item.__init__(self, measure=measure, **kwargs)
         self.reset()
 
     def update_appearance(self, text=None):
@@ -79,7 +75,6 @@ class EndIteration(Item):
         self.setText(f'__{self.iter_id} ' + text)
 
     def visit(self):
-        print(self.break_next)
         self.update_text()
         if self.break_next:
             self.start_iteration_item.reset()
@@ -112,7 +107,7 @@ class IterationsEditorUI(EditorUI):
     item_type = 'start-iteration'
     description = "a setting is iterated over a range of values"
 
-    def __init__(self, measure: Measurement, paths) -> None:
+    def __init__(self, measure: SMeasure, paths) -> None:
         self.paths = paths
         super().__init__(measure)
 
@@ -179,16 +174,19 @@ class InterationsEditor(Editor):
 
     def on_replace_func(self):
         items = self.ui.measure.items
-        cur_item: Item = items.get_current_item()
+        cur_item = items.get_current_item()
 
         if isinstance(cur_item, StartIteration):
             start_item = cur_item
             end_item = cur_item.end_iteration_item
-        if isinstance(cur_item, EndIteration):
+            iter_id = cur_item.iter_id
+        elif isinstance(cur_item, EndIteration):
             start_item = cur_item.start_iteration_item
             end_item = cur_item
+            iter_id = cur_item.iter_id
+        else:
+            return
 
-        iter_id = cur_item.iter_id
         items.replace(StartIteration(
             self.ui.measure, iter_id=iter_id, **self.ui.get_kwargs()), start_item)
         items.replace(EndIteration(

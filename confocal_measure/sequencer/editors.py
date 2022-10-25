@@ -1,7 +1,7 @@
 from qtpy.QtWidgets import QGroupBox, QHBoxLayout, QPushButton
 
-from .items import SMeasure
 from .item_factory import item_factory
+from .items import SMeasure
 
 
 class EditorUI:
