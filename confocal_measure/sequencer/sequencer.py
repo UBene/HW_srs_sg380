@@ -99,7 +99,7 @@ class Sequencer(Measurement):
         self.show_editor_checkBox.setChecked(True)
 
         paths = self.app.lq_paths_list()
-        all_functions = self.all_functions()
+        all_functions = self.get_all_functions()
 
         self.register_editor(ReadFromHardWareEditorUI(self, paths))
         self.register_editor(UpdateSettingEditorUI(self, paths))
@@ -134,7 +134,7 @@ class Sequencer(Measurement):
         if not event.key() in (Qt.Key_R, Qt.Key_N):
             return
         fw = self.editor_widget.focusWidget()
-        # find editor with focused widge
+        # find editor with focused widget
         for e in self.editors.values():
             gb = e.ui.group_box
             if fw in gb.findChildren(type(fw), fw.objectName()):
@@ -240,8 +240,8 @@ class Sequencer(Measurement):
                 break
 
             # go through list
-            j = 0
-            while j < self.items.count():
+            row = 0
+            while row < self.items.count():
 
                 while self.settings['paused']:
                     if self.interrupt_measurement_called:
@@ -249,20 +249,19 @@ class Sequencer(Measurement):
                     time.sleep(0.03)
 
                 # print('current j', j, N)
-                self.current_item = item = self.items.get_item(j)
+                self.current_item = item = self.items.get_item(row)
 
                 resp = item.visit()
-                if resp != None:
-                    # jump to item returned
-                    j = self.items.get_row(resp)
-                else:
+                if resp is None:
                     # go to next item
-                    j += 1
+                    row += 1
+                else:
+                    # jump to item returned
+                    row = self.items.get_row(resp)
 
                 if self.interrupt_measurement_called:
                     break
 
-    def post_run(self):
         self.current_item = None
 
     def update_display(self):
@@ -279,21 +278,17 @@ class Sequencer(Measurement):
     def restart(self):
         os.system("restart /r /f /t 1")
 
-    def all_functions(self):
-        funcs = [a for a in dir(self.app) if callable(
-            getattr(self.app, a)) and a.startswith('__') is False]
+    def get_all_functions(self):
+        funcs = []
+
+        def append_objs_callables(obj, from_app_path):
+            for a in dir(obj):
+                if callable(getattr(obj, a)) and a.startswith('__') is False:
+                    funcs.append(f'{from_app_path}{obj.name}.{a}')
+
+        append_objs_callables(self.app, "")
         for m in self.app.measurements.values():
-            for a in dir(m):
-                try:
-                    if callable(getattr(m, a)) and a.startswith('__') is False:
-                        funcs.append(f'measurements.{m.name}.' + a)
-                except:
-                    pass
-        for m in self.app.hardware.values():
-            for a in dir(m):
-                try:
-                    if callable(getattr(m, a)) and a.startswith('__') is False:
-                        funcs.append(f'hardware.{m.name}.' + a)
-                except:
-                    pass
+            append_objs_callables(m, 'measurements.')
+        for h in self.app.hardware.values():
+            append_objs_callables(h, 'hardware.')
         return funcs

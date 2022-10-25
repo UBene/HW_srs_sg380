@@ -6,8 +6,6 @@ Created on Sep 17, 2021
 from confocal_measure.sequencer import Sequencer
 from dummy.app import RandomNumberGenerator
 from ScopeFoundry.base_app import BaseMicroscopeApp
-from ScopeFoundry.hardware import HardwareComponent
-from ScopeFoundry.measurement import Measurement
 
 
 class APP(BaseMicroscopeApp):
@@ -18,12 +16,8 @@ class APP(BaseMicroscopeApp):
 
         self.add_hardware(RandomNumberGenerator(self))
 
-
-
         print("Adding Measurement Components")
         self.add_measurement(Sequencer(self))
-
-
 
 
 if __name__ == '__main__':
