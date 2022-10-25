@@ -4,7 +4,7 @@ from qtpy.QtCore import Qt
 from qtpy.QtWidgets import QComboBox, QCompleter, QLineEdit
 
 from .editors import EditorUI
-from .list_items import Item
+from .item import Item
 
 
 class InterruptIf(Item):
@@ -26,37 +26,35 @@ class IterruptIfEditorUI(EditorUI):
     description = 'interrupt if a condition is met'
 
     def __init__(self, measure, paths) -> None:
-        self.paths = paths 
+        self.paths = paths
         super().__init__(measure)
 
     def setup_ui(self):
-        paths = self.paths
-        interrupt_if_layout = self.group_box.layout()
-        self.setting_comboBox = QComboBox()
-        self.setting_comboBox.setEditable(True)
-        self.setting_comboBox.addItems(paths)
-        self.setting_comboBox.setToolTip('setting')
-        self.completer = completer = QCompleter(paths)
+        self.setting_cb = QComboBox()
+        self.setting_cb.setEditable(True)
+        self.setting_cb.addItems(self.paths)
+        self.setting_cb.setToolTip('setting')
+        self.completer = completer = QCompleter(self.paths)
         completer.setCompletionMode(QCompleter.PopupCompletion)
         completer.setModelSorting(QCompleter.UnsortedModel)
         completer.setFilterMode(Qt.MatchContains)
         completer.setCaseSensitivity(Qt.CaseInsensitive)
-        self.setting_comboBox.setCompleter(completer)
-        interrupt_if_layout.addWidget(self.setting_comboBox)
-        self.operator_comboBox = QComboBox()
-        self.operator_comboBox.addItems(['=', '<', '>'])
-        interrupt_if_layout.addWidget(self.operator_comboBox)
-        self.value_lineEdit = QLineEdit()
-        interrupt_if_layout.addWidget(self.value_lineEdit)
+        self.setting_cb.setCompleter(completer)
+        self.layout.addWidget(self.setting_cb)
+        self.operator_cb = QComboBox()
+        self.operator_cb.addItems(['=', '<', '>'])
+        self.layout.addWidget(self.operator_cb)
+        self.value_le = QLineEdit()
+        self.value_le.setCompleter(completer)
+        self.layout.addWidget(self.value_le)
 
     def get_kwargs(self):
-        path = self.setting_comboBox.currentText()
-        o = self.operator_comboBox.currentText()
-        val = self.value_lineEdit.text()
+        path = self.setting_cb.currentText()
+        o = self.operator_cb.currentText()
+        val = self.value_le.text()
         return {'setting': path, 'operator': o, 'value': val}
 
-    def on_focus(self, d):
-        self.setting_comboBox.setEditText(d['setting'])
-        self.operator_comboBox.setEditText(d['operator'])
-        self.value_lineEdit.setText(d['val'])
-    
+    def edit_item(self, **kwargs):
+        self.setting_cb.setEditText(kwargs['setting'])
+        self.operator_cb.setEditText(kwargs['operator'])
+        self.value_le.setText(kwargs['value'])

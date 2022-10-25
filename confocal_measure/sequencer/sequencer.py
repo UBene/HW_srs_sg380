@@ -9,6 +9,7 @@ import os
 import time
 from builtins import getattr
 
+from qtpy.QtCore import Qt
 from qtpy.QtWidgets import (QCheckBox, QComboBox, QFileDialog, QHBoxLayout,
                             QPushButton, QVBoxLayout, QWidget)
 
@@ -18,12 +19,15 @@ from .dir_operations import NewDirEditorUI, SaveDirToParentEditorUI
 from .editors import Editor, EditorUI
 from .exec_function import ExecFunction
 from .interrupt_if import IterruptIfEditorUI
-from .item_list import ItemList
-from .iterations import InterationsEditor, IterationsEditorUI
-from .list_items import Item
+from .item import Item
+from .items import Items
+from .iterations import (InterationsEditor, IterationsEditorUI,
+                         link_iteration_items)
+from .loader import new_item
 from .pause import PauseEditorUI
 from .read_from_hardware import ReadFromHardWareEditorUI
 from .run_measurement import RunMeasurementEditorUI
+from .timeout import TimeoutEditorUI
 from .update_settings import UpdateSettingEditorUI
 from .wait_until import WaitUntilEditorUI
 
@@ -36,7 +40,6 @@ class Sequencer(Measurement):
         self.settings.New('cycles', int, initial=1,
                           description='number of times the sequence is executed')
         self.settings.New('paused', bool, initial=False)
-
         self.iter_values = {}
         self.letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 
@@ -60,15 +63,11 @@ class Sequencer(Measurement):
             self.on_load_file_comboBox_changed)
         self.layout.addWidget(self.load_file_comboBox)
 
-        # list widget
-        # self.listWidget = QListWidget()
-        # self.listWidget.setDefaultDropAction(Qt.MoveAction)
-        # self.listWidget.setDragDropMode(QListWidget.DragDrop)
+        # item list
+        self.items = Items()
+        self.layout.addWidget(self.items.get_widget())
+        self.items.connect_item_double_clicked(self.item_double_clicked)
 
-        self.item_list = ItemList()
-        self.layout.addWidget(self.item_list.listWidget)
-        self.item_list.listWidget.itemDoubleClicked.connect(
-            self.on_itemDoubleClicked)
         # controls
         layout = QHBoxLayout()
         self.layout.addLayout(layout)
@@ -89,10 +88,8 @@ class Sequencer(Measurement):
         self.show_editor_checkBox = QCheckBox('show|hide editor')
         layout.addWidget(self.show_editor_checkBox)
 
-        self.listWidget = self.item_list.listWidget
-
         # Editors
-        self.editors = {}
+        self.editors: dict[str, Editor] = {}
         self.editor_widget = QWidget()
         self.editor_layout = QVBoxLayout()
         self.editor_widget.setLayout(self.editor_layout)
@@ -104,53 +101,54 @@ class Sequencer(Measurement):
         paths = self.app.lq_paths_list()
         all_functions = self.all_functions()
 
-        self._add_editor(ReadFromHardWareEditorUI(self, paths))
-        self._add_editor(UpdateSettingEditorUI(self, paths))
-        self._add_editor(RunMeasurementEditorUI(self))
-        self._add_editor(WaitUntilEditorUI(self, paths))
-        self._add_editor(WaitUntilEditorUI(self, paths))
-        self._add_editor(ExecFunction(self, all_functions))
-        self._add_editor(PauseEditorUI(self))
-        self._add_editor(IterruptIfEditorUI(self, paths))
-        self._add_editor(NewDirEditorUI(self))
-        self._add_editor(SaveDirToParentEditorUI(self))
-        self.editors['iterations']=InterationsEditor(IterationsEditorUI(self, paths))
+        self.register_editor(ReadFromHardWareEditorUI(self, paths))
+        self.register_editor(UpdateSettingEditorUI(self, paths))
+        self.register_editor(RunMeasurementEditorUI(self))
+        self.register_editor(WaitUntilEditorUI(self, paths))
+        self.register_editor(WaitUntilEditorUI(self, paths))
+        self.register_editor(ExecFunction(self, all_functions))
+        self.register_editor(PauseEditorUI(self))
+        self.register_editor(IterruptIfEditorUI(self, paths))
+        self.register_editor(NewDirEditorUI(self))
+        self.register_editor(SaveDirToParentEditorUI(self))
+        self.register_editor(TimeoutEditorUI(self))
+        self.register_interation_editor(IterationsEditorUI(self, paths))
 
         for editor in self.editors.values():
             self.editor_layout.addWidget(editor.ui.group_box)
 
-    def _add_editor(self, editor_ui: EditorUI):
-        self.editors[editor_ui.type_name] = Editor(editor_ui)
+        self.editor_widget.keyPressEvent = self._editorKeyPressEvent
+        self.items.get_widget().keyReleaseEvent = self._keyReleaseEvent
 
+    def register_editor(self, editor_ui: EditorUI):
+        self.editors[editor_ui.item_type] = Editor(editor_ui)
 
+    def register_interation_editor(self, editor_ui: IterationsEditorUI):
+        self.editors[editor_ui.item_type] = InterationsEditor(editor_ui)
 
+    def _editorKeyPressEvent(self, event):
+        if not event.modifiers() & Qt.ControlModifier:
+            return
+        if not event.key() in (Qt.Key_R, Qt.Key_N):
+            return
+        fw = self.editor_widget.focusWidget()
+        # find editor with focused widge
+        for e in self.editors.values():
+            gb = e.ui.group_box
+            if fw in gb.findChildren(type(fw), fw.objectName()):
+                if event.key() == Qt.Key_R:
+                    e.on_replace_func()
+                if event.key() == Qt.Key_N:
+                    e.on_new_func()
 
-    # def _keyReleaseEvent(self, event):
-    #     if event.key() == Qt.Key_Delete:
-    #         self.on_remove_item()
-    #     if event.key() == Qt.Key_Space:
-    #         self.on_run_item_and_proceed()
-    #     if event.key() in (Qt.Key_Enter, Qt.Key_Return):
-    #         print(event.key())
-    #         item = self.listWidget.currentItem()
-    #         self.on_itemDoubleClicked(item)
-
-    # def _editorKeyPressEvent(self, event):
-    #     # find editor with focused widget
-    #     if event.modifiers() & Qt.ControlModifier and event.key() in (Qt.Key_R, Qt.Key_N):
-    #         fw = self.editors.widget.focusWidget()
-    #         for key, val in self.editors.editors.items():
-    #             for item in val['groubBox'].children():
-    #                 if fw == item:
-    #                     type_name = key
-    #                     if event.key() == Qt.Key_R:
-    #                         self.editors.editors[type_name]['on_replace_func'](
-    #                         )
-    #                     if event.key() == Qt.Key_N:
-    #                         self.editors.editors[type_name]['on_add_func']()
-    #     else:
-    #         if event.key() in (Qt.Key_F1,):
-    #             self.listWidget.setFocus()
+    def _keyReleaseEvent(self, event):
+        if event.key() == Qt.Key_Delete:
+            self.items.remove()
+        if event.key() == Qt.Key_Space:
+            self.on_run_item_and_proceed()
+        if event.key() in (Qt.Key_Enter, Qt.Key_Return):
+            item = self.items.get_current_item()
+            self.item_double_clicked(item)
 
     def update_load_file_comboBox(self):
         fnames = glob.glob(glob.os.getcwd() +
@@ -167,35 +165,11 @@ class Sequencer(Measurement):
     def on_load_file_comboBox_changed(self, fname):
         self.load_file(self.seq_fnames[fname])
 
-    def add_listItem(self, d, text=None, row=None):
-        item = self.new_item(d, text)
-        self.item_list.add(item, row)
-
     def next_iter_id(self):
-        return self.letters[self.iterations_count]
+        return self.letters[self.items.count_type('start-iteration')]
 
-    def new_item(self, d, text):
-        if d['type'] == 'start-iteration':
-            iter_id = self.letters[self.iterations_count]
-            item = StartIteration(
-                self.app, self, d, iter_id, text)
-        elif d['type'] == 'end-iteration':
-            item = EndIteration(self.app, self, d, text)
-        else:
-            item = Item(self.app, self, d, text)
-        return item
-
-    @property
-    def iterations_count(self):
-        counter = 0
-        for i in range(self.listWidget.count()):
-            item = self.listWidget.item(i)
-            if item.type_name == 'start-iteration':
-                counter += 1
-        return counter
-
-    def on_remove_item(self, d=None, item=None):
-        self.item_list.remove(item)
+    def on_remove_item(self):
+        self.items.remove(None)
 
     def on_save(self):
         fname, _ = QFileDialog.getSaveFileName(
@@ -206,13 +180,8 @@ class Sequencer(Measurement):
         return fname
 
     def save_to_file(self, fname):
-        l = []
-        for i in range(self.listWidget.count()):
-            item = self.listWidget.item(i)
-            l.append(item.d)
-
         with open(fname, "w+") as f:
-            f.write(json.dumps(l, indent=1))
+            f.write(json.dumps(self.items.as_dicts(), indent=1))
 
     def on_load(self):
         fname, _ = QFileDialog.getOpenFileName(
@@ -222,52 +191,44 @@ class Sequencer(Measurement):
         return fname
 
     def load_file(self, fname):
-        self.listWidget.clear()
+        self.items.clear()
         with open(fname, "r") as f:
             lines = json.loads(f.read())
-        for d in lines:
-            self.add_listItem(d)
-        self.link_iteration_items()
+        for kwargs in lines:
+            item_type = kwargs.pop('type')
+            item = new_item(self, item_type, **kwargs)
+            self.items.add(item)
+        success = link_iteration_items(self.items)
+        if not success:
+            print("invalid list")
 
     def on_run_item(self):
-        item = self.listWidget.currentItem()
-        if item.d['type'] == 'measurement':
+        item = self.items.get_current_item()
+        if item.item_type == 'measurement':
             print('WARNING measurement not supported without running threat')
             return (item, None)
         else:
-            return (item, self.listWidget.currentItem().visit())
+            return (item, self.items.get_current_item().visit())
 
     def on_run_item_and_proceed(self):
         item, next_item = self.on_run_item()
         if next_item == None:
-            row = self.listWidget.row(item)
-            next_item = self.listWidget.item(row + 1)
-        self.listWidget.setCurrentItem(next_item)
+            row = self.items.get_row(item)
+            next_item = self.items.get_item(row + 1)
+        self.items.set_current_item(next_item)
 
-    def on_itemDoubleClicked(self, item):
-        self.show_editor_checkBox.setChecked(True)
-        d = item.d
-        print('on_itemDoubleClicked')
-
-    def link_iteration_items(self):
-        start_iter_items = []
-        for i in range(self.listWidget.count()):
-            item = self.listWidget.item(i)
-            if item.d['type'] == 'start-iteration':
-                start_iter_items.append(item)
-            if item.d['type'] == 'end-iteration':
-                s_item = start_iter_items.pop()
-                item.set_start_iteration_item(s_item)
-                s_item.set_end_iteration_item(item)
-
-        if len(start_iter_items) != 0:
-            print("invalid list", start_iter_items)
+    def item_double_clicked(self, item: Item):
+        print('item_double_clicked', item.item_type)
+        self.editors[item.item_type].ui.edit_item(**item.kwargs)
 
     def run(self):
-        self.link_iteration_items()
-        N = self.listWidget.count()
+        success = link_iteration_items(self.items)
+        if not success:
+            print("invalid list")
+
+        N = self.items.count()
         for i in range(N):
-            self.listWidget.item(i).reset()
+            self.items.get_item(i).reset()
 
         for q in range(self.settings['cycles']):
             if self.interrupt_measurement_called:
@@ -275,7 +236,7 @@ class Sequencer(Measurement):
 
             # go through list
             j = 0
-            while j < self.listWidget.count():
+            while j < self.items.count():
 
                 while self.settings['paused']:
                     if self.interrupt_measurement_called:
@@ -283,12 +244,12 @@ class Sequencer(Measurement):
                     time.sleep(0.03)
 
                 # print('current j', j, N)
-                self.current_item = item = self.listWidget.item(j)
+                self.current_item = item = self.items.get_item(j)
 
                 resp = item.visit()
                 if resp != None:
                     # jump to item returned
-                    j = self.listWidget.row(resp)
+                    j = self.items.get_row(resp)
                 else:
                     # go to next item
                     j += 1
@@ -300,9 +261,8 @@ class Sequencer(Measurement):
         self.current_item = None
 
     def update_display(self):
-        from qtpy.QtCore import Qt
-        for i in range(self.listWidget.count()):
-            item = self.listWidget.item(i)
+        for i in range(self.items.count()):
+            item = self.items.get_item(i)
             if item == self.current_item:
                 item.setBackground(Qt.green)
             else:

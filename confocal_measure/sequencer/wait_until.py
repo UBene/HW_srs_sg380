@@ -9,7 +9,7 @@ from qtpy.QtWidgets import (QCheckBox, QComboBox, QCompleter, QDoubleSpinBox,
                             QWidget)
 
 from .editors import Editor, EditorUI
-from .list_items import Item
+from .item import Item
 
 
 class WaitUntil(Item):
@@ -34,39 +34,38 @@ class WaitUntilEditorUI(EditorUI):
     description = 'wait until condition is met'
 
     def __init__(self, measure, paths) -> None:
-         self.paths = paths
-         super().__init__(measure)
+        self.paths = paths
+        super().__init__(measure)
 
     def setup_ui(self):
-        paths = self.paths
-        wait_until_layout = self.group_box.layout()
-        self.wait_until_comboBox = QComboBox()
-        self.wait_until_comboBox.setEditable(True)
-        self.wait_until_comboBox.addItems(paths)
-        self.wait_until_comboBox.setToolTip('setting')
-        self.completer = completer = QCompleter(paths)
+        self.setting_cb = QComboBox()
+        self.setting_cb.setEditable(True)
+        self.setting_cb.addItems(self.paths)
+        self.setting_cb.setToolTip('setting')
+        self.completer = completer = QCompleter(self.paths)
         completer.setCompletionMode(QCompleter.PopupCompletion)
         completer.setModelSorting(QCompleter.UnsortedModel)
         completer.setFilterMode(Qt.MatchContains)
         completer.setCaseSensitivity(Qt.CaseInsensitive)
-        self.wait_until_comboBox.setCompleter(completer)
-        wait_until_layout.addWidget(self.wait_until_comboBox)
-        self.wait_until_operator_comboBox = QComboBox()
-        self.wait_until_operator_comboBox.addItems(['=', '<', '>'])
-        wait_until_layout.addWidget(self.wait_until_operator_comboBox)
-        self.wait_until_lineEdit = QLineEdit()
-        self.wait_until_lineEdit.setToolTip(
+        self.setting_cb.setCompleter(completer)
+        self.layout.addWidget(self.setting_cb)
+        self.operator_cb = QComboBox()
+        self.operator_cb.addItems(['=', '<', '>'])
+        self.layout.addWidget(self.operator_cb)
+        self.value_le = QLineEdit()
+        self.value_le.setToolTip(
             'wait until setting reaches this value')
-        wait_until_layout.addWidget(self.wait_until_lineEdit)
+        self.layout.addWidget(self.value_le)
 
     def get_kwargs(self):
-        path = self.setting_comboBox.currentText()
-        return {'setting': path}
+        path = self.setting_cb.currentText()
+        o = self.operator_cb.currentText()
+        v = self.value_le.text()
+        return {'setting': path, 'operator': o, 'value': v}
 
-    def on_focus(self, d):
-
-            self.wait_until_comboBox.setCurrentText(d['setting'])
-            self.wait_until_operator_comboBox.setCurrentText(d['operator'])
-            self.wait_until_lineEdit.setText(d['value'])
-            self.wait_until_lineEdit.selectAll()
-            self.wait_until_lineEdit.setFocus()
+    def edit_item(self, **kwargs):
+        self.setting_cb.setCurrentText(kwargs['setting'])
+        self.operator_cb.setCurrentText(kwargs['operator'])
+        self.value_le.setText(kwargs['value'])
+        self.value_le.selectAll()
+        self.value_le.setFocus()

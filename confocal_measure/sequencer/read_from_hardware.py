@@ -6,7 +6,7 @@ from qtpy.QtWidgets import (QCheckBox, QComboBox, QCompleter, QDoubleSpinBox,
                             QWidget)
 
 from .editors import Editor, EditorUI
-from .list_items import Item
+from .item import Item
 
 
 class ReadFromHardWare(Item):
@@ -27,24 +27,21 @@ class ReadFromHardWareEditorUI(EditorUI):
         super().__init__(measure)
 
     def setup_ui(self):
-        # # setting-update
-        gb = self.group_box
-        self.setting_comboBox = QComboBox()
-        self.setting_comboBox.setEditable(True)
-        self.setting_comboBox.addItems(self.paths)
-        self.setting_comboBox.setToolTip('setting to update')
+        self.setting_cb = QComboBox()
+        self.setting_cb.setEditable(True)
+        self.setting_cb.addItems(self.paths)
+        self.setting_cb.setToolTip('setting to update')
         self.completer = completer = QCompleter(self.paths)
         completer.setCompletionMode(QCompleter.PopupCompletion)
         completer.setModelSorting(QCompleter.UnsortedModel)
         completer.setFilterMode(Qt.MatchContains)
         completer.setCaseSensitivity(Qt.CaseInsensitive)
-        self.setting_comboBox.setCompleter(completer)
-        gb.layout().addWidget(self.setting_comboBox)
+        self.setting_cb.setCompleter(completer)
+        self.layout.addWidget(self.setting_cb)
 
     def get_kwargs(self):
-        path = self.setting_comboBox.currentText()
-        return {'setting': path}
+        return {'setting': self.setting_cb.currentText()}
 
-    def on_focus(self, d):
-        self.setting_comboBox.setCurrentText(d['setting'])
-        self.setting_comboBox.setFocus()
+    def edit_item(self, **kwargs):
+        self.setting_cb.setCurrentText(kwargs['setting'])
+        self.setting_cb.setFocus()
