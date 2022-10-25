@@ -6,8 +6,8 @@ from qtpy.QtWidgets import (QCheckBox, QComboBox, QCompleter, QDoubleSpinBox,
                             QPushButton, QSpacerItem, QSpinBox, QVBoxLayout,
                             QWidget)
 
-from .editors import EditorUI
-from .item import Item
+from ..editors import EditorUI
+from ..item import Item
 
 
 class RunMeasurement(Item):

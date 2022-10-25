@@ -2,8 +2,8 @@ import time
 
 from qtpy.QtWidgets import QDoubleSpinBox
 
-from .editors import EditorUI
-from .item import Item
+from ..editors import EditorUI
+from ..item import Item
 
 
 class Timeout(Item):

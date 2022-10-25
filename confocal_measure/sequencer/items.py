@@ -1,8 +1,11 @@
 from typing import Any
+
 from qtpy.QtCore import Qt
 from qtpy.QtWidgets import QListWidget
 
-from confocal_measure.sequencer.item import Item
+from ScopeFoundry.measurement import Measurement
+
+from .item import Item
 
 
 class Items:
@@ -34,10 +37,11 @@ class Items:
         #     del item2
         del item
 
-    def replace(self, new_item: Item):
-        cur_item = self.get_current_item()
-        self.add(new_item, self.widget.currentRow())
-        self.remove(cur_item)
+    def replace(self, new_item: Item, old_item:Item | None = None):
+        if old_item is None:
+            old_item = self.get_current_item()
+        self.add(new_item, self.get_row(old_item))
+        self.remove(old_item)
 
     def connect_item_double_clicked(self, fn):
         self.widget.itemDoubleClicked.connect(fn)
@@ -49,13 +53,13 @@ class Items:
         return self.widget.row(item)
 
     def get_item(self, row: int) -> Item:
-        return self.widget.item(row)
+        return self.widget.item(row)  # type: ignore
 
-    def get_current_row(self) -> Item:
+    def get_current_row(self) -> int:
         return self.widget.currentRow()
 
     def get_current_item(self) -> Item:
-        return self.widget.currentItem()
+        return self.widget.currentItem()  # type: ignore
 
     def set_current_item(self, item: Item):
         self.widget.setCurrentItem(item)
@@ -80,3 +84,8 @@ class Items:
             item = self.get_item(i)
             l.append({'type': item.item_type, **item.kwargs})
         return l
+
+
+class SMeasure(Measurement):
+    iter_values: dict[str, str]
+    items: Items

@@ -3,8 +3,8 @@ from qtpy.QtWidgets import QComboBox, QCompleter, QLineEdit
 
 from ScopeFoundry.measurement import Measurement
 
-from .editors import EditorUI
-from .item import Item
+from ..editors import EditorUI
+from ..item import Item
 
 
 class UpdateSetting(Item):

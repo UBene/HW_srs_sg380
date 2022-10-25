@@ -15,21 +15,21 @@ from qtpy.QtWidgets import (QCheckBox, QComboBox, QFileDialog, QHBoxLayout,
 
 from ScopeFoundry import Measurement
 
-from .dir_operations import NewDirEditorUI, SaveDirToParentEditorUI
 from .editors import Editor, EditorUI
-from .exec_function import ExecFunction
-from .interrupt_if import IterruptIfEditorUI
 from .item import Item
+from .item_factory import item_factory
 from .items import Items
-from .iterations import (InterationsEditor, IterationsEditorUI,
-                         link_iteration_items)
-from .loader import new_item
-from .pause import PauseEditorUI
-from .read_from_hardware import ReadFromHardWareEditorUI
-from .run_measurement import RunMeasurementEditorUI
-from .timeout import TimeoutEditorUI
-from .update_settings import UpdateSettingEditorUI
-from .wait_until import WaitUntilEditorUI
+from .types.dir_operations import NewDirEditorUI, SaveDirToParentEditorUI
+from .types.exec_function import ExecFunction
+from .types.interrupt_if import IterruptIfEditorUI
+from .types.iterations import (InterationsEditor, IterationsEditorUI,
+                               link_iteration_items)
+from .types.pause import PauseEditorUI
+from .types.read_from_hardware import ReadFromHardWareEditorUI
+from .types.run_measurement import RunMeasurementEditorUI
+from .types.timeout import TimeoutEditorUI
+from .types.update_settings import UpdateSettingEditorUI
+from .types.wait_until import WaitUntilEditorUI
 
 
 class Sequencer(Measurement):
@@ -124,7 +124,9 @@ class Sequencer(Measurement):
         self.editors[editor_ui.item_type] = Editor(editor_ui)
 
     def register_interation_editor(self, editor_ui: IterationsEditorUI):
-        self.editors[editor_ui.item_type] = InterationsEditor(editor_ui)
+        editor = InterationsEditor(editor_ui)
+        self.editors['start-iteration'] = editor
+        self.editors['end-iteration'] = editor
 
     def _editorKeyPressEvent(self, event):
         if not event.modifiers() & Qt.ControlModifier:
@@ -196,7 +198,7 @@ class Sequencer(Measurement):
             lines = json.loads(f.read())
         for kwargs in lines:
             item_type = kwargs.pop('type')
-            item = new_item(self, item_type, **kwargs)
+            item = item_factory(self, item_type, **kwargs)
             self.items.add(item)
         success = link_iteration_items(self.items)
         if not success:
@@ -231,6 +233,9 @@ class Sequencer(Measurement):
             self.items.get_item(i).reset()
 
         for q in range(self.settings['cycles']):
+            pct = int(100 * q / self.settings['cycles'])
+            self.set_progress(pct)
+            print(pct)
             if self.interrupt_measurement_called:
                 break
 

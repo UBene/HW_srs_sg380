@@ -1,3 +1,5 @@
+from typing import Protocol, TypedDict
+
 import numpy as np
 from qtpy.QtCore import Qt
 from qtpy.QtWidgets import QComboBox, QCompleter, QDoubleSpinBox
@@ -5,18 +7,25 @@ from qtpy.QtWidgets import QComboBox, QCompleter, QDoubleSpinBox
 from confocal_measure.sequencer.items import Items
 from ScopeFoundry.measurement import Measurement
 
-from .editors import Editor, EditorUI
-from .item import Item
+from ..editors import Editor, EditorUI
+from ..item import Item
+from ..items import SMeasure
+
+
+class StartIterationDict(TypedDict):
+    values: list
+    setting: str
 
 
 class StartIteration(Item):
 
     item_type = 'start-iteration'
 
-    def __init__(self, measure, iter_id, values, setting):
-        self.iter_id = iter_id
-        self.values = values
-        self.lq = measure.app.lq_path(setting)
+    def __init__(self, measure: SMeasure, **kwargs):
+        self.kwargs = kwargs
+        self.iter_id = kwargs['iter_id']
+        self.values = kwargs['values']
+        self.lq = measure.app.lq_path(kwargs['setting'])
         Item.__init__(self, measure=measure)
         self.reset()
 
@@ -57,10 +66,13 @@ class EndIteration(Item):
 
     item_type = 'end-iteration'
 
-    def __init__(self, measure, iter_id=None):
-        self.iter_id = iter_id
-        self.break_next = False
+    def __init__(self, measure: SMeasure, **kwargs):
+        self.kwargs = kwargs
+        self.iter_id = kwargs['iter_id']
+        self.values = kwargs['values']
+        self.lq = measure.app.lq_path(kwargs['setting'])
         Item.__init__(self, measure=measure)
+        self.reset()
 
     def update_appearance(self, text=None):
         text = Item.update_appearance(self, text=text)
@@ -80,7 +92,7 @@ class EndIteration(Item):
         self.break_next = False
         self.update_text()
 
-    def set_start_iteration_item(self, start_iteration_item):
+    def set_start_iteration_item(self, start_iteration_item: StartIteration):
         self.start_iteration_item = start_iteration_item
         self.iter_id = start_iteration_item.iter_id
         self.update_appearance()
@@ -134,6 +146,14 @@ class IterationsEditorUI(EditorUI):
             spinBox.setMaximum(1e6)
             spinBox.setDecimals(6)
 
+    def get_kwargs(self) -> StartIterationDict:
+        path = self.setting_cb.currentText()
+        start = self.start_dsb.value()
+        stop = self.stop_dsb.value()
+        step = self.step_dsb.value()
+        values = list(np.arange(start, stop, step))
+        return {'setting': path, 'values': values}
+
     def edit_item(self, **kwargs):
         self.start_dsb.setValue(kwargs['values'][0])
         step = kwargs['values'][1] - kwargs['values'][0]
@@ -142,47 +162,48 @@ class IterationsEditorUI(EditorUI):
         self.start_dsb.selectAll()
         self.start_dsb.setFocus()
 
-    def get_kwargs(self):
-        path = self.setting_cb.currentText()
-        start = self.start_dsb.value()
-        stop = self.stop_dsb.value()
-        step = self.step_dsb.value()
-        values = list(np.arange(start, stop, step))
-        return {'setting': path, 'values': values}
-
 
 class InterationsEditor(Editor):
 
-    def __init__(self, editor_ui: EditorUI) -> None:
+    def __init__(self, editor_ui: IterationsEditorUI) -> None:
         super().__init__(editor_ui)
+        self.ui = editor_ui
 
     def on_new_func(self):
         iter_id = self.ui.measure.next_iter_id()
         self.ui.measure.items.add(StartIteration(
             self.ui.measure, iter_id=iter_id, **self.ui.get_kwargs()))
-        self.ui.measure.items.add(EndIteration(self.ui.measure, iter_id))
+        self.ui.measure.items.add(EndIteration(
+            self.ui.measure, iter_id=iter_id, **self.ui.get_kwargs()))
+        link_iteration_items(self.ui.measure.items)
 
     def on_replace_func(self):
-        cur_item: Item = self.ui.measure.items.get_current_item()
-        # if cur_item.item_type == 'end-iteration':
-        #     cur_item = cur_item.start_iteration_item
+        items = self.ui.measure.items
+        cur_item: Item = items.get_current_item()
 
-        if cur_item.item_type == 'start-iteration':
-            # e = cur_item.end_iteration_item
-            iter_id = self.ui.measure.next_iter_id()
-            new_item = StartIteration(
-                self.ui.measure, iter_id=iter_id, **self.ui.get_kwargs())
-            self.ui.measure.items.replace(new_item)
-            # new_item.set_end_iteration_item(e)
+        if isinstance(cur_item, StartIteration):
+            start_item = cur_item
+            end_item = cur_item.end_iteration_item
+        if isinstance(cur_item, EndIteration):
+            start_item = cur_item.start_iteration_item
+            end_item = cur_item
+
+        iter_id = cur_item.iter_id
+        items.replace(StartIteration(
+            self.ui.measure, iter_id=iter_id, **self.ui.get_kwargs()), start_item)
+        items.replace(EndIteration(
+            self.ui.measure, iter_id=iter_id, **self.ui.get_kwargs()), end_item)
+        link_iteration_items(items)
 
 
 def link_iteration_items(item_list: Items) -> bool:
-    start_iter_items = []
+    '''returns if the list is valid in terms iteration items'''
+    start_iter_items: list[StartIteration] = []
     for i in range(item_list.count()):
         item = item_list.get_item(i)
-        if item.item_type == 'start-iteration':
+        if isinstance(item, StartIteration):
             start_iter_items.append(item)
-        if item.item_type == 'end-iteration':
+        if isinstance(item, EndIteration):
             s_item = start_iter_items.pop()
             item.set_start_iteration_item(s_item)
             s_item.set_end_iteration_item(item)

@@ -4,8 +4,8 @@ from pathlib import Path
 
 from qtpy.QtWidgets import QLabel, QLineEdit
 
-from .editors import EditorUI
-from .item import Item
+from ..editors import EditorUI
+from ..item import Item
 
 
 class NewDir(Item):

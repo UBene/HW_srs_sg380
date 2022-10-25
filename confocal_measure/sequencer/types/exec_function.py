@@ -2,8 +2,8 @@
 from qtpy.QtCore import Qt
 from qtpy.QtWidgets import QCompleter, QLineEdit
 
-from .editors import EditorUI
-from .item import Item
+from ..editors import EditorUI
+from ..item import Item
 
 
 class Function(Item):

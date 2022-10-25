@@ -5,8 +5,8 @@ from qtpy.QtWidgets import (QCheckBox, QComboBox, QCompleter, QDoubleSpinBox,
                             QPushButton, QSpacerItem, QSpinBox, QVBoxLayout,
                             QWidget)
 
-from .editors import Editor, EditorUI
-from .item import Item
+from ..editors import Editor, EditorUI
+from ..item import Item
 
 
 class ReadFromHardWare(Item):

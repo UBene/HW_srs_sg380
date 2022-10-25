@@ -1,6 +1,7 @@
 from qtpy.QtWidgets import QGroupBox, QHBoxLayout, QPushButton
 
-from .loader import new_item
+from .items import SMeasure
+from .item_factory import item_factory
 
 
 class EditorUI:
@@ -8,7 +9,7 @@ class EditorUI:
     item_type = ""
     description = ""
 
-    def __init__(self, measure) -> None:
+    def __init__(self, measure:SMeasure) -> None:
         self.measure = measure
 
         self.layout = layout = QHBoxLayout()
@@ -53,7 +54,7 @@ class Editor:
         self.ui.set_on_replace_func(self.on_replace_func)
 
     def _new_item(self):
-        return new_item(self.ui.measure, self.item_type, **self.ui.get_kwargs())
+        return item_factory(self.ui.measure, self.item_type, **self.ui.get_kwargs())
 
     def on_new_func(self):
         self.ui.measure.items.add(self._new_item())

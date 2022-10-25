@@ -3,9 +3,11 @@ Created on Sep 17, 2021
 
 @author: lab
 '''
-from ScopeFoundry.measurement import Measurement
 from confocal_measure.sequencer import Sequencer
+from dummy.app import RandomNumberGenerator
 from ScopeFoundry.base_app import BaseMicroscopeApp
+from ScopeFoundry.hardware import HardwareComponent
+from ScopeFoundry.measurement import Measurement
 
 
 class APP(BaseMicroscopeApp):
@@ -14,10 +16,14 @@ class APP(BaseMicroscopeApp):
 
     def setup(self):
 
-        print("Adding Measurement Components")
-        self.add_measurement(Sequencer)
+        self.add_hardware(RandomNumberGenerator(self))
 
-        #self.add_measurement(Measurement(self, name='test'))
+
+
+        print("Adding Measurement Components")
+        self.add_measurement(Sequencer(self))
+
+
 
 
 if __name__ == '__main__':

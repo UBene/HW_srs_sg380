@@ -1,15 +1,7 @@
-from ast import operator
-from time import time
+from qtpy.QtWidgets import QLabel
 
-from qtpy.QtCore import Qt
-from qtpy.QtWidgets import (QCheckBox, QComboBox, QCompleter, QDoubleSpinBox,
-                            QFileDialog, QGroupBox, QHBoxLayout, QLabel,
-                            QLineEdit, QListWidget, QListWidgetItem,
-                            QPushButton, QSpacerItem, QSpinBox, QVBoxLayout,
-                            QWidget)
-
-from .editors import Editor, EditorUI
-from .item import Item
+from ..editors import EditorUI
+from ..item import Item
 
 
 class Pause(Item):

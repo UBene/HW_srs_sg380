@@ -1,37 +1,29 @@
-from ast import operator
-from time import time
+import operator
 
 from qtpy.QtCore import Qt
-from qtpy.QtWidgets import (QCheckBox, QComboBox, QCompleter, QDoubleSpinBox,
-                            QFileDialog, QGroupBox, QHBoxLayout, QLabel,
-                            QLineEdit, QListWidget, QListWidgetItem,
-                            QPushButton, QSpacerItem, QSpinBox, QVBoxLayout,
-                            QWidget)
+from qtpy.QtWidgets import QComboBox, QCompleter, QLineEdit
 
-from .editors import Editor, EditorUI
-from .item import Item
+from ..editors import EditorUI
+from ..item import Item
 
 
-class WaitUntil(Item):
+class InterruptIf(Item):
 
-    item_type = 'wait-until'
+    item_type = 'interrupt-if'
 
     def visit(self):
-
         relate = {'=': operator.eq, '>': operator.gt,
                   '<': operator.lt}[self.kwargs['operator']]
         lq = self.app.lq_path(self.kwargs['setting'])
         val = lq.coerce_to_type(self.kwargs['value'])
-        while True:
-            if relate(lq.val, val) or self.measure.interrupt_measurement_called:
-                break
-            time.sleep(0.05)
+        if relate(lq.val, val):
+            self.measure.interrupt()
 
 
-class WaitUntilEditorUI(EditorUI):
+class IterruptIfEditorUI(EditorUI):
 
-    item_type = 'wait-until'
-    description = 'wait until condition is met'
+    item_type = 'interrupt-if'
+    description = 'interrupt if a condition is met'
 
     def __init__(self, measure, paths) -> None:
         self.paths = paths
@@ -53,19 +45,16 @@ class WaitUntilEditorUI(EditorUI):
         self.operator_cb.addItems(['=', '<', '>'])
         self.layout.addWidget(self.operator_cb)
         self.value_le = QLineEdit()
-        self.value_le.setToolTip(
-            'wait until setting reaches this value')
+        self.value_le.setCompleter(completer)
         self.layout.addWidget(self.value_le)
 
     def get_kwargs(self):
         path = self.setting_cb.currentText()
         o = self.operator_cb.currentText()
-        v = self.value_le.text()
-        return {'setting': path, 'operator': o, 'value': v}
+        val = self.value_le.text()
+        return {'setting': path, 'operator': o, 'value': val}
 
     def edit_item(self, **kwargs):
-        self.setting_cb.setCurrentText(kwargs['setting'])
-        self.operator_cb.setCurrentText(kwargs['operator'])
+        self.setting_cb.setEditText(kwargs['setting'])
+        self.operator_cb.setEditText(kwargs['operator'])
         self.value_le.setText(kwargs['value'])
-        self.value_le.selectAll()
-        self.value_le.setFocus()
