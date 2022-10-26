@@ -27,8 +27,8 @@ class StartIteration(Item):
         Item.__init__(self, measure=measure, **kwargs)
         self.reset()
 
-    def update_appearance(self, text=None):
-        text = Item.update_appearance(self, text=text)
+    def _update_appearance(self, text=None):
+        text = Item._update_appearance(self, text=text)
         self.setText(f'__{self.iter_id} ' + text)
 
     def visit(self):
@@ -70,8 +70,8 @@ class EndIteration(Item):
         Item.__init__(self, measure=measure, **kwargs)
         self.reset()
 
-    def update_appearance(self, text=None):
-        text = Item.update_appearance(self, text=text)
+    def _update_appearance(self, text=None):
+        text = Item._update_appearance(self, text=text)
         self.setText(f'__{self.iter_id} ' + text)
 
     def visit(self):
@@ -90,7 +90,7 @@ class EndIteration(Item):
     def set_start_iteration_item(self, start_iteration_item: StartIteration):
         self.start_iteration_item = start_iteration_item
         self.iter_id = start_iteration_item.iter_id
-        self.update_appearance()
+        self._update_appearance()
 
     def update_text(self):
         try:

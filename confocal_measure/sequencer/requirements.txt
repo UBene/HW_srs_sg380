@@ -1,0 +1,13 @@
+ipython
+matplotlib
+numpy
+PyDAQmx
+pyjson
+pylint
+PyQt6
+pyqtgraph
+PyVISA
+QtPy
+spinapi
+xreload
+qtconsole

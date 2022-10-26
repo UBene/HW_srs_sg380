@@ -233,9 +233,8 @@ class Sequencer(Measurement):
             self.items.get_item(i).reset()
 
         for q in range(self.settings['cycles']):
-            pct = int(100 * q / self.settings['cycles'])
-            self.set_progress(pct)
-            print(pct)
+            # pct = int(100 * q / self.settings['cycles'])
+            # self.set_progress(pct)
             if self.interrupt_measurement_called:
                 break
 

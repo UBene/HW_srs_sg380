@@ -23,7 +23,7 @@ class SweepSequencer(Sequencer):
         layout.addWidget(self.settings.New_UI(
             ['current_range_value', 'ignore_sweep']))
         self.layout.insertLayout(1, layout)
-        self.editors['update-setting'].ui.setting_lineEdit.setText(
+        self.editors['update-setting'].ui.value_le.setText(
             "measurement/sweep_sequencer/current_range_value")
 
     def run(self):

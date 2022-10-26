@@ -13,12 +13,12 @@ class Item(QListWidgetItem):
         self.app = measure.app
         self.measure = measure
         self.kwargs = kwargs
-        self.update_appearance()
+        self._update_appearance()
 
     def visit(self) -> None | Self:
         raise NotImplementedError
 
-    def update_appearance(self, text=None):
+    def _update_appearance(self, text=None):
         if text == None:
             x = [f'{val}' for key, val in self.kwargs.items()]
             text = f"{self.item_type}: {' '.join(x)}"
