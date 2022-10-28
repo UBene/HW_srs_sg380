@@ -1,9 +1,6 @@
 from typing import Any
-
 from qtpy.QtCore import Qt
 from qtpy.QtWidgets import QListWidget
-
-from ScopeFoundry.measurement import Measurement
 
 from .item import Item
 
@@ -12,32 +9,24 @@ class Items:
 
     def __init__(self):
         self.widget = QListWidget()
-        self.widget.setDefaultDropAction(Qt.MoveAction)
-        self.widget.setDragDropMode(QListWidget.DragDrop)
+        self.widget.setDefaultDropAction(Qt.DropAction.MoveAction)
+        self.widget.setDragDropMode(QListWidget.DragDropMode.DragDrop)
 
-    def add(self, item: Item, row=None):
+    def add(self, item: Item, row: int | None = None):
         if row == None:
             row = self.get_current_row()
         self.widget.insertItem(row + 1, item)
         self.widget.setCurrentRow(row + 1)
 
-    def remove(self, item=None):
+    def remove(self, item: Item | None = None):
         if item is not None:
             row = self.get_row(item)
         else:
             row = self.get_current_row()
-        item = self.widget.takeItem(row)
-        # if hasattr(item, 'start_iteration_item'):
-        #     item2 = self.widget.takeItem(
-        #         self.widget.row(item.start_iteration_item))
-        #     del item2
-        # if hasattr(item, 'end_iteration_item'):
-        #     item2 = self.widget.takeItem(
-        #         self.widget.row(item.end_iteration_item))
-        #     del item2
+        self.widget.takeItem(row)
         del item
 
-    def replace(self, new_item: Item, old_item:Item | None = None):
+    def replace(self, new_item: Item, old_item: Item | None = None):
         if old_item is None:
             old_item = self.get_current_item()
         self.add(new_item, self.get_row(old_item))
@@ -84,8 +73,3 @@ class Items:
             item = self.get_item(i)
             l.append({'type': item.item_type, **item.kwargs})
         return l
-
-
-class SMeasure(Measurement):
-    iter_values: dict[str, str]
-    items: Items

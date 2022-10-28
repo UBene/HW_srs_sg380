@@ -99,14 +99,13 @@ class Sequencer(Measurement):
         self.show_editor_checkBox.setChecked(True)
 
         paths = self.app.lq_paths_list()
-        all_functions = self.get_all_functions()
 
         self.register_editor(ReadFromHardWareEditorUI(self, paths))
         self.register_editor(UpdateSettingEditorUI(self, paths))
         self.register_editor(RunMeasurementEditorUI(self))
         self.register_editor(WaitUntilEditorUI(self, paths))
         self.register_editor(WaitUntilEditorUI(self, paths))
-        self.register_editor(ExecFunctionEditorUI(self, all_functions))
+        self.register_editor(ExecFunctionEditorUI(self, self.get_all_functions()))
         self.register_editor(PauseEditorUI(self))
         self.register_editor(IterruptIfEditorUI(self, paths))
         self.register_editor(NewDirEditorUI(self))

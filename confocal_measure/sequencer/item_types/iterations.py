@@ -1,3 +1,4 @@
+from ..sequencer import Sequencer
 from .item_factory import register_item
 from typing import TypedDict
 
@@ -19,19 +20,18 @@ class StartIteration(Item):
 
     item_type = 'start-iteration'
 
-    def __init__(self, measure: SMeasure, **kwargs):
+    def __init__(self, measure: Sequencer, **kwargs):
         self.iter_id = kwargs['iter_id']
         self.values = kwargs['values']
         self.lq = measure.app.lq_path(kwargs['setting'])
         Item.__init__(self, measure=measure, **kwargs)
-        self.measure = measure
         self.reset()
 
     def _update_appearance(self, text=None):
         text = Item._update_appearance(self, text=text)
         self.setText(f'__{self.iter_id} ' + text)
 
-    def visit(self) ->None | Item:
+    def visit(self) -> None | Item:
         self.idx += 1
         if self.idx == len(self.values) - 1:
             # next time end-iteration is visited the loop breaks
@@ -45,7 +45,7 @@ class StartIteration(Item):
         self.idx = -1
         self.update_text()
 
-    def set_end_iteration_item(self, end_iteration_item:EndIteration):
+    def set_end_iteration_item(self, end_iteration_item):
         self.end_iteration_item = end_iteration_item
 
     def update_text(self):

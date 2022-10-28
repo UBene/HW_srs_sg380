@@ -1,14 +1,13 @@
 from qtpy.QtWidgets import QListWidgetItem
 from typing_extensions import Self
-
-from ScopeFoundry.measurement import Measurement
+from .sequencer import Sequencer
 
 
 class Item(QListWidgetItem):
 
     item_type = 'item - overwrite me'
 
-    def __init__(self, measure: Measurement, **kwargs):
+    def __init__(self, measure: Sequencer, **kwargs):
         super().__init__()
         self.app = measure.app
         self.measure = measure

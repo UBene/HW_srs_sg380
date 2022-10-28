@@ -6,6 +6,16 @@ Created on Sep 17, 2021
 from confocal_measure.sequencer import Sequencer, SweepSequencer
 from dummy.app import RandomNumberGenerator
 from ScopeFoundry.base_app import BaseMicroscopeApp
+import logging
+
+
+level = logging.INFO
+logging.basicConfig(level=level)
+logging.getLogger("ipykernel").setLevel(level)
+logging.getLogger('PyQt4').setLevel(level)
+logging.getLogger('PyQt5').setLevel(level)
+logging.getLogger('PyQt6').setLevel(level)
+logging.getLogger('LoggedQuantity').setLevel(level)
 
 
 class App(BaseMicroscopeApp):

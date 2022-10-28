@@ -17,7 +17,7 @@ from ..item import Item
 factories = {}
 
 
-def register_item(item: Item):
+def register_item(item: type[Item]):
     factories[item.item_type] = item
 
 
