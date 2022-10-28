@@ -1,11 +1,17 @@
 import time
 from datetime import datetime
 from pathlib import Path
+from typing import TypedDict
 
 from qtpy.QtWidgets import QLabel, QLineEdit
 
 from ..editors import EditorUI
 from ..item import Item
+from .item_factory import register_item
+
+
+class NewDirKwargs(TypedDict):
+    new_dir_name: str
 
 
 class NewDir(Item):
@@ -19,6 +25,9 @@ class NewDir(Item):
         new_dir = Path(self.app.settings['save_dir']) / sub_dir
         new_dir.mkdir()
         self.app.settings['save_dir'] = new_dir.as_posix()
+
+
+register_item(NewDir)
 
 
 class NewDirEditorUI(EditorUI):
@@ -48,6 +57,13 @@ class SaveDirToParent(Item):
         self.app.settings['save_dir'] = cur.parent.as_posix()
 
 
+register_item(SaveDirToParent)
+
+
+class SaveDirToParentKwargs(TypedDict):
+    info: str
+
+
 class SaveDirToParentEditorUI(EditorUI):
 
     item_type = 'save_dir_to_parent'
@@ -57,7 +73,7 @@ class SaveDirToParentEditorUI(EditorUI):
         self.spacer = QLabel()
         self.layout.addWidget(self.spacer)
 
-    def get_kwargs(self):
+    def get_kwargs(self) -> SaveDirToParentKwargs:
         return {'info': 'save_dir jumps to parent'}
 
     def edit_item(self, **kwargs):

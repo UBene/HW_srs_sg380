@@ -17,19 +17,19 @@ from ScopeFoundry import Measurement
 
 from .editors import Editor, EditorUI
 from .item import Item
-from .item_factory import item_factory
+from .item_types.item_factory import item_factory
 from .items import Items
-from .types.dir_operations import NewDirEditorUI, SaveDirToParentEditorUI
-from .types.exec_function import ExecFunction
-from .types.interrupt_if import IterruptIfEditorUI
-from .types.iterations import (InterationsEditor, IterationsEditorUI,
-                               link_iteration_items)
-from .types.pause import PauseEditorUI
-from .types.read_from_hardware import ReadFromHardWareEditorUI
-from .types.run_measurement import RunMeasurementEditorUI
-from .types.timeout import TimeoutEditorUI
-from .types.update_settings import UpdateSettingEditorUI
-from .types.wait_until import WaitUntilEditorUI
+from .item_types.dir_operations import NewDirEditorUI, SaveDirToParentEditorUI
+from .item_types.exec_function import ExecFunctionEditorUI
+from .item_types.interrupt_if import IterruptIfEditorUI
+from .item_types.iterations import (
+    InterationsEditor, IterationsEditorUI, link_iteration_items)
+from .item_types.pause import PauseEditorUI
+from .item_types.read_from_hardware import ReadFromHardWareEditorUI
+from .item_types.run_measurement import RunMeasurementEditorUI
+from .item_types.timeout import TimeoutEditorUI
+from .item_types.update_settings import UpdateSettingEditorUI
+from .item_types.wait_until import WaitUntilEditorUI
 
 
 class Sequencer(Measurement):
@@ -106,7 +106,7 @@ class Sequencer(Measurement):
         self.register_editor(RunMeasurementEditorUI(self))
         self.register_editor(WaitUntilEditorUI(self, paths))
         self.register_editor(WaitUntilEditorUI(self, paths))
-        self.register_editor(ExecFunction(self, all_functions))
+        self.register_editor(ExecFunctionEditorUI(self, all_functions))
         self.register_editor(PauseEditorUI(self))
         self.register_editor(IterruptIfEditorUI(self, paths))
         self.register_editor(NewDirEditorUI(self))
@@ -167,13 +167,13 @@ class Sequencer(Measurement):
     def on_load_file_comboBox_changed(self, fname):
         self.load_file(self.seq_fnames[fname])
 
-    def next_iter_id(self):
+    def next_iter_id(self) -> str:
         return self.letters[self.items.count_type('start-iteration')]
 
     def on_remove_item(self):
         self.items.remove(None)
 
-    def on_save(self):
+    def on_save(self) -> str:
         fname, _ = QFileDialog.getSaveFileName(
             self.ui, caption=u'Save Sequence', filter=u"Sequence (*.json)")
         if fname:
@@ -185,7 +185,7 @@ class Sequencer(Measurement):
         with open(fname, "w+") as f:
             f.write(json.dumps(self.items.as_dicts(), indent=1))
 
-    def on_load(self):
+    def on_load(self) -> str:
         fname, _ = QFileDialog.getOpenFileName(
             None, filter=u"Sequence (*.json)")
         if fname:
@@ -204,7 +204,7 @@ class Sequencer(Measurement):
         if not success:
             print("invalid list")
 
-    def on_run_item(self):
+    def on_run_item(self) -> tuple[Item, Item | None]:
         item = self.items.get_current_item()
         if item.item_type == 'measurement':
             print('WARNING measurement not supported without running threat')
@@ -277,7 +277,7 @@ class Sequencer(Measurement):
     def restart(self):
         os.system("restart /r /f /t 1")
 
-    def get_all_functions(self):
+    def get_all_functions(self) -> list[str]:
         funcs = []
 
         def append_objs_callables(obj, from_app_path):

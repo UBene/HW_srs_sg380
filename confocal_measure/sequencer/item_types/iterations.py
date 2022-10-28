@@ -1,14 +1,13 @@
+from .item_factory import register_item
 from typing import TypedDict
 
 import numpy as np
-from qtpy.QtCore import Qt
-from qtpy.QtWidgets import QComboBox, QCompleter, QDoubleSpinBox
+from qtpy.QtWidgets import QComboBox, QDoubleSpinBox
 
-from confocal_measure.sequencer.items import Items
-
+from .helper_func import new_q_completer
 from ..editors import Editor, EditorUI
 from ..item import Item
-from ..items import SMeasure
+from ..items import SMeasure, Items
 
 
 class StartIterationDict(TypedDict):
@@ -25,13 +24,14 @@ class StartIteration(Item):
         self.values = kwargs['values']
         self.lq = measure.app.lq_path(kwargs['setting'])
         Item.__init__(self, measure=measure, **kwargs)
+        self.measure = measure
         self.reset()
 
     def _update_appearance(self, text=None):
         text = Item._update_appearance(self, text=text)
         self.setText(f'__{self.iter_id} ' + text)
 
-    def visit(self):
+    def visit(self) ->None | Item:
         self.idx += 1
         if self.idx == len(self.values) - 1:
             # next time end-iteration is visited the loop breaks
@@ -45,7 +45,7 @@ class StartIteration(Item):
         self.idx = -1
         self.update_text()
 
-    def set_end_iteration_item(self, end_iteration_item):
+    def set_end_iteration_item(self, end_iteration_item:EndIteration):
         self.end_iteration_item = end_iteration_item
 
     def update_text(self):
@@ -74,7 +74,7 @@ class EndIteration(Item):
         text = Item._update_appearance(self, text=text)
         self.setText(f'__{self.iter_id} ' + text)
 
-    def visit(self):
+    def visit(self) -> None | StartIteration:
         self.update_text()
         if self.break_next:
             self.start_iteration_item.reset()
@@ -102,6 +102,10 @@ class EndIteration(Item):
             pass
 
 
+register_item(StartIteration)
+register_item(EndIteration)
+
+
 class IterationsEditorUI(EditorUI):
 
     item_type = 'start-iteration'
@@ -116,11 +120,7 @@ class IterationsEditorUI(EditorUI):
         self.setting_cb.setEditable(True)
         self.setting_cb.addItems(self.paths)
         self.setting_cb.setToolTip('setting')
-        self.completer = completer = QCompleter(self.paths)
-        completer.setCompletionMode(QCompleter.PopupCompletion)
-        completer.setModelSorting(QCompleter.UnsortedModel)
-        completer.setFilterMode(Qt.MatchContains)
-        completer.setCaseSensitivity(Qt.CaseInsensitive)
+        completer = new_q_completer(self.paths)
         self.setting_cb.setCompleter(completer)
         self.layout.addWidget(self.setting_cb)
         self.start_dsb = QDoubleSpinBox()

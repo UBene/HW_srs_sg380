@@ -1,3 +1,4 @@
+from .item_factory import register_item
 from qtpy.QtWidgets import QLabel
 
 from ..editors import EditorUI
@@ -11,22 +12,21 @@ class Pause(Item):
     def visit(self):
         self.measure.settings['paused'] = True
 
+register_item(Pause)
 
 class PauseEditorUI(EditorUI):
 
     item_type = 'pause'
     description = 'pauses - click resume'
 
-    def __init__(self, measure) -> None:
-        super().__init__(measure)
-
     def setup_ui(self):
-
         self.pause_spacer = QLabel()
         self.group_box.layout().addWidget(self.pause_spacer)
 
-    def get_kwargs(self):
+    def get_kwargs(self) -> dict[str, str]:
         return {'info': "click resume to continue"}
 
     def edit_item(self, **kwargs):
         self.pause_spacer.setFocus()
+
+

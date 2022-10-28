@@ -1,9 +1,15 @@
 import time
+from typing import TypedDict
 
 from qtpy.QtWidgets import QDoubleSpinBox
 
+from .item_factory import register_item
 from ..editors import EditorUI
 from ..item import Item
+
+
+class TimoutKwargs(TypedDict):
+    time: float
 
 
 class Timeout(Item):
@@ -18,6 +24,7 @@ class Timeout(Item):
                 break
             time.sleep(0.50)
 
+register_item(Timeout)
 
 class TimeoutEditorUI(EditorUI):
 
@@ -33,10 +40,11 @@ class TimeoutEditorUI(EditorUI):
         self.time_dsb.setDecimals(3)
         time_out_layout.addWidget(self.time_dsb)
 
-    def get_kwargs(self):
+    def get_kwargs(self) -> TimoutKwargs:
         return {'time': self.time_dsb.value()}
 
     def edit_item(self, **kwargs):
         self.time_dsb.setValue(kwargs['time'])
         self.time_dsb.selectAll()
         self.time_dsb.setFocus()
+

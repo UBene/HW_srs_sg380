@@ -1,8 +1,10 @@
 import operator
 from time import time
 
-from qtpy.QtCore import Qt
-from qtpy.QtWidgets import QComboBox, QCompleter, QLineEdit
+from qtpy.QtWidgets import QComboBox, QLineEdit
+
+from .helper_func import new_q_completer
+from .item_factory import register_item
 
 from ..editors import EditorUI
 from ..item import Item
@@ -24,6 +26,9 @@ class WaitUntil(Item):
             time.sleep(0.05)
 
 
+register_item(WaitUntil)
+
+
 class WaitUntilEditorUI(EditorUI):
 
     item_type = 'wait-until'
@@ -38,12 +43,7 @@ class WaitUntilEditorUI(EditorUI):
         self.setting_cb.setEditable(True)
         self.setting_cb.addItems(self.paths)
         self.setting_cb.setToolTip('setting')
-        self.completer = completer = QCompleter(self.paths)
-        completer.setCompletionMode(QCompleter.PopupCompletion)
-        completer.setModelSorting(QCompleter.UnsortedModel)
-        completer.setFilterMode(Qt.MatchContains)
-        completer.setCaseSensitivity(Qt.CaseInsensitive)
-        self.setting_cb.setCompleter(completer)
+        self.setting_cb.setCompleter(new_q_completer(self.paths))
         self.layout.addWidget(self.setting_cb)
         self.operator_cb = QComboBox()
         self.operator_cb.addItems(['=', '<', '>'])

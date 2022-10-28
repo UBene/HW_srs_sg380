@@ -1,6 +1,6 @@
 from qtpy.QtWidgets import QGroupBox, QHBoxLayout, QPushButton
 
-from .item_factory import item_factory
+from .item_types.item_factory import item_factory
 from .items import SMeasure
 
 

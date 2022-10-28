@@ -18,12 +18,12 @@ class Item(QListWidgetItem):
     def visit(self) -> None | Self:
         raise NotImplementedError
 
-    def _update_appearance(self, text=None):
+    def _update_appearance(self, text=None) -> str:
         if text == None:
             x = [f'{val}' for key, val in self.kwargs.items()]
             text = f"{self.item_type}: {' '.join(x)}"
         self.setText(text)
         return text
 
-    def reset(self):
+    def reset(self) -> None:
         pass

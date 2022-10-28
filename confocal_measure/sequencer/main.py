@@ -8,9 +8,9 @@ from dummy.app import RandomNumberGenerator
 from ScopeFoundry.base_app import BaseMicroscopeApp
 
 
-class APP(BaseMicroscopeApp):
+class App(BaseMicroscopeApp):
 
-    name = 'test_app'
+    name = 'sequencer_test_app'
 
     def setup(self):
 
@@ -23,5 +23,5 @@ class APP(BaseMicroscopeApp):
 
 if __name__ == '__main__':
     import sys
-    app = APP(sys.argv)
+    app = App(sys.argv)
     sys.exit(app.exec_())

@@ -1,13 +1,17 @@
 
-from qtpy.QtCore import Qt
-from qtpy.QtWidgets import (QCheckBox, QComboBox, QCompleter, QDoubleSpinBox,
-                            QFileDialog, QGroupBox, QHBoxLayout, QLabel,
-                            QLineEdit, QListWidget, QListWidgetItem,
-                            QPushButton, QSpacerItem, QSpinBox, QVBoxLayout,
-                            QWidget)
+from typing import TypedDict
 
+from qtpy.QtWidgets import QComboBox, QSpinBox
+
+from .helper_func import new_q_completer
+from .item_factory import register_item
 from ..editors import EditorUI
 from ..item import Item
+
+
+class RunMeasurementKwargs(TypedDict):
+    measurement: str
+    repetitions: int
 
 
 class RunMeasurement(Item):
@@ -24,6 +28,9 @@ class RunMeasurement(Item):
                 print(self.measure, 'delegated', m.name, 'failed')
 
 
+register_item(RunMeasurement)
+
+
 class RunMeasurementEditorUI(EditorUI):
 
     item_type = 'measurement'
@@ -36,19 +43,14 @@ class RunMeasurementEditorUI(EditorUI):
         self.measure_cb = QComboBox()
         self.measure_cb.setEditable(True)
         self.measure_cb.addItems(measurements)
-        self.completer = completer = QCompleter(measurements)
-        completer.setCompletionMode(QCompleter.PopupCompletion)
-        completer.setModelSorting(QCompleter.UnsortedModel)
-        completer.setFilterMode(Qt.MatchContains)
-        completer.setCaseSensitivity(Qt.CaseInsensitive)
-        self.measure_cb.setCompleter(completer)
+        self.measure_cb.setCompleter(new_q_completer(measurements))
         measure_layout.addWidget(self.measure_cb)
         self.repetitions_sb = QSpinBox()
         self.repetitions_sb.setValue(1)
         self.repetitions_sb.setToolTip('number of repetitions')
         measure_layout.addWidget(self.repetitions_sb)
 
-    def get_kwargs(self):
+    def get_kwargs(self) -> RunMeasurementKwargs:
         k = self.measure_cb.currentText()
         reps = self.repetitions_sb.value()
         return {'measurement': k, 'repetitions': reps}
