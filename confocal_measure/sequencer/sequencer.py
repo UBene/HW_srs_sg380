@@ -282,9 +282,11 @@ class Sequencer(Measurement):
 
         def append_objs_callables(obj, from_app_path):
             for a in dir(obj):
-                if callable(getattr(obj, a)) and a.startswith('__') is False:
-                    funcs.append(f'{from_app_path}{obj.name}.{a}')
-
+                try: # Not sure why some python version seem to need this block
+                    if callable(getattr(obj, a)) and a.startswith('__') is False:
+                        funcs.append(f'{from_app_path}{obj.name}.{a}')
+                except AttributeError as e:
+                    print(e)
         append_objs_callables(self.app, "")
         for m in self.app.measurements.values():
             append_objs_callables(m, 'measurements.')

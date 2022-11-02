@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, Union, List, Dict
 
 from qtpy.QtCore import Qt
 from qtpy.QtWidgets import QListWidget
@@ -7,6 +7,8 @@ from ScopeFoundry.measurement import Measurement
 
 from .item import Item
 
+
+IitemNoneType = Union[Item, None]
 
 class Items:
 
@@ -37,7 +39,7 @@ class Items:
         #     del item2
         del item
 
-    def replace(self, new_item: Item, old_item:Item | None = None):
+    def replace(self, new_item: Item, old_item:IitemNoneType = None):
         if old_item is None:
             old_item = self.get_current_item()
         self.add(new_item, self.get_row(old_item))
@@ -78,7 +80,7 @@ class Items:
     def count(self) -> int:
         return self.widget.count()
 
-    def as_dicts(self) -> list[dict[str, Any]]:
+    def as_dicts(self) -> List[Dict[str, Any]]:
         l = []
         for i in range(self.widget.count()):
             item = self.get_item(i)
@@ -87,5 +89,5 @@ class Items:
 
 
 class SMeasure(Measurement):
-    iter_values: dict[str, str]
+    iter_values: Dict[str, str]
     items: Items

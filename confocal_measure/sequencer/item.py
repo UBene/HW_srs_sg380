@@ -1,8 +1,10 @@
 from qtpy.QtWidgets import QListWidgetItem
 from typing_extensions import Self
+from typing import Union
 
 from ScopeFoundry.measurement import Measurement
 
+VisitReturnType = Union[Self, None] # return either a go-to Item or None if next
 
 class Item(QListWidgetItem):
 
@@ -15,13 +17,13 @@ class Item(QListWidgetItem):
         self.kwargs = kwargs
         self._update_appearance()
 
-    def visit(self) -> None | Self:
+    def visit(self) -> VisitReturnType:
         raise NotImplementedError
 
     def _update_appearance(self, text=None):
         if text == None:
-            x = [f'{val}' for key, val in self.kwargs.items()]
-            text = f"{self.item_type}: {' '.join(x)}"
+            kwargs_str = ' '.join([f'{val}' for val in self.kwargs.values()])
+            text = f"{self.item_type}: {kwargs_str}"
         self.setText(text)
         return text
 
