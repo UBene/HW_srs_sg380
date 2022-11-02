@@ -1,24 +1,32 @@
+from typing_extensions import Self, TypedDict
 
-from qtpy.QtCore import Qt
-from qtpy.QtWidgets import QCompleter, QLineEdit
+from qtpy.QtWidgets import QLineEdit
 
+from .helper_func import new_q_completer
 from ..editors import EditorUI
 from ..item import Item
+from .item_factory import register_item
+
+
+class ExecFunctionKwargs(TypedDict):
+    function: str
+    args: str
 
 
 class Function(Item):
 
     item_type = 'function'
 
-    def visit(self):
-        self.kwargs
-        if self.kwargs['type'] == 'function':
-            s = 'self.app.' + \
-                self.kwargs['function'] + '(' + self.kwargs['args'] + ')'
-            print(eval(s))
+    def visit(self) -> None:
+        s = 'self.app.' + self.kwargs['function'] + \
+            '(' + self.kwargs['args'] + ')'
+        print(eval(s))
 
 
-class ExecFunction(EditorUI):
+register_item(Function)
+
+
+class ExecFunctionEditorUI(EditorUI):
 
     item_type = 'function'
     description = 'eval a function'
@@ -29,11 +37,7 @@ class ExecFunction(EditorUI):
 
     def setup_ui(self):
         self.function_le = QLineEdit()
-        completer = QCompleter(self.all_functions)
-        completer.setCompletionMode(QCompleter.PopupCompletion)
-        completer.setModelSorting(QCompleter.UnsortedModel)
-        completer.setFilterMode(Qt.MatchContains)
-        completer.setCaseSensitivity(Qt.CaseInsensitive)
+        completer = new_q_completer(self.all_functions)
         self.function_le.setCompleter(completer)
         self.function_le.setToolTip('path to a function')
         self.args_le = QLineEdit()
@@ -41,7 +45,7 @@ class ExecFunction(EditorUI):
         self.layout.addWidget(self.function_le)
         self.layout.addWidget(self.args_le)
 
-    def get_kwargs(self):
+    def get_kwargs(self) -> ExecFunctionKwargs:
         f = self.function_le.text()
         args = self.args_le.text()
         return {'function': f, 'args': args}

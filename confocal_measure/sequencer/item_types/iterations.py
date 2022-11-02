@@ -1,14 +1,14 @@
 from typing_extensions import TypedDict
 
+from .item_factory import register_item
+
 import numpy as np
-from qtpy.QtCore import Qt
-from qtpy.QtWidgets import QComboBox, QCompleter, QDoubleSpinBox
+from qtpy.QtWidgets import QComboBox, QDoubleSpinBox
 
-from confocal_measure.sequencer.items import Items
-
+from .helper_func import new_q_completer
 from ..editors import Editor, EditorUI
-from ..item import Item
-from ..items import SMeasure
+from ..item import Item, VisitReturnType
+from ..items import Items
 
 
 class StartIterationDict(TypedDict):
@@ -20,7 +20,7 @@ class StartIteration(Item):
 
     item_type = 'start-iteration'
 
-    def __init__(self, measure: SMeasure, **kwargs):
+    def __init__(self, measure, **kwargs):
         self.iter_id = kwargs['iter_id']
         self.values = kwargs['values']
         self.lq = measure.app.lq_path(kwargs['setting'])
@@ -31,7 +31,7 @@ class StartIteration(Item):
         text = Item._update_appearance(self, text=text)
         self.setText(f'__{self.iter_id} ' + text)
 
-    def visit(self):
+    def visit(self) -> VisitReturnType:
         self.idx += 1
         if self.idx == len(self.values) - 1:
             # next time end-iteration is visited the loop breaks
@@ -62,7 +62,7 @@ class EndIteration(Item):
 
     item_type = 'end-iteration'
 
-    def __init__(self, measure: SMeasure, **kwargs):
+    def __init__(self, measure, **kwargs):
         self.kwargs = kwargs
         self.iter_id = kwargs['iter_id']
         self.values = kwargs['values']
@@ -74,7 +74,7 @@ class EndIteration(Item):
         text = Item._update_appearance(self, text=text)
         self.setText(f'__{self.iter_id} ' + text)
 
-    def visit(self):
+    def visit(self) -> VisitReturnType:
         self.update_text()
         if self.break_next:
             self.start_iteration_item.reset()
@@ -102,12 +102,16 @@ class EndIteration(Item):
             pass
 
 
+register_item(StartIteration)
+register_item(EndIteration)
+
+
 class IterationsEditorUI(EditorUI):
 
     item_type = 'start-iteration'
     description = "a setting is iterated over a range of values"
 
-    def __init__(self, measure: SMeasure, paths) -> None:
+    def __init__(self, measure, paths) -> None:
         self.paths = paths
         super().__init__(measure)
 
@@ -116,11 +120,7 @@ class IterationsEditorUI(EditorUI):
         self.setting_cb.setEditable(True)
         self.setting_cb.addItems(self.paths)
         self.setting_cb.setToolTip('setting')
-        self.completer = completer = QCompleter(self.paths)
-        completer.setCompletionMode(QCompleter.PopupCompletion)
-        completer.setModelSorting(QCompleter.UnsortedModel)
-        completer.setFilterMode(Qt.MatchContains)
-        completer.setCaseSensitivity(Qt.CaseInsensitive)
+        completer = new_q_completer(self.paths)
         self.setting_cb.setCompleter(completer)
         self.layout.addWidget(self.setting_cb)
         self.start_dsb = QDoubleSpinBox()

@@ -1,12 +1,17 @@
-from qtpy.QtCore import Qt
-from qtpy.QtWidgets import (QCheckBox, QComboBox, QCompleter, QDoubleSpinBox,
-                            QFileDialog, QGroupBox, QHBoxLayout, QLabel,
-                            QLineEdit, QListWidget, QListWidgetItem,
-                            QPushButton, QSpacerItem, QSpinBox, QVBoxLayout,
-                            QWidget)
+from typing_extensions import TypedDict
 
-from ..editors import Editor, EditorUI
+
+from qtpy.QtWidgets import QComboBox
+
+from .helper_func import new_q_completer
+from .item_factory import register_item
+
+from ..editors import EditorUI
 from ..item import Item
+
+
+class ReadFromHardWareKwargs(TypedDict):
+    setting: str
 
 
 class ReadFromHardWare(Item):
@@ -15,6 +20,9 @@ class ReadFromHardWare(Item):
 
     def visit(self):
         self.app.lq_path(self.kwargs['setting']).read_from_hardware()
+
+
+register_item(ReadFromHardWare)
 
 
 class ReadFromHardWareEditorUI(EditorUI):
@@ -31,15 +39,10 @@ class ReadFromHardWareEditorUI(EditorUI):
         self.setting_cb.setEditable(True)
         self.setting_cb.addItems(self.paths)
         self.setting_cb.setToolTip('setting to update')
-        self.completer = completer = QCompleter(self.paths)
-        completer.setCompletionMode(QCompleter.PopupCompletion)
-        completer.setModelSorting(QCompleter.UnsortedModel)
-        completer.setFilterMode(Qt.MatchContains)
-        completer.setCaseSensitivity(Qt.CaseInsensitive)
-        self.setting_cb.setCompleter(completer)
+        self.setting_cb.setCompleter(new_q_completer(self.paths))
         self.layout.addWidget(self.setting_cb)
 
-    def get_kwargs(self):
+    def get_kwargs(self) -> ReadFromHardWareKwargs:
         return {'setting': self.setting_cb.currentText()}
 
     def edit_item(self, **kwargs):

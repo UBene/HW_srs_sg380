@@ -1,11 +1,20 @@
 import operator
+from typing_extensions import TypedDict
 
-from qtpy.QtCore import Qt
-from qtpy.QtWidgets import QComboBox, QCompleter, QLineEdit
+
+from qtpy.QtWidgets import QComboBox, QLineEdit
+
+from .helper_func import new_q_completer
 
 from ..editors import EditorUI
 from ..item import Item
+from .item_factory import register_item
 
+
+class InterruptIfKwargs(TypedDict):
+    setting: str
+    operator: str
+    value: str
 
 class InterruptIf(Item):
 
@@ -18,6 +27,9 @@ class InterruptIf(Item):
         val = lq.coerce_to_type(self.kwargs['value'])
         if relate(lq.val, val):
             self.measure.interrupt()
+
+
+register_item(InterruptIf)
 
 
 class IterruptIfEditorUI(EditorUI):
@@ -34,11 +46,7 @@ class IterruptIfEditorUI(EditorUI):
         self.setting_cb.setEditable(True)
         self.setting_cb.addItems(self.paths)
         self.setting_cb.setToolTip('setting')
-        self.completer = completer = QCompleter(self.paths)
-        completer.setCompletionMode(QCompleter.PopupCompletion)
-        completer.setModelSorting(QCompleter.UnsortedModel)
-        completer.setFilterMode(Qt.MatchContains)
-        completer.setCaseSensitivity(Qt.CaseInsensitive)
+        completer = new_q_completer(self.paths)
         self.setting_cb.setCompleter(completer)
         self.layout.addWidget(self.setting_cb)
         self.operator_cb = QComboBox()
@@ -48,7 +56,7 @@ class IterruptIfEditorUI(EditorUI):
         self.value_le.setCompleter(completer)
         self.layout.addWidget(self.value_le)
 
-    def get_kwargs(self):
+    def get_kwargs(self) -> InterruptIfKwargs:
         path = self.setting_cb.currentText()
         o = self.operator_cb.currentText()
         val = self.value_le.text()

@@ -1,7 +1,6 @@
 from qtpy.QtWidgets import QGroupBox, QHBoxLayout, QPushButton
 
-from .item_factory import item_factory
-from .items import SMeasure
+from .item_types.item_factory import item_factory
 
 
 class EditorUI:
@@ -9,7 +8,7 @@ class EditorUI:
     item_type = ""
     description = ""
 
-    def __init__(self, measure:SMeasure) -> None:
+    def __init__(self, measure) -> None:
         self.measure = measure
 
         self.layout = layout = QHBoxLayout()

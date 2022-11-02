@@ -1,14 +1,9 @@
 from typing import Any, Union, List, Dict
-
 from qtpy.QtCore import Qt
 from qtpy.QtWidgets import QListWidget
 
-from ScopeFoundry.measurement import Measurement
-
 from .item import Item
-
-
-IitemNoneType = Union[Item, None]
+from ScopeFoundry.measurement import Measurement
 
 class Items:
 
@@ -17,29 +12,21 @@ class Items:
         self.widget.setDefaultDropAction(Qt.MoveAction)
         self.widget.setDragDropMode(QListWidget.DragDrop)
 
-    def add(self, item: Item, row=None):
+    def add(self, item: Item, row: Union[int, None] = None):
         if row == None:
             row = self.get_current_row()
         self.widget.insertItem(row + 1, item)
         self.widget.setCurrentRow(row + 1)
 
-    def remove(self, item=None):
+    def remove(self, item: Union[Item, None] = None):
         if item is not None:
             row = self.get_row(item)
         else:
             row = self.get_current_row()
-        item = self.widget.takeItem(row)
-        # if hasattr(item, 'start_iteration_item'):
-        #     item2 = self.widget.takeItem(
-        #         self.widget.row(item.start_iteration_item))
-        #     del item2
-        # if hasattr(item, 'end_iteration_item'):
-        #     item2 = self.widget.takeItem(
-        #         self.widget.row(item.end_iteration_item))
-        #     del item2
+        self.widget.takeItem(row)
         del item
 
-    def replace(self, new_item: Item, old_item:IitemNoneType = None):
+    def replace(self, new_item: Item, old_item:Union[Item, None] = None):
         if old_item is None:
             old_item = self.get_current_item()
         self.add(new_item, self.get_row(old_item))
