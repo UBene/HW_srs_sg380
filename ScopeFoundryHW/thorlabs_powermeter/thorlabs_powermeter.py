@@ -1,95 +1,58 @@
-from __future__ import division, absolute_import, print_function
 from ScopeFoundry import HardwareComponent
-try:
-    from .thorlabs_pm100d import ThorlabsPM100D
-except Exception as err:
-    print("Cannot load required modules for Thorlabs Power meter: {}".format( err))
+
 
 class ThorlabsPowerMeterHW(HardwareComponent):
     
     name = 'thorlabs_powermeter'
     
     def setup(self):
+        S = self.settings
+        S.New('wavelength', unit="nm", dtype=int, vmin=0, vmax=2000)
         
-        # Created logged quantities
-        self.wavelength = self.add_logged_quantity(
-                                                     name = 'wavelength', 
-                                                     unit = "nm",
-                                                     dtype = int,
-                                                     vmin=0,
-                                                     vmax=2000, )
-        
-        self.power = self.add_logged_quantity(name = 'power', dtype=float, unit="W", vmin=-1, vmax = 10, ro=True, si=True)
-        self.current = self.add_logged_quantity(name = 'current', dtype=float, unit="A", vmin=-1, vmax = 10, ro=True, si=True)
-        
-        
-        self.power_range = self.settings.New(name = 'power_range', dtype=float, unit="W", vmin=0, vmax=1e3, si=True, spinbox_decimals=6)
-        
-        self.auto_range = self.add_logged_quantity(name = 'auto_range', dtype=bool, ro=False)
-        
-        self.zero_state = self.add_logged_quantity(name = "zero_state", dtype=bool, ro=True)
-        self.zero_magnitude = self.add_logged_quantity(name = "zero_magnitude", dtype=float, ro=True, si=True)
-        
-        self.photodiode_response = self.add_logged_quantity(name = "photodiode_response", dtype=float, unit="A/W", si=True)
-        
-        self.current_range = self.add_logged_quantity(name = "current_range", dtype=float, unit="A", si=True)
-        
-        self.port = self.add_logged_quantity('port', dtype=str, initial='USB0::0x1313::0x8078::P0005750::INSTR')
-                      
-        self.settings.New('average_count', int, initial=1, vmax=3000, 
+        self.power = S.New('power', float, unit="W", ro=True, spinbox_decimals=6)
+        S.New('current', float, unit="A", ro=True, spinbox_decimals=6)
+        S.New('power_range', float, unit="W", spinbox_decimals=6)
+        S.New('auto_range', bool, ro=False)
+        S.New("zero_state", bool, ro=True)
+        S.New("zero_magnitude", float, ro=True)
+        S.New("photodiode_response", float, unit="A/W", ro=True)
+        S.New("current_range", float, unit="A", ro=True)
+        S.New('port', str, initial='USB0::0x1313::0x8078::P0005750::INSTR')
+        S.New('average_count', int, initial=1, vmax=3000,
                           description="""number of power acquisitions the power-meter controller averages over. 
                                         Each acquisition takes approximately 3ms.""")
         
-        #operations
+        # operations
         self.add_operation("run_zero", self.run_zero)
         
-        self.auto_thread_lock = False
-        
     def connect(self):
-        if self.debug_mode.val: self.log.debug( "connecting to" +  self.name)
+        
+        S = self.settings
+        if S['debug_mode']: self.log.debug("connecting to" + self.name)
         
         # Open connection to hardware         
         from .thorlabs_pm100d import ThorlabsPM100D               
-        self.power_meter = ThorlabsPM100D(debug=self.settings['debug_mode'], port=self.settings['port'])
+        self.dev = ThorlabsPM100D(debug=S['debug_mode'], port=S['port'])
         
-        #Connect lq
-        self.wavelength.hardware_read_func = self.power_meter.get_wavelength
-        self.wavelength.hardware_set_func  = self.power_meter.set_wavelength
-        
-        self.power.hardware_read_func = self.power_meter.measure_power
-        
-        self.current.hardware_read_func = self.power_meter.measure_current
-
-        self.power_range.hardware_read_func = self.power_meter.get_power_range
-        self.power_range.hardware_set_func  = self.power_meter.set_power_range
-
-        self.auto_range.hardware_read_func = self.power_meter.get_auto_range
-        self.auto_range.hardware_set_func = self.power_meter.set_auto_range
-
-        self.zero_state.hardware_read_func = self.power_meter.get_zero_state
-        self.zero_magnitude.hardware_read_func = self.power_meter.get_zero_magnitude
-
-        self.photodiode_response.hardware_read_func = self.power_meter.get_photodiode_response
-
-        self.current_range.hardware_read_func = self.power_meter.get_current_range
-        
-        self.settings.average_count.connect_to_hardware(
-            self.power_meter.get_average_count,
-            self.power_meter.set_average_count,
-            )
-        
-        self.read_from_hardware()
+        if hasattr(self, 'dev'):
+            S.wavelength.connect_to_hardware(self.dev.get_wavelength, self.dev.set_wavelength)
+            S.power.connect_to_hardware(self.dev.measure_power) 
+            S.current.connect_to_hardware(self.dev.measure_current)
+            S.power_range.connect_to_hardware(self.dev.get_power_range, self.dev.set_power_range)
+            S.auto_range.connect_to_hardware(self.dev.get_auto_range, self.dev.set_auto_range)
+            S.zero_state.connect_to_hardware(self.dev.get_zero_state, self.dev.get_zero_magnitude)
+            S.photodiode_response.connect_to_hardware(self.dev.get_photodiode_response)
+            S.current_range.connect_to_hardware(self.dev.get_current_range)
+            S.average_count.connect_to_hardware(self.dev.get_average_count, self.dev.set_average_count)
+            self.read_from_hardware()
 
     def disconnect(self):
-        #disconnect logged quantities from hardware
+        # disconnect logged quantities from hardware
         self.settings.disconnect_all_from_hardware()
         
-        if hasattr(self, 'power_meter'):
-            #disconnect hardware
-            self.power_meter.close()
-            
-            # clean up hardware object
-            del self.power_meter
+        if hasattr(self, 'dev'):
+            self.dev.close()
+            del self.dev
 
     def run_zero(self):
-        self.power_meter.run_zero()
+        self.dev.run_zero()

@@ -1,4 +1,5 @@
 import pyvisa as visa  # module visa is deprecated
+#import visa
 import time
 import logging
 from threading import Lock
@@ -25,30 +26,36 @@ class ThorlabsPM100D(object):
         self.visa_resource_manager = visa.ResourceManager()
 
         if debug:
+            print(self.visa_resource_manager.list_resources())
             self.visa_resource_manager.list_resources()
 
-        self.pm = self.visa_resource_manager.get_instrument(port)
-        self.pm.timeout = 1000
 
+        try:
+            self.pm = self.visa_resource_manager.get_instrument(port)
+        except:
+            self.pm = self.visa_resource_manager.open_resource(port)
+        # self.pm.timeout = 1000
+        
         self.idn = self.ask("*IDN?")
-
+        
         self.sensor_idn = self.ask("SYST:SENS:IDN?")
-
+        
         self.write("CONF:POW")  # set to power measurement
-
+        
         self.wavelength_min = float(self.ask("SENS:CORR:WAV? MIN"))
         self.wavelength_max = float(self.ask("SENS:CORR:WAV? MAX"))
+        
         self.get_wavelength()
-
+        
         self.get_attenuation_dB()
-
+        
         self.write("SENS:POW:UNIT W")  # set to Watts
         self.power_unit = self.ask("SENS:POW:UNIT?")
-
+        
         self.get_auto_range()
-
+        
         self.get_average_count()
-
+        
         self.get_power_range()
         self.measure_power()
         self.measure_frequency()
@@ -59,8 +66,9 @@ class ThorlabsPM100D(object):
         with self.lock:
             try:
                 resp = self.pm.query(cmd)
-            except:
+            except AttributeError as e:
                 # Deprecated pyvisa method --> replaced by query()
+                print(e)
                 resp = self.pm.ask(cmd)
 
         if self.debug:
@@ -191,7 +199,7 @@ class ThorlabsPM100D(object):
         return self.zero_state
 
     def run_zero(self):
-        resp = self.ask("SENS:CORR:COLL:ZERO:INIT")
+        resp = self.write("SENS:CORR:COLL:ZERO:INIT")
         return resp
 
     def get_photodiode_response(self):
