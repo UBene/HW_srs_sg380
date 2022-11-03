@@ -280,8 +280,8 @@ class HardwareComponent(QtCore.QObject):
         x = xreload.xreload(mod)
         print("Reloading from code", mod, x)
         
-    def New_UI(self):
-        scroll_area = self.settings.New_UI(style='scroll_form')
+    def New_UI(self, style='scroll_form'):
+        scroll_area = self.settings.New_UI(style=style)
         for n,func in self.operations.items():
             btn = QtWidgets.QPushButton(n)
             btn.clicked.connect(func)
