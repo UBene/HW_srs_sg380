@@ -405,8 +405,6 @@ class PowerScanMeasure(Measurement):
 
             self.optimize_if_applicable(ii)
 
-            print("moving power wheel to " + str(self.pw_target_position.value))
-
             self.pw_target_position.update_value(self.power_wheel_position[ii])
             print(self.name, 'moved target position',
                   self.power_wheel_position[ii])
