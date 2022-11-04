@@ -16,9 +16,6 @@ class PowerMeterOptimizerMeasure(Measurement):
 
     name = "powermeter_optimizer"
 
-    def __init__(self, app):
-        self.ui_filename = sibling_path(__file__, "powermeter_optimizer.ui")
-        super(PowerMeterOptimizerMeasure, self).__init__(app)
 
     def setup(self):
         self.display_update_period = 0.1  # seconds
@@ -40,11 +37,11 @@ class PowerMeterOptimizerMeasure(Measurement):
         self.powermeter = self.app.hardware['thorlabs_powermeter']
 
     def setup_figure(self):
+        self.load_ui(sibling_path(__file__, "powermeter_optimizer.ui"))
         self.optimize_ii = 0
 
         # connect events
-        self.settings.activation.connect_to_pushButton(
-            self.ui.start_pushButton)
+        self.settings.activation.connect_to_pushButton(self.ui.start_pushButton)
         self.save_data.connect_to_widget(self.ui.save_data_checkBox)
         self.ui.power_readout_PGSpinBox = replace_widget_in_layout(self.ui.power_readout_doubleSpinBox,
                                                                    pg.widgets.SpinBox.SpinBox())
@@ -103,7 +100,6 @@ class PowerMeterOptimizerMeasure(Measurement):
                 self.full_optimize_history_time.append(time.time() - self.t0)
 
             time.sleep(self.settings['update_period'])
-            # time.sleep(0.02)
 
         if self.settings['save_data']:
             try:

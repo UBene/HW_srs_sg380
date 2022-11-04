@@ -405,8 +405,6 @@ class PowerScanMeasure(Measurement):
 
             self.optimize_if_applicable(ii)
 
-            print("moving power wheel to " + str(self.pw_target_position.value))
-
             self.pw_target_position.update_value(self.power_wheel_position[ii])
             print(self.name, 'moved target position',
                   self.power_wheel_position[ii])
@@ -708,7 +706,7 @@ class PowerScanMeasure(Measurement):
             while not self.interrupt_measurement_called:
                 try:
                     pm_power = pm_power + \
-                        self.pm_hw.power.read_from_hardware(send_signal=True)
+                        self.pm_hw.settings.power.read_from_hardware(send_signal=True)
                     samp_count = samp_count + 1
                     break
                 except Exception as err:
