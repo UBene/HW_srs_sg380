@@ -4,18 +4,19 @@ Created on Oct 27, 2016
 @author: Edward Barnard
 '''
 from __future__ import absolute_import, division, print_function
-from ScopeFoundry import Measurement
+
+import time
+
 import numpy as np
 import pyqtgraph as pg
-import time
-from ScopeFoundry.helper_funcs import sibling_path, replace_widget_in_layout
-from ScopeFoundry import h5_io
+
+from ScopeFoundry import Measurement, h5_io
+from ScopeFoundry.helper_funcs import replace_widget_in_layout, sibling_path
 
 
 class PowerMeterOptimizerMeasure(Measurement):
 
     name = "powermeter_optimizer"
-
 
     def setup(self):
         self.display_update_period = 0.1  # seconds
@@ -41,7 +42,8 @@ class PowerMeterOptimizerMeasure(Measurement):
         self.optimize_ii = 0
 
         # connect events
-        self.settings.activation.connect_to_pushButton(self.ui.start_pushButton)
+        self.settings.activation.connect_to_pushButton(
+            self.ui.start_pushButton)
         self.save_data.connect_to_widget(self.ui.save_data_checkBox)
         self.ui.power_readout_PGSpinBox = replace_widget_in_layout(self.ui.power_readout_doubleSpinBox,
                                                                    pg.widgets.SpinBox.SpinBox())
@@ -76,10 +78,10 @@ class PowerMeterOptimizerMeasure(Measurement):
     def run(self):
         self.display_update_period = 0.02  # seconds
 
-        # self.apd_counter_hc = self.gui.apd_counter_hc
+        # self.apd_counter_hc = self.app.apd_counter_hc
         # self.apd_count_rate = self.apd_counter_hc.apd_count_rate
-        # self.pm_hc = self.gui.thorlabs_powermeter_hc
-        # self.pm_analog_readout_hc = self.gui.thorlabs_powermeter_analog_readout_hc
+        # self.pm_hc = self.app.thorlabs_powermeter_hc
+        # self.pm_analog_readout_hc = self.app.thorlabs_powermeter_analog_readout_hc
 
         if self.save_data.val:
             self.full_optimize_history = []
