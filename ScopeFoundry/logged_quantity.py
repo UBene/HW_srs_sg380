@@ -11,8 +11,8 @@ import pyqtgraph
 import pyqtgraph as pg
 from qtpy import QtCore, QtGui, QtWidgets
 
-from ScopeFoundry.helper_funcs import (QLock, bool2str, get_logger_from_class,
-                                       str2bool)
+from ScopeFoundry.helper_funcs import (QNonReEntrantLock, bool2str,
+                                       get_logger_from_class, str2bool)
 from ScopeFoundry.ndarray_interactive import ArrayLQ_QTableModel
 from ScopeFoundry.widgets import MinMaxQSlider
 
@@ -145,7 +145,7 @@ class LoggedQuantity(QtCore.QObject):
         # threading lock
         # self.lock = threading.Lock()
         # self.lock = DummyLock()
-        self.lock = QLock(mode=1)  # mode 0 is non-reentrant lock
+        self.lock = QNonReEntrantLock()
 
     def coerce_to_type(self, x):
         """
@@ -1062,7 +1062,7 @@ class ArrayLQ(LoggedQuantity):
         self.listeners = []
 
         # threading lock
-        self.lock = QLock(mode=0)  # mode 0 is non-reentrant lock
+        self.lock = QNonReEntrantLock()
 
         self.is_array = True
 
