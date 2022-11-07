@@ -136,19 +136,13 @@ def sort_biexponential_components(A0, tau0, A1, tau1):
     tau0 = np.atleast_1d(tau0)
     A1 = np.atleast_1d(A1)
     tau1 = np.atleast_1d(tau1)
-    mask = tau0 < tau1
-    mask_ = np.invert(mask)
+    mask_ = tau0 > tau1
     new_tau0 = tau0.copy()
     new_tau0[mask_] = tau1[mask_]
     tau1[mask_] = tau0[mask_]
     new_A0 = A0.copy()
     new_A0[mask_] = A1[mask_]
     A1[mask_] = A0[mask_]
-    try:
-        new_A0 = np.asscalar(new_A0)
-        new_tau0 = np.asscalar(new_tau0)
-        A1 = np.asscalar(A1)
-        tau1 = np.asscalar(tau1)
-    except ValueError:
-        pass
+    if len(new_A0) == 1:
+        new_A0, new_tau0, A1, tau1 = [x.item() for x in [new_A0, new_tau0, A1, tau1]]
     return new_A0, new_tau0, A1, tau1  # Note, generally A1,tau1 were also modified.
