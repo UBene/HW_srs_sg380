@@ -278,6 +278,24 @@ class DummyLock():
     def __exit__(self, *args): ...
 
 
+
+class Q45Lock(QtCore.QMutex):
+    '''used if qt 4 or 5, mainly for backwards compatibility'''
+
+    def acquire(self):
+        self.lock()
+
+    def release(self):
+        self.unlock()
+
+    def __enter__(self):
+        self.acquire()
+        return self
+
+    def __exit__(self, *args):
+        self.release()
+
+
 class QNonReEntrantLock(QtCore.QMutex):
 
     def acquire(self):
@@ -311,14 +329,14 @@ class QReEntrantLock(QtCore.QRecursiveMutex):
 
 
 def QLock(mode: int = 0) -> LockProtocol:
-    print('''QLock(mode:int) is deprecated, 
-            this function was introduced for backward compatibility as PyQt6 initializer no longer accepts a mode keyword, 
-            in the future used either QNonReEntrantLock or QReEntrantLock''')
+    '''this function was introduced for backward compatibility as PyQt6 initializer no longer accepts a mode keyword, 
+       in the future used either QNonReEntrantLock or QReEntrantLock'''
 
     qt_version = os.environ['QT_API'].lower()[-1]
+    print('detected qt_version', qt_version)
 
     if qt_version in ('4', '5'):
-        return QNonReEntrantLock(mode=mode)
+        return Q45Lock(mode=mode)
     elif qt_version in ('6',):
         if mode == 1:
             return QReEntrantLock()

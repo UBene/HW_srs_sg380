@@ -8,7 +8,7 @@ from collections import OrderedDict
 import pyqtgraph as pg
 from qtpy import QtCore, QtGui, QtWidgets
 
-from ScopeFoundry.helper_funcs import QReEntrantLock, get_logger_from_class
+from ScopeFoundry.helper_funcs import QLock, get_logger_from_class
 from ScopeFoundry.logged_quantity import LQCollection  # , LoggedQuantity
 
 
@@ -64,7 +64,7 @@ class HardwareComponent(QtCore.QObject):
         # threading lock
         #self.lock = threading.Lock()
         #self.lock = DummyLock()
-        self.lock = QReEntrantLock()
+        self.lock = QLock(mode=0)
 
         self.app = app
 
