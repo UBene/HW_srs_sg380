@@ -333,8 +333,7 @@ def QLock(mode: int = 0) -> LockProtocol:
        in the future used either QNonReEntrantLock or QReEntrantLock'''
 
     qt_version = os.environ['QT_API'].lower()[-1]
-    print('detected qt_version', qt_version)
-
+    # print('detected qt_version', qt_version)
     if qt_version in ('4', '5'):
         return Q45Lock(mode=mode)
     elif qt_version in ('6',):
