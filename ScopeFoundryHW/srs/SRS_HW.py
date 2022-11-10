@@ -66,8 +66,8 @@ class SRS(HardwareComponent):
                 ".",
                 excpt,
             )
-            self.settings['model'] = 'not_connected'
-            self.settings['serial'] = 'not_connected'
+            S['model'] = 'not_connected'
+            S['serial'] = 'not_connected'
             return False
 
         SRS.write("*CLS")
