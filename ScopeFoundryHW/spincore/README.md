@@ -24,7 +24,6 @@ class ExamplePulseProgramGenerator(PulseProgramGenerator):
     def setup_additional_settings(self) -> None:
         self.settings.New('some_time', unit='us', initial=1.0)
         self.settings.New('some_duration', unit='ns', initial=500.0)
-        self.settings['all_off_padding'] = 100 
 
     def make_pulse_channels(self) -> None:
         S = self.settings
@@ -34,6 +33,8 @@ class ExamplePulseProgramGenerator(PulseProgramGenerator):
         self.new_channel('channel_name_1', start_times, lengths)
         self.new_channel(4, [1000, 2000, 3000],  [S['some_duration'] * ns] * 3)
         
+        # optional trailing all off 
+        self.set_all_off_padding_ns(1000)
 
 ```
 
