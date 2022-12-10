@@ -3,6 +3,7 @@
 Edward Barnard 9/20
 """
 from __future__ import division, print_function
+
 import serial
 
 
@@ -37,10 +38,10 @@ class ChameleonUltraIILaser(object):
     def write_cmd(self, cmd):
         self.ser.write(cmd+'\r\n')
         if self.debug:
-            print ('write:', cmd)
+            print('write:', cmd)
         response = self.ser.readline()
         if self.debug:
-            print ('response:', repr(response))
+            print('response:', repr(response))
         if 'Error' in response:
             raise IOError('Chameleon command error: ' + repr(response))
         return response.strip()

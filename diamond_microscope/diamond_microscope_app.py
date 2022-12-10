@@ -114,17 +114,6 @@ class DiamondMicroscope(BaseMicroscopeApp):
         # servos = self.add_hardware(DynamixelXServosHW(self, devices=dict(power_wheel=10,)))
         # self.add_hardware(DynamixelServoHW(self, name='power_wheel'))
 
-    def connect_scan_params(self, parent_scan_name='apd_asi',
-                            children_scan_names=['hyperspec_asi', 'asi_trpl_2d_scan']):
-        lq_names = ['h0', 'h1', 'v0', 'v1', 'Nh', 'Nv']
-
-        parent_scan = self.measurements[parent_scan_name]
-        for scan in children_scan_names:
-            child_scan = self.measurements[scan]
-            for lq_name in lq_names:
-                master_scan_lq = parent_scan.settings.get_lq(lq_name)
-                child_scan.settings.get_lq(
-                    lq_name).connect_to_lq(master_scan_lq)
 
     def setup_ui(self):
         return

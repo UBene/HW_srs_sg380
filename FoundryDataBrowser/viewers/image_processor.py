@@ -1,16 +1,16 @@
 """
 Created on Mar 17, 2022
 
-@author: bened
+@author: Benedikt Ursprung
 """
-from ScopeFoundry.logged_quantity import LQCollection
 import numpy as np
-from qtpy import QtWidgets
-from ScopeFoundry.widgets import DataSelector
-from qtpy import QtCore
+from qtpy import QtWidgets, QtCore
 import pyqtgraph as pg
-
 import pyqtgraph.dockarea as dockarea
+
+from ScopeFoundry.logged_quantity import LQCollection
+from ScopeFoundry.widgets import DataSelector
+from FoundryDataBrowser.viewers.plot_n_fit.plot_n_fit import PlotNFit
 
 
 class HyperSpecDataManager:
@@ -30,6 +30,7 @@ class HyperSpecDataManager:
         self.settings.New("x_axis", str, choices=("pixels",), initial="pixels")
 
         dummy_data = 0.5 * np.random.random(512 * 21 * 21).reshape((21, 21, 512))
+        dummy_data += dummy_data.min()*1.1
         self.set_data(dummy_data)
 
     def add_x_axis_array(self, name: str, x: np.ndarray):
@@ -74,9 +75,10 @@ class ImageManager(QtCore.QObject):
 
     images_updated = QtCore.Signal()
 
-    def __init__(self, data_manager: HyperSpecDataManager):
+    def __init__(self, data_manager: HyperSpecDataManager, plot_n_fit: PlotNFit = None):
         super().__init__()
         self.data_manager = data_manager
+        self.plot_n_fit = plot_n_fit
         S = self.settings = LQCollection()
         S.New("image", str, choices=("sum",))
         self.reset()
@@ -207,7 +209,7 @@ class Correlator:
             symbolBrush=pg.mkBrush(255, 255, 255, 30),
             symbolPen=pg.mkPen(None),
         )
-        #self.target = pg.TargetItem(movable=False) #not supported by older versions
+        # self.target = pg.TargetItem(movable=False) #not supported by older versions
         self.target = pg.ScatterPlotItem()
         self.highlight_data_line = pg.PlotDataItem(
             x=[0, 1, 2, 3, 4],

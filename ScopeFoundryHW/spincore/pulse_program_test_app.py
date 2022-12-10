@@ -1,27 +1,40 @@
 '''
-Created on Sep 17, 2021
+Created on Mar 21, 2022
 
-@author: lab
+@author: Benedikt Ursprung
 '''
+
+
 from ScopeFoundry.base_app import BaseMicroscopeApp
 
 
-class APP(BaseMicroscopeApp):
+class TestApp(BaseMicroscopeApp):
 
     name = 'test_app'
 
-    def setup(self):
-        channel_settings = [
-        dict(name='channel_1', initial=23, colors=[(255, 255, 255, 40)],
-                 description='a pysical output channel'),
-        ]
+    def setup(self):        
         from ScopeFoundryHW.spincore.pulse_blaster_hw import PulseBlasterHW
-        self.add_hardware(PulseBlasterHW(self))
-        from ScopeFoundryHW.spincore.pulse_program_measure import PulseProgramMeasure
-        self.add_measurement(PulseProgramMeasure(self))
+        named_channel_kwargs = [
+            {
+            "name":'my_named_channel',
+            'initial':1, 
+            'colors':['y'],
+            'description':'a physical output channel that can be referenced by its name'           
+            }
+        ]
+        
+        self.add_hardware(PulseBlasterHW(self,
+                                         named_channels_kwargs=named_channel_kwargs,
+                                         clock_frequency_Hz=500_000_000,
+                                         short_pulse_bit_num=21))
+        from ScopeFoundryHW.spincore.example_pulse_program_measure import \
+            ExampleProgramMeasure
+        self.add_measurement(ExampleProgramMeasure(self))
+        from ScopeFoundryHW.spincore.pwm import PMW
+        self.add_measurement(PMW(self))
 
 
 if __name__ == '__main__':
     import sys
-    app = APP(sys.argv)
+    app = TestApp(sys.argv)
     sys.exit(app.exec_())

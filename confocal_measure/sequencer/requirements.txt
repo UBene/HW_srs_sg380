@@ -1,0 +1,16 @@
+PyQt6
+PyVISA
+pyqtgraph
+ipython
+matplotlib
+numpy
+PyDAQmx
+nidaqmx
+pyjson
+pylint
+QtPy
+spinapi
+xreload
+qtconsole
+dynamixel_sdk
+h5py

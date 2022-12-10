@@ -124,7 +124,6 @@ class DataBrowser(BaseApp):
     def on_change_data_filename(self):
         fname = self.settings["data_filename"]
         if fname == "0":
-            print("initial file 0")
             return
         else:
             print("file", fname)
@@ -230,7 +229,7 @@ class FileInfoView(DataBrowserView):
 
         _, ext = os.path.splitext(fname)
 
-        if ext in (".py", ".ini", ".txt"):
+        if ext in (".py", ".ini", ".txt", ".json"):
             with open(fname, "r") as f:
                 self.ui.setText(f.read())
         else:
