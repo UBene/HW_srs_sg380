@@ -12,9 +12,9 @@ class SNSPDAquireCounts(Measurement):
     name = "snspd_aquire_counts"
 
     def setup(self):
-        self.settings.New("N", int, initial=10,
+        self.settings.New("N", int, initial=1,
                           description="number of aquisitions")
-        self.data = {'timestamps': [0], 'counts': [0]}
+        self.data = {'timestamps': [0], 'counts': [[0] * 8]}
 
     def run(self):
         t, counts = self.app.hardware['snspd'].acquire_cnts(self.settings['N'])

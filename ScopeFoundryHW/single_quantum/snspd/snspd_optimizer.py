@@ -1,12 +1,13 @@
 '''
-Created on May 7, 2019
+Created on Dec 9, 2022
 
 @author: Benedikt Ursprung
 '''
+import time
+
 import pyqtgraph as pg
 from qtpy import QtWidgets
 
-import time
 from ScopeFoundry import Measurement
 
 from ScopeFoundry.helper_funcs import sibling_path, load_qt_ui_file
