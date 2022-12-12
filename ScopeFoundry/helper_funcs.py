@@ -7,7 +7,7 @@ from collections import OrderedDict
 
 import pyqtgraph as pg
 from qtpy import QtCore, QtWidgets, uic
-from typing_extensions import Protocol, Self
+from typing_extensions import Protocol
 
 
 class OrderedAttrDict(object):
@@ -39,7 +39,7 @@ class OrderedAttrDict(object):
         return self._odict.__contains__(k)
 
 
-def sibling_path(a:str, b:str)-> str:
+def sibling_path(a: str, b: str)-> str:
     """
     Returns the path of a filename *b* in the same folder as *a*
     (i.e. dirname(a)/b )
@@ -256,76 +256,32 @@ def get_logger_from_class(obj) -> logging.Logger:
     return logging.getLogger(obj.__class__.__name__)
 
 
-def str2bool(v:str) -> bool:
+def str2bool(v: str) -> bool:
     return v.lower() in ("yes", "true", "t", "1")
 
 
-def bool2str(v:bool) -> str:
+def bool2str(v: bool) -> str:
     return {False: 'False', True: 'True'}[v]
 
 
 class LockProtocol(Protocol):
     def acquire(self): ...
+
     def release(self): ...
-    def __enter__(self) -> Self: ...
+
+    def __enter__(self): ...
+
     def __exit__(self, *args): ...
 
 
 class DummyLock():
     def acquire(self): ...
+
     def release(self): ...
-    def __enter__(self) -> Self: return self
+
+    def __enter__(self): return self
+
     def __exit__(self, *args): ...
-
-
-
-class Q45Lock(QtCore.QMutex):
-    '''used if qt 4 or 5, mainly for backwards compatibility'''
-
-    def acquire(self):
-        self.lock()
-
-    def release(self):
-        self.unlock()
-
-    def __enter__(self):
-        self.acquire()
-        return self
-
-    def __exit__(self, *args):
-        self.release()
-
-
-class QNonReEntrantLock(QtCore.QMutex):
-
-    def acquire(self):
-        self.lock()
-
-    def release(self):
-        self.unlock()
-
-    def __enter__(self):
-        self.acquire()
-        return self
-
-    def __exit__(self, *args):
-        self.release()
-
-
-class QReEntrantLock(QtCore.QRecursiveMutex):
-
-    def acquire(self):
-        self.lock()
-
-    def release(self):
-        self.unlock()
-
-    def __enter__(self):
-        self.acquire()
-        return self
-
-    def __exit__(self, *args):
-        self.release()
 
 
 def QLock(mode: int = 0) -> LockProtocol:
@@ -335,8 +291,52 @@ def QLock(mode: int = 0) -> LockProtocol:
     qt_version = os.environ['QT_API'].lower()[-1]
     # print('detected qt_version', qt_version)
     if qt_version in ('4', '5'):
+        class Q45Lock(QtCore.QMutex):
+            '''used if qt 4 or 5, mainly for backwards compatibility'''
+
+            def acquire(self):
+                self.lock()
+
+            def release(self):
+                self.unlock()
+
+            def __enter__(self):
+                self.acquire()
+                return self
+
+            def __exit__(self, *args):
+                self.release()
         return Q45Lock(mode=mode)
+
     elif qt_version in ('6',):
+        class QNonReEntrantLock(QtCore.QMutex):
+            def acquire(self):
+                self.lock()
+
+            def release(self):
+                self.unlock()
+
+            def __enter__(self):
+                self.acquire()
+                return self
+
+            def __exit__(self, *args):
+                self.release()
+
+        class QReEntrantLock(QtCore.QRecursiveMutex):
+            def acquire(self):
+                self.lock()
+
+            def release(self):
+                self.unlock()
+
+            def __enter__(self):
+                self.acquire()
+                return self
+
+            def __exit__(self, *args):
+                self.release()
+
         if mode == 1:
             return QReEntrantLock()
         else:
