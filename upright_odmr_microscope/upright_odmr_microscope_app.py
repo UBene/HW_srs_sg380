@@ -136,8 +136,8 @@ class Microscope(BaseMicroscopeApp):
         # from confocal_measure.ranged_optimization import RangedOptimization
         # self.add_measurement(RangedOptimization(self, name='auto_focus'))
 
-        from ScopeFoundryHW.srs.SRS_HW import SRS
-        self.add_hardware(SRS(self))
+        from ScopeFoundryHW.srs.sg380_hw import SG380_HW
+        self.add_hardware(SG380_HW(self, name='srs_control'))
 
         named_channels_kwargs = [
             dict(name='DAQ_sig', initial=1, colors=['#32CA32'],
