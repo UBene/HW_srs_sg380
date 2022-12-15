@@ -108,10 +108,10 @@ class LucamMeasure(Measurement):
         if S['save_tif']:
             self.imview.export(fname.replace('h5', 'tif'))
         if S['save_h5']:
-            self.save_h5()
+            self.save_h5(fname)
 
-    def save_h5(self):
-        with h5_io.h5_base_file(app=self.app, measurement=self) as H:
+    def save_h5(self, fname=None):
+        with h5_io.h5_base_file(app=self.app, fname = fname, measurement=self) as H:
             M = h5_io.h5_create_measurement_group(measurement=self, h5group=H)
             for name, data in self.data.items():
                 M.create_dataset(name, data=data, compression='gzip')

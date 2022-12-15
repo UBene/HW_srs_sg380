@@ -55,14 +55,9 @@ class LucamHW(HardwareComponent):
 
         S.frame_rate.change_choice_list(self.get_available_frame_rates())
 
-        for name, val in Lucam.PROPERTY.items():
+        for name in Lucam.PROPERTY:
             S.get_lq(name).connect_to_hardware(partial(lucam.GetProperty, name),
                                                partial(lucam.SetProperty, name))
-        #     # try:
-        #         vmin,vmax,_,_ = lucam.PropertyRange(name)
-        #         S.get_lq(name).change_min_max(vmin,vmax)
-        #     except LucamError:
-        #         print(name)
 
         S.get_lq('camera_model').connect_to_hardware(self.get_camera_model)
         for d in ('width', 'height'):
@@ -82,8 +77,8 @@ class LucamHW(HardwareComponent):
 
     def start_streaming(self, callback_func):
         '''
-        callback_func must be have 3 parameters
-        callback_func(context, frame_pointer, frame_size)
+        callback_func must be have 3 parameters:
+            callback_func(context, frame_pointer, frame_size)
         returns a callback id
         '''
         self.dev.StreamVideoControl('start_streaming')
@@ -100,7 +95,7 @@ class LucamHW(HardwareComponent):
 
     def convert_to_rgb24(self, frame_pointer):
         '''RGB images can only be obtained with conversion?'''
-        return self.dev.ConvertFrameToRgb24(self.get_format(), frame_pointer)
+        return self.dev.ConvertFrameToRgb24(self.get_format(), frame_pointer)[:,:,::-1]
 
     def read_snapshot(self):
         frame_pointer = self.dev.TakeSnapshot().ctypes.data_as(
