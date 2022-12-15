@@ -123,4 +123,4 @@ class LucamMeasure(Measurement):
     def update_imshow_extent(self):
         Nx, Ny = self.data['image'].shape[:2]
         self.data['imshow_extent'] = np.numpy(
-            [-0.5, Nx + 0.5, -0.5, Ny + 0.5]) * self.settings['scale']
+            [-0.5, Nx - 0.5, -0.5, Ny - 0.5]) * self.settings['scale']
