@@ -9,6 +9,7 @@ import os
 
 import pyqtgraph as pg
 from qtpy import QtWidgets
+import numpy as np
 
 from ScopeFoundry import Measurement, h5_io
 from ScopeFoundry.helper_funcs import sibling_path, load_qt_ui_file
@@ -30,7 +31,8 @@ class LucamMeasure(Measurement):
         s = S.New('scale', float, initial=1.0, unit='um/px')
         s.add_listener(self.update_display)
 
-        self.data = {'image': [[1, 2, 3] * 4] * 3}
+        self.data = {'image': np.swapaxes(
+            [([i, 1], [3, 0]) for i in range(3)], 0, -1)}
 
     def setup_figure(self):
         hw = self.hw
@@ -60,9 +62,9 @@ class LucamMeasure(Measurement):
         self.ui.centralwidget.layout().addWidget(self.imview)
 
     def run(self):
+        S = self.settings
 
         self.hw.write_format()
-        S = self.settings
 
         if S['mode'] == 'snapshot':
             self.data['image'] = self.hw.read_snapshot()
@@ -73,21 +75,23 @@ class LucamMeasure(Measurement):
             self.display_update_period = 0.01
             callback_id = self.hw.start_streaming(self.streaming_callback)
             while not self.interrupt_measurement_called:
-                time.sleep(0.050)
+                time.sleep(0.020)
             self.hw.stop_streaming(callback_id)
 
     def streaming_callback(self, context, frame_pointer, frame_size):
         self.data['image'] = self.hw.convert_to_rgb24(frame_pointer)
 
     def update_display(self):
+        S = self.settings
+
         img = self.data['image']
-        saturation = img[:, :, :3].max() / 255.0
-        self.imview.view.setTitle(
-            '{:2.0f}% max saturation'.format(saturation * 100.0))
-        self.imview.setImage(img,
-                             #axes={'y':0, 'x':1, 'c':2},
-                             autoLevels=True)
-        self.imview.getImageItem().setScale(self.settings['scale'])
+        imview = self.imview
+
+        saturation = img[:, :, :3].max() / 2**(8 * (S['pixel_format'] + 1))
+        imview.view.setTitle(f'max saturation value: {saturation:.0%}')
+        
+        imview.setImage(img, autoLevels=True)
+        imview.getImageItem().setScale(S['scale'])
 
     def save_image(self):
         self.update_imshow_extent()
@@ -111,13 +115,12 @@ class LucamMeasure(Measurement):
             self.save_h5(fname)
 
     def save_h5(self, fname=None):
-        with h5_io.h5_base_file(app=self.app, fname = fname, measurement=self) as H:
+        with h5_io.h5_base_file(app=self.app, fname=fname, measurement=self) as H:
             M = h5_io.h5_create_measurement_group(measurement=self, h5group=H)
             for name, data in self.data.items():
                 M.create_dataset(name, data=data, compression='gzip')
 
     def update_imshow_extent(self):
         Nx, Ny = self.data['image'].shape[:2]
-        s = self.settings['scale']
-        self.data['imshow_extent'] = (-0.5 * s,
-                                      s * (Nx + 0.5), -0.5 * s, s * (Ny + 0.5))
+        self.data['imshow_extent'] = np.numpy(
+            [-0.5, Nx + 0.5, -0.5, Ny + 0.5]) * self.settings['scale']
