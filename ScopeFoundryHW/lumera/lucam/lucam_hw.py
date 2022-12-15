@@ -24,13 +24,16 @@ class LucamHW(HardwareComponent):
         S.New('camera_number', int, initial=1)
         S.New('camera_model', str, ro=True)
         choices = [(k, v) for k, v in Lucam.PIXEL_FORMAT.items()]
-        S.New('pixel_format', int, choices=choices)
-        S.New('x_offset', int, initial=0)
-        S.New('y_offset', int, initial=0)
-        S.New('x_binning', int, initial=1)
-        S.New('y_binning', int, initial=1)
-        S.New('width', int, vmin=8, initial=8)
-        S.New('height', int, vmin=8, initial=8)
+        S.New('pixel_format', 
+              int, 
+              choices=choices, 
+              description='if number, is bits used per pixel and color channel')
+        S.New('x_offset', int, initial=0, unit='px')
+        S.New('y_offset', int, initial=0, unit='px')
+        S.New('x_binning', int, initial=1, unit='px')
+        S.New('y_binning', int, initial=1, unit='px')
+        S.New('width', int, vmin=8, initial=8, unit='px')
+        S.New('height', int, vmin=8, initial=8, unit='px')
         S.New('frame_rate', initial=100.0,
               choices=[], description='for streaming')
 
@@ -60,10 +63,6 @@ class LucamHW(HardwareComponent):
         #         S.get_lq(name).change_min_max(vmin,vmax)
         #     except LucamError:
         #         print(name)
-
-        # for name in ('brightness', 'exposure'):
-        #     vmin,vmax,_,_ = lucam.PropertyRange(name)
-        #     S.get_lq(name).change_min_max(vmin,vmax)
 
         S.get_lq('camera_model').connect_to_hardware(self.get_camera_model)
         for d in ('width', 'height'):
