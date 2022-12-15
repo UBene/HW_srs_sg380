@@ -44,8 +44,8 @@ class RS232_Dev:
         time.sleep(0.01)
         resp: str = self.ser.readline()
         if self.debug:
-            print("resp:", resp.decode().strip('\r\n'))
-        return resp.decode().strip('\r\n')
+            print("resp:", resp.decode())
+        return resp.decode()
 
     def close(self):
         self.ser.close()

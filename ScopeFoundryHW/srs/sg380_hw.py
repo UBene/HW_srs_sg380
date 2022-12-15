@@ -46,8 +46,7 @@ class SG380_HW(HardwareComponent):
         S.New('error', str, ro=True)
         S.New("output", bool, initial=False)
         S.New("frequency", unit="Hz", si=True)
-        S.New("amplitude", float, unit="dBm",
-              vmax=self.max_dBm, description='SRS control')
+        S.New("amplitude", float, unit="dBm", vmax=self.max_dBm)
         S.New("modulation", bool, initial=False)
         S.New("modulation_type", int, choices=MODULATIONTYPES)
         S.New("QFNC", str, initial=5, choices=QFNC,
@@ -69,9 +68,8 @@ class SG380_HW(HardwareComponent):
         from .rs232_dev import RS232_Dev
         self.dev = RS232_Dev(S["port"])
 
-        self.dev.write("*CLS")
-
         self.read_ID()
+        self.clear_status()
 
         #
         S.output.connect_to_hardware(
@@ -99,7 +97,7 @@ class SG380_HW(HardwareComponent):
         if self.settings['debug_mode']:
             print(f"{self.name} asked {cmd}: {repr(resp)}")
         #self.read_error()
-        return resp.split('\r\n')[0]
+        return resp.strip('\r\n')
 
     def write(self, cmd):
         if self.settings['debug_mode']:
@@ -108,9 +106,10 @@ class SG380_HW(HardwareComponent):
         #self.read_error()
 
     def read_error(self):
+        return 0
         err = self.dev.query("LERR?")
         if int(err) == 0:
-            self.settings['error'] = ''
+            self.settings['error'] = 'no error'
         else:
             self.settings['error'] = str(err)
         return int(err)
@@ -165,5 +164,9 @@ class SG380_HW(HardwareComponent):
     def write_qfnc(self, val):
         self.write(f"QFNC {val}")
         
-    def restor_defaults(self):
+    def restore_defaults(self):
         self.dev.write("*RST")
+                
+    def clear_status(self):
+        self.dev.write("*CLS")
+
