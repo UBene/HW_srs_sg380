@@ -4,7 +4,6 @@ Created on Mar 21, 2022
 @author: Benedikt Ursprung
 """
 from ScopeFoundry.hardware import HardwareComponent
-import pyvisa
 
 
 def bool2str(v):
@@ -27,102 +26,95 @@ MODULATIONTYPES = (
 QFNC = (("Noise", 4), ("External", 5))
 
 
-class SRS(HardwareComponent):
-
-    name = "srs_control"
+class SG380_HW(HardwareComponent):
+    '''
+    ScopeFoundry Hardware interface for SRS SG380 series
+    ToDo: Fix error handling
+    '''
     
+    name = "srs_sg380"
+
     def __init__(self, app, debug=False, name=None, max_dBm=9):
-        HardwareComponent.__init__(self, app, debug, name)
         self.max_dBm = max_dBm
+        HardwareComponent.__init__(self, app, debug, name)
 
     def setup(self):
         S = self.settings
-        S.New("port", str, initial="GPIB0::27::INSTR")
+        S.New("port", str, initial="COM1") #GPIB0::27::INSTR
         S.New('model', str, ro=True)
         S.New('serial', str, ro=True)
         S.New('error', str, ro=True)
         S.New("output", bool, initial=False)
         S.New("frequency", unit="Hz", si=True)
-        S.New("amplitude", float, unit="dBm", vmax=9, description='SRS control')
+        S.New("amplitude", float, unit="dBm",
+              vmax=self.max_dBm, description='SRS control')
         S.New("modulation", bool, initial=False)
         S.New("modulation_type", int, choices=MODULATIONTYPES)
         S.New("QFNC", str, initial=5, choices=QFNC,
-            description='the modulation function for IQ modulation',
-        )
+              description='the modulation function for IQ modulation',
+              )
 
     def connect(self):
 
         S = self.settings
 
-        rm = pyvisa.ResourceManager()
-        self.dev = SRS = rm.open_resource(S["port"])
-        
-        try:
-            deviceID = self.read_ID() 
-        except Exception as excpt:
-            print(
-                "Error: could not query SRS. Please check GPIB address is correct and SRS GPIB communication is enabled. Exception details:",
-                type(excpt).__name__,
-                ".",
-                excpt,
-            )
-            S['model'] = 'not_connected'
-            S['serial'] = 'not_connected'
-            return False
+        print(S["port"])
 
-        SRS.write("*CLS")
+        #Option A Using GPIB
+        # import pyvisa
+        # rm = pyvisa.ResourceManager()
+        # self.dev = rm.open_resource(S["port"])
 
+        # Option B Using RS232
+        from .rs232_dev import RS232_Dev
+        self.dev = RS232_Dev(S["port"])
+
+        self.dev.write("*CLS")
+
+        self.read_ID()
+
+        #
         S.output.connect_to_hardware(
-            self.read_enable_output, self.write_enable_output
-        )
-        S.frequency.connect_to_hardware(self.read_frequency, self.write_frequency)
-        S.amplitude.connect_to_hardware(self.read_amplitude, self.write_amplitude)
+            self.read_enable_output, self.write_enable_output)
+        S.frequency.connect_to_hardware(
+            self.read_frequency, self.write_frequency)
+        S.amplitude.connect_to_hardware(
+            self.read_amplitude, self.write_amplitude)
         S.modulation.connect_to_hardware(
-            self.read_enable_modulation, self.write_enable_modulation
-        )
+            self.read_enable_modulation, self.write_enable_modulation)
         S.modulation_type.connect_to_hardware(self.read_type, self.write_type)
         S.QFNC.connect_to_hardware(self.read_qfnc, self.write_qfnc)
-        
         self.read_from_hardware()
-        
+        #self.read_error()
+
     def disconnect(self):
         if hasattr(self, 'dev'):
             self.dev.close()
             del self.dev
             self.settings['model'] = 'not_connected'
             self.settings['serial'] = 'not_connected'
-            
+
     def ask(self, cmd):
         resp = self.dev.query(cmd)
-        if self.settings['debug_mode']: 
-            print(self.name, 'ask', cmd, repr(resp), repr(resp.split('\r\n')[0]))
-        self.read_error()
+        if self.settings['debug_mode']:
+            print(f"{self.name} asked {cmd}: {repr(resp)}")
+        #self.read_error()
         return resp.split('\r\n')[0]
 
     def write(self, cmd):
-        if self.settings['debug_mode']: 
+        if self.settings['debug_mode']:
             print(self.name, 'write', cmd)
         self.dev.write(cmd)
-        self.read_error()
-        
+        #self.read_error()
+
     def read_error(self):
         err = self.dev.query("LERR?")
         if int(err) == 0:
             self.settings['error'] = ''
         else:
             self.settings['error'] = str(err)
-        return int(err)    
-        
-    def SRSerrCheck(self,):
-        err = self.dev.query("LERR?")
-        if int(err) is not 0:
-            print(
-                "SRS error: error code",
-                int(err),
-                ". Please refer to SRS manual for a description of error codes.",
-            )
-            return False
-        
+        return int(err)
+
     def read_ID(self):
         device_ID = self.ask('*IDN?')
         company, model, serial, ver = device_ID.split(',')
@@ -150,10 +142,11 @@ class SRS(HardwareComponent):
 
     def write_amplitude(self, amplitude):
         if amplitude >= self.max_dBm:
-            print(self.name, f'Warning: did not write amplitude >{self.max_dBm} dBm', amplitude)
+            print(
+                self.name, f'Warning: did not write amplitude >{self.max_dBm} dBm', amplitude)
         else:
             self.write(f"AMPR {amplitude} dBm")
-        
+
     def write_enable_modulation(self, enable: bool):
         self.write(f"MODL {bool2str(enable)}")
 
@@ -171,30 +164,6 @@ class SRS(HardwareComponent):
 
     def write_qfnc(self, val):
         self.write(f"QFNC {val}")
-
-    def setupSRSmodulation(self, sequence):
-        # Enables IQ modulation with an external source for T2, XY8 and correlation spectroscopy sequences
-        # and disables modulation for ESR, Rabi and T1 sequences.
-        if sequence in ["ESR", "Rabi", "T1"]:
-            self.settings["modulation"] = False
-        elif sequence in ["T2", "XY8", "correlSpec"]:
-            self.settings["modulation"] = True
-            self.settings["TYPE"] = 6
-            self.settings["QFNC"] = 5
-        else:
-            print(
-                "Error in SRScontrol.py: unrecognised sequence name passed to setupSRSmodulation."
-            )
-            return False
-
-    def enableIQmodulation(self):
-        self.SRSerrCheck(self)
-        # Enable modulation
-        self.write("MODL 1")
-        self.SRSerrCheck()
-        # Set modulation type to IQ
-        self.write("TYPE 6")
-        self.SRSerrCheck()
-        # Set IQ modulation function to external
-        self.write("QFNC 5")
-        return self.SRSerrCheck()
+        
+    def restor_defaults(self):
+        self.dev.write("*RST")
