@@ -3,7 +3,6 @@ import pyqtgraph as pg
 import pyqtgraph.dockarea as dockarea
 import numpy as np
 import h5py
-#from FoundryDataBrowser.viewers.plot_n_fit import PlotNFit
 
 
 class IVH5View(DataBrowserView):

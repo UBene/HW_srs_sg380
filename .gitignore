@@ -1,4 +1,5 @@
 *.pyc
+.metadata/*
 *~
 .DS_Store
 .project
@@ -45,6 +46,9 @@ ScopeFoundryHW/picoquant/log/
 ScopeFoundryHW/sync_stream_scan/log/
 ScopeFoundry/tests/load_hw_ini_file_test/log
 ScopeFoundryHW/attocube_ecc100/log
+ScopeFoundryHW/thorlabs_ell6k_dual_position_slider/log
+ScopeFoundryHW/laser_quantum/log
+ScopeFoundryHW/rigol/log
 FoundryDataBrowser/FoundryDataBrowser.egg-info
 near_field_microscope/log/
 near_field_microscope/data/
@@ -52,4 +56,4 @@ nikon_microscope/log/
 nikon_microscope/data/
 cage_microscope/log/
 cage_microscope/data/
-
+*log*.txt

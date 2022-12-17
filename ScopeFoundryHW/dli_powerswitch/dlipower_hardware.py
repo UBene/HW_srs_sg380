@@ -9,6 +9,7 @@ from ScopeFoundry import HardwareComponent
 from bs4 import BeautifulSoup
 import binascii
 import requests
+import time
 
 
 class DLIPowerSwitchHW(HardwareComponent):
@@ -36,9 +37,9 @@ class DLIPowerSwitchHW(HardwareComponent):
             self.settings.New(name='Outlet_{}'.format(ii + 1), dtype=bool, initial=False, ro=False)
 
         # # Credentials
-        self.host = self.settings.New(name='host', initial='192.168.0.100', dtype=str, ro=False)
+        self.host = self.settings.New(name='host', initial='192.168.0.101', dtype=str, ro=False)
         self.userid = self.settings.New(name='userid', initial='admin', dtype=str, ro=False)
-        self.key = self.settings.New(name='key', initial='lbnl', dtype=str, ro=False)
+        self.key = self.settings.New(name='key', initial='1234', dtype=str, ro=False)
 
         self.dummy_mode = self.add_logged_quantity(name='dummy_mode', dtype=bool, initial=False, ro=False)
 
@@ -54,6 +55,9 @@ class DLIPowerSwitchHW(HardwareComponent):
         for jj in range(8):
             self.settings.get_lq("Outlet_" + str(jj + 1)).connect_to_hardware(
                 write_func=lambda x, onum=(jj + 1): self.write_outlet(onum, x))
+
+        time.sleep(1)
+        
 
         self.read_outlet_status()
         self.read_outlet_names()

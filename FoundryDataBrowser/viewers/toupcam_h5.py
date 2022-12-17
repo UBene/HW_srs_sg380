@@ -26,7 +26,7 @@ class ToupcamH5(DataBrowserView):
             self.h5file = h5py.File(fname, 'r')
             M = self.h5file['measurement/toupcam_spot_optimizer']
             self.img = self.h5file['measurement/toupcam_spot_optimizer/image'][:]  # .swapaxes(0,1)
-            print(self.img.shape)
+            # print(self.img.shape)
             self.img = self.img[:, ::-1, :]
             self.imview.setImage(self.img)
 

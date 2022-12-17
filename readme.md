@@ -8,6 +8,7 @@ Please follow this guidelines
 2. Open Source Tree Software
 3. Stage file(s) or just lines. It is good practice commit coherent junks of codes.
 4. Press Commit. A good description is appreciated.
+4. Hit Push if you want to have them.
 
 ## Get Write access
 
@@ -38,7 +39,7 @@ Email to one of the administrators and follow the instructions send by Atlassian
 
 7. Think of a good *`name`* for your setup and make new branch called `name_microscope`
 
-8. Make a new folder `name_microscope` and within that folder create. 
+8. Make a new folder `name_microscope` and within that folder create (even better to copy `generic_microscope` and make the adjustments): 
    1. an empty `__init__.py` file
 
    2. `app.py` which will be the main file 
@@ -52,12 +53,16 @@ Email to one of the administrators and follow the instructions send by Atlassian
 
       as you never want to sync files located there
 
-9. Make an initial commit. When prompted you should map from `name_microscope`-remote branch to  `name_microscope`-local.
+9. Go to bitbucket online and make a new Branch called: `name_microscope`
+
+10. Go to source tree and make a new Branch called: `name_microscope`
+
+11. Make an initial commit. When prompted you should map from `name_microscope`-remote branch to  `name_microscope`-local.
 
 10. In Eclipse, 
 
     1. Open Perspective and choose PyDev
-    2. Make a new Project called `scope_foundry`. Maybe you need to configure the Ananconda Interpreter
+    2. Make a new Project called `scope_foundry`. Maybe you need to configure the Ananconda Interpreter.
 
 11. Happy development
 

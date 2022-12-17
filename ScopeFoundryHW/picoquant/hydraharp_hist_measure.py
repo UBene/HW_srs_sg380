@@ -4,14 +4,15 @@ import time
 import pyqtgraph as pg
 from ScopeFoundry import h5_io
 
-class HydraHarpHistogramMeasure(Measurement):    
+
+class HydraHarpHistogramMeasure(Measurement): 
     
     name = "hydraharp_histogram"
     
     hardware_requirements = ['hydraharp']
     
     def setup(self):
-        self.display_update_period = 0.1 #seconds
+        self.display_update_period = 0.1  # seconds
         
         S = self.settings
 
@@ -23,12 +24,11 @@ class HydraHarpHistogramMeasure(Measurement):
         hw = self.hw = self.app.hardware['hydraharp']
         
         # UI 
-        self.ui_filename = sibling_path(__file__,"hydraharp_hist_measure.ui")
+        self.ui_filename = sibling_path(__file__, "hydraharp_hist_measure.ui")
         self.ui = load_qt_ui_file(self.ui_filename)
         self.ui.setWindowTitle(self.name)
         
-        
-        #connect events
+        # connect events
         S.progress.connect_to_widget(self.ui.progressBar)
         self.ui.start_pushButton.clicked.connect(self.start)
         self.ui.interrupt_pushButton.clicked.connect(self.interrupt)
@@ -41,20 +41,22 @@ class HydraHarpHistogramMeasure(Measurement):
         hw.settings.HistogramBins.connect_to_widget(self.ui.HistogramBins_doubleSpinBox)        
         
         S.save_h5.connect_to_widget(self.ui.save_h5_checkBox)
-
+        
+        self.data = {'time_array':[1, 2, 3, 4],
+                     'time_histogram': [4, 2, 1, 1],
+                     'elapsed_meas_time':[1, 1, 1, 1]}
     
     def setup_figure(self):
         self.graph_layout = pg.GraphicsLayoutWidget()    
         self.plot = self.graph_layout.addPlot()    
         self.plot.setLogMode(False, True)
-        self.plot.enableAutoRange('y',True)
+        self.plot.enableAutoRange('y', True)
         self.ui.plot_groupBox.layout().addWidget(self.graph_layout)
         
         hh_widget = self.app.hardware['hydraharp'].settings.New_UI(
-                include=['connected','ChanEnable0','ChanEnable1','SyncRate','CountRate0',
-                         'CountRate1','SyncDivider'])
+                include=['connected', 'ChanEnable0', 'ChanEnable1', 'SyncRate', 'CountRate0',
+                         'CountRate1', 'SyncDivider'])
         self.ui.counting_device_GroupBox.layout().addWidget(hh_widget)
-        
                 
     def run(self):
         
@@ -65,19 +67,17 @@ class HydraHarpHistogramMeasure(Measurement):
 
         if self.settings['auto_HistogramBins']:
             self.hw.update_HistogramBins()
-            
         
-        self.sleep_time = min((max(0.1*Tacq, 0.010), 0.100))
+        self.sleep_time = min((max(0.1 * Tacq, 0.010), 0.100))
         self.t0 = time.time()
-        
     
-        while not self.interrupt_measurement_called:  
+        while not self.interrupt_measurement_called: 
             hw.start_histogram()
             if Tacq < 0.1:
-                time.sleep(Tacq+5e-3)
+                time.sleep(Tacq + 5e-3)
             else:
                 while not hw.check_done_scanning():
-                    self.set_progress( 100*(time.time() - self.t0)/Tacq )
+                    self.set_progress(100 * (time.time() - self.t0) / Tacq)
                     if self.interrupt_measurement_called:
                         break
                     self.hist_data = hw.read_histogram_data(clear_after=False)
@@ -87,39 +87,39 @@ class HydraHarpHistogramMeasure(Measurement):
         
             if not self.settings['continuous']:
                 break
-            
     
         elapsed_meas_time = hw.settings.ElapsedMeasTime.read_from_hardware()
         
+        self.data = {'time_array':self.hw.time_array[self.hw.hist_slice[-1]],
+                     'time_histogram': self.hist_data[self.hw.hist_slice],
+                     'elapsed_meas_time':elapsed_meas_time}        
+        
         if self.settings['save_h5']:
-            self.h5_file = h5_io.h5_base_file(self.app, measurement=self )
+            self.h5_file = h5_io.h5_base_file(self.app, measurement=self)
             self.h5_file.attrs['time_id'] = self.t0
             
-            H = self.h5_meas_group  =  h5_io.h5_create_measurement_group(self, self.h5_file)
-            H['time_histogram'] = self.hist_data[self.hw.hist_slice]
-            H['time_array'] = self.hw.time_array[self.hw.hist_slice[-1]]
-            H['elapsed_meas_time'] = elapsed_meas_time
-            
+            H = self.h5_meas_group = h5_io.h5_create_measurement_group(self, self.h5_file)
+            for k, v in self.data:
+                H[k] = v            
             self.h5_file.close()
-
                    
     def update_display(self):
-        time_array = self.hw.time_array*1e-12        
+        time_array = self.hw.time_array * 1e-12        
         if not self.display_ready:
             self.plot.clear()
             self.plot.setLabel('bottom', text="Time", units='s')
             self.plotlines = []
             for i in range(self.hw.enabled_channels):
-                self.plotlines.append(self.plot.plot(label = i, name='histogram' + str(i)))
+                self.plotlines.append(self.plot.plot(label=i, name='histogram' + str(i)))
 
-            #Marker in time_array.
-            pos_x = time_array[self.hw.settings['HistogramBins']-1]                        
-            self.infline = pg.InfiniteLine(movable=False, angle=90, label='Histogram Bins stored', 
-                           labelOpts={'position':0.95, 'color':(200,200,100), 'fill':(200,200,200,50), 'movable':True})
+            # Marker in time_array.
+            pos_x = time_array[self.hw.settings['HistogramBins'] - 1]                        
+            self.infline = pg.InfiniteLine(movable=False, angle=90, label='Histogram Bins stored',
+                           labelOpts={'position':0.95, 'color':(200, 200, 100), 'fill':(200, 200, 200, 50), 'movable':True})
             self.plot.addItem(self.infline)                    
-            self.infline.setPos([pos_x,0])
-            self.plot.setRange(xRange=(0,1.0*pos_x))
+            self.infline.setPos([pos_x, 0])
+            self.plot.setRange(xRange=(0, 1.0 * pos_x))
             self.display_ready = True
             
-        for i in range(self.hw.enabled_channels):      
-            self.plotlines[i].setData(time_array, self.hist_data[i,:]+1)
+        for i in range(self.hw.enabled_channels): 
+            self.plotlines[i].setData(time_array, self.hist_data[i,:] + 1)

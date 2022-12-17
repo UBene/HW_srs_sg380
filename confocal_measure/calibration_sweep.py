@@ -13,20 +13,14 @@ class CalibrationSweep(Measurement):
     
     name = 'calibration_sweep'
 
-    def __init__(self, app, name=None, 
-                 camera_readout_measure_name = 'winspec_readout', 
-                 spectrometer_hw_name = 'acton_spectrometer',
-                 shutter_open_lq_path = 'hardware/shutter/open'):
-        
-        
+    def __init__(self, app, name=None,
+                 camera_readout_measure_name='picam_readout',
+                 spectrometer_hw_name='acton_spectrometer',
+                 shutter_open_lq_path='hardware/shutter/open'):
         self.camera_readout_measure_name = camera_readout_measure_name
         self.spectrometer_hw_name = spectrometer_hw_name
         self.shutter_open_lq_path = shutter_open_lq_path
-
         Measurement.__init__(self, app, name)
-
-        print(self.camera_readout_measure_name)
-        
         
     def setup(self):
         self.center_wl_range = self.settings.New_Range('center_wls')      
@@ -34,14 +28,16 @@ class CalibrationSweep(Measurement):
     
     def run(self):
         self.spec_readout = self.app.measurements[self.camera_readout_measure_name]
-        self.spec_center_wl = self.app.hardware[self.spectrometer_hw_name].settings.center_wl     
+        
 
+        
+        self.spec_center_wl = self.app.hardware[self.spectrometer_hw_name].settings.center_wl     
         
         self.t0 = time.time()      
         
         self.spectra = []
-        self.center_wls = [] #center wls read from spectrometer
-        self.wls = [] #intended for intensity calibration 
+        self.center_wls = []  # center wls read from spectrometer
+        self.wls = []  # intended for intensity calibration 
 
         if self.record_bg.val:
             self.shutter_open = self.app.lq_path(self.shutter_open_lq_path)
@@ -49,18 +45,11 @@ class CalibrationSweep(Measurement):
         
         N = len(self.center_wl_range.array)
         
-        for i,center_wl in enumerate(self.center_wl_range.array):
+        for i, center_wl in enumerate(self.center_wl_range.array):
             if self.interrupt_measurement_called:
                 break
-            
-            if 'acton' in  self.camera_readout_measure_name:
-                self.spec_readout.settings['read_single'] = True
-            if 'winspec' in self.camera_readout_measure_name:
-                self.spec_readout.settings['continuous'] = False 
-            if 'andor' in self.camera_readout_measure_name:
-                self.spec_readout.settings['continuous'] = False 
 
-            self.set_progress(100*(i+1)/N)
+            self.set_progress(100 * (i + 1) / N)
             
             self.spec_center_wl.update_value(center_wl)
             self.spec_center_wl.write_to_hardware()
@@ -78,13 +67,7 @@ class CalibrationSweep(Measurement):
             if self.interrupt_measurement_called:
                 break
 
-            if 'acton' in  self.camera_readout_measure_name:
-                self.spec_readout.settings['read_single'] = True
-                self.start_nested_measure_and_wait(self.spec_readout)
-            if 'andor' in  self.camera_readout_measure_name:
-                self.start_nested_measure_and_wait(self.spec_readout)
-                print("called nested andor measurement")
-            
+            self.start_nested_measure_and_wait(self.spec_readout, nested_interrupt=False)
             time.sleep(0.1)
             
             self.spectra.append(self.spec_readout.get_spectrum())
@@ -94,12 +77,12 @@ class CalibrationSweep(Measurement):
             except:
                 print(self.spec_readout, 'has no get_wavelengths() method: wls will not be saved')
                 
-        self.h5_file = h5_io.h5_base_file(self.app, measurement=self )
-        #self.h5_file.attrs['time_id'] = self.t0
-        H = self.h5_meas_group  =  h5_io.h5_create_measurement_group(self, self.h5_file)
+        self.h5_file = h5_io.h5_base_file(self.app, measurement=self)
+        # self.h5_file.attrs['time_id'] = self.t0
+        H = self.h5_meas_group = h5_io.h5_create_measurement_group(self, self.h5_file)
         H['spectra'] = np.array(self.spectra)
         H['center_wls'] = np.array(self.center_wls)
-        H['wls'] = np.array(self.wls) #intended for intensity calibration 
+        H['wls'] = np.array(self.wls)  # intended for intensity calibration 
         if self.record_bg.val:
             H['bg_spectra'] = np.array(self.bg_spectra)
         

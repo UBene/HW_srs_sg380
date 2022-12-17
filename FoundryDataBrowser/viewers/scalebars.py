@@ -44,8 +44,8 @@ class WorkingScaleBar(pg.ScaleBar):
 
         if brush is None:
             brush = pg.getConfigOption('foreground')
-        self.brush = pg.fn.mkBrush(brush)
-        self.pen = pg.fn.mkPen(pen)
+        self.brush = pg.mkBrush(brush)
+        self.pen = pg.mkPen(pen)
         self._width = width
         self.size = size
         if offset is None:
@@ -60,7 +60,7 @@ class WorkingScaleBar(pg.ScaleBar):
         if val == -1:
             val = size
 
-        self.text = pg.TextItem(text=pg.fn.siFormat(val, suffix=suffix),
+        self.text = pg.TextItem(text=pg.siFormat(val, suffix=suffix),
                                 anchor=(0.5, 1))
         self.text.setParentItem(self)
 
