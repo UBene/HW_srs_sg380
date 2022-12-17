@@ -66,7 +66,9 @@ class PowerScanMeasure(Measurement):
                           choices=['power_wheel', 'polarizer',
                                    'elliptec', 'motorized_polarizer',
                                    'main_beam_power_wheel',
-                                   'side_beam_power_wheel'],
+                                   'side_beam_power_wheel', 
+                                   'motorized_polarizer_exc',
+                                   'motorized_polarizer_col',],
                           description='Choose the hardware used to modulate the power.')
 
         self.settings.New('power_meter_sample_number', int, initial=10,
