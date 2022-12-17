@@ -115,7 +115,7 @@ def configured_plot(config_file=None, target_dir=None):
             p = plt.loglog(
                 x[plot_mask],
                 y[plot_mask],
-                "x",
+                "-x",
                 label=f"{fname}  slope: {coefs[1]:1.2f} {sample} {configs['info']}",
             )
             # plt.loglog(
