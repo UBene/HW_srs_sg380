@@ -27,7 +27,7 @@ class LucamHW(HardwareComponent):
         S.New('pixel_format',
               int,
               choices=choices,
-              initial=1,
+              initial=2,
               description='if number, is bits used per pixel and color channel')
         S.New('x_offset', int, initial=0, unit='px')
         S.New('y_offset', int, initial=0, unit='px')
