@@ -48,8 +48,9 @@ class NearFieldMicroscope(BaseMicroscopeApp):
         
         
         from ScopeFoundryHW.thorlabs_integrated_stepper.thorlabs_integrated_stepper_motor_hw import ThorlabsIntegratedStepperMottorHW
-        self.add_hardware_component(ThorlabsIntegratedStepperMottorHW(self))
-        
+        #self.add_hardware_component(ThorlabsIntegratedStepperMottorHW(self))
+        self.add_hardware_component(ThorlabsIntegratedStepperMottorHW(self, name='motorized_polarizer_exc'))
+        self.add_hardware_component(ThorlabsIntegratedStepperMottorHW(self, name='motorized_polarizer_col'))
 
         # from ScopeFoundryHW.thorlabs_powermeter.thorlabs_powermeter_analog_readout import ThorlabsPowerMeterAnalogReadOut
         # self.add_hardware(ThorlabsPowerMeterAnalogReadOut(self))
