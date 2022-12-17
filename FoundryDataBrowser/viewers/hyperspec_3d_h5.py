@@ -71,7 +71,9 @@ class HyperSpec3DH5View(HyperSpectralBaseView):
             self.calculate_3d_pushButton = QPushButton(text='calculate_3d')
             self.settings_ui.layout().addWidget(self.calculate_3d_pushButton)
             self.calculate_3d_pushButton.clicked.connect(self.calculate_volume)
-        self.image_dock.raiseDock()
+
+    
+            
 
     def is_file_supported(self, fname):
         return np.any([(meas_name in fname)
@@ -249,7 +251,10 @@ class HyperSpec3DH5View(HyperSpectralBaseView):
 
     def update_display(self):
         if hasattr(self, 'scalebar'):
-            self.imview.getView().removeItem(self.scalebar)
+            try:
+                self.imview.getView().removeItem(self.scalebar)
+            except Exception:
+                pass
 
         if self.display_image is not None:
             # pyqtgraph axes are x,y, but data is stored in (frame, y,x, time),

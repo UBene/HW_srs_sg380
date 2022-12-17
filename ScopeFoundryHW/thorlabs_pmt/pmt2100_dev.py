@@ -50,7 +50,7 @@ SOURce
         selected channel, V or V/W
     :VOLTage:LIMit:STATe <boolean> STATe - controls whether the limit is enabled
 """
-import visa
+import pyvisa as visa
 import time
 import logging
 

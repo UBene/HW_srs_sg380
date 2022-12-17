@@ -6,6 +6,7 @@ from ScopeFoundry.helper_funcs import sibling_path
 import pyqtgraph as pg
 from qtpy import QtWidgets
 import datetime
+import os
 
 
 class PowerScanMeasure(Measurement):
@@ -39,12 +40,16 @@ class PowerScanMeasure(Measurement):
                     'apd_counter': 'int_time',
                     'picam': 'ExposureTime',
                     'thorlabs_powermeter_2': 'average_count',
-                    'labspec': 'exposure_time'}
+                    'labspec': 'exposure_time',
+                    'rabi': 'N_samples',
+                    }
+        
 
         for key in self.hws.keys():
             self.settings.New('collect_{}'.format(key),
                               dtype=bool, initial=False)
 
+            
         self.settings.New("x_axis", dtype=str, initial='pm_power',
                           choices=('power_wheel_positions', 'power'))
         self.settings.New('use_shutter', dtype=bool, initial=False)
@@ -75,6 +80,7 @@ class PowerScanMeasure(Measurement):
                           description='Choose how many times the powermeter is being asked for a reading.')
 
         self.settings.New('polling_powers', bool, initial=False)
+        self.settings.New('new_folder', bool, initial=False)
 
     def setup_figure(self):
 
@@ -122,23 +128,28 @@ class PowerScanMeasure(Measurement):
 
         # Hardware connections
         layout = self.ui.collect_groupBox.layout()
-        hw_list = self.app.hardware.keys()
+        # self.app.measurements.keys()
         self.installed_hw = {}
 
         for key in self.hws.keys():
-            if key in hw_list:
-                CB_widget = QtWidgets.QCheckBox(key)
-                lq = getattr(self.settings, 'collect_{}'.format(key))
-                lq.connect_to_widget(CB_widget)
-
-                SP_widget = QtWidgets.QDoubleSpinBox()
+            if key in self.app.hardware.keys():
                 Tacq_lq = getattr(
                     self.app.hardware[key].settings, self.hws[key])
-                Tacq_lq.connect_to_widget(SP_widget)
-
-                layout.addRow(CB_widget, SP_widget)
-
-                self.installed_hw.update({key: Tacq_lq})
+                
+                
+            elif key in self.app.measurements.keys():
+                Tacq_lq = getattr(
+                    self.app.measurements[key].settings, self.hws[key])
+            else:
+                continue
+                                            
+            CB_widget = QtWidgets.QCheckBox(key)
+            lq = getattr(self.settings, 'collect_{}'.format(key))
+            lq.connect_to_widget(CB_widget)
+            SP_widget = QtWidgets.QDoubleSpinBox()
+            Tacq_lq.connect_to_widget(SP_widget)
+            layout.addRow(CB_widget, SP_widget)
+            self.installed_hw.update({key: Tacq_lq})
 
         # Plot
         if hasattr(self, 'graph_layout'):
@@ -260,6 +271,15 @@ class PowerScanMeasure(Measurement):
             self.integrated_spectra = []
             self.used_hws.update({'labspec': self.installed_hw['labspec']})
 
+        if self.settings['collect_rabi']:
+            self.rabi = self.app.measurements['rabi']
+            # self.rabi.start_stop(False)
+            # self.rabi.settings['save_h5'] = False
+            # self.spectra = []  # don't know size of ccd until after measurement
+            # self.integrated_spectra = []
+            self.used_hws.update({'rabi': self.installed_hw['rabi']})
+
+
         # Prepare for different acquisition modes
         # if self.settings['acq_mode'] == 'const_SNR':
         #    self.spec_acq_times_array = self.spec_acq_time.val / np.exp(2*self.log_power_index)
@@ -315,12 +335,27 @@ class PowerScanMeasure(Measurement):
                 self.power_plot.plot([1, 3, 2, 4], symbol='o'))
         self.display_ready = True
 
+        if self.settings['new_folder']:
+            self.root_folder = self.app.settings['save_dir']
+            new_folder = os.path.join(self.root_folder, str(time.time()))
+            os.mkdir(new_folder)
+            self.app.settings['save_dir'] = new_folder
+
+
     def post_run(self):
         self.display_ready = False
         if self.settings['use_shutter']:
             self.shutter_open.update_value(False)
         self.update_display()
         self.microscope_specific_post_run()
+        
+        
+        if self.settings['new_folder']:
+            self.app.settings['save_dir'] = self.root_folder
+        
+        
+    # def run(self):
+    #     print(self.name)
 
     def run(self):
 
@@ -371,8 +406,6 @@ class PowerScanMeasure(Measurement):
                 Tacq_lq.update_value(acq_times_array[ii])
 
             self.optimize_if_applicable(ii)
-
-            print("moving power wheel to " + str(self.pw_target_position.value))
 
             self.pw_target_position.update_value(self.power_wheel_position[ii])
             print(self.name, 'moved target position',
@@ -476,6 +509,11 @@ class PowerScanMeasure(Measurement):
                 if not (spec == None).any():
                     self.spectra.append(spec)
                     self.integrated_spectra.append(spec.sum())
+                    
+                    
+            if self.settings['collect_rabi']:
+                self.start_nested_measure_and_wait(self.rabi, nested_interrupt=False)
+                
 
             # collect power meter value after measurement W/O SWAPPING
             self.pm_powers_after[ii] = self.collect_pm_power_data()
@@ -670,7 +708,7 @@ class PowerScanMeasure(Measurement):
             while not self.interrupt_measurement_called:
                 try:
                     pm_power = pm_power + \
-                        self.pm_hw.power.read_from_hardware(send_signal=True)
+                        self.pm_hw.settings.power.read_from_hardware(send_signal=True)
                     samp_count = samp_count + 1
                     break
                 except Exception as err:

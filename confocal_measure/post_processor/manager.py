@@ -26,7 +26,7 @@ class PostProcessorManager:
     def post_process(self,
                      x:Sequence,
                      y:Sequence,
-                     post_processor:str='gauss'): 
+                     post_processor:str='gauss_mean'): 
         post_process = self.processors[post_processor]   
         self.value, self.values = post_process(x, y)
         self.set_ready(True)

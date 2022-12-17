@@ -4,52 +4,54 @@ Created on Apr 4, 2022
 @author: Benedikt Ursprung
 '''
 
-import numpy as np
+import time
 from random import shuffle
 
-from qtpy.QtWidgets import (
-    QHBoxLayout,
-    QVBoxLayout,
-    QWidget,
-    QLabel,
-)
+import numpy as np
 import pyqtgraph as pg
 from pyqtgraph.dockarea.DockArea import DockArea
+from qtpy.QtWidgets import QHBoxLayout, QLabel, QVBoxLayout, QWidget
 
-from ScopeFoundry import Measurement
-from ScopeFoundry import h5_io
-from ScopeFoundryHW.spincore import PulseProgramGenerator, PulseBlasterChannel, us, ns
-from odmr_measurements.helper_functions import ContrastModes, calculateContrast
-import time
+from odmr_measurements.contrast import calculate_contrast, contrast_modes
+from ScopeFoundry import Measurement, h5_io
+from ScopeFoundryHW.spincore import (PulseBlasterChannel,
+                                     PulseProgramGenerator, ns, us)
 
 
 class ESRPulseProgramGenerator(PulseProgramGenerator):
 
     def setup_additional_settings(self) -> None:
-        self.settings.New('t_readout', unit='us', initial=10.0)
-        self.settings.New('t_gate', unit='us', initial=50.0)
 
-    def make_pulse_channels(self) -> [PulseBlasterChannel]:
+        self.settings.New('t_gate', unit='us', vmin=0, initial=1.0)
+        self.settings.New('program_duration', float, unit='us', initial=200.0)
+
+        max_readout_sig_ref = (
+            self.settings['program_duration'] / 2) - self.settings['t_gate']
+        self.settings.New('t_readout_sig', unit='us', vmin=0, initial=0.1)
+        self.settings.New('t_readout_ref', unit='us', vmin=0, initial=0.1)
+
+    def make_pulse_channels(self):
         S = self.settings
 
-        # All times must be in ns
+        # all times must be in ns.
         t_duration = S['program_duration'] * us
-        t_readout = S['t_readout'] * us
+        t_readout_sig = S['t_readout_sig'] * us
+        t_readout_ref = S['t_readout_ref'] * us
+
         t_gate = S['t_gate'] * us
 
-        AOM = self.new_channel('AOM', [0], [t_duration])
-        uW = self.new_channel('uW', [0], [t_duration / 2])
+        self.new_channel('AOM', [0], [t_duration])
+        self.new_channel('uW', [0], [t_duration / 2])
 
         # DAQ
-        _readout = t_readout + t_gate
-        DAQ_sig = self.new_channel(
-            'DAQ_sig', [t_duration * 1 / 2 - _readout], [t_gate])
-        DAQ_ref = self.new_channel(
-            'DAQ_ref', [t_duration * 2 / 2 - _readout], [t_gate])
-
-        return [uW, AOM,
-                # I, Q,
-                DAQ_sig, DAQ_ref]
+        #_readout_sig = t_readout_sig + t_gate
+        #_readout_ref = t_readout_ref + t_gate
+        self.new_channel(
+            'DAQ_sig', [t_readout_sig], [t_gate])
+        # 'DAQ_sig', [0.5 * t_duration - _readout_sig], [t_gate])
+        self.new_channel(
+            'DAQ_ref', [(t_duration/2) + t_readout_ref], [t_gate])
+        # 'DAQ_ref', [t_duration - _readout_ref], [t_gate])
 
 
 def norm(x):
@@ -64,26 +66,27 @@ class ESR(Measurement):
 
         S = self.settings
 
-        self.frequency_range = S.New_Range(
+        self.range = S.New_Range(
             "frequency", initials=[2.7e9, 3e9, 3e6], unit="Hz", si=True
         )
         S.New("N_samples", int, initial=1000)
         S.New("N_sweeps", int, initial=1)
-        S.New("randomize", bool, initial=False)
-        S.New("shotByShotNormalization", bool, initial=False)
+        S.New("randomize", bool, initial=False,
+              description='probe frequencies in a random order.')
+        S.New("shot_by_shot_normalization", bool, initial=False)
         S.New(
             "contrast_mode",
             str,
-            initial="signalOverReference",
-            choices=ContrastModes,
+            initial="fractional_difference_over_reference",
+            choices=contrast_modes,
         )
         S.New("save_h5", bool, initial=True)
 
         self.data = {
             "frequencies": np.arange(10) * 1e9,
             # emulates N_sweeps=2
-            "signal_raw": np.random.rand(20).reshape(-1, 2),
-            "reference_raw": np.random.rand(20).reshape(-1, 2),
+            "signal_raw": np.random.rand(20).reshape(2, -1),
+            "reference_raw": np.random.rand(20).reshape(2, -1),
         }
         self.i_sweep = 0
 
@@ -99,7 +102,7 @@ class ESR(Measurement):
 
         settings_layout = QHBoxLayout()
         self.layout.addLayout(settings_layout)
-        settings_layout.addWidget(self.frequency_range.New_UI(True))
+        settings_layout.addWidget(self.range.New_UI(True))
         settings_layout.addWidget(self.settings.New_UI(include=[
                                   "contrast_mode", "N_samples", "N_sweeps", "randomize", "save_h5"], style='form'))
 
@@ -133,21 +136,21 @@ class ESR(Measurement):
         self.update_display()
 
     def update_display(self):
+        x = self.data["frequencies"]
 
-        signal = self.data["signal_raw"][:, 0:self.i_sweep + 1].mean(-1)
-        reference = self.data["reference_raw"][:, 0:self.i_sweep + 1].mean(-1)
+        signal = self.data["signal_raw"][0:self.i_sweep + 1, :].mean(0)
+        reference = self.data["reference_raw"][0:self.i_sweep + 1, :].mean(0)
 
-        self.plot_lines["signal"].setData(self.data["frequencies"], signal)
-        self.plot_lines["reference"].setData(
-            self.data["frequencies"], reference)
+        self.plot_lines["signal"].setData(x, signal)
+        self.plot_lines["reference"].setData(x, reference)
 
         S = self.settings
-        contrast = calculateContrast(S["contrast_mode"], signal, reference)
-        self.plot_lines['contrast'].setData(self.data["frequencies"], contrast)
+        contrast = calculate_contrast(S["contrast_mode"], signal, reference)
+        self.plot_lines['contrast'].setData(x, contrast)
 
     def pre_run(self):
         self.pulse_generator.update_pulse_plot()
-        self.pulse_generator.settings['update_pulse_plot'] = False
+        self.pulse_generator.settings['enable_pulse_plot_update'] = False
 
     def run(self):
         S = self.settings
@@ -159,26 +162,26 @@ class ESR(Measurement):
         PB = self.app.hardware["pulse_blaster"]
         DAQ = self.app.hardware['pulse_width_counters']
 
-        frequencies = self.frequency_range.sweep_array
-        self.data['frequencies'] = frequencies
+        self.data['frequencies'] = frequencies = self.range.sweep_array
+
+        N = len(frequencies)
+        N_sweeps = S["N_sweeps"]
+        N_DAQ_readouts = S['N_samples']
 
         try:
-            PB.connect()
-            self.pulse_generator.program_pulse_blaster_and_start(PB)
-
+            SRS.connect()
             SRS.settings["modulation"] = False
             SRS.settings["frequency"] = frequencies[0]
             SRS.settings["output"] = True
 
-            N_DAQ_readouts = S['N_samples']
+            PB.connect()
+            self.pulse_generator.program_pulse_blaster_and_start()
+
             DAQ.restart(N_DAQ_readouts)
 
-            N = len(frequencies)
-            N_sweeps = S["N_sweeps"]
-
             # data arrays
-            signal_raw = np.zeros((N, N_sweeps))
-            reference_raw = np.zeros_like(signal_raw)
+            self.data["signal_raw"] = np.zeros((N_sweeps, N))
+            self.data["reference_raw"] = np.zeros_like(self.data["signal_raw"])
 
             # Run experiment
             for i_sweep in range(N_sweeps):
@@ -189,11 +192,10 @@ class ESR(Measurement):
                 if S["randomize"]:
                     if i_sweep > 0:
                         shuffle(frequencies)
-                indices = np.argsort(frequencies)
+                self.indices = np.argsort(frequencies)
 
                 t0 = time.perf_counter()
                 for j, frequency in enumerate(frequencies):
-
                     if self.interrupt_measurement_called:
                         break
                     pct = 100 * (i_sweep * N + j) / (N_sweeps * N)
@@ -201,20 +203,15 @@ class ESR(Measurement):
 
                     SRS.settings["frequency"] = frequency
 
-                    ii = indices[j]
-
+                    # Update data arrays
+                    jj = self.indices[j]
                     DAQ.restart(N_DAQ_readouts)
                     #time.sleep(N_DAQ_readouts * self.pulse_generator.pulse_program_duration/1e9)
-
-                    signal_raw[ii][i_sweep] = np.sum(
+                    self.data["signal_raw"][i_sweep][jj] = np.mean(
                         DAQ.read_sig_counts(N_DAQ_readouts))
-                    reference_raw[ii][i_sweep] = np.sum(
+                    self.data["reference_raw"][i_sweep][jj] = np.mean(
                         DAQ.read_ref_counts(N_DAQ_readouts))
 
-                    # Update data array
-                    self.data["signal_raw"] = signal_raw
-                    self.data["reference_raw"] = reference_raw
-                    self.data["frequencies"] = frequencies
                 print('delta time', time.perf_counter() - t0)
 
         finally:
@@ -224,7 +221,7 @@ class ESR(Measurement):
             PB.write_close()
 
     def post_run(self):
-        self.pulse_generator.settings['update_pulse_plot'] = True
+        self.pulse_generator.settings['enable_pulse_plot_update'] = True
         if self.settings['save_h5']:
             self.save_h5_data()
 
@@ -232,13 +229,17 @@ class ESR(Measurement):
         self.h5_file = h5_io.h5_base_file(app=self.app, measurement=self)
         self.h5_meas_group = h5_io.h5_create_measurement_group(
             self, self.h5_file)
-        reference = self.data['reference_raw'].mean(-1)
-        signal = self.data['signal_raw'].mean(-1)
+        reference = self.data['reference_raw'].mean(0)
+        signal = self.data['signal_raw'].mean(0)
         self.h5_meas_group['reference'] = reference
         self.h5_meas_group['signal'] = signal
-        for c in ContrastModes:
-            self.h5_meas_group[c] = calculateContrast(c, signal, reference)
+        self.h5_meas_group['frequencies'] = self.data['frequencies']
+        for cm in contrast_modes:
+            self.h5_meas_group[cm] = calculate_contrast(cm, signal, reference)
         for k, v in self.data.items():
-            self.h5_meas_group[k] = v
+            try:
+                self.h5_meas_group[k] = v
+            except RuntimeError:
+                pass
         self.pulse_generator.save_to_h5(self.h5_meas_group)
         self.h5_file.close()

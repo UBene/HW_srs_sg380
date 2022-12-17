@@ -1,12 +1,16 @@
 from __future__ import absolute_import, print_function
-from qtpy import QtCore, QtWidgets, QtGui
-from ScopeFoundry.logged_quantity import LQCollection#, LoggedQuantity
-from collections import OrderedDict
-import pyqtgraph as pg
-import warnings
-from ScopeFoundry.helper_funcs import get_logger_from_class, QLock
-import time
+
 import threading
+import time
+import warnings
+from collections import OrderedDict
+
+import pyqtgraph as pg
+from qtpy import QtCore, QtGui, QtWidgets
+
+from ScopeFoundry.helper_funcs import QLock, get_logger_from_class
+from ScopeFoundry.logged_quantity import LQCollection  # , LoggedQuantity
+
 
 class HardwareComponent(QtCore.QObject):
     """
@@ -60,7 +64,7 @@ class HardwareComponent(QtCore.QObject):
         # threading lock
         #self.lock = threading.Lock()
         #self.lock = DummyLock()
-        self.lock = QLock(mode=1) # mode 0 is non-reentrant lock
+        self.lock = QLock(mode=0)
 
         self.app = app
 
@@ -275,13 +279,14 @@ class HardwareComponent(QtCore.QObject):
             
     def reload_code(self):
         import inspect
+
         import xreload
         mod = inspect.getmodule(self)
         x = xreload.xreload(mod)
         print("Reloading from code", mod, x)
         
-    def New_UI(self):
-        scroll_area = self.settings.New_UI(style='scroll_form')
+    def New_UI(self, style='scroll_form'):
+        scroll_area = self.settings.New_UI(style=style)
         for n,func in self.operations.items():
             btn = QtWidgets.QPushButton(n)
             btn.clicked.connect(func)

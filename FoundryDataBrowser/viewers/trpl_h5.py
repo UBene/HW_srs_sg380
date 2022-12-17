@@ -19,93 +19,89 @@ class TRPLH5View(HyperSpectralBaseView):
                 return True
         return False
 
-    def load_data(self, fname):
-        if hasattr(self, 'h5_file'):
-            try:
-                self.h5_file.close()
-            except Exception as err:
-                print("Could not close old h5 file:", err)
-            del self.h5_file
-        
-        self.h5_file = h5py.File(fname)        
-        load_success = False
-        for measure_path in ['measurement/trpl_scan/', 'measurement/trpl_2d_scan/', 
-                             'measurement/Picoharp_MCL_2DSlowScan/']:
-            if  measure_path in self.h5_file:
-                self.H = self.h5_file[measure_path]
-                load_success = True
+    def load_data(self, fname):       
+        with h5py.File(fname) as h5_file:
+            success = False
+            for measure_path in ['measurement/trpl_scan/', 
+                                 'measurement/trpl_2d_scan/', 
+                                 'measurement/Picoharp_MCL_2DSlowScan/']:
+                if  measure_path in h5_file:
+                    H = h5_file[measure_path]
+                    success = True
                 
-        if not load_success:
-            raise ValueError(self.name, "Measurement group not found in h5 file", fname)
-        
-        
-        # Note: The behavior of this viewer depends somewhat on the counting device:
-        # see also set_hyperspec_data
-        if 'counting_device' in self.H['settings'].attrs.keys():
-            self.counting_device = self.H['settings'].attrs['counting_device']
-        else:
-            self.counting_device = 'picoharp'
-        self.S = self.h5_file['hardware/{}/settings'.format(self.counting_device)].attrs
-        
-        time_array = self.H['time_array'][:] * 1e-3
-        self.time_trace_map = self.H['time_trace_map'][:]
+            if not success:
+                raise ValueError(self.name, "Measurement group not found in h5 file", fname)
                 
-        # set defaults
-        self.spec_x_array = time_array
-        self.set_hyperspec_data()
-        integrated_count_map = self.hyperspec_data.sum(axis=-1)
-        self.display_image = integrated_count_map
-        
-                
-        print(self.name, 'load_data of shape', self.hyperspec_data.shape)
-        
-        if 'dark_histogram' in self.H:
-                self.dark_histogram = self.H['dark_histogram'][:]
+            
+            
+            # Note: The behavior of this viewer depends somewhat on the counting device:
+            # see also _process_time_trace_map
+            # if 'counting_device' in H['settings'].attrs.keys():
+            #     counting_device = H['settings'].attrs['counting_device']
+            # else:
+            #     counting_device = 'picoharp'
+            # S = h5_file[f'hardware/{counting_device}/settings'].attrs
+            
+            time_array = H['time_array'][:] * 1e-3
+            self.time_trace_map = H['time_trace_map'][:]
+                    
+            # set defaults
+            #self.spec_x_array = time_array
+            self.x_arrays = {'time_array':time_array}
+            self._process_time_trace_map()
+            # integrated_count_map = self.hyperspec_data.sum(axis=-1)
+            # self.display_image = integrated_count_map
+            
+            
+            if 'dark_histogram' in H:
+                self.dark_histogram = H['dark_histogram'][:]
                 if np.ndim(self.dark_histogram)==1:
                     self.dark_histogram = np.expand_dims(self.dark_histogram, 0)
                 self.bg_subtract.add_choices('dark_histogram')
+    
+            if 'h_span' in H['settings'].attrs:
+                h_span = float(H['settings'].attrs['h_span'])
+                units = H['settings/units'].attrs['h0']
+                self.set_scalebar_params(h_span, units)
+    
+            self.roll_offset.change_min_max(0, time_array.shape[0])
+            print(self.name, 'load_data of shape', self.hyperspec_data.shape)
         
-        if 'h_span' in self.H['settings'].attrs:
-            h_span = float(self.H['settings'].attrs['h_span'])
-            units = self.H['settings/units'].attrs['h0']
-            self.set_scalebar_params(h_span, units)
+        
+    def _process_time_trace_map(self):
+        if not hasattr(self, 'time_trace_map'):
+            return 
 
-        self.h5_file.close()
-        self.roll_offset.change_min_max(0, self.spec_x_array.shape[0])
-        
-        
-    def set_hyperspec_data(self):
         # this function sets the hyperspec data based on self.time_trace_map
         # and (`chan`, `frame) setting. The shape of time_trace_map depends on counting device: 
         # 1. 4D picoharp data:  (Nframe, Ny, Nx, Ntime_bins)
         # 2. 5D hydraharp data: (Nframe, Ny, Nx, Nchan, Ntime_bins)
-    
-        if hasattr(self, 'time_trace_map'):
-            shape = self.time_trace_map.shape
-            n_frame = shape[0]
-            self.settings.frame.change_min_max(0, n_frame-1)
-            frame = self.settings['frame']
-            if np.ndim(self.time_trace_map) == 5:
-                n_chan = shape[-2]
-                self.settings.chan.change_min_max(0, n_chan-1)
-                hyperspec_data = self.time_trace_map[frame,:,:,self.settings['chan'],:]
-            if np.ndim(self.time_trace_map) == 4:
-                self.settings['chan'] = 0
-                self.settings.chan.change_min_max(0, 0)
-                hyperspec_data = self.time_trace_map[frame,:]
-            
-            roll_offset = self.roll_offset.val        
-            if  roll_offset == 0:
-                self.hyperspec_data = hyperspec_data
-            else:   
-                self.hyperspec_data = np.roll(hyperspec_data, self.settings['roll_offset'], -1)
-                if hasattr(self, 'dark_histogram'):
-                    self.dark_histogram = np.roll(self.dark_histogram, self.settings['roll_offset'], -1)        
+        
+        S = self.settings
+        shape = self.time_trace_map.shape
+        S.frame.change_min_max(0, shape[0]-1)
+        if np.ndim(self.time_trace_map) == 5:
+            S.chan.change_min_max(0, shape[-2]-1)
+            self.hyperspec_data = self.time_trace_map[S['frame'],:,:,S['chan'],:]
+        if np.ndim(self.time_trace_map) == 4:
+            S['chan'] = 0
+            S.chan.change_min_max(0, 0)
+            self.hyperspec_data = self.time_trace_map[S['frame'],:]
+        
+        # print(shape)
+        # print(self.hyperspec_data.shape)
+
+        
+        if S['roll_offset']:
+            self.hyperspec_data = np.roll(self.hyperspec_data, S['roll_offset'], -1)
+            if hasattr(self, 'dark_histogram'):
+                self.dark_histogram = np.roll(self.dark_histogram, S['roll_offset'], -1)        
+
         
         
-    def add_descriptor_suffixes(self, key):
-        #key += '_chan{}'.format(str(self.settings['chan']))
-        return HyperSpectralBaseView.add_descriptor_suffixes(self, key)
+    # def add_descriptor_suffixes(self, key):
+    #     #key += '_chan{}'.format(str(S['chan']))
+    #     return HyperSpectralBaseView.add_descriptor_suffixes(self, key)
 
                 
     def get_bg(self):
@@ -129,10 +125,10 @@ class TRPLH5View(HyperSpectralBaseView):
         self.time_unit = self.settings.New('time_unit', str, initial = 'ns')
                 
         self.settings.New('chan', dtype=int, initial=0, vmin=0)
-        self.settings.chan.add_listener(self.set_hyperspec_data)
+        self.settings.chan.add_listener(self._process_time_trace_map)
         
         self.settings.New('frame', dtype=int, initial=0, vmin=0)
-        self.settings.frame.add_listener(self.set_hyperspec_data)
+        self.settings.frame.add_listener(self._process_time_trace_map)
         
         self.roll_offset = self.settings.New('roll_offset', int, initial=0, unit='idx')
         self.roll_offset.add_listener(self.on_change_roll_offset)
@@ -177,14 +173,14 @@ class TRPLH5View(HyperSpectralBaseView):
             target_x = self.roll_x_target.val
             arr = self.time_trace_map
             y = arr.mean( tuple(range(arr.ndim-1)) )
-            x = self.spec_x_array
+            x = self.x_arrays['time_array']
             delta_index = np.argmin((x-target_x)**2) -  y.argmax()
             new_roll_offset = delta_index % x.shape[0]
             if new_roll_offset != self.roll_offset.val:
                 self.roll_offset.update_value(new_roll_offset)
     
     def on_change_roll_offset(self):
-        self.set_hyperspec_data()
+        self._process_time_trace_map()
         self.update_display()                                   
     
     def export_maps_as_jpegs(self):

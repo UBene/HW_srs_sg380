@@ -9,6 +9,7 @@ from ScopeFoundry import HardwareComponent
 from bs4 import BeautifulSoup
 import binascii
 import requests
+import time
 
 
 class DLIPowerSwitchHW(HardwareComponent):
@@ -54,6 +55,9 @@ class DLIPowerSwitchHW(HardwareComponent):
         for jj in range(8):
             self.settings.get_lq("Outlet_" + str(jj + 1)).connect_to_hardware(
                 write_func=lambda x, onum=(jj + 1): self.write_outlet(onum, x))
+
+        time.sleep(1)
+        
 
         self.read_outlet_status()
         self.read_outlet_names()
