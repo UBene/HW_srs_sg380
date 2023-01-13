@@ -3,29 +3,6 @@ import numpy as np
 
 import nidaqmx
 from nidaqmx.constants import VoltageUnits, AcquisitionType, Edge
-from nidaqmx._lib import lib_importer
-from nidaqmx.errors import check_for_error
-
-
-def clear_task_with_handle(task_handle: int):
-    cfunc = lib_importer.windll.DAQmxClearTask
-    if cfunc.argtypes is None:
-        with cfunc.arglock:
-            if cfunc.argtypes is None:
-                cfunc.argtypes = [
-                    lib_importer.task_handle]
-
-    error_code = cfunc(
-        task_handle)
-    check_for_error(error_code)
-
-    task_handle = None
-
-
-def clear_task_callback(task_handle, status, callback_data):
-    print('clear_task_callback')
-    clear_task_with_handle(task_handle)
-    return 0
 
 
 class GalvoMirrorsHW(HardwareComponent):
@@ -39,7 +16,7 @@ class GalvoMirrorsHW(HardwareComponent):
         self._max_step_degree = max_step_degree
         self._MINVALUE = min_value  # V
         self._MAXVALUE = max_value  # V
-        self._RATE = rate  # Hz rate at witch waveform is written to outputs
+        self._RATE = rate  # Hz rate at which waveform is written to outputs
 
         HardwareComponent.__init__(self, app, debug=debug, name=name)
 
@@ -52,14 +29,17 @@ class GalvoMirrorsHW(HardwareComponent):
         self.settings.New('x_target_position', **pos_lq_kwargs)
         self.settings.New('y_target_position', **pos_lq_kwargs)
 
-        volt_lq_kwargs = dict(unit='V', spinbox_decimals=3)
+        volt_lq_kwargs = dict(unit='V', spinbox_decimals=6)
         self.settings.New('objective_mag', float, initial=50, unit='X')
-        self.settings.New('objective_focal_length',
-                          float, initial=180, unit='mm')
+        self.settings.New('design_tube_lens_focal_length',
+                          float, initial=180, unit='mm',
+                          description="Given by the manufacturer of the OBJECTIVE. Typically: Nikon and Leica 200 mm, Zeiss 165 mm, Olympus 180 mm")
         self.settings.New('tube_lens_focal_length',
-                          float, initial=200, unit='mm')
+                          float, initial=200, unit='mm',
+                          description="focal length of second lens after the galvo mirror")
         self.settings.New('scan_lens_focal_length',
-                          float, initial=50, unit='mm')
+                          float, initial=50, unit='mm',
+                          description="focal length of the lens just after the galvo mirror")
         self.settings.New('volts_per_degree', float, initial=1.0, unit='V/deg')
 
         for chan, axis in self.chan2axis.items():
@@ -115,13 +95,13 @@ class GalvoMirrorsHW(HardwareComponent):
         voltages = self.get_control_ai()
         self.settings['voltage_0'] = voltages[0]
         self.settings['voltage_1'] = voltages[1]
-        #print(self.name, 'update_output_voltages_using_control_ai_channels', voltages)
+        # print(self.name, 'update_output_voltages_using_control_ai_channels', voltages)
         return voltages
 
     @property
     def effective_mag(self):
         S = self.settings
-        return S['objective_mag'] * S['tube_lens_focal_length'] / S['objective_focal_length']
+        return S['objective_mag'] * S['tube_lens_focal_length'] / S['design_tube_lens_focal_length']
 
     def volts_to_position(self, volts, offset):
         S = self.settings
@@ -157,8 +137,7 @@ class GalvoMirrorsHW(HardwareComponent):
                                         active_edge=Edge.RISING,
                                         sample_mode=AcquisitionType.FINITE,
                                         samps_per_chan=len(voltages))
-        # task.register_done_event(clear_task_callback)
-
+        
         task.write(voltages, auto_start=False, timeout=10.0)
         task.start()
         task.wait_until_done(timeout=10.0)
@@ -166,25 +145,9 @@ class GalvoMirrorsHW(HardwareComponent):
 
         task.close()
         self.settings[f'voltage_{channel}'] = voltages[-1]
-        print(self.name, 'wrote', voltages, ' voltages to channel', channel)
+        if S['debug_mode']:
+            print(self.name, 'wrote', voltages, ' voltages to channel', channel)
         self.update_output_voltages_using_control_ai_channels()
-
-    def move_slow_xy(self, x_target, y_target):
-        S = self.settings
-        v_target_x = self.position_to_volts(
-            x_target) + S[f"voltage_offset_{self.axis2chan['x']}"]
-        v_target_y = self.position_to_volts(
-            y_target) + S[f"voltage_offset_{self.axis2chan['y']}"]
-
-        v_0_x = S[f"voltage_{self.axis2chan['x']}"]
-        v_0_y = S[f"voltage_{self.axis2chan['y']}"]
-
-        Nx = (v_target_x - v_0_x) / self.dv
-        Ny = (v_target_y - v_0_y) / self.dv
-        N = max((Nx, Ny))
-
-        voltages_x = np.linspace(v_0_x, v_target_x, N)
-        voltages_y = np.linspace(v_0_y, v_target_y, N)
 
     def move_slow_x(self, x_target):
         self.move_slow(x_target, self.axis2chan['x'])
