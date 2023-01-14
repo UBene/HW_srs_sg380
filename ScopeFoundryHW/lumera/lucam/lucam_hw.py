@@ -24,9 +24,10 @@ class LucamHW(HardwareComponent):
         S.New('camera_number', int, initial=1)
         S.New('camera_model', str, ro=True)
         choices = [(k, v) for k, v in Lucam.PIXEL_FORMAT.items()]
-        S.New('pixel_format', 
-              int, 
-              choices=choices, 
+        S.New('pixel_format',
+              int,
+              choices=choices,
+              initial=2,
               description='if number, is bits used per pixel and color channel')
         S.New('x_offset', int, initial=0, unit='px')
         S.New('y_offset', int, initial=0, unit='px')
@@ -45,6 +46,7 @@ class LucamHW(HardwareComponent):
         self.add_operation('read format', self.read_format)
 
     def connect(self):
+
         S = self.settings
 
         if S['debug_mode']:
@@ -60,6 +62,8 @@ class LucamHW(HardwareComponent):
                                                partial(lucam.SetProperty, name))
 
         S.get_lq('camera_model').connect_to_hardware(self.get_camera_model)
+        S.get_lq('camera_model').read_from_hardware()
+
         for d in ('width', 'height'):
             value, _ = lucam.GetProperty(f'max_{d}')
             S.get_lq(d).change_min_max(8, value)
@@ -95,7 +99,7 @@ class LucamHW(HardwareComponent):
 
     def convert_to_rgb24(self, frame_pointer):
         '''RGB images can only be obtained with conversion?'''
-        return self.dev.ConvertFrameToRgb24(self.get_format(), frame_pointer)[:,:,::-1]
+        return self.dev.ConvertFrameToRgb24(self.get_format(), frame_pointer)[:, :, ::-1]
 
     def read_snapshot(self):
         frame_pointer = self.dev.TakeSnapshot().ctypes.data_as(
@@ -113,7 +117,7 @@ class LucamHW(HardwareComponent):
         self.settings['x_binning'] = frame_format.binningX
         self.settings['y_binning'] = frame_format.binningY
         self.settings['frame_rate'] = rate
-        return frame_format.width
+        return frame_format
 
     def write_format(self):
         self.dev.StreamVideoControl('stop_streaming')
