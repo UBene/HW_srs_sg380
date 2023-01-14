@@ -200,8 +200,8 @@ class Microscope1App(BaseMicroscopeApp):
 
         from ScopeFoundryHW.nidaqmx.galvo_mirrors.galvo_mirrors_hw import GalvoMirrorsHW
         self.add_hardware(GalvoMirrorsHW(self))
-
-
+        from ScopeFoundryHW.nidaqmx.galvo_mirrors.galvo_mirror_2d_apd_slow_scan import GalvoMirrorAPDScanMeasure
+        self.add_measurement(GalvoMirrorAPDScanMeasure(self))
 
         self.ui.show()
         self.ui.activateWindow()

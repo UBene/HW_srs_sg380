@@ -580,7 +580,7 @@
       <property name="verticalSpacing">
        <number>1</number>
       </property>
-      <item row="2" column="0">
+      <item row="1" column="0">
        <layout class="QHBoxLayout" name="horizontalLayout_2">
         <item>
          <widget class="QCheckBox" name="power_meter_connected_checkBox">
@@ -653,26 +653,13 @@
         </item>
        </layout>
       </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="power_meter_power_label">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
+      <item row="0" column="0">
+       <widget class="QDoubleSpinBox" name="power_meter_power_doubleSpinBox">
         <property name="font">
          <font>
-          <pointsize>20</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
+          <family>Gadugi</family>
+          <pointsize>16</pointsize>
          </font>
-        </property>
-        <property name="text">
-         <string>Power </string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
         </property>
        </widget>
       </item>

@@ -170,6 +170,11 @@ class NikonMicroscope(BaseMicroscopeApp):
         from confocal_measure.ranged_optimization import RangedOptimization
         self.add_measurement(RangedOptimization(self, name='auto_focus'))
         
+        from ScopeFoundryHW.nidaqmx.galvo_mirrors.galvo_mirrors_hw import GalvoMirrorsHW
+        self.add_hardware(GalvoMirrorsHW(self))
+        from ScopeFoundryHW.nidaqmx.galvo_mirrors.galvo_mirror_2d_apd_slow_scan import GalvoMirrorAPDScanMeasure
+        self.add_measurement(GalvoMirrorAPDScanMeasure(self))
+        
     def setup_ui(self):
         '''sets up a quickbar'''
         Q = self.add_quickbar(load_qt_ui_file(sibling_path(__file__, 'quickbar.ui')))
@@ -238,8 +243,8 @@ class NikonMicroscope(BaseMicroscopeApp):
         n = 'thorlabs_powermeter'
         PMS = self.hardware[n].settings
         PMS.connected.connect_to_widget(Q.power_meter_connected_checkBox)
-        PMS.wavelength.connect_to_widget(Q.power_meter_wavelength_doubleSpinBox)        
-        W = replace_widget_in_layout(Q.power_meter_power_label,
+        PMS.wavelength.connect_to_widget(Q.power_meter_wavelength_doubleSpinBox)
+        W = replace_widget_in_layout(Q.power_meter_power_doubleSpinBox,
                                      pg.widgets.SpinBox.SpinBox())
         PMS.power.connect_to_widget(W)
         if 'powermeter_optimizer' in self.measurements:
