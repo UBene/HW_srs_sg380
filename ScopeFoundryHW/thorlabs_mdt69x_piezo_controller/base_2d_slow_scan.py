@@ -10,7 +10,7 @@ import time
 
 class Base2DSlowScan(BaseRaster2DSlowScan):
 
-    name = "mdt690x_base_2d_slow_scan"
+    name = "mdt69x_base_2d_slow_scan"
 
     def __init__(self, app, use_external_range_sync=False, circ_roi_size=0.001, h_limits=(-150, 150), v_limits=(-150, 150), h_unit="V", v_unit="V"):
         BaseRaster2DSlowScan.__init__(self, app, h_limits=h_limits, v_limits=v_limits, h_unit=h_unit, v_unit=v_unit,
@@ -25,7 +25,7 @@ class Base2DSlowScan(BaseRaster2DSlowScan):
         self.settings.New("v_axis", initial="y", dtype=str,
                           choices=("x", "y", "z"))
 
-        self.stage = self.app.hardware['mdt690x_piezo_controller']
+        self.stage = self.app.hardware['mdt69x_piezo_controller']
 
     def _move_position(self, h, v):
         print(self.name, 'moved', h, v)

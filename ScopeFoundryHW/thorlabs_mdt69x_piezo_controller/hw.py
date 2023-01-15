@@ -9,7 +9,7 @@ from functools import partial
 
 class HW(HardwareComponent):
 
-    name = "mdt690x_piezo_controller"
+    name = "mdt69x_piezo_controller"
 
     def setup(self):
         S = self.settings
