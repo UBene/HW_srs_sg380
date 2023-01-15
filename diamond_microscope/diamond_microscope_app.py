@@ -153,7 +153,7 @@ class DiamondMicroscope(BaseMicroscopeApp):
         z_target_choices = ('x_target_position',
                             'y_target_position',
                             'z_target_position')
-        z_choices = ('same',)
+        z_choices = ('same_as_z_target',)
         self.add_measurement(RangedOptimization(self, name='fiber_alignment',
                                                 z_hw_choices=z_hw_choices, z_target_choices=z_target_choices, z_choices=z_choices))
 

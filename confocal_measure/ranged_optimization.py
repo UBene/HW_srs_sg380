@@ -16,8 +16,8 @@ class RangedOptimization(Measurement):
     options for f are specified at initialization.
     z can be specified with 3 settings:
         - *z_hw*
-        - *z*
-        - *z_target* (note that if z has a write func, then *z_target* can be the same as *z*
+        - *z_target* is the name of the setting used to update the z value
+        - *z* (can be 'same_as_z_target')
     """
 
     name = "ranged_optimization"
@@ -235,7 +235,7 @@ class RangedOptimization(Measurement):
         self.take_current = False
 
         z_target = self.app.hardware[S["z_hw"]].settings.get_lq(S["z_target"])
-        if S['z'] == 'same':        
+        if S['z'] == 'same_as_z_target':        
             z_lq = self.app.hardware[S["z_hw"]].settings.get_lq(S["z"])
 
         self.optimization_lq = self.app.lq_path(S["optimization_quantity"])
