@@ -38,6 +38,10 @@ class RangedOptimization(Measurement):
             ("picam count rate (cont.)", "measure/picam_readout/count_rate"),
             ("apd count rate", "hardware/apd_counter/count_rate"),
         ],
+        z_hw_choices = None,
+        z_choices = None,
+        z_target_choices = None, 
+
         lq_kwargs={"spinbox_decimals": 6, "unit": ""},
         range_initials=[0, 10, 0.1],
     ):
@@ -45,6 +49,9 @@ class RangedOptimization(Measurement):
         self.optimization_quantity_choices = optimization_choices
         self.range_initials = range_initials
         self.lq_kwargs = lq_kwargs
+        self.z_hw_choices = z_hw_choices
+        self.z_choices = z_choices
+        self.z_target_choices = z_target_choices
         Measurement.__init__(self, app, name)
 
     def setup(self):
@@ -77,9 +84,10 @@ class RangedOptimization(Measurement):
         self.settings.New("use_fine_optimization", bool, initial=True)
         self.settings.New("z_span_travel_time", initial=2.0, unit="sec")
 
-        self.settings.New("z_hw", dtype=str, initial="focus_wheel")
-        self.settings.New("z", dtype=str, initial="position")
-        self.settings.New("z_target", dtype=str, initial="target_position")
+
+        self.settings.New("z_hw", dtype=str, initial="focus_wheel" if self.z_hw_choices is None else self.z_hw_choices[0], choices = self.z_hw_choices)
+        self.settings.New("z", dtype=str, initial="position" if self.z_choices is None else self.z_choices[0], choices = self.z_choices)
+        self.settings.New("z_target", dtype=str, initial="target_position" if self.z_target_choices is None else self.z_target_choices[0], choices = self.z_target_choices)
         self.settings.New("coarse_to_fine_span_ratio", initial=4.0)
 
         self.z0_history = []
@@ -111,20 +119,7 @@ class RangedOptimization(Measurement):
         settings_layout = QtWidgets.QHBoxLayout()
         self.layout.addLayout(settings_layout)
 
-        operations_widget = QtWidgets.QWidget()
-        operationsLayout = QtWidgets.QVBoxLayout()
-        operations_widget.setLayout(operationsLayout)        
-        settings_layout.addWidget(operations_widget)
-        # start_pushButton = QtWidgets.QPushButton('Start')
-        # start_pushButton.clicked.connect(self.start)
-        # operationsLayout.addWidget(start_pushButton)
-        # interrupt_pushButton = QtWidgets.QPushButton('Interrupt')
-        # interrupt_pushButton.clicked.connect(self.interrupt)
-        # operationsLayout.addWidget(interrupt_pushButton)
-        operationsLayout.addWidget(S.activation.new_pushButton())    
-        take_pushButton = QtWidgets.QPushButton('Interrupt and Take')
-        take_pushButton.clicked.connect(self.take_current_optimal)
-        operationsLayout.addWidget(take_pushButton)
+
         
         settings_layout.addWidget(
             S.New_UI(
@@ -147,6 +142,16 @@ class RangedOptimization(Measurement):
         go_to_post_process_value_pushButton = QtWidgets.QPushButton('go_to_post_process_value')
         go_to_post_process_value_pushButton.clicked.connect(self.go_to_post_process_value)
         w3.layout().addWidget(go_to_post_process_value_pushButton)
+
+        operations_widget = QtWidgets.QWidget()
+        operationsLayout = QtWidgets.QVBoxLayout()
+        operations_widget.setLayout(operationsLayout)        
+        settings_layout.addWidget(operations_widget)
+        operationsLayout.addWidget(S.New_UI(('z_hw','z_target', 'z')))
+        operationsLayout.addWidget(S.activation.new_pushButton())    
+        take_pushButton = QtWidgets.QPushButton('Interrupt and Take')
+        take_pushButton.clicked.connect(self.take_current_optimal)
+        operationsLayout.addWidget(take_pushButton)
 
         # # Add plot and plot items
         self.graph_layout = pg.GraphicsLayoutWidget(border=(0, 0, 0))
@@ -229,16 +234,22 @@ class RangedOptimization(Measurement):
 
         self.take_current = False
 
-        z = self.app.hardware[S["z_hw"]].settings.get_lq(S["z"])
-        z_target = self.app.hardware[S["z_hw"]].settings.get_lq(S["z_target"])        
+        z_target = self.app.hardware[S["z_hw"]].settings.get_lq(S["z_target"])
+        if S['z'] == 'same':        
+            z_lq = self.app.hardware[S["z_hw"]].settings.get_lq(S["z"])
+
         self.optimization_lq = self.app.lq_path(S["optimization_quantity"])
 
         # if measurement is interrupted, the z will be set to original pos
-        self.z_original = z.val
+        self.z_original = z_lq.val
 
         # create coarse data arrays
         if S["use_current_z_as_center"]:
-            S["z_center"] = z.read_from_hardware() - S["z_offset"]
+            if z_lq.is_connected_to_hardware():
+                S["z_center"] = z_lq.read_from_hardware() - S["z_offset"]
+            else:
+                S["z_center"] = z_lq.val - S["z_offset"]
+                
         self.z_coarse = np.linspace(
             S["z_center"] - 0.5 * S["z_span"],
             S["z_center"] + 0.5 * S["z_span"],
