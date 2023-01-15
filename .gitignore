@@ -16,6 +16,8 @@ log.out
 build
 *.autosave
 *.mat
+*.png
+*.csv
 ScopeFoundry/ScopeFoundry.egg-info
 ScopeFoundry/__pycache__/
 ScopeFoundryHW/andor_camera/log/

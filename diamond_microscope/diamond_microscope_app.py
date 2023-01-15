@@ -1,16 +1,13 @@
-from __future__ import division, print_function
-from ScopeFoundry import BaseMicroscopeApp
-from ScopeFoundry.helper_funcs import sibling_path, load_qt_ui_file
 import logging
 
+from ScopeFoundry import BaseMicroscopeApp
+from ScopeFoundry.helper_funcs import sibling_path, load_qt_ui_file
 
-logging.basicConfig(level='WARNING')  # , filename='m3_log.txt')
-# logging.getLogger('').setLevel(logging.WARNING)
+logging.basicConfig(level='WARNING')
 logging.getLogger("ipykernel").setLevel(logging.WARNING)
 logging.getLogger('PyQt4').setLevel(logging.WARNING)
 logging.getLogger('PyQt5').setLevel(logging.WARNING)
 logging.getLogger('LoggedQuantity').setLevel(logging.WARNING)
-logging.getLogger('pyvisa').setLevel(logging.WARNING)
 
 
 class DiamondMicroscope(BaseMicroscopeApp):
@@ -37,6 +34,12 @@ class DiamondMicroscope(BaseMicroscopeApp):
         # from confocal_measure.sequencer import SweepSequencer
         # self.add_measurement(SweepSequencer(self))
 
+        # PM100A power meter
+        # from ScopeFoundryHW.thorlabs_pm100a_fromCage import ThorlabsPowerMeterSiHW
+        # self.add_hardware_component(ThorlabsPowerMeterSiHW(self))
+        # from ScopeFoundryHW.thorlabs_pm100a_fromCage import PowerMeterOptimizerMeasure
+        # self.add_measurement(PowerMeterOptimizerMeasure(self))
+
         # PI stage
         from ScopeFoundryHW.pi_xyz_stage.pi_xyz_stage_hw import PIXYZStageHW
         self.add_hardware(PIXYZStageHW(self))
@@ -62,7 +65,7 @@ class DiamondMicroscope(BaseMicroscopeApp):
         from confocal_measure.pi_xyz_scans.pi_xyz_2d_picam_slow_scan import PIXYZ2DPICAMSlowScan
         self.add_measurement(PIXYZ2DPICAMSlowScan(self, **stage_inits))
 
-        # Timharp
+        # Timeharp
         from ScopeFoundryHW.picoquant.timeharp_260_hw import TimeHarp260HW
         from ScopeFoundryHW.picoquant.timeharp_optimizer import TimeHarpOptimizerMeasure
         from ScopeFoundryHW.picoquant.timeharp_260_hist_measure import TimeHarpHistogramMeasure
@@ -70,6 +73,15 @@ class DiamondMicroscope(BaseMicroscopeApp):
         self.add_hardware(TimeHarp260HW(self))
         self.add_measurement(TimeHarpOptimizerMeasure(self))
         self.add_measurement(TimeHarpHistogramMeasure(self))
+
+        # Hydraharp
+        from ScopeFoundryHW.picoquant.hydraharp_hw import HydraHarpHW
+        from ScopeFoundryHW.picoquant.hydraharp_optimizer import HydraHarpOptimizerMeasure
+        from ScopeFoundryHW.picoquant.hydraharp_hist_measure import HydraHarpHistogramMeasure
+
+        self.add_hardware(HydraHarpHW(self))
+        self.add_measurement(HydraHarpOptimizerMeasure(self))
+        self.add_measurement(HydraHarpHistogramMeasure(self))
 
         from confocal_measure.pi_xyz_scans.pi_xyz_2d_histogram_slow_scan import PIXYZ2DHistogramSlowScan
         self.add_measurement(PIXYZ2DHistogramSlowScan(self, **stage_inits))
@@ -114,6 +126,48 @@ class DiamondMicroscope(BaseMicroscopeApp):
         # servos = self.add_hardware(DynamixelXServosHW(self, devices=dict(power_wheel=10,)))
         # self.add_hardware(DynamixelServoHW(self, name='power_wheel'))
 
+        # SNSPD
+        from ScopeFoundryHW.single_quantum.snspd.snspd_hw import SNSPDHW
+        self.add_hardware(SNSPDHW(self))
+        from ScopeFoundryHW.single_quantum.snspd.snspd_optimizer import SNSPDOptimizerMeasure
+        self.add_measurement(SNSPDOptimizerMeasure(self))
+        from ScopeFoundryHW.single_quantum.snspd.snspd_aquisition import SNSPDAquireCounts
+        self.add_measurement(SNSPDAquireCounts(self))
+
+        # Lucam
+        from ScopeFoundryHW.lumera.lucam.lucam_hw import LucamHW
+        self.add_hardware(LucamHW(self))
+        from ScopeFoundryHW.lumera.lucam.lucam_measure import LucamMeasure
+        self.add_measurement(LucamMeasure(self))
+
+        # MDT690X Piezo Controller
+        from ScopeFoundryHW.thorlabs_mdt69x_piezo_controller.hw import HW
+        self.add_hardware(HW(self))
+        from ScopeFoundryHW.thorlabs_mdt69x_piezo_controller.base_2d_slow_scan import Base2DSlowScan
+        self.add_measurement(Base2DSlowScan(self, h_unit='V', v_unit='V'))
+
+
+        # Fiber alignment
+        from confocal_measure.ranged_optimization import RangedOptimization
+        z_hw_choices = ('mdt69x_piezo_controller',)
+        z_target_choices = ('x_target_position',
+                            'y_target_position',
+                            'z_target_position')
+        z_choices = ('same',)
+        self.add_measurement(RangedOptimization(self, name='fiber_alignment',
+                                                z_hw_choices=z_hw_choices, z_target_choices=z_target_choices, z_choices=z_choices))
+
+    def connect_scan_params(self, parent_scan_name='apd_asi',
+                            children_scan_names=['hyperspec_asi', 'asi_trpl_2d_scan']):
+        lq_names = ['h0', 'h1', 'v0', 'v1', 'Nh', 'Nv']
+
+        parent_scan = self.measurements[parent_scan_name]
+        for scan in children_scan_names:
+            child_scan = self.measurements[scan]
+            for lq_name in lq_names:
+                master_scan_lq = parent_scan.settings.get_lq(lq_name)
+                child_scan.settings.get_lq(
+                    lq_name).connect_to_lq(master_scan_lq)
 
     def setup_ui(self):
         return
