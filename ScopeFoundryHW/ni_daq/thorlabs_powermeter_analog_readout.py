@@ -21,9 +21,14 @@ class ThorlabsPowerMeterAnalogReadOut(HardwareComponent):
                                              vmin=0, vmax=10, ro=True)
 
     def connect(self):
+        if hasattr(self, 'adc'):
+            return
+
         from ScopeFoundryHW.ni_daq import NI_AdcTask
         if self.debug_mode.val:
             self.log.debug("connecting to {}".format(self.name))
+
+
 
         # Open connection to hardware
         self.adc = NI_AdcTask(channel='/Dev1/ai2', range=10,
@@ -37,11 +42,11 @@ class ThorlabsPowerMeterAnalogReadOut(HardwareComponent):
     def disconnect(self):
         self.settings.disconnect_all_from_hardware()
 
-        # disconnect hardware
-        self.adc.close()
-
-        # clean up hardware object
-        del self.adc
+        if hasattr(self, 'adc'):
+            # disconnect hardware
+            self.adc.close()
+            # clean up hardware object
+            del self.adc
 
     def read_adc_single(self):
         resp = self.adc.get()

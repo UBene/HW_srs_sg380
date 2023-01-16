@@ -49,8 +49,11 @@ class PowerMeterOptimizerMeasure(Measurement):
                                                                    pg.widgets.SpinBox.SpinBox())
         self.powermeter.settings.power.connect_to_widget(
             self.ui.power_readout_PGSpinBox)
+        self.powermeter.settings.connected.connect_to_widget(
+            self.ui.connected_checkBox)
+        
         self.powermeter.settings.power.connect_to_widget(
-            self.ui.power_readout_label)
+            self.ui.power_readout_doubleSpinBox)
         self.powermeter.settings.wavelength.connect_to_widget(
             self.ui.wavelength_doubleSpinBox)
 
@@ -93,6 +96,7 @@ class PowerMeterOptimizerMeasure(Measurement):
             self.optimize_ii %= self.OPTIMIZE_HISTORY_LEN
 
             pow_reading = self.powermeter.settings.power.read_from_hardware()
+            #print(pow_reading)
             # pow_reading = self.powermeter.power_meter.measure_power()
 
             self.optimize_history[self.optimize_ii] = pow_reading
