@@ -10,7 +10,9 @@ from ScopeFoundryHW.picoquant.timeharp_260_dev import (STOPCNTMIN,
                                                        CFDLVLMIN,
                                                        CFDLVLMAX,
                                                        CFDZCMIN,
-                                                       CFDZCMAX)
+                                                       CFDZCMAX, 
+                                                       FLAG_OVERFLOW,
+                                                       FLAG_FIFOFULL)
 
 
 class TimeHarp260HW(HardwareComponent):
@@ -56,7 +58,8 @@ class TimeHarp260HW(HardwareComponent):
               vmax=SYNCDIVMAX, si=False, initial=0, unit='ns')
 
         S.New("CFDLevelSync", dtype=int, unit="mV",
-              vmin=CFDLVLMIN, vmax=CFDLVLMAX,
+              vmin = -1000,
+              #vmin=CFDLVLMIN, vmax=CFDLVLMAX,
               #vmin=0, vmax=800,
               initial=0, si=False)
         S.New("CFDZeroCrossSync", dtype=int,  unit="mV",
@@ -82,6 +85,12 @@ class TimeHarp260HW(HardwareComponent):
             S.New("ChanOffset{}".format(i), dtype=int, unit='ps')
             S.New("CountRate{}".format(i), dtype=int, ro=True,
                   vmin=0, vmax=100e6, si=True, unit='Hz')
+            
+        S.New('CTCStatus', int, initial=-99, ro=True, 
+              description="determines if the acquisition time has expired")
+
+        S.New('is_overflow', bool, initial=False, ro=True)
+        S.New('is_fifo_full', bool, initial=False, ro=True)
 
     def connect(self):
         from ScopeFoundryHW.picoquant.timeharp_260_dev import TimeHarp260
@@ -164,7 +173,14 @@ class TimeHarp260HW(HardwareComponent):
         S['Model'] = dev.hw_model
         S['PartNo'] = dev.hw_partno
         S['Version'] = dev.hw_version
+        
+        
+        S.CTCStatus.connect_to_hardware(dev.GetCTCStatus)
+        S.is_overflow.connect_to_hardware(self.dev.read_is_overflow)
+        S.is_fifo_full.connect_to_hardware(self.dev.read_is_fifo_full)
         self.read_from_hardware()
+        
+        
 
     def set_stop_overflow(self, overflow):
         self.dev.SetStopOverflow(self.settings["StopOnOverflow"], overflow)
@@ -199,6 +215,7 @@ class TimeHarp260HW(HardwareComponent):
 
     def stop_histogram(self):
         self.dev.StopMeas()
+        
 
     def read_histogram_data(self, channel='enabled', clear_after=False):
         '''
@@ -257,3 +274,19 @@ class TimeHarp260HW(HardwareComponent):
     @property
     def sliced_time_array(self):
         return self.time_array[:self.settings['HistogramBins']]
+            
+    def start_t2(self):
+        assert self.settings["Mode"] == "T2"
+        Tacq_ms = 1e+3 * self.settings['Tacq']
+        self.dev.StartMeas(Tacq_ms)
+        
+    def stop_t2(self):
+        self.dev.StopMeas()
+        
+    def read_t2_fifo(self):
+        return self.dev.read_fifo()
+    
+        return self.dev.read_is_fifo_full()
+        
+        
+        

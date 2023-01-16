@@ -13,6 +13,7 @@ from ScopeFoundryHW.picoquant.timeharp_260_hw import TimeHarp260HW
 from ScopeFoundryHW.picoquant.timeharp_optimizer import TimeHarpOptimizerMeasure
 from ScopeFoundryHW.picoquant.timeharp_260_hist_measure import TimeHarpHistogramMeasure
 from ScopeFoundryHW.picoquant.trpl_2d_scan_base import TRPL2DScanBase
+from ScopeFoundryHW.picoquant.timeharp_t2_measure import TimeHarpT2Measure
 
 class HydraHarpTestApp(BaseMicroscopeApp):
     
@@ -24,7 +25,7 @@ class HydraHarpTestApp(BaseMicroscopeApp):
         self.add_measurement(TimeHarpOptimizerMeasure(self))
         self.add_measurement(TimeHarpHistogramMeasure(self))
         self.add_measurement(TRPL2DScanBase(self))
-
+        self.add_measurement(TimeHarpT2Measure(self))
         #self.add_measurement(HydraHarpHistogramMeasure(self))
         #self.add_measurement(TRPL2DScan(self))
 
