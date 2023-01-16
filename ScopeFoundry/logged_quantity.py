@@ -617,7 +617,8 @@ class LoggedQuantity(QtCore.QObject):
                 step=step,
                 minStep=minStep,
                 bounds=[self.vmin, self.vmax],
-                int=integer)
+                int=integer,
+                decimals=self.spinbox_decimals)
             if self.si:
                 del opts['step']
                 del opts['minStep']
@@ -642,7 +643,7 @@ class LoggedQuantity(QtCore.QObject):
                 """
                 try:
                     widget.blockSignals(True)
-                    widget.setValue(int(x))
+                    widget.setValue(x)
                 finally:
                     widget.blockSignals(False)
 
