@@ -617,8 +617,7 @@ class LoggedQuantity(QtCore.QObject):
                 step=step,
                 minStep=minStep,
                 bounds=[self.vmin, self.vmax],
-                int=integer,
-                decimals=self.spinbox_decimals)
+                int=integer)
             if self.si:
                 del opts['step']
                 del opts['minStep']

@@ -132,7 +132,7 @@ class Rabi(Measurement):
         N_DAQ_readouts = S['N_samples']
 
         try:
-            SRS.connect()
+            #SRS.connect()
             SRS.settings["modulation"] = False
             SRS.settings["output"] = True
 

@@ -16,7 +16,7 @@ class RabiPulseProgramGenerator(PulseProgramGenerator):
         self.settings.New('t_ref_readout', unit='us', initial=200)
                 
         self.settings.New('t_AOM_duration', unit='us', initial=210)
-        self.settings.New('t_uW_to_AOM_delay', unit='us', initial=10.0, spinbox_decimals=3)
+        self.settings.New('t_uW_to_AOM_delay', unit='us', initial = 0)
         #self.settings.New('program_duration', float, unit='us', initial=160.0)
 
         #self.settings['program_duration'] = 30  # in us

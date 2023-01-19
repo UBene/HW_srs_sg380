@@ -31,7 +31,7 @@ class SG380_HW(HardwareComponent):
     ScopeFoundry Hardware interface for SRS SG380 series
     ToDo: Fix error handling
     '''
-    
+
     name = "srs_sg380"
 
     def __init__(self, app, debug=False, name=None, max_dBm=9):
@@ -40,7 +40,7 @@ class SG380_HW(HardwareComponent):
 
     def setup(self):
         S = self.settings
-        S.New("port", str, initial="COM1") #GPIB0::27::INSTR
+        S.New("port", str, initial="COM1")  # GPIB0::27::INSTR
         S.New('model', str, ro=True)
         S.New('serial', str, ro=True)
         S.New('error', str, ro=True)
@@ -54,12 +54,13 @@ class SG380_HW(HardwareComponent):
               )
 
     def connect(self):
-
         S = self.settings
+        if hasattr(self, 'dev'):
+            return
 
         print(S["port"])
 
-        #Option A Using GPIB
+        # Option A Using GPIB
         # import pyvisa
         # rm = pyvisa.ResourceManager()
         # self.dev = rm.open_resource(S["port"])
@@ -83,7 +84,7 @@ class SG380_HW(HardwareComponent):
         S.modulation_type.connect_to_hardware(self.read_type, self.write_type)
         S.QFNC.connect_to_hardware(self.read_qfnc, self.write_qfnc)
         self.read_from_hardware()
-        #self.read_error()
+        # self.read_error()
 
     def disconnect(self):
         if hasattr(self, 'dev'):
@@ -96,14 +97,14 @@ class SG380_HW(HardwareComponent):
         resp = self.dev.query(cmd)
         if self.settings['debug_mode']:
             print(f"{self.name} asked {cmd}: {repr(resp)}")
-        #self.read_error()
+        # self.read_error()
         return resp.strip('\r\n')
 
     def write(self, cmd):
         if self.settings['debug_mode']:
             print(self.name, 'write', cmd)
         self.dev.write(cmd)
-        #self.read_error()
+        # self.read_error()
 
     def read_error(self):
         return 0
@@ -163,10 +164,9 @@ class SG380_HW(HardwareComponent):
 
     def write_qfnc(self, val):
         self.write(f"QFNC {val}")
-        
+
     def restore_defaults(self):
         self.dev.write("*RST")
-                
+
     def clear_status(self):
         self.dev.write("*CLS")
-
