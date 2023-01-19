@@ -179,6 +179,23 @@ class TDC001DCServoDev(object):
                 self.stop_profiled()
                 raise(IOError("Failed to home"))
 
+    def jog(self, direction_forward=True):
+        if direction_forward:
+            direc = ctypes.c_short(0x01)
+        else:
+            direc = ctypes.c_short(0x02)
+        with self.lock:
+            _err(self.cc_dll.CC_MoveJog(self._id, direc))
+
+    def read_jog_step_size(self):
+        with self.lock:
+            size = self.cc_dll.CC_GetJogStepSize(self._id)
+        return size
+
+    def write_jog_step_size(self, size):
+        with self.lock:
+            self.cc_dll.CC_SetJogStepSize(self._id, size)
+
     # def read_velocity(self,chan):
     #     return self.read_velocity_params(chan)[1]
     #

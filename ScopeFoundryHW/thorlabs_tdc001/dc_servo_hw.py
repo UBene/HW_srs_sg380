@@ -22,17 +22,28 @@ class TDC001DCServoHW(HardwareComponent):
                           dtype=float,
                           ro=False,
                           vmin=-20,
-                          vmax=20,
+                          vmax=25.0,
+                          unit='mm',
+                          spinbox_decimals=6,
+                          spinbox_step=0.01,
+                          si=False)
+        self.settings.New("jog_size",
+                          initial=0.5,
+                          dtype=float,
+                          ro=False,
+                          vmin=0,
+                          vmax=25.0,
                           unit='mm',
                           spinbox_decimals=6,
                           spinbox_step=0.01,
                           si=False)
 
-        # self.settings.New(axis + "_velocity", dtype=float,
+        # self.settings.New("velocity", dtype=float,
         #                   unit='mm/s',
         #                   initial=1.0,
         #                   spinbox_decimals=6)
-        # self.settings.New(axis + "_acceleration", dtype=float,
+
+        # self.settings.New("acceleration", dtype=float,
         #                   unit='mm/s^2',
         #                   initial=1.0,
         #                   spinbox_decimals=6,)
@@ -51,6 +62,8 @@ class TDC001DCServoHW(HardwareComponent):
 
         self.add_operation("Home", self.home_axis)
         self.add_operation('stop', self.stop_profiled)
+        self.add_operation('jog forward', self.jog_forward)
+        self.add_operation('jog backward', self.stop_backward)
 
     def connect(self):
         S = self.settings
@@ -63,6 +76,8 @@ class TDC001DCServoHW(HardwareComponent):
 
         S.position.connect_to_hardware(self.read_position)
         S.target_position.connect_to_hardware(None, self.write_target_position)
+        S.jog_size.connect_to_hardware(self.read_jog_size, self.write_jog_size)
+        S.target_position.connect_to_hardware(None, self.write_target_position)
         self.read_from_hardware()
 
         S['serial_num'] = self.dev.get_serial_num()
@@ -70,19 +85,6 @@ class TDC001DCServoHW(HardwareComponent):
         self.display_update_timer = QtCore.QTimer(self)
         self.display_update_timer.timeout.connect(self.on_display_update_timer)
         self.display_update_timer.start(200)  # 200ms
-
-    def write_velocity_params(self, ax_name, acc=None, vel=None):
-        # takes units of mm
-        ax_num = self.ax_dict[ax_name]
-        if acc is None:
-            acc = self.settings[ax_name + "_acceleration"]
-        if vel is None:
-            vel = self.settings[ax_name + "_velocity"]
-
-        scale = self.settings[ax_name + "_step_convert"]  # step/mm
-        self.dev.write_velocity_params(ax_num, int(
-            round(scale * acc)), int(round(scale * vel)))
-        self.dev.write_homing_velocity(ax_num, int(round(scale * vel)))
 
     def disconnect(self):
         self.settings.disconnect_all_from_hardware()
@@ -95,9 +97,9 @@ class TDC001DCServoHW(HardwareComponent):
             self.dev.close()
             del self.devclose
 
-    def home_axis(self, ax_name):
-        print("home_axis", ax_name)
-        self.dev.start_home(self.ax_dict[ax_name])
+    def home_axis(self):
+        print("home_axis")
+        self.dev.start_home()
 
     def stop_profiled(self):
         self.dev.stop_profiled()
@@ -111,6 +113,32 @@ class TDC001DCServoHW(HardwareComponent):
 
     def on_display_update_timer(self):
         self.settings.position.read_from_hardware()
-    #
+
+    def jog_forward(self):
+        self.dev.jog(True)
+
+    def stop_backward(self):
+        self.dev.jog(False)
+
+    def read_jog_size(self):
+        return self.dev.read_jog_step_size() / self.settings['step_convert']
+
+    def write_jog_size(self, size):
+        index = int(size * self.settings['step_convert'])
+        self.dev.write_jog_step_size(index)
+
     # def read_message_queue(self, ax_name):
     #     return self.dev.read_message_queue(self.ax_dict[ax_name])
+    #
+    # def write_velocity_params(self, ax_name, acc=None, vel=None):
+    #     # takes units of mm
+    #     ax_num = self.ax_dict[ax_name]
+    #     if acc is None:
+    #         acc = self.settings[ax_name + "_acceleration"]
+    #     if vel is None:
+    #         vel = self.settings[ax_name + "_velocity"]
+    #
+    #     scale = self.settings[ax_name + "_step_convert"]  # step/mm
+    #     self.dev.write_velocity_params(ax_num, int(
+    #         round(scale * acc)), int(round(scale * vel)))
+    #     self.dev.write_homing_velocity(ax_num, int(round(scale * vel)))
