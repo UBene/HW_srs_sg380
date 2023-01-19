@@ -125,11 +125,6 @@ class Microscope(BaseMicroscopeApp):
         # self.add_hardware(DynamixelServoHW(self, name='focus_knob'))
         # self.add_hardware(DynamixelServoHW(self, name='power_wheel'))
 
-        # from ScopeFoundryHW.lakeshore_335.lakeshore_hw import Lakeshore335HW
-        # self.add_hardware(Lakeshore335HW(self))
-        # from ScopeFoundryHW.lakeshore_335.lakeshore_measure import LakeshoreMeasure
-        # self.add_measurement(LakeshoreMeasure(self))
-
         # from confocal_measure.generic_sweep import GenericSweeper
         # self.add_measurement(GenericSweeper(self))
 
@@ -159,7 +154,8 @@ class Microscope(BaseMicroscopeApp):
         ]
 
         from ScopeFoundryHW.spincore.pulse_blaster_hw import PulseBlasterHW
-        self.add_hardware(PulseBlasterHW(self, False, None, named_channels_kwargs, 500_000_000, 21))
+        self.add_hardware(PulseBlasterHW(self, False, None,
+                                         named_channels_kwargs, 500_000_000, 21))
 
         #from ScopeFoundryHW.nidaqmx.buffered_edge_smpl_clk_counter_hw import BufferedEdgeSmplClkCounterHW
         # self.add_hardware(BufferedEdgeSmplClkCounterHW(self))
@@ -218,8 +214,14 @@ class Microscope(BaseMicroscopeApp):
         from odmr_measurements.esr_sweep_ref_readout import ESRSweepRef
         self.add_measurement(ESRSweepRef(self))
 
+        # Lakeshore
+        from ScopeFoundryHW.lakeshore_335.lakeshore_hw import Lakeshore335HW
+        self.add_hardware(Lakeshore335HW(self))
+        from ScopeFoundryHW.lakeshore_335.lakeshore_measure import LakeshoreMeasure
+        self.add_measurement(LakeshoreMeasure(self))
+
     def setup_ui(self):
-        pass
+        return
         '''sets up a quickbar'''
         Q = self.add_quickbar(load_qt_ui_file(
             sibling_path(__file__, 'quickbar.ui')))
