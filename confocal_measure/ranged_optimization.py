@@ -28,19 +28,20 @@ class RangedOptimization(Measurement):
         name=None,
         optimization_choices=[
             # specify  with lq_path
+            ("apd count rate", "hardware/apd_counter/count_rate"),
             ("hydraharp CountRate0", "hardware/hydraharp/CountRate0"),
             ("hydraharp CountRate1", "hardware/hydraharp/CountRate1"),
             ("picoharp CountRate", "hardware/picoharp/count_rate"),
             ("spotoptimizer 1/FWHM", "measure/toupcam_spot_optimizer/inv_FWHM"),
             ("spotoptimizer max value", "measure/toupcam_spot_optimizer/max_val"),
-            ("spotoptimizer focus measure", "measure/toupcam_spot_optimizer/focus_measure"),
+            ("spotoptimizer focus measure",
+             "measure/toupcam_spot_optimizer/focus_measure"),
             ("andor count rate (cont.)", "measure/andor_ccd_readout/count_rate"),
             ("picam count rate (cont.)", "measure/picam_readout/count_rate"),
-            ("apd count rate", "hardware/apd_counter/count_rate"),
         ],
-        z_hw_choices = None,
-        z_choices = None,
-        z_target_choices = None, 
+        z_hw_choices=None,
+        z_choices=None,
+        z_target_choices=None,
 
         lq_kwargs={"spinbox_decimals": 6, "unit": ""},
         range_initials=[0, 10, 0.1],
@@ -55,22 +56,12 @@ class RangedOptimization(Measurement):
         Measurement.__init__(self, app, name)
 
     def setup(self):
-        self.settings.New("use_current_z_as_center", dtype=bool, initial=True)
-
         self.settings.New(
             "optimization_quantity",
             dtype=str,
             choices=self.optimization_quantity_choices,
             initial=self.optimization_quantity_choices[0][1],
         )
-
-        self.settings.New_Range(
-            "z",
-            include_center_span=True,
-            initials=self.range_initials,
-            **self.lq_kwargs
-        )
-        self.settings.New("z_offset", initial=0, **self.lq_kwargs)
         self.settings.New("N_samples", int, initial=10)
         self.settings.New(
             "sampling_period",
@@ -80,33 +71,83 @@ class RangedOptimization(Measurement):
             si=True,
             description="time waited between sampling",
         )
-
-        self.settings.New("use_fine_optimization", bool, initial=True)
-        self.settings.New("z_span_travel_time", initial=2.0, unit="sec")
-
-
-        self.settings.New("z_hw", dtype=str, initial="focus_wheel" if self.z_hw_choices is None else self.z_hw_choices[0], choices = self.z_hw_choices)
-        self.settings.New("z", dtype=str, initial="position" if self.z_choices is None else self.z_choices[0], choices = self.z_choices)
-        self.settings.New("z_target", dtype=str, initial="target_position" if self.z_target_choices is None else self.z_target_choices[0], choices = self.z_target_choices)
+        self.settings.New(
+            "use_current_z_as_center",
+            dtype=bool,
+            initial=True,
+            description='instead of <b>z_center</b> the current value of <b>z</b> is used'
+        )
+        self.settings.New_Range(
+            "z",
+            include_center_span=True,
+            initials=self.range_initials,
+            description='defines a range over which the <b>z_target</b> is varied',
+            **self.lq_kwargs
+        )
+        self.settings.New(
+            "z_offset",
+            initial=0,
+            description='an offset that will be applied when moving to optimal <i>z</i> value after optimization',
+            **self.lq_kwargs
+        )
+        self.settings.New(
+            "use_fine_optimization",
+            bool,
+            initial=True,
+            description='optimization runs again around optimal z of first run'
+        )
         self.settings.New("coarse_to_fine_span_ratio", initial=4.0)
+        self.settings.New(
+            "z_span_travel_time",
+            initial=2.0,
+            unit="sec"
+        )
+        self.settings.New(
+            "z_hw",
+            dtype=str,
+            initial="focus_wheel" if self.z_hw_choices is None else self.z_hw_choices[0],
+            choices=self.z_hw_choices)
+        self.settings.New(
+            "z",
+            dtype=str,
+            initial="position" if self.z_choices is None else self.z_choices[0],
+            choices=self.z_choices,
+            description='if not <i>same_as_z_target</i> this setting will be used to get actual value of z after <b>z_target</b> was set'
+        )
+        self.settings.New(
+            "z_target",
+            dtype=str,
+            initial="target_position" if self.z_target_choices is None else self.z_target_choices[
+                0],
+            choices=self.z_target_choices,
+            description='setting that is varied during optimization'
+        )
 
+        self.post_processor_manager = PostProcessorManager()
+        choices = list(self.post_processor_manager.processors.keys())
+        self.settings.New(
+            'post_processor',
+            str,
+            initial='gauss_mean',
+            choices=choices,
+            description='e.g. fit gaussian to data and use the derived mean as optimized value')
+        self.settings.New(
+            'take_post_process_value',
+            bool,
+            initial=False)
+        self.add_operation('post process', self.post_process)
+        self.add_operation('go to optimal_value', self.go_to_optimal_value)
+        self.add_operation('go to post_process_value',
+                           self.go_to_post_process_value)
+        self.settings.New("save_h5", bool, initial=True)
+
+        # data
         self.z0_history = []
         self.f_history = []
         self.z_history = []
         self.time_history = []
         self.t0 = time.time()
-
         self.z_original, self.z0_coarse, self.z0_fine = 0, 0, 0
-        
-        self.post_processor_manager = PostProcessorManager()
-        choices = list(self.post_processor_manager.processors.keys())
-        self.settings.New('post_processor', str, initial='gauss_mean', choices=choices,
-                          description='e.g. fit gaussian to data and use the derived mean as optimized value')
-        self.settings.New('take_post_process_value', bool, initial=False)
-        self.add_operation('post process', self.post_process)
-        self.add_operation('go to optimal_value', self.go_to_optimal_value)
-        self.add_operation('go to post_process_value', self.go_to_post_process_value)        
-        self.settings.New("save_h5", bool, initial=True)
 
     def setup_figure(self):
         self.ui = QtWidgets.QWidget()
@@ -114,44 +155,47 @@ class RangedOptimization(Measurement):
         self.layout.setContentsMargins(0, 0, 0, 0)
         self.ui.setLayout(self.layout)
 
-        # # Add settings
+        # Add settings
         S = self.settings
         settings_layout = QtWidgets.QHBoxLayout()
         self.layout.addLayout(settings_layout)
 
-
-        
+        #
         settings_layout.addWidget(
-            S.New_UI(
-                ["optimization_quantity", "N_samples", "sampling_period"]
-            )
+            S.New_UI(("optimization_quantity", "N_samples", "sampling_period"))
         )
-        
+        #
         settings_layout.addWidget(
-            S.New_UI(["use_current_z_as_center", "z_center", "z_span", "z_num"])
+            S.New_UI(("use_current_z_as_center", "z_center", "z_span", "z_num"))
         )
-        
-        # third settings widget
-        w3 = S.New_UI(["z_offset",
-                       "use_fine_optimization",
-                       "post_processor"])
-        settings_layout.addWidget(w3)
-        post_process_pushButton = QtWidgets.QPushButton('post_process')
-        post_process_pushButton.clicked.connect(self.post_process)
-        w3.layout().addWidget(post_process_pushButton)
-        go_to_post_process_value_pushButton = QtWidgets.QPushButton('go_to_post_process_value')
-        go_to_post_process_value_pushButton.clicked.connect(self.go_to_post_process_value)
-        w3.layout().addWidget(go_to_post_process_value_pushButton)
+        #
+        settings_layout.addWidget(
+            S.New_UI(('z_hw', 'z_target', 'z'))
+        )
 
+        # Start stop
         operations_widget = QtWidgets.QWidget()
         operationsLayout = QtWidgets.QVBoxLayout()
-        operations_widget.setLayout(operationsLayout)        
+        operations_widget.setLayout(operationsLayout)
         settings_layout.addWidget(operations_widget)
-        operationsLayout.addWidget(S.New_UI(('z_hw','z_target', 'z')))
-        operationsLayout.addWidget(S.activation.new_pushButton())    
+        operationsLayout.addWidget(
+            S.New_UI(("z_offset", "use_fine_optimization")))
+        operationsLayout.addWidget(S.activation.new_pushButton())
         take_pushButton = QtWidgets.QPushButton('Interrupt and Take')
         take_pushButton.clicked.connect(self.take_current_optimal)
         operationsLayout.addWidget(take_pushButton)
+
+        # post processor
+        pp_widget = S.New_UI(["post_processor"])
+        settings_layout.addWidget(pp_widget)
+        post_process_pushButton = QtWidgets.QPushButton('post_process')
+        post_process_pushButton.clicked.connect(self.post_process)
+        pp_widget.layout().addWidget(post_process_pushButton)
+        go_to_post_process_value_pushButton = QtWidgets.QPushButton(
+            'go_to_post_process_value')
+        go_to_post_process_value_pushButton.clicked.connect(
+            self.go_to_post_process_value)
+        pp_widget.layout().addWidget(go_to_post_process_value_pushButton)
 
         # # Add plot and plot items
         self.graph_layout = pg.GraphicsLayoutWidget(border=(0, 0, 0))
@@ -230,13 +274,16 @@ class RangedOptimization(Measurement):
         return x / self.settings["N_samples"]
 
     def run(self):
-        S = self.settings        
+        S = self.settings
 
         self.take_current = False
 
-        z_target = self.app.hardware[S["z_hw"]].settings.get_lq(S["z_target"])
-        if S['z'] == 'same_as_z_target':        
-            z_lq = self.app.hardware[S["z_hw"]].settings.get_lq(S["z"])
+        z_hw = self.app.hardware[S["z_hw"]]
+        z_target_lq = z_hw.settings.get_lq(S["z_target_lq"])
+        if S['z'] == 'same_as_z_target':
+            z_lq = z_target_lq
+        else:
+            z_lq = z_hw.settings.get_lq(S["z"])
 
         self.optimization_lq = self.app.lq_path(S["optimization_quantity"])
 
@@ -249,7 +296,7 @@ class RangedOptimization(Measurement):
                 S["z_center"] = z_lq.read_from_hardware() - S["z_offset"]
             else:
                 S["z_center"] = z_lq.val - S["z_offset"]
-                
+
         self.z_coarse = np.linspace(
             S["z_center"] - 0.5 * S["z_span"],
             S["z_center"] + 0.5 * S["z_span"],
@@ -261,49 +308,51 @@ class RangedOptimization(Measurement):
         self.z0_fine = S["z_center"]
 
         # move to start position and wait
-        z_target.update_value(self.z_coarse[0])
+        z_target_lq.update_value(self.z_coarse[0])
         time.sleep(S["z_span_travel_time"])
 
         # for loop through z-array
         for i, z in enumerate(self.z_coarse):
             self.set_progress(i * 100.0 / S["z_num"] / 3)
 
-            z_target.update_value(z)
+            z_target_lq.update_value(z)
             time.sleep(S["z_span_travel_time"] / S["z_num"])
             self.f_coarse[i] = self.get_optimization_quantity()
-            self.z0 = z0_coarse = self.z0_coarse = self.z_coarse[np.argmax(self.f_coarse)]
+            self.z0 = z0_coarse = self.z0_coarse = self.z_coarse[np.argmax(
+                self.f_coarse)]
             if self.interrupt_measurement_called:
                 break
-            
-        r = self.settings['coarse_to_fine_span_ratio']   
+
         # Repeat fine scan
+        r = self.settings['coarse_to_fine_span_ratio']
         self.z_fine = np.linspace(
             z0_coarse - 0.5 * S["z_span"] / r,
             z0_coarse + 0.5 * S["z_span"] / r,
             2 * S["z_num"],
             dtype=float,
         )
-        self.f_fine = np.ones(2 * S["z_num"], dtype=float) * self.f_coarse.max()
+        self.f_fine = np.ones(
+            2 * S["z_num"], dtype=float) * self.f_coarse.max()
 
         if S["use_fine_optimization"] and not self.interrupt_measurement_called:
-            z_target.update_value(self.z_fine[0])
+            z_target_lq.update_value(self.z_fine[0])
             time.sleep(S["z_span_travel_time"])
 
             for i, z in enumerate(self.z_fine):
                 self.set_progress((S["z_num"] + i) * 100.0 / S["z_num"] / 3)
                 if self.interrupt_measurement_called:
                     break
-                z_target.update_value(z)
+                z_target_lq.update_value(z)
                 time.sleep(S["z_span_travel_time"] / S["z_num"] / 4)
                 self.f_fine[i] = self.get_optimization_quantity()
                 self.z0 = self.z0_fine = self.z_fine[np.argmax(self.f_fine)]
 
         if self.interrupt_measurement_called and not self.take_current:
             print(self.name, "interrupted, moving to original position")
-            z_target.update_value(self.z_original)
+            z_target_lq.update_value(self.z_original)
         elif self.interrupt_measurement_called and self.take_current:
             print(self.name, "interrupted, moving to current optimal")
-            z_target.update_value(self.z0 + S["z_offset"])
+            z_target_lq.update_value(self.z0 + S["z_offset"])
             self.save_h5_file()
             time.sleep(S["z_span_travel_time"] / 4)
         else:
@@ -312,7 +361,7 @@ class RangedOptimization(Measurement):
                 self.go_to_post_process_value()
             else:
                 self.go_to_optimal_value()
-            
+
             self.save_h5_file()
 
             # Update history
@@ -329,7 +378,7 @@ class RangedOptimization(Measurement):
 
             time.sleep(S["z_span_travel_time"] / 4)
             # TODO, make a plot of the history
-            
+
     def pre_run(self):
         S = self.settings
         self.hw0 = None
@@ -339,35 +388,36 @@ class RangedOptimization(Measurement):
             self.S0 = self.hw0.settings.as_value_dict()
             self.hw0.settings['explore_mode_exposure_time'] = S['sampling_period']
             self.hw0.settings['explore_mode'] = True
-            
+
         if S['optimization_quantity'] == 'measure/picam_readout/count_rate':
             self.hw0 = self.app.measurements.picam_readout
             self.S0 = self.hw0.settings.as_value_dict()
             self.hw0.settings['continuous'] = True
-                    
+
         elif S['optimization_quantity'] == 'hardware/apd_counter/count_rate':
             self.hw0 = self.app.hardware.apd_counter
             self.S0 = self.hw0.settings.as_value_dict()
             self.hw0.settings['int_time'] = S['sampling_period']
-            
+
         # self.app.hardware.flip_mirror.settings['mirror_position'] = True
         self.post_processor_manager.set_ready(False)
         self.set_post_process_lines_visible(False)
-            
+
     def post_run(self):
         if self.S0 and self.hw0:
             for k, v in self.S0.items():
                 self.hw0.settings[k] = v
-        
+
         # self.app.hardware.flip_mirror.settings['mirror_position'] = False
-            
-    def save_h5_file(self): 
-        if self.settings['save_h5']: 
+
+    def save_h5_file(self):
+        if self.settings['save_h5']:
             self.t0 = time.time()
             self.h5_file = h5_io.h5_base_file(app=self.app, measurement=self)
             try:
                 self.h5_file.attrs['time_id'] = self.t0
-                H = self.h5_meas_group = h5_io.h5_create_measurement_group(self, self.h5_file)    
+                H = self.h5_meas_group = h5_io.h5_create_measurement_group(
+                    self, self.h5_file)
                 H['f_coarse'] = self.f_coarse
                 H['z_coarse'] = self.z_coarse
                 H['z0_coarse'] = self.z0_coarse
@@ -378,7 +428,7 @@ class RangedOptimization(Measurement):
                     H['f_fine'] = self.f_fine
                     H['z_fine'] = self.z_fine
                     H['z0_fine'] = self.z0_fine
-                    
+
                 print(self.name, 'saved h5 file')
             finally:
                 self.log.info("data saved " + self.h5_file.filename)
@@ -398,7 +448,7 @@ class RangedOptimization(Measurement):
 
         self.line_z0_fine.setVisible(S["use_fine_optimization"])
         self.plot_line_fine.setVisible(S["use_fine_optimization"])
-        
+
     def take_current_optimal(self):
         self.take_current = True
         self.interrupt_measurement_called = True
@@ -410,26 +460,28 @@ class RangedOptimization(Measurement):
             z, f = self.z_fine, self.f_fine
         else:
             z, f = self.z_coarse, self.f_coarse
-        
+
         func = self.post_processor_manager.post_process
-        self.z0_post_process, self.f_post_process = func(z, f, S["post_processor"])
+        self.z0_post_process, self.f_post_process = func(
+            z, f, S["post_processor"])
         self.z_post_process = z
-        
-        self.plot_line_post_process.setData(self.f_post_process, self.z_post_process)
+
+        self.plot_line_post_process.setData(
+            self.f_post_process, self.z_post_process)
         self.line_z0_post_process.setPos(self.z0_post_process)
         self.set_post_process_lines_visible(True)
-        
-    def set_post_process_lines_visible(self, visible:bool):
+
+    def set_post_process_lines_visible(self, visible: bool):
         self.plot_line_post_process.setVisible(visible)
         self.line_z0_post_process.setVisible(visible)
-        
+
     def go_to_post_process_value(self):
         S = self.settings
-        z_target = self.app.hardware[S["z_hw"]].settings.get_lq(S["z_target"]) 
-        z_value = self.post_processor_manager.get_value() + S["z_offset"]       
+        z_target = self.app.hardware[S["z_hw"]].settings.get_lq(S["z_target"])
+        z_value = self.post_processor_manager.get_value() + S["z_offset"]
         z_target.update_value(z_value)
-        
+
     def go_to_optimal_value(self):
         S = self.settings
-        z_target = self.app.hardware[S["z_hw"]].settings.get_lq(S["z_target"])       
+        z_target = self.app.hardware[S["z_hw"]].settings.get_lq(S["z_target"])
         z_target.update_value(self.z0 + S["z_offset"])
