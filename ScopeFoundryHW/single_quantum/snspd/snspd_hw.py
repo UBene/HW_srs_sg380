@@ -40,6 +40,7 @@ class SNSPDHW(HardwareComponent):
         for i in range(self.max_number_of_detectors):
             S.New(f'bias_current_{i}', float, vmin=0, vmax=32, unit='uA')
             S.New(f'trigger_level_{i}', float, vmin=0, vmax=32, unit='mV')
+            S.New(f'count_rate_{i}', float, si=True, ro=True)
 
     def connect(self):
 
@@ -131,3 +132,12 @@ class SNSPDHW(HardwareComponent):
     def disconnect(self):
         if hasattr(self, 'dev'):
             self.dev.close()  # not needed since the with closes the connection
+            del self.dev
+            
+            
+    def threaded_update(self):
+        _, rates = self.buffered_count_rates()
+        for i in range(self.max_number_of_detectors):
+            self.settings[f'count_rate_{i}'] = rates[i]
+        
+        

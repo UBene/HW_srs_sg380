@@ -48,13 +48,17 @@ class SNSPDOptimizerMeasure(Measurement):
             qlabel = QtWidgets.QLabel(f'{i}')
             qlabel.setStyleSheet(f"""QLabel{{background:{colors[i]}}}""")
             channel_layout.addWidget(qlabel, i, 0)
+
             channel_layout.addWidget(
                 S.get_lq(f'show_channel_{i}').new_default_widget(), i, 1)
             channel_layout.addWidget(
-                HS.get_lq(f'bias_current_{i}').new_default_widget(), i, 2)
+                HS.get_lq(f'count_rate_{i}').new_default_widget(), i, 2)
             channel_layout.addWidget(
-                HS.get_lq(f'trigger_level_{i}').new_default_widget(), i, 3)
+                HS.get_lq(f'bias_current_{i}').new_default_widget(), i, 3)
+            channel_layout.addWidget(
+                HS.get_lq(f'trigger_level_{i}').new_default_widget(), i, 4)
 
+            
         # Buttons
         btn = QtWidgets.QPushButton('read_bias_currents')
         btn.clicked.connect(hw.read_bias_currents)
@@ -62,11 +66,11 @@ class SNSPDOptimizerMeasure(Measurement):
 
         btn = QtWidgets.QPushButton('auto_bias_exposure')
         btn.clicked.connect(hw.auto_bias_exposure)
-        channel_layout.addWidget(btn, i + 1, 2)
+        channel_layout.addWidget(btn, i + 1, 3)
 
         btn = QtWidgets.QPushButton('read_trigger_levels')
         btn.clicked.connect(hw.read_trigger_levels)
-        channel_layout.addWidget(btn, i + 1, 3)
+        channel_layout.addWidget(btn, i + 1, 4)
 
         # Plot
         self.graph_layout = pg.GraphicsLayoutWidget()
