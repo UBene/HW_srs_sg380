@@ -12,7 +12,7 @@ from .spinapi import Inst
 
 def create_pb_insts(
     channels: List[PulseBlasterChannel],
-    all_off_padding: int = 0,
+    all_off_padding_ns: int = 0,
     continuous=True,
     branch_to: int = 0,
     clock_period_ns: int = 2,
@@ -21,7 +21,7 @@ def create_pb_insts(
     """
     Convinience function to create instructions for a pulse program from
     a list of PulseBlasterChannel.
-    *all_off_padding* adds time to end of the pulse program for which all channels are low.
+    *all_off_padding_ns* adds time to end of the pulse program for which all channels are low.
     if *continuous* is True, the last instruction is changed such that the program 'branches'
         to the instruction with number *branch_to*. (pb_insts are zero-indexed)
     *clock_period_ns* is hardware specific
@@ -29,7 +29,7 @@ def create_pb_insts(
     feature.
     """
     pb_insts = _create_pb_insts(
-        *_create_insts_lengths(channels, all_off_padding))
+        *_create_insts_lengths(channels, all_off_padding_ns))
     if pb_insts:
         if continuous:
             pb_insts = _make_continueous(pb_insts, branch_to)
@@ -43,7 +43,7 @@ def create_pb_insts(
 
 
 def _create_insts_lengths(
-    channels: List[PulseBlasterChannel], all_off_padding: int = 0
+    channels: List[PulseBlasterChannel], all_off_padding_ns: int = 0
 ) -> Tuple[np.ndarray, np.ndarray]:
     # this function is subtle see docs/_create_insts_lengths_explained.pdf
     # To ensure the first instruction length is counted from t=0 we add a zero.
@@ -64,7 +64,7 @@ def _create_insts_lengths(
     switch_flags = np.array(unsorted_switch_flags)[indices]
     # the last switch_flags is used to switch off a final pulse
     # it can be dropped for programs with no additional padding at the end
-    inst_length = np.ones_like(switch_flags) * all_off_padding
+    inst_length = np.ones_like(switch_flags) * all_off_padding_ns
     inst_length[:-1] = np.diff(unsorted_times[indices])
     return inst_length, switch_flags
 

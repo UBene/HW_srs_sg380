@@ -38,52 +38,16 @@ class PulseProgramGenerator:
         self.__pb_channels: List[PulseBlasterChannel] = list()
         self._setup_settings()
 
-    def _setup_settings(self) -> None:
-        # will settings add to the measurement settings.
-        # keeps track which settings where created by PulseProgramGenerator
-        self.measure_setting_names = [
-            x.name for x in self.settings._logged_quantities.values()
-        ]
-        self.settings.New(
-            "sync_out",
-            float,
-            unit="MHz",
-            initial=-10.0,
-            description="to deactivate set negative",
-        )
-        self.setup_additional_settings()
-        self.settings.New(
-            "all_off_padding",
-            float,
-            initial=0,
-            unit="s",
-            vmin=0,
-            si = True,
-            description="trailing off time at the end of the pulse program",
-        )
-        self.settings.New(
-            "enable_pulse_plot_update",
-            bool,
-            initial=True,
-            description="disable for performance",
-        )
-        # settings generated to by generator, non the less part of
-        # partent measurement.
-        self.generator_settings = [
-            x
-            for x in self.settings._logged_quantities.values()
-            if not x.name in self.measure_setting_names
-        ]
 
     def setup_additional_settings(self) -> None:
-        """Override this to add settings, e.g:
+        """Overwrite this to add settings, e.g:
 
         self.settings.New('my_fancy_pulse_duration', unit='us', initial=160.0)
         """
         ...
 
     def make_pulse_channels(self) -> None:
-        """Override this!!!
+        """Overwrite this!!!
         add pulse pulse channel using self.new_channel. E.g:
         self.new_channel('pulse_blaster_hw_channel_name',
                          start_times=[0, 10],
@@ -91,7 +55,7 @@ class PulseProgramGenerator:
         creates a channel with 2 pulses.
         """
         raise NotImplementedError(
-            f"Overide make_pulse_channels() of {self.name} not Implemented"
+            f"Overwrite make_pulse_channels() of {self.name} not Implemented"
         )
 
     def new_channel(
@@ -100,8 +64,8 @@ class PulseProgramGenerator:
         """channel can be a 
                 - channel number (int) a physical output of the pulse blaster
                 - channel name str as defined in the pulse blaster HW
-        start_times: in ns 
-        pulse_lengths: in ns"""
+        start_times: (list) in ns 
+        pulse_lengths: (list) in ns"""
         if type(channel) == str:
             channel = self.hw.get_channel_number(channel)
         chan = new_pb_channel(channel, start_times,
@@ -110,16 +74,19 @@ class PulseProgramGenerator:
         return chan
     
     def set_all_off_padding_in_ns(self, time_in_ns):
-        self.settings['all_off_padding'] = time_in_ns * 1e9
+        self.settings['all_off_padding'] = int((time_in_ns // 2) * 2)
+
+    def set_all_off_padding_in_seconds(self, time_in_seconds):
+        self.set_all_off_padding_in_ns(time_in_seconds * 1e9)
     
     @property
     def t_min(self) -> int:
         return self.hw.clock_period_ns
 
     def update_pulse_plot(self) -> None:
+        self.plot.clear()
         if not self.settings["enable_pulse_plot_update"]:
             return
-        self.plot.clear()
         pulse_plot_arrays = self.create_pulse_plot_lines()
         for ii, (name, (t, y)) in enumerate(pulse_plot_arrays.items()):
             y = np.array(y) - 2 * ii
@@ -154,10 +121,9 @@ class PulseProgramGenerator:
     def get_pb_insts(self) -> PBInstructions:
         """also sets the pulse_prgram_duration"""
         pb_channels = self.get_pb_channels()
-        print(self.settings["all_off_padding"] * 1e9)
         pb_insts = create_pb_insts(
             pb_channels,
-            all_off_padding=int(self.settings["all_off_padding"] * 1e9),
+            all_off_padding_ns=int(self.settings["all_off_padding"]),
             continuous=True,
             branch_to=0,
             clock_period_ns=self.hw.clock_period_ns,
@@ -215,3 +181,44 @@ class PulseProgramGenerator:
         )  # 50% duty cycle
         self.__pb_channels.append(sync_out)
         return self.__pb_channels
+
+    def _setup_settings(self) -> None:
+        '''do NOT overwrite, overwrite setup_additional_settings instead
+        
+        this functions adds settings related to the PulseProgramGenerator
+        to the Parent measurement
+        '''
+        self.measure_setting_names = [
+            x.name for x in self.settings._logged_quantities.values()
+        ]
+        self.settings.New(
+            "sync_out",
+            float,
+            unit="MHz",
+            initial=-10.0,
+            description="to deactivate set negative",
+        )
+        self.setup_additional_settings()
+        self.settings.New(
+            "all_off_padding",
+            int,
+            initial=0,
+            unit="ns",
+            vmin=0,
+            spinbox_step = 2,
+            spinbox_decimals=0,
+            description="trailing off time at the end of the pulse program. Currently must be at minimum 12 ns",
+        )
+        self.settings.New(
+            "enable_pulse_plot_update",
+            bool,
+            initial=True,
+            description="disable for performance",
+        )
+        # settings generated to by generator, non the less part of
+        # parent measurement.
+        self.generator_settings = [
+            x
+            for x in self.settings._logged_quantities.values()
+            if not x.name in self.measure_setting_names
+        ]
