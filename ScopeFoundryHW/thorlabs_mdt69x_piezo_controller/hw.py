@@ -68,3 +68,27 @@ class HW(HardwareComponent):
 
     def move_z(self, voltage):
         self.settings['x_target_position'] = voltage
+
+    def New_quick_UI(self, axes="xyz"):
+        from qtpy import QtWidgets
+        S = self.settings
+        widget = QtWidgets.QGroupBox(title=self.name)
+        main_layout = QtWidgets.QVBoxLayout(widget)
+        main_layout.addWidget(self.settings.New_UI(('connected',)))
+        h_layout = QtWidgets.QHBoxLayout()
+        main_layout.addLayout(h_layout)
+        for axis in axes:
+            layout = QtWidgets.QVBoxLayout()
+            layout.addWidget(S.get_lq(f"{axis}_position").new_default_widget())
+            layout.addWidget(
+                S.get_lq(f"{axis}_target_position").new_default_widget())
+            # for sign in ('+', '-'):
+            #     name = f'{axis} jog {sign}'
+            #     btn = QtWidgets.QPushButton(name)
+            #     btn.clicked.connect(self.operations[name])
+            #     layout.addWidget(btn)
+            h_layout.addLayout(layout)
+        widget.setSizePolicy(QtWidgets.QSizePolicy.MinimumExpanding,
+                             QtWidgets.QSizePolicy.Maximum)
+        return widget
+

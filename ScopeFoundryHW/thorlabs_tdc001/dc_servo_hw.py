@@ -95,7 +95,7 @@ class TDC001DCServoHW(HardwareComponent):
 
         if hasattr(self, 'dev'):
             self.dev.close()
-            del self.devclose
+            del self.dev
 
     def home_axis(self):
         print("home_axis")
@@ -142,3 +142,31 @@ class TDC001DCServoHW(HardwareComponent):
     #     self.dev.write_velocity_params(ax_num, int(
     #         round(scale * acc)), int(round(scale * vel)))
     #     self.dev.write_homing_velocity(ax_num, int(round(scale * vel)))
+    
+    
+    def New_quick_UI(self):
+        from qtpy import QtWidgets
+        S = self.settings
+        widget = QtWidgets.QGroupBox(title=self.name)
+        main_layout = QtWidgets.QVBoxLayout(widget)
+        main_layout.addWidget(self.settings.New_UI(('connected',)))
+        h_layout = QtWidgets.QHBoxLayout()
+        main_layout.addLayout(h_layout)
+        # for axis in axes:
+        layout = QtWidgets.QVBoxLayout()
+        layout.addWidget(S.get_lq(f"position").new_default_widget())
+        layout.addWidget(
+            S.get_lq(f"target_position").new_default_widget())
+        for sign in ('forward', 'backward'):
+            layout.addWidget(self.new_operation_push_buttons(f'jog {sign}'))
+        layout.addWidget(self.new_operation_push_buttons(f'stop'))
+        h_layout.addLayout(layout)
+        widget.setSizePolicy(QtWidgets.QSizePolicy.MinimumExpanding,
+                             QtWidgets.QSizePolicy.Maximum)
+        return widget
+
+    def new_operation_push_buttons(self, name):
+        from qtpy.QtWidgets import QPushButton
+        btn = QPushButton(name)
+        btn.clicked.connect(self.operations[name])
+        return btn
