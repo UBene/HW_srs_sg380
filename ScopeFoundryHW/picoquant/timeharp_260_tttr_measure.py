@@ -10,18 +10,17 @@ import pyqtgraph as pg
 import time
 from ScopeFoundry.helper_funcs import sibling_path, load_qt_ui_file
 from qtpy import QtWidgets
-from numpy import dtype
 
 
-class TimeHarpT2Measure(Measurement):
+class Timeharp260TTTRMeasure(Measurement):
 
-    name = "timeharp_260_t2"
+    name = "timeharp_260_tttr"
 
-    hardware_requirements = ['timeharp_260']
 
     def setup(self):
-
+        
         self.hw = self.app.hardware['timeharp_260']
+        
         
 
     def setup_figure(self):
@@ -36,13 +35,10 @@ class TimeHarpT2Measure(Measurement):
        
         
     def run(self):
+        S = self.settings
         hw = self.hw
         
-        S = self.settings
         HWS = hw.settings
-        
-        # HWS['Mode'] = 'T2'
-        # HWS['connected'] = True
         
         t_start = time.time()
         t_acq = HWS['Tacq']
@@ -61,7 +57,7 @@ class TimeHarpT2Measure(Measurement):
 
         counter = 0
 
-        hw.start_t2()
+        hw.start_tttr()
         
         data = []
         
@@ -69,7 +65,7 @@ class TimeHarpT2Measure(Measurement):
             t_progress = time.time() - t_start
             self.set_progress(t_progress/t_acq * 100)
             
-            chunk = hw.read_t2_fifo()
+            chunk = hw.read_fifo()
             data.append(chunk)
             #dset[counter] = chunk
             #h5_file.flush()
@@ -90,6 +86,6 @@ class TimeHarpT2Measure(Measurement):
                 
         print(N, len(chunk))
             
-        hw.stop_t2()
+        hw.stop_tttr()
         
         h5_file.close()

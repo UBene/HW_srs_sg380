@@ -275,18 +275,12 @@ class TimeHarp260HW(HardwareComponent):
     def sliced_time_array(self):
         return self.time_array[:self.settings['HistogramBins']]
             
-    def start_t2(self):
-        assert self.settings["Mode"] == "T2"
-        Tacq_ms = 1e+3 * self.settings['Tacq']
-        self.dev.StartMeas(Tacq_ms)
+    def start_tttr(self):
+        assert self.settings["Mode"] in ("T2", "T3")
+        self.dev.StartMeas(1e+3 * self.settings['Tacq'])
         
-    def stop_t2(self):
+    def stop_tttr(self):
         self.dev.StopMeas()
         
-    def read_t2_fifo(self):
+    def read_fifo(self):
         return self.dev.read_fifo()
-    
-        return self.dev.read_is_fifo_full()
-        
-        
-        
