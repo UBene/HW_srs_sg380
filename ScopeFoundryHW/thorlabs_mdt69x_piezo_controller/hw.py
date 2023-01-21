@@ -91,4 +91,3 @@ class HW(HardwareComponent):
         widget.setSizePolicy(QtWidgets.QSizePolicy.MinimumExpanding,
                              QtWidgets.QSizePolicy.Maximum)
         return widget
-

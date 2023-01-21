@@ -41,7 +41,7 @@ class HW(HardwareComponent):
             self.add_operation(f'{axis} jog -', partial(
                 self.jog_backward, axis=axis))
 
-        self.settings.New("jog_size", 
+        self.settings.New("jog_size",
                           initial=100,
                           **position_kwargs)
 

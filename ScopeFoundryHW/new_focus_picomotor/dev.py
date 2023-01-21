@@ -93,6 +93,7 @@ class Dev:
 
     # *RCL Recall parameters
     # *RST Reset instrument **
+
     # AB Abort motion **
     def write_abort_motion(self):
         self.query(f"AB")
@@ -101,8 +102,8 @@ class Dev:
     # DH Define home position
     # DH? Get home position **
     # MC Motor check
-    # MD? Get motion done status **
 
+    # MD? Get motion done status **
     def read_is_in_motion(self, axis=1):
         # response values
         #       0 Motion is in progress
@@ -110,16 +111,18 @@ class Dev:
         return not bool(int(self.query(f"{axis}MD?")))
     # MV Move indefinitely
     # MV? Get motion direction **
-    # PA Move to a target position
 
+    # PA Move to a target position
     def write_target_position(self, pos, axis=1):
         self.query(f"{axis}PA{int(pos)}")
+
     # PA? Get destination position **
+
     # PR Move relative
     def write_move_relative(self, delta, axis=1):
         self.query(f"{axis}PR{int(delta)}")
-    # PR? Get destination position **
 
+    # PR? Get destination position **
     def read_target_position(self, axis=1):
         return int(self.query(f"{axis}PR?"))
     # QM Set motor type **

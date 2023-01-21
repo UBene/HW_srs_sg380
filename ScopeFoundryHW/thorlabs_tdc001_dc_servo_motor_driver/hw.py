@@ -67,7 +67,7 @@ class TDC001DCServoHW(HardwareComponent):
 
     def connect(self):
         S = self.settings
-        from .dc_servo_dev import TDC001DCServoDev
+        from ScopeFoundryHW.thorlabs_tdc001_dc_servo_motor_driver.dev import TDC001DCServoDev
         self.dev = TDC001DCServoDev(
             kinesis_path=S['kinesis_path'],
             dev_num=S['device_num'],
@@ -142,8 +142,7 @@ class TDC001DCServoHW(HardwareComponent):
     #     self.dev.write_velocity_params(ax_num, int(
     #         round(scale * acc)), int(round(scale * vel)))
     #     self.dev.write_homing_velocity(ax_num, int(round(scale * vel)))
-    
-    
+
     def New_quick_UI(self):
         from qtpy import QtWidgets
         S = self.settings
