@@ -1,10 +1,12 @@
 '''
 Created on Nov 3, 2017
 
-
 @author: Benedikt Ursprung
 
 major update Jan 23, 2023
+author suspects that his specific device has a polling issue as 
+it does not work with kinesis as well. Try thorlabsMFF_device.py file first!
+this version reconnects to for every operation which is slow!
 '''
 import ctypes
 import time
@@ -31,10 +33,9 @@ class ThorlabsMFFDev:
         if self.debug:
             print('using', h, 'flipper')
 
-        self.open()
+        # self.open() # ISSUE
 
     def set_handle(self, serial_num: str):
-
         if not self.serial_numbers:
             print('No thorlabs motorized flipper detected')
             return
@@ -65,21 +66,25 @@ class ThorlabsMFFDev:
 
     def write_position(self, position):
         assert position in (1, 2)
+        self.open()  # ISSUE!
         time.sleep(0.1)
         if self.debug:
             print('ThorlabsMFFDev move pos', position)
         catch_error(self.ff_dll.FF_MoveToPosition(
             self._handle, position))
+        self.close()  # ISSUE!
 
     def read_position(self):
+        self.open()  # ISSUE!
         time.sleep(0.1)
         value = self.ff_dll.FF_GetPosition(self._handle)
         if self.debug:
             print('ThorlabsMFFDev read_position', value, type(value))
+        self.close()  # ISSUE!
         return value
 
     def close(self):
-        self.ff_dll.FF_StopPolling(self._handle)
+        # self.ff_dll.FF_StopPolling(self._handle)
         self.ff_dll.FF_Close(self._handle)
 
     def open(self):
@@ -88,7 +93,7 @@ class ThorlabsMFFDev:
         if self.debug:
             print('selected serial number', self._handle)
         catch_error(self.ff_dll.FF_Open(self._handle))
-        catch_error(self.ff_dll.FF_StartPolling(self._handle, 10))
+        # catch_error(self.ff_dll.FF_StartPolling(self._handle, 10)) # ISSUE
         time.sleep(1)
 
     def get_other_position(self):
@@ -100,7 +105,7 @@ class ThorlabsMFFDev:
 
 
 if __name__ == '__main__':
-    dev = ThorlabsMFFDev("37006061", debug=True)
+    dev = ThorlabsMFFDev("37006062", debug=True)
     # dev.read_position()
     dev.toggle()
     time.sleep(0.6)

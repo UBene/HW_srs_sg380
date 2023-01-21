@@ -5,26 +5,27 @@ Created on Feb 28, 2017
          Benedikt Ursprung
 '''
 from ScopeFoundry.base_app import BaseMicroscopeApp
-from ScopeFoundry.helper_funcs import sibling_path
-import logging
-
-logging.basicConfig(level=logging.DEBUG)
-logging.getLogger('PyQt5').setLevel(logging.WARN)
-logging.getLogger('ipykernel').setLevel(logging.WARN)
-logging.getLogger('traitlets').setLevel(logging.WARN)
 
 
 class ThorlabsMFFApp(BaseMicroscopeApp):
-    
-    name="thorlabs_MFF_app"
-    
+
+    name = "thorlabs_MFF_app"
+
     def setup(self):
-        """Registers :class:`HardwareComponent` object, such that the top level `DLIApp` may access its functions."""
         from ScopeFoundryHW.thorlabs_motorized_filter_flipper.thorlabsMFF_hardware import ThorlabsMFFHW
-        self.add_hardware(ThorlabsMFFHW(self))
-        
+        self.mff_hw = self.add_hardware(ThorlabsMFFHW(self))
+
+    def setup_ui(self):
+        from qtpy import QtWidgets
+        widget = QtWidgets.QWidget()
+        widget.setMaximumWidth(380)
+        layout = QtWidgets.QVBoxLayout(widget)
+        self.add_quickbar(widget)
+
+        layout.addWidget(self.mff_hw.New_quick_UI())
+
 
 if __name__ == '__main__':
     import sys
     app = ThorlabsMFFApp(sys.argv)
-    sys.exit(app.exec_())    
+    sys.exit(app.exec_())
