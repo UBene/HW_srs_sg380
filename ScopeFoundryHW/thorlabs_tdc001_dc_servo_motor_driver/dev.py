@@ -62,7 +62,7 @@ _ERRORS = {
 
 TCUBEDLL = "Thorlabs.MotionControl.TCube.DCServo.dll"
 DEVICEMANAGERDLL = "Thorlabs.MotionControl.DeviceManager.dll"
-TDC001_ID = 83
+TDC001_TYPE_ID = 83
 
 
 def _err(retval):
@@ -75,62 +75,60 @@ def _err(retval):
             retval, err_name, description))
 
 
-class TDC001DCServoDev(object):
+class TDC001DCServoDev:
 
-    def __init__(self, kinesis_path=r"C:\Program Files\Thorlabs\Kinesis", dev_num=0, serial_num=None, debug=False):
+    @staticmethod
+    def read_serial_numbers(kinesis_path="C:\Program Files\Thorlabs\Kinesis"):
+        dll_path = kinesis_path + r"\Thorlabs.MotionControl.DeviceManager.dll"
+        dll = ctypes.cdll.LoadLibrary(dll_path)
+        _err(dll.TLI_BuildDeviceList())
+        serialNos = ctypes.create_string_buffer(100)
+        _err(dll.TLI_GetDeviceListByTypeExt(serialNos, 100, TDC001_TYPE_ID))
+        return [x.decode() for x in serialNos.value.split(b',') if x]
+
+    @staticmethod
+    def pick_available_sn(target_sn=None, kinesis_path="C:\Program Files\Thorlabs\Kinesis", debug=False):
+        serial_numbers = TDC001DCServoDev.read_serial_numbers(kinesis_path)
+        if target_sn in serial_numbers:
+            return target_sn
+        elif serial_numbers:
+            if debug:
+                print('Warning: using first device of available!')
+                print('specify serial_num from available numbers')
+                print(serial_numbers)
+            return serial_numbers[0]
+        else:
+            raise IOError(f'no TDC001 devices detected')
+
+    def __init__(self, kinesis_path=r"C:\Program Files\Thorlabs\Kinesis", serial_num=None, debug=False):
         """
         serial_num if defined should be a string or integer
         """
         self.debug = debug
-        if self.debug:
-            logger.debug("ThorlabsStepperControllerDev.__init__")
-
-        logger.setLevel('DEBUG')
-
-        D = ctypes.cdll.LoadLibrary(kinesis_path + "\\" + DEVICEMANAGERDLL)
-        S = self.cc_dll = ctypes.windll.LoadLibrary(
-            kinesis_path + "\\" + TCUBEDLL)
-        _err(D.TLI_BuildDeviceList())
-        serialNos = ctypes.create_string_buffer(100)
-        _err(D.TLI_GetDeviceListByTypeExt(serialNos, 100, TDC001_ID))
-
-        # byte code serial numbers
-        self._serial_numbers = [x for x in serialNos.value.split(b',') if x]
-        #
-        if debug:
-            print(
-                "serial_numbers available {} --> {}".format(serialNos.value, self._serial_numbers))
-            logger.debug(
-                "serial_numbers available {} --> {}".format(serialNos.value, self._serial_numbers))
-            logger.debug("serial_number requested {}".format(repr(serial_num)))
-
-        # _id is byte string representing serial number, like b'37874816'
-        if serial_num:
-            self._id = str(serial_num).encode()  # _id must be a bytes array
-            if debug:
-                logger.debug("using serial number {}".format(self._id))
-        else:
-            if debug:
-                logger.debug("using device number {}".format(dev_num))
-            self._id = self._serial_numbers[dev_num]
-
+        self.serial_num = self.pick_available_sn(serial_num, kinesis_path, debug)
+        self._id = self.serial_num.encode()
+        self.cc_dll = ctypes.windll.LoadLibrary(kinesis_path + "\\" + TCUBEDLL)
         self.lock = Lock()
-        if self.debug:
-            logger.debug("CC_Open: {}".format(self._id))
+        self._status = 0
+        self.open()
+        self.update_status_bits()
+
+    def open(self):
         with self.lock:
-            _err(S.CC_Open(self._id))
+            _err(self.cc_dll.CC_Open(self._id))
 
     def close(self):
-        _err(self.cc_dll.CC_Close(self._id))
+        with self.lock:
+            _err(self.cc_dll.CC_Close(self._id))
 
-    def get_serial_num(self):
+    def serial_num_in_use(self):
         return self._id.decode()
 
     def stop_immediate(self):
         with self.lock:
             _err(self.cc_dll.CC_StopImmediate(self._id))
 
-    def stop_profiled(self, chan):
+    def stop_profiled(self):
         with self.lock:
             _err(self.cc_dll.CC_StopProfiled(self._id))
 
@@ -173,7 +171,7 @@ class TDC001DCServoDev(object):
     def home_and_wait(self, timeout=100):
         self.start_home()
         t0 = time.time()
-        while(self.read_position() != 0):
+        while self.read_is_homing():
             time.sleep(0.1)
             if (time.time() - t0) > timeout:
                 self.stop_profiled()
@@ -196,82 +194,58 @@ class TDC001DCServoDev(object):
         with self.lock:
             self.cc_dll.CC_SetJogStepSize(self._id, size)
 
-    # def read_velocity(self,chan):
-    #     return self.read_velocity_params(chan)[1]
-    #
-    # def read_acceleration(self,chan):
-    #     return self.read_velocity_params(chan)[0]
-    #
-    # def read_velocity_params(self, chan):
-    #     """CC_GetVelParams  ( char const *  serialNo,
-    #       short  channel,
-    #       int *  acceleration,
-    #       int *  maxVelocity
-    #      )
-    #     """
-    #
-    #     acc = c_int()
-    #     vel = c_int()
-    #
-    #     with self.lock:
-    #         _err(self.cc_dll.CC_RequestVelParams(self._id, chan))
-    #         _err(self.cc_dll.CC_GetVelParams(self._id, chan, byref(acc), byref(vel)))
-    #
-    #     return acc.value, vel.value
-    #
-    # def write_velocity_params(self, chan, acc, vel):
-    #     with self.lock:
-    #         _err(self.cc_dll.CC_SetVelParams(self._id, chan, int(acc), int(vel)))
-    #
-    # def read_homing_velocity(self, chan):
-    #     with self.lock:
-    #         _err(self.cc_dll.CC_RequestHomingParams(self._id, chan))
-    #         vel = self.cc_dll.CC_GetHomingVelocity(self._id, chan)
-    #     return vel
-    #
-    # def write_homing_velocity(self, chan, vel):
-    #     with self.lock:
-    #         _err(self.cc_dll.CC_SetHomingVelocity(self._id, chan, int(vel)))
-    #
-    #
-    # def read_message_queue(self, chan):
-    #     """returns a list of messages and clears the queue,
-    #     may be empty if no messages are available"""
-    #     messages = []
-    #     messageType = c_uint16()
-    #     messageID = c_uint16()
-    #     messageData = c_uint32()
-    #
-    #     message_type_names = {
-    #         0: "GenericDevice",
-    #         1: "GenericPiezo",
-    #         2: "GenericMotor",
-    #         3: "GenericDCMotor",
-    #         4: "GenericSimpleMotor",
-    #         5: "RackDevice" ,
-    #         6: "Laser",
-    #         7: "TECCtlr",
-    #         8: "Quad",
-    #         9: "NanoTrak",
-    #         10:"Specialized",
-    #         11:"Solenoid"}
-    #
-    #
-    #     with self.lock:
-    #         #self.cc_dll.CC_RequestStatu
-    #
-    #         num_messages = self.cc_dll.CC_MessageQueueSize(self._id, chan)
-    #         #print(num_messages)
-    #         for i in range(num_messages):
-    #             success = self.cc_dll.CC_GetNextMessage(
-    #                                     self._id, chan,
-    #                                     byref(messageType), byref(messageID), byref(messageData))
-    #
-    #             message = (message_type_names[messageType.value],
-    #                        messageID.value, messageData.value)
-    #             messages.append(message)
-    #
-    #         self.cc_dll.CC_ClearMessageQueue(self._id, chan)
-    #
-    #     print(messages)
-    #     return messages
+    def update_status_bits(self):
+        with self.lock:
+            _err(self.cc_dll.CC_RequestStatusBits(self._id))
+            self._status = self.cc_dll.CC_GetStatusBits(self._id)
+
+    def parse_status(self, status_bit):
+        '''call self.updated_status_bits first'''
+        #  status_bit
+        #  0x00000001 CW hardware limit switch (0=No contact, 1=Contact).
+        #  0x00000002 CCW hardware limit switch (0=No contact, 1=Contact).
+        #  0x00000004 Not applicable.
+        #  0x00000008 Not applicable.
+        #  0x00000010 Motor shaft moving clockwise (1=Moving, 0=Stationary).
+        #  0x00000020 Motor shaft moving counterclockwise (1=Moving, 0=Stationary).
+        #  0x00000040 Shaft jogging clockwise (1=Moving, 0=Stationary).
+        #  0x00000080 Shaft jogging counterclockwise (1=Moving, 0=Stationary).
+        #  0x00000100 Not applicable.
+        #  0x00000200 Motor homing (1=Homing, 0=Not homing).
+        #  0x00000400 Motor homed (1=Homed, 0=Not homed).
+        #  0x00000800 For Future Use.
+        #  0x00001000 Not applicable.
+        #  0x00002000
+        #  ...
+        #  0x00080000
+        #  0x00100000 General Digital Input 1.
+        #  0x00200000 General Digital Input 2.
+        #  0x00400000 General Digital Input 3.
+        #  0x00800000 General Digital Input 4.
+        #  0x01000000 General Digital Input 5.
+        #  0x02000000 General Digital Input 6.
+        #  0x04000000 For Future Use.
+        #  0x08000000 For Future Use.
+        #  0x10000000 For Future Use.
+        #  0x20000000 Active (1=Active, 0=Not active).
+        #  0x40000000 For Future Use.
+        #  0x80000000 Channel enabled (1=Enabled, 0=Disabled).
+        return bool(self._status & status_bit)
+
+    def is_active(self):
+        return self.parse_status(0x20000000)
+
+    def is_homed(self):
+        return self.parse_status(0x00000400)
+
+    def is_homing(self):
+        return self.parse_status(0x00000200)
+
+    def is_moving(self):
+        # clockwise and anticlockwise
+        return self.parse_status(0x00000010) or self.parse_status(0x00000020)
+
+
+if __name__ == '__main__':
+    serial_numbers = TDC001DCServoDev.read_serial_numbers()
+    dev = TDC001DCServoDev(serial_numbers[0])

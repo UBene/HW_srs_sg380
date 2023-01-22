@@ -53,6 +53,10 @@ class TDC001DCServoHW(HardwareComponent):
                           spinbox_decimals=0,
                           unit="step/mm",
                           initial=863874 / 25.0)
+        self.settings.New("is_moving", bool, initial=False, ro=True)
+        self.settings.New("is_homed", bool, initial=False, ro=True)
+        self.settings.New("is_homing", bool, initial=False, ro=True)
+        self.settings.New("is_active", bool, initial=False, ro=True)
 
         self.settings.New('device_num', int, initial=0)
         self.settings.New('serial_num', str, initial="")
@@ -60,17 +64,18 @@ class TDC001DCServoHW(HardwareComponent):
                           str,
                           initial=r"C:\Program Files\Thorlabs\Kinesis")
 
-        self.add_operation("Home", self.home_axis)
+        self.add_operation("home", self.home_axis)
         self.add_operation('stop', self.stop_profiled)
         self.add_operation('jog forward', self.jog_forward)
         self.add_operation('jog backward', self.stop_backward)
 
     def connect(self):
         S = self.settings
+
         from ScopeFoundryHW.thorlabs_tdc001_dc_servo_motor_driver.dev import TDC001DCServoDev
+
         self.dev = TDC001DCServoDev(
             kinesis_path=S['kinesis_path'],
-            dev_num=S['device_num'],
             serial_num=S['serial_num'],
             debug=S['debug_mode'])
 
@@ -78,13 +83,18 @@ class TDC001DCServoHW(HardwareComponent):
         S.target_position.connect_to_hardware(None, self.write_target_position)
         S.jog_size.connect_to_hardware(self.read_jog_size, self.write_jog_size)
         S.target_position.connect_to_hardware(None, self.write_target_position)
+        S.get_lq('is_moving').connect_to_hardware(self.dev.is_moving)
+        S.get_lq('is_homed').connect_to_hardware(self.dev.is_homed)
+        S.get_lq('is_homing').connect_to_hardware(self.dev.is_homing)
+        S.get_lq('is_active').connect_to_hardware(self.dev.is_active)
+
         self.read_from_hardware()
 
-        S['serial_num'] = self.dev.get_serial_num()
+        S['serial_num'] = self.dev.serial_num_in_use()
 
         self.display_update_timer = QtCore.QTimer(self)
         self.display_update_timer.timeout.connect(self.on_display_update_timer)
-        self.display_update_timer.start(200)  # 200ms
+        self.display_update_timer.start(200)  # in ms
 
     def disconnect(self):
         self.settings.disconnect_all_from_hardware()
@@ -112,7 +122,12 @@ class TDC001DCServoHW(HardwareComponent):
         self.dev.write_move_to_position(index)
 
     def on_display_update_timer(self):
-        self.settings.position.read_from_hardware()
+        self.dev.update_status_bits()
+        for name in ('is_homed',
+                     'is_homing',
+                     'is_moving',
+                     'position'):
+            self.settings.get_lq(name).read_from_hardware()
 
     def jog_forward(self):
         self.dev.jog(True)
@@ -143,12 +158,16 @@ class TDC001DCServoHW(HardwareComponent):
     #         round(scale * acc)), int(round(scale * vel)))
     #     self.dev.write_homing_velocity(ax_num, int(round(scale * vel)))
 
-    def New_quick_UI(self):
+    def New_quick_UI(self, include=('connected',
+                                    'is_homed',
+                                    'is_homing',
+                                    'is_moving'
+                                    )):
         from qtpy import QtWidgets
         S = self.settings
         widget = QtWidgets.QGroupBox(title=self.name)
         main_layout = QtWidgets.QVBoxLayout(widget)
-        main_layout.addWidget(self.settings.New_UI(('connected',)))
+        main_layout.addWidget(self.settings.New_UI(include))
         h_layout = QtWidgets.QHBoxLayout()
         main_layout.addLayout(h_layout)
         # for axis in axes:
@@ -158,7 +177,10 @@ class TDC001DCServoHW(HardwareComponent):
             S.get_lq(f"target_position").new_default_widget())
         for sign in ('forward', 'backward'):
             layout.addWidget(self.new_operation_push_buttons(f'jog {sign}'))
-        layout.addWidget(self.new_operation_push_buttons(f'stop'))
+        stop_btn = self.new_operation_push_buttons(f'stop')
+        stop_btn.setStyleSheet('color:red; font-weight: bold;')
+        layout.addWidget(stop_btn)
+        layout.addWidget(self.new_operation_push_buttons('home'))
         h_layout.addLayout(layout)
         widget.setSizePolicy(QtWidgets.QSizePolicy.MinimumExpanding,
                              QtWidgets.QSizePolicy.Maximum)
