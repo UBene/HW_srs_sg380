@@ -19,11 +19,9 @@ class TestApp(BaseMicroscopeApp):
 
     def setup(self):
 
-        from ScopeFoundryHW.single_quantum.snspd.snspd_hw import SNSPDHW
+        from ScopeFoundryHW.single_quantum.snspd import SNSPDHW, SNSPDOptimizerMeasure, SNSPDAquireCounts
         self.add_hardware(SNSPDHW(self))
-        from ScopeFoundryHW.single_quantum.snspd.snspd_optimizer import SNSPDOptimizerMeasure
         self.add_measurement(SNSPDOptimizerMeasure(self))
-        from ScopeFoundryHW.single_quantum.snspd.snspd_aquisition import SNSPDAquireCounts
         self.add_measurement(SNSPDAquireCounts(self))
 
 
