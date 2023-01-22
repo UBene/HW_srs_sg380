@@ -8,7 +8,7 @@ from ScopeFoundry.scanning.base_raster_slow_scan import BaseRaster2DSlowScan
 import time
 
 
-class Base2DSlowScan(BaseRaster2DSlowScan):
+class MDT69XBase2DSlowScan(BaseRaster2DSlowScan):
 
     name = "mdt69x_base_2d_slow_scan"
 

@@ -7,7 +7,7 @@ from ScopeFoundry.hardware import HardwareComponent
 from functools import partial
 
 
-class HW(HardwareComponent):
+class MDT69XHW(HardwareComponent):
 
     name = "mdt69x_piezo_controller"
 

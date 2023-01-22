@@ -22,10 +22,9 @@ class Microscope(BaseMicroscopeApp):
 
     def setup(self):
 
-        from ScopeFoundryHW.thorlabs_mdt69x_piezo_controller.hw import HW
-        self.mdt69x_hw = self.add_hardware(HW(self))
-        from ScopeFoundryHW.thorlabs_mdt69x_piezo_controller.base_2d_slow_scan import Base2DSlowScan
-        self.add_measurement(Base2DSlowScan(self, h_unit='V', v_unit='V'))
+        from ScopeFoundryHW.thorlabs_mdt69x_piezo_controller import MDT69XHW, MDT69XBase2DSlowScan
+        self.mdt69x_hw = self.add_hardware(MDT69XHW(self))
+        self.add_measurement(MDT69XBase2DSlowScan(self, h_unit='V', v_unit='V'))
 
     def setup_ui(self):
         from qtpy import QtWidgets
