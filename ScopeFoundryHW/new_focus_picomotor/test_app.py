@@ -6,8 +6,8 @@ class TestApp(BaseMicroscopeApp):
     name = "picomotor_test_app"
 
     def setup(self):
-        from ScopeFoundryHW.new_focus_picomotor.hw import HW
-        self.picomotor_hw = self.add_hardware(HW(self))
+        from ScopeFoundryHW.new_focus_picomotor import PicomotorHW
+        self.picomotor_hw = self.add_hardware(PicomotorHW(self))
 
     def setup_ui(self):
         from qtpy import QtWidgets

@@ -9,7 +9,7 @@ from qtpy import QtCore, QtWidgets
 from functools import partial
 
 
-class HW(HardwareComponent):
+class PicomotorHW(HardwareComponent):
 
     name = "picomotor"
 
