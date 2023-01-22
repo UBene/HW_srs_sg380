@@ -1,1 +1,1 @@
-from ScopeFoundryHW.thorlabs_tdc001_dc_servo_motor_driver.hw import TDC001DCServoHW
+from .hw import TDC001DCServoHW

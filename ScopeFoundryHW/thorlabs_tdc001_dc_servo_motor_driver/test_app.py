@@ -6,7 +6,7 @@ class TestApp(BaseMicroscopeApp):
     name = "dc_servo_test_app"
 
     def setup(self):
-        from ScopeFoundryHW.thorlabs_tdc001_dc_servo_motor_driver.hw import TDC001DCServoHW
+        from ScopeFoundryHW.thorlabs_tdc001_dc_servo_motor_driver import TDC001DCServoHW
         self.tcd_hw = self.add_hardware(TDC001DCServoHW(self))
 
     def setup_ui(self):
@@ -14,7 +14,6 @@ class TestApp(BaseMicroscopeApp):
         widget = QtWidgets.QWidget()
         layout = QtWidgets.QVBoxLayout(widget)
         self.add_quickbar(widget)
-
         layout.addWidget(self.tcd_hw.New_quick_UI())
 
 
