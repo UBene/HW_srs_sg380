@@ -66,22 +66,19 @@ class DiamondMicroscope(BaseMicroscopeApp):
         self.add_measurement(PIXYZ2DPICAMSlowScan(self, **stage_inits))
 
         # Timeharp
-        from ScopeFoundryHW.picoquant.timeharp_260_hw import TimeHarp260HW
-        from ScopeFoundryHW.picoquant.timeharp_optimizer import TimeHarpOptimizerMeasure
-        from ScopeFoundryHW.picoquant.timeharp_260_hist_measure import TimeHarpHistogramMeasure
-
+        from ScopeFoundryHW.picoquant import TimeHarp260HW, TimeHarpOptimizerMeasure, TimeHarpHistogramMeasure, Timeharp260TTTRMeasure
         self.add_hardware(TimeHarp260HW(self))
         self.add_measurement(TimeHarpOptimizerMeasure(self))
         self.add_measurement(TimeHarpHistogramMeasure(self))
+        self.add_measurement(Timeharp260TTTRMeasure(self))
 
         # Hydraharp
-        from ScopeFoundryHW.picoquant.hydraharp_hw import HydraHarpHW
-        from ScopeFoundryHW.picoquant.hydraharp_optimizer import HydraHarpOptimizerMeasure
-        from ScopeFoundryHW.picoquant.hydraharp_hist_measure import HydraHarpHistogramMeasure
-
-        self.add_hardware(HydraHarpHW(self))
-        self.add_measurement(HydraHarpOptimizerMeasure(self))
-        self.add_measurement(HydraHarpHistogramMeasure(self))
+        # from ScopeFoundryHW.picoquant.hydraharp_hw import HydraHarpHW
+        # self.add_hardware(HydraHarpHW(self))
+        # from ScopeFoundryHW.picoquant.hydraharp_optimizer import HydraHarpOptimizerMeasure
+        # self.add_measurement(HydraHarpOptimizerMeasure(self))
+        # from ScopeFoundryHW.picoquant.hydraharp_hist_measure import HydraHarpHistogramMeasure
+        # self.add_measurement(HydraHarpHistogramMeasure(self))
 
         from confocal_measure.pi_xyz_scans.pi_xyz_2d_histogram_slow_scan import PIXYZ2DHistogramSlowScan
         self.add_measurement(PIXYZ2DHistogramSlowScan(self, **stage_inits))
@@ -127,35 +124,68 @@ class DiamondMicroscope(BaseMicroscopeApp):
         # self.add_hardware(DynamixelServoHW(self, name='power_wheel'))
 
         # SNSPD
-        from ScopeFoundryHW.single_quantum.snspd.snspd_hw import SNSPDHW
-        self.add_hardware(SNSPDHW(self))
-        from ScopeFoundryHW.single_quantum.snspd.snspd_optimizer import SNSPDOptimizerMeasure
+        from ScopeFoundryHW.single_quantum.snspd import SNSPDHW, SNSPDOptimizerMeasure, SNSPDAquireCounts
+        self.snspd_hw = self.add_hardware(SNSPDHW(self))
         self.add_measurement(SNSPDOptimizerMeasure(self))
-        from ScopeFoundryHW.single_quantum.snspd.snspd_aquisition import SNSPDAquireCounts
         self.add_measurement(SNSPDAquireCounts(self))
 
         # Lucam
-        from ScopeFoundryHW.lumera.lucam.lucam_hw import LucamHW
+        from ScopeFoundryHW.lumera.lucam import LucamHW, LucamMeasure
         self.add_hardware(LucamHW(self))
-        from ScopeFoundryHW.lumera.lucam.lucam_measure import LucamMeasure
         self.add_measurement(LucamMeasure(self))
-
-        # MDT690X Piezo Controller
-        from ScopeFoundryHW.thorlabs_mdt69x_piezo_controller.hw import HW
-        self.add_hardware(HW(self))
-        from ScopeFoundryHW.thorlabs_mdt69x_piezo_controller.base_2d_slow_scan import Base2DSlowScan
-        self.add_measurement(Base2DSlowScan(self, h_unit='V', v_unit='V'))
-
 
         # Fiber alignment
         from confocal_measure.ranged_optimization import RangedOptimization
+        optimization_choices = [
+            (f"snspd {i}", f"hardware/snspd/count_rate_{i}") for i in range(self.snspd_hw.max_number_of_detectors)
+        ] + [
+            ("apd count rate", "hardware/apd_counter/count_rate"),
+            ("timeharp CountRate0", "hardware/timeharp_260/CountRate0"),
+            ("timeharp CountRate1", "hardware/timeharp_260/CountRate1"),
+            ("timeharp SyncRate", "hardware/timeharp_260/SyncRate"),
+            ("picoharp CountRate", "hardware/picoharp/count_rate"),
+            # ("spotoptimizer 1/FWHM", "measure/toupcam_spot_optimizer/inv_FWHM"),
+            # ("spotoptimizer max value", "measure/toupcam_spot_optimizer/max_val"),
+            # ("spotoptimizer focus measure",
+            #  "measure/toupcam_spot_optimizer/focus_measure"),
+            # ("andor count rate (cont.)", "measure/andor_ccd_readout/count_rate"),
+            ("picam count rate (cont.)", "measure/picam_readout/count_rate"),
+        ]
         z_hw_choices = ('mdt69x_piezo_controller',)
         z_target_choices = ('x_target_position',
                             'y_target_position',
                             'z_target_position')
         z_choices = ('same_as_z_target',)
-        self.add_measurement(RangedOptimization(self, name='fiber_alignment',
-                                                z_hw_choices=z_hw_choices, z_target_choices=z_target_choices, z_choices=z_choices))
+        self.add_measurement(RangedOptimization(self,
+                                                name='fiber_alignment',
+                                                optimization_choices=optimization_choices,
+                                                z_hw_choices=z_hw_choices,
+                                                z_target_choices=z_target_choices,
+                                                z_choices=z_choices))
+
+        # Picomotor
+        from ScopeFoundryHW.new_focus_picomotor import PicomotorHW
+        self.picomotor_hw = self.add_hardware(PicomotorHW(self))
+
+        # T-cube dc servo motor
+        from ScopeFoundryHW.thorlabs_tdc001_dc_servo_motor_driver import TDC001DCServoHW
+        self.tcd_hw = self.add_hardware(TDC001DCServoHW(self))
+
+        # Dc piezo controller
+        from ScopeFoundryHW.thorlabs_mdt69x_piezo_controller import MDT69XHW, MDT69XBase2DSlowScan
+        self.mdt69x_hw = self.add_hardware(MDT69XHW(self))
+        self.add_measurement(MDT69XBase2DSlowScan(
+            self, h_unit='V', v_unit='V'))
+
+        # MFF
+        from ScopeFoundryHW.thorlabs_motorized_filter_flipper.thorlabsMFF_hardware import ThorlabsMFFHW
+        self.mff_hw = self.add_hardware(ThorlabsMFFHW(
+            self, name='pinhole', position_choices=('in', 'out')))
+
+        # Dual position slider
+        from ScopeFoundryHW.thorlabs_ell6k_dual_position_slider import ELL6KDualPositionSliderHW
+        self.ell_hw = self.add_hardware(
+            ELL6KDualPositionSliderHW(self, choices=('A', 'B')))
 
     def connect_scan_params(self, parent_scan_name='apd_asi',
                             children_scan_names=['hyperspec_asi', 'asi_trpl_2d_scan']):
@@ -170,6 +200,19 @@ class DiamondMicroscope(BaseMicroscopeApp):
                     lq_name).connect_to_lq(master_scan_lq)
 
     def setup_ui(self):
+        from qtpy import QtWidgets
+        widget = QtWidgets.QWidget()
+        widget.setMaximumWidth(380)
+        #widget.setContentsMargins(0, 0, 0, 0)
+        #widget.setSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.MinimumExpanding)
+        layout = QtWidgets.QVBoxLayout(widget)
+        self.add_quickbar(widget)
+
+        layout.addWidget(self.picomotor_hw.New_quick_UI((1, 2, 3, 4)))
+        layout.addWidget(self.tcd_hw.New_quick_UI())
+        layout.addWidget(self.mdt69x_hw.New_quick_UI())
+        layout.addWidget(self.mff_hw.New_quick_UI())
+        layout.addWidget(self.ell_hw.New_quick_UI())
         return
 
         rainbow = '''qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(255, 0, 0, 100), 
