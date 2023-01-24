@@ -57,8 +57,11 @@ class TimeHarpHistogramMeasure(Measurement):
         self.ui.plot_groupBox.layout().addWidget(self.graph_layout)
 
         hh_widget = self.app.hardware['timeharp_260'].settings.New_UI(
-            include=['connected', 'ChanEnable0', 'ChanEnable1', 'SyncRate', 'CountRate0',
-                     'CountRate1', 'SyncDivider'])
+            include=['connected',
+                     'SyncRate', 'CountRate0', 'CountRate1',
+                     'ChanEnable0', 'ChanEnable1',
+                     'ChanOffset0', 'ChanOffset1',
+                     'SyncDivider'])
         self.ui.counting_device_GroupBox.layout().addWidget(hh_widget)
 
     def run(self):

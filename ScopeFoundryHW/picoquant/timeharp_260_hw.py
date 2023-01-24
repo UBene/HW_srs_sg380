@@ -10,7 +10,7 @@ from ScopeFoundryHW.picoquant.timeharp_260_dev import (STOPCNTMIN,
                                                        CFDLVLMIN,
                                                        CFDLVLMAX,
                                                        CFDZCMIN,
-                                                       CFDZCMAX, 
+                                                       CFDZCMAX,
                                                        FLAG_OVERFLOW,
                                                        FLAG_FIFOFULL)
 
@@ -58,9 +58,9 @@ class TimeHarp260HW(HardwareComponent):
               vmax=SYNCDIVMAX, si=False, initial=0, unit='ns')
 
         S.New("CFDLevelSync", dtype=int, unit="mV",
-              vmin = -1000,
+              vmin=-1000,
               #vmin=CFDLVLMIN, vmax=CFDLVLMAX,
-              #vmin=0, vmax=800,
+              # vmin=0, vmax=800,
               initial=0, si=False)
         S.New("CFDZeroCrossSync", dtype=int,  unit="mV",
               #vmin=CFDZCMIN, vmax=CFDZCMAX,
@@ -74,19 +74,19 @@ class TimeHarp260HW(HardwareComponent):
         for i in range(self.n_channels):
             S.New("ChanEnable{}".format(i), dtype=bool, initial=True)
             S.New("CFDLevel{}".format(i), dtype=int, unit="mV",
-                  #vmin=0, vmax=800,
+                  # vmin=0, vmax=800,
                   vmin=CFDLVLMIN, vmax=CFDLVLMAX,
 
                   initial=-50, si=False)
             S.New("CFDZeroCross{}".format(i), dtype=int, unit="mV",
-                  #vmin=0, vmax=20,
+                  # vmin=0, vmax=20,
                   vmin=CFDZCMIN, vmax=CFDZCMAX,
                   initial=-10, si=False)
             S.New("ChanOffset{}".format(i), dtype=int, unit='ps')
             S.New("CountRate{}".format(i), dtype=int, ro=True,
                   vmin=0, vmax=100e6, si=True, unit='Hz')
-            
-        S.New('CTCStatus', int, initial=-99, ro=True, 
+
+        S.New('CTCStatus', int, initial=-99, ro=True,
               description="determines if the acquisition time has expired")
 
         S.New('is_overflow', bool, initial=False, ro=True)
@@ -173,14 +173,11 @@ class TimeHarp260HW(HardwareComponent):
         S['Model'] = dev.hw_model
         S['PartNo'] = dev.hw_partno
         S['Version'] = dev.hw_version
-        
-        
+
         S.CTCStatus.connect_to_hardware(dev.GetCTCStatus)
         S.is_overflow.connect_to_hardware(self.dev.read_is_overflow)
         S.is_fifo_full.connect_to_hardware(self.dev.read_is_fifo_full)
         self.read_from_hardware()
-        
-        
 
     def set_stop_overflow(self, overflow):
         self.dev.SetStopOverflow(self.settings["StopOnOverflow"], overflow)
@@ -215,7 +212,6 @@ class TimeHarp260HW(HardwareComponent):
 
     def stop_histogram(self):
         self.dev.StopMeas()
-        
 
     def read_histogram_data(self, channel='enabled', clear_after=False):
         '''
@@ -274,13 +270,14 @@ class TimeHarp260HW(HardwareComponent):
     @property
     def sliced_time_array(self):
         return self.time_array[:self.settings['HistogramBins']]
-            
+
     def start_tttr(self):
         assert self.settings["Mode"] in ("T2", "T3")
+        self.dev.setup_tttr_data_buffer()
         self.dev.StartMeas(1e+3 * self.settings['Tacq'])
-        
+
     def stop_tttr(self):
         self.dev.StopMeas()
-        
-    def read_fifo(self):
-        return self.dev.read_fifo()
+
+    def read_tttr_data(self):
+        return self.dev.read_tttr_data()

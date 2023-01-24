@@ -9,7 +9,7 @@ MAXLENCODE = 4  # max length code histo mode
 
 # following constants need to be checked
 SYNCDIVMIN = 1
-SYNCDIVMAX = 16 
+SYNCDIVMAX = 16
 CFDLVLMIN = -1200
 CFDLVLMAX = 0
 CFDZCMIN = -100
@@ -302,7 +302,7 @@ class TimeHarp260:
 
     def read_is_fifo_full(self):
         return self.GetFlags() & FLAG_FIFOFULL > 0
-                
+
     def GetElapsedMeasTime(self):
         """
         returns the elapsed measurement time in ms
@@ -335,26 +335,25 @@ class TimeHarp260:
         return x.value
 
     # For TTTR Mode
+    def setup_tttr_data_buffer(self):
+        self.buffer = (c_uint * TTREADMAX)()
 
-    def read_fifo(self):
-        buffer = (c_uint * TTREADMAX)()
+    def read_tttr_data(self):
         n_records = c_int()
-
         with self.lock:
-            self._err(self.thlib.TH260_ReadFiFo(self.devnum, byref(buffer), c_int(TTREADMAX), byref(n_records)))
-                
-        N = n_records.value
-        
-        if N:
-            #return (c_uint*N)(*buffer[0:N])
-            return buffer[0:N]
-        else:
-            return []
-        
+            self._err(self.thlib.TH260_ReadFiFo(self.devnum,
+                                                byref(self.buffer),
+                                                TTREADMAX,
+                                                byref(n_records)
+                                                )
+                      )
+        return (c_uint * n_records.value)(*self.buffer[0:n_records.value])
+
     def GetCTCStatus(self):
         ctc_status = c_int()
         with self.lock:
-            self._err(self.thlib.TH260_CTCStatus(self.devnum, byref(ctc_status)))
+            self._err(self.thlib.TH260_CTCStatus(
+                self.devnum, byref(ctc_status)))
         return ctc_status.value
 
     # For Continuous Mode
