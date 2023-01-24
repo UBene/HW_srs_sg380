@@ -45,7 +45,7 @@ class ELL6KDualPositionSliderDev:
         return {"00": 0, "1F": 1}[ans]
 
     def read_other_position(self):
-        return int(not self.read_position())
+        return int(not bool(self.read_position()))
 
     def close(self):
         self.ser.close()

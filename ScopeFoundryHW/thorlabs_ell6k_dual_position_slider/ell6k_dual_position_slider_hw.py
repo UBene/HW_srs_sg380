@@ -19,6 +19,7 @@ class ELL6KDualPositionSliderHW(HardwareComponent):
             self.choices = [(x, i) for i, x in enumerate(choices)]
         else:
             self.choices = choices
+        self.position_map = {i:x for x,i in self.choices}
         HardwareComponent.__init__(self, app, debug, name)
 
     def setup(self):
@@ -28,7 +29,7 @@ class ELL6KDualPositionSliderHW(HardwareComponent):
         self.settings.New('port',
                           str,
                           initial='COM11')
-        self.add_operation('toggle', self.toggle)
+        # self.add_operation('toggle', self.toggle)
 
     def connect(self):
         S = self.settings
@@ -38,15 +39,17 @@ class ELL6KDualPositionSliderHW(HardwareComponent):
                                        self.dev.write_position)
         self.read_from_hardware()
 
-    def toggle(self):
-        self.settings['position'] = self.dev.read_other_position()
+    # def toggle(self):
+    #     #self.settings.get_lq()
+    #     print(self.settings['position'], self.dev.read_other_position())
+    #     self.settings['position'] = self.dev.read_other_position()
 
     def disconnect(self):
         if hasattr(self, 'dev'):
             self.dev.close()
             del self.dev
 
-    def New_quick_UI(self, include=('connected', 'position'), operations=('toggle',)):
+    def New_quick_UI(self, include=('connected', 'position'), operations=[]):
         from qtpy import QtWidgets
         widget = QtWidgets.QGroupBox(title=self.name)
         layout = QtWidgets.QVBoxLayout(widget)
