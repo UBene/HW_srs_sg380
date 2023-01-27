@@ -7,7 +7,6 @@ import logging
 
 from ScopeFoundry import BaseMicroscopeApp
 
-
 level = 'DEBUG'
 logging.basicConfig(level='DEBUG')
 logging.getLogger('LoggedQuantity').setLevel(logging.DEBUG)
@@ -19,7 +18,7 @@ class TestApp(BaseMicroscopeApp):
 
     def setup(self):
 
-        from ScopeFoundryHW.lumenera_infinity import LucamHW, LucamMeasure
+        from ScopeFoundryHW.lumenera_lucam import LucamHW, LucamMeasure
         self.add_hardware(LucamHW(self))
         self.add_measurement(LucamMeasure(self))
 
