@@ -19,7 +19,7 @@ class TestApp(BaseMicroscopeApp):
 
     def setup(self):
 
-        from ScopeFoundryHW.lumera.lucam import LucamHW, LucamMeasure
+        from ScopeFoundryHW.lumenera_infinity import LucamHW, LucamMeasure
         self.add_hardware(LucamHW(self))
         self.add_measurement(LucamMeasure(self))
 

@@ -8,6 +8,7 @@ import ctypes
 
 from ScopeFoundry.hardware import HardwareComponent
 
+
 from .lucam import LucamEnumCameras, Lucam, CAMERA_MODEL
 
 
