@@ -1,5 +1,5 @@
-ScopeFoundryHW.lumenera_infinity
-===================================
+ScopeFoundryHW.lumenera_lucam
+=============================
 
 ScopeFoundry hardware plug-in to control lucam based Lumenera cameras. Tested with Infinity 2
 
@@ -32,4 +32,4 @@ History
 ### 0.1.0	2023-01-27	Initial public release.
 
 Plug-in has been used internally and has been stable.
-Check Git repository for detailed history.
+Check Git repository for detailed history. Tested with Infinity 2
