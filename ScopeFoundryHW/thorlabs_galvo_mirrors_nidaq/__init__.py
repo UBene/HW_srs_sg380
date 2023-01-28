@@ -1,2 +1,0 @@
-from .galvo_mirror_2d_apd_slow_scan import GalvoMirrorAPDScanMeasure
-from .galvo_mirrors_hw import GalvoMirrorsHW
