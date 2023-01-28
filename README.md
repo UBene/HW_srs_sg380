@@ -1,7 +1,7 @@
 ScopeFoundryHW.srs_sg380
-=============================
+========================
 
-ScopeFoundry hardware plug-in to control Stanford Research Systems (SRS) RF Signal Generators 380 series. Device can be controlled through RS232 or GPIB, adjust the `connect` function in  `sg380_hw.py` accordingly. 
+ScopeFoundry hardware plug-in to control Stanford Research Systems (SRS) RF Signal Generators 380 series. Device can be controlled through RS232 or GPIB. 
 
 
 ScopeFoundry is a Python platform for controlling custom laboratory 
@@ -12,9 +12,9 @@ experiments and visualizing scientific data
 This software is not made by or endorsed by the device manufacturer
 
 Author
-----------
+------
 
-Benedikt Ursprung 
+Benedikt Ursprung
 
 Requirements
 ------------
@@ -25,7 +25,6 @@ Requirements
 	* serial (For RS232 control)
 
 
-​	
 History
 --------
 

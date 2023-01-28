@@ -40,7 +40,8 @@ class SG380HW(HardwareComponent):
 
     def setup(self):
         S = self.settings
-        S.New("port", str, initial="COM1")  # GPIB0::27::INSTR
+        S.New("port", str, initial="COM1", 
+              description='enter communication port of the form COM<X> or GPIB<X> here')  # GPIB0::27::INSTR
         S.New('model', str, ro=True)
         S.New('serial', str, ro=True)
         S.New('error', str, ro=True)
